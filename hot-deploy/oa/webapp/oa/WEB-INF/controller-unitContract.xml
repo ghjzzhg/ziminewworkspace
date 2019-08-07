@@ -1,0 +1,40 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="UnitContract">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="searchUnitContract"/>
+        <response name="success" type="view" value="UnitContract"/>
+    </request-map>
+    <request-map uri="searchUnitContract">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="searchUnitContract"/>
+        <response name="success" type="view" value="UnitContractList"/>
+    </request-map>
+    <request-map uri="CreateUnitContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createUnitContract"/>
+        <response name="success" type="view" value="CreateUnitContract"/>
+    </request-map>
+    <request-map uri="editUnitContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editUnitContract"/>
+        <response name="success" type="view" value="CreateUnitContract"/>
+    </request-map>
+    <request-map uri="saveUnitContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveUnitContract"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteUnitContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteUnitContract"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+
+
+    <view-map name="UnitContract" type="screen" page="component://oa/widget/UnitContractScreens.xml#UnitContract"/>
+    <view-map name="CreateUnitContract" type="screen" page="component://oa/widget/UnitContractScreens.xml#CreateUnitContract"/>
+    <view-map name="UnitContractList" type="screen" page="component://oa/widget/UnitContractScreens.xml#UnitContractList"/>
+</site-conf>

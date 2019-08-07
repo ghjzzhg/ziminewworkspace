@@ -1,0 +1,1341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>OA Services</description>
+    <vendor>RexTec</vendor>
+    <version>1.0</version>
+
+
+
+    <service name="findEnums" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="findEnums" auth="true">
+        <description>根据ID查找字典列表</description>
+        <attribute name="enumTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveWorkPlanCreate" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="saveWorkPlan" auth="true">
+        <description>保存工作计划基本信息</description>
+        <auto-attributes mode="IN" entity-name="TblWorkPlan" optional="true">
+            <exclude field-name="noticePerson"/>
+            <exclude field-name="canSeePerson"/>
+        </auto-attributes>
+        <attribute name="noticePerson" type="List" mode="IN" optional="true"/>
+        <attribute name="canSeePerson" type="List" mode="IN" optional="true"/>
+        <attribute name="executor" type="String" mode="IN" optional="true"/>
+        <attribute name="milestoneTime" type="List" mode="IN" optional="true"/>
+        <attribute name="milestoneDescription" type="List" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+        <attribute name="workPlanId" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveWorkPlanJobs" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="saveWorkPlanJobs" auth="true">
+        <description>分配工作任务</description>
+        <auto-attributes mode="IN" entity-name="TblPersonWork" optional="true"/>
+        <attribute name="returnValue" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteWorkPlan" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="deleteWorkPlan" auth="true">
+        <description>删除工作计划</description>
+        <attribute name="workPlanId" type="String" mode="IN"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteWorkPlanAndMilestone" engine="group" auth="true">
+        <description>删除工作计划</description>
+        <group>
+            <invoke name="deleteWorkPlan" result-to-context="true" mode="sync"/>
+            <invoke name="deleteMilestone" result-to-context="true" mode="sync"/>
+        </group>
+    </service>
+
+    <service name="searchWorkPlan" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="searchWorkPlan" auth="true">
+        <description>查询工作计划</description>
+        <attribute name="title" type="String" mode="INOUT" optional="true"/>
+        <attribute name="member" type="String" mode="INOUT" optional="true"/>
+        <attribute name="departmentId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="startTime" type="String" mode="INOUT" optional="true"/>
+        <attribute name="endTime" type="String" mode="INOUT" optional="true"/>
+        <attribute name="nowStartTime" type="String" mode="OUT" optional="true"/>
+        <attribute name="nowEndTime" type="String" mode="OUT" optional="true"/>
+        <attribute name="planPerson" type="String" mode="INOUT" optional="true"/>
+        <attribute name="planDescription" type="String" mode="INOUT" optional="true"/>
+        <attribute name="planType" type="String" mode="INOUT" optional="true"/>
+        <attribute name="workPlanStatus" type="String" mode="INOUT" optional="true"/>
+        <attribute name="selfWorkPlan" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="workPlanList" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="findOneById" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="findOneById" auth="true">
+        <description>新增或修改子计划页面数据</description>
+        <attribute name="workPlanId" type="String" mode="IN" optional="true">
+            <description>工作计划id</description>
+        </attribute>
+        <attribute name="partyId" type="String" mode="IN" optional="true">
+            <description>执行人id</description>
+        </attribute>
+        <attribute name="childWorkPlanId" type="String" mode="IN" optional="true">
+            <description>子计划id</description>
+        </attribute>
+        <attribute name="curPartyId" type="String" mode="IN" optional="true">
+            <description>当前执行人id</description>
+        </attribute>
+        <attribute name="workPlan" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteMilestone" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="deleteMilestone" auth="true">
+        <description>刪除里程碑</description>
+        <attribute name="milestoneId" type="String" mode="IN" optional="true"/>
+        <attribute name="workPlanId" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="feedbackWorkPlan" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="feedbackWorkPlan" auth="true">
+        <description>反馈</description>
+        <attribute name="workPlanId" type="String" mode="IN" optional="true"/>
+        <!--工作计划id-->
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <!--执行人id-->
+        <attribute name="childWorkPlanId" type="String" mode="IN" optional="true"/>
+        <!--子任务Id-->
+        <attribute name="returnValue" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="saveFeedback" auth="true">
+        <description>保存反馈</description>
+        <auto-attributes mode="IN" entity-name="TblFeedback" optional="true" allow-html="any"/>
+        <auto-attributes mode="IN" entity-name="TblPersonWork" optional="true"/>
+        <attribute name="childWorkPlanId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="deleteFeedback" auth="true">
+        <description>删除反馈</description>
+        <attribute name="deleteFeedbackId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="findFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="findFeedback" auth="true">
+        <description>查询工作计划反馈</description>
+        <attribute name="workPlanId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="partyId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="childWorkPlanId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveChildPlan" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="saveChildPlan" auth="true">
+        <description>保存子计划</description>
+        <auto-attributes mode="IN" entity-name="TblChildWorkPlan" optional="true" allow-html="any"/>
+        <attribute name="curPartyId" type="String" mode="IN" optional="true"/>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT"/>
+    </service>
+    <service name="deleteChildPlan" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="deleteChildPlan" auth="true">
+        <description>删除子计划</description>
+        <attribute name="childWorkPlanId" type="String" mode="IN"/>
+        <attribute name="workPlanId" type="String" mode="IN" optional="true"/>
+        <attribute name="curPartyId" type="String" mode="IN" optional="true"/>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT"/>
+    </service>
+
+    <service name="saveGrade" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkPlanServices.groovy"
+             invoke="saveGrade" auth="true">
+        <description>保存绩效评分</description>
+        <auto-attributes mode="IN" entity-name="TblPersonWork" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="saveNoticeTemplate" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="saveNoticeTemplate" auth="true">
+        <description>保存模板</description>
+        <auto-attributes mode="IN" entity-name="TblNoticeTemplate" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteNoticeTemplate" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="deleteNoticeTemplate" auth="true">
+        <description>删除模板</description>
+        <auto-attributes mode="IN" entity-name="TblNoticeTemplate" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="changeNoticeTemplate" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="changeNoticeTemplate" auth="true">
+        <description>模板联动</description>
+        <auto-attributes mode="IN" entity-name="TblNoticeTemplate" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveNotice" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="saveNotice" auth="true">
+        <description>保存通知</description>
+        <auto-attributes mode="IN" entity-name="TblNotice" optional="true" allow-html="any"/>
+        <attribute name="signInPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_entity_name" type="String" mode="IN" optional="true" default-value="TblNotice"/>
+        <attribute name="noticeDataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_level_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_level_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_position_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_position_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchNotice" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="searchNotice" auth="true">
+        <description>搜索通知</description>
+        <attribute name="title" type="String" mode="IN" optional="true"/>
+        <attribute name="releaseDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeType" type="String" mode="IN" optional="true"/>
+        <attribute name="releaseTimeStart" type="Date" mode="IN" optional="true"/>
+        <attribute name="releaseTimeEnd" type="Date" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT"/>
+    </service>
+
+    <service name="updateSignInPerson" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="updateSignInPerson" auth="true">
+        <description>更新签收状态(updateSignInRecord替换)</description>
+        <attribute name="singnInPersonId" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="staffId" type="String" mode="IN" optional="true"/>
+        <attribute name="signInStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="signInPersonStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="remark" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="updateSignInRecord" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/SignInRecordUtilServices.groovy"
+             invoke="updateSignInRecord" auth="true">
+        <description>更新签收状态</description>
+        <attribute name="singnInPersonId" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="staffId" type="String" mode="IN" optional="true"/>
+        <attribute name="signInStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="signInPersonStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="remark" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+    <service name="deleteNotice" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="deleteNotice" auth="true">
+        <description>删除通知</description>
+        <attribute name="noticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="saveFeedbackBasic" engine="groovy" location="component://oa/src/org/ofbiz/oa/FeedbackServices.groovy"
+             invoke="saveFeedbackBasic" auth="true">
+        <description>保存反馈</description>
+        <attribute name="feedbackContext" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="permission" type="String" mode="IN" optional="true"/>
+        <attribute name="actualFeedbackPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="feedbackMiddleId" type="String" mode="IN" optional="true"/>
+        <attribute name="processing" type="String" mode="IN" optional="true"/>
+        <attribute name="feedbackMiddleType" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="getFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/FeedbackServices.groovy"
+             invoke="getFeedback" auth="true">
+        <description>查询反馈</description>
+        <attribute name="feedbackMiddleId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="childFeedbackId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="feedbackPerson" type="String" mode="INOUT" optional="true"/>
+        <attribute name="feedbackMiddleType" type="String" mode="INOUT" optional="false"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveNoticeFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="saveNoticeFeedback" auth="true">
+        <description>保存反馈</description>
+        <attribute name="noticeId" type="String" mode="IN" optional="true"/>
+        <auto-attributes mode="IN" entity-name="TblFeedback" optional="true" allow-html="any"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="findNoticeFeedback" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="findNoticeFeedback" auth="true">
+        <description>查询反馈</description>
+        <attribute name="noticeId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchSignInRecord" engine="groovy" location="component://oa/src/org/ofbiz/oa/NoticeServices.groovy"
+             invoke="searchSignInRecord" auth="true">
+        <description>查询签收记录</description>
+        <auto-attributes mode="IN" entity-name="TblNotice" optional="true">
+            <exclude field-name="releaseTime"/>
+        </auto-attributes>
+        <attribute name="releaseTimeStart" type="Date" mode="IN" optional="true"/>
+        <attribute name="releaseTimeEnd" type="Date" mode="IN" optional="true"/>
+        <attribute name="feedbackDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="status" type="String" mode="IN" optional="true"/>
+        <attribute name="hasSignIn" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT"/>
+    </service>
+
+    <service name="saveMeetingNotice" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="saveMeetingNotice" auth="true">
+        <description>保存会议通知</description>
+        <auto-attributes mode="IN" entity-name="TblMeetingNotice" optional="true">
+            <exclude field-name="content"/>
+        </auto-attributes>
+        <attribute name="content" mode="IN" type="String" allow-html="any" optional="true"/>
+        <attribute name="noticeDataScope_entity_name" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_level_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_level_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_position_only" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_position_like" type="String" mode="IN" optional="true"/>
+        <attribute name="noticeDataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="participants" type="String" mode="IN"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="createPlanType" default-entity-name="Enumeration" engine="simple"
+             location="component://common/script/org/ofbiz/common/EnumerationServices.xml" invoke="createEnumeration"
+             auth="true">
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="enumTypeId" optional="false"/>
+        <override name="description" optional="false" allow-html="any"/>
+    </service>
+
+    <service name="searchMeetingNotice" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="searchMeetingNotice" auth="true">
+        <description>搜索会议通知</description>
+        <attribute name="meetingName" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingTheme" type="String" mode="IN" optional="true"/>
+        <attribute name="startTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="endTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="releaseDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT"/>
+    </service>
+
+    <service name="meetingNoticeInfo" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="meetingNoticeInfo" auth="true">
+        <description>会议通知签收反馈</description>
+        <attribute name="meetingNoticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT"/>
+    </service>
+
+    <service name="saveFeedbackOfMeetingNotice" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="saveFeedbackOfMeetingNotice" auth="true">
+        <description>保存反馈</description>
+        <attribute name="meetingNoticeId" type="String" mode="IN" optional="true"/>
+        <auto-attributes mode="IN" entity-name="TblFeedback" optional="true"/>
+        <attribute name="feedbackContext1" type="String" mode="IN" optional="false" allow-html="any"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="findRecord" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/SignInRecordUtilServices.groovy"
+             invoke="findRecord" auth="true">
+        <description>查询签收记录</description>
+        <attribute name="noticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="type" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="returnValue" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveMeetingNoticeSummary" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="saveMeetingNoticeSummary" auth="true">
+        <description>保存会议纪要</description>
+        <auto-attributes mode="IN" entity-name="TblMeetingSummary" optional="true">
+            <exclude field-name="summaryContent"/>
+        </auto-attributes>
+        <auto-attributes mode="IN" entity-name="TblMeetingNotice" optional="true"/>
+        <attribute name="meetingStartTime1" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="meetingEndTime1" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="summaryContent" mode="IN" type="String" allow-html="any" optional="true"/>
+        <attribute name="participants" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_entity_name" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_level_only" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_level_like" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_position_only" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_position_like" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingSummaryDataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchMeetingNoticeSummary" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="searchMeetingNoticeSummary" auth="true">
+        <description>搜索会议纪要</description>
+        <attribute name="meetingName" type="String" mode="IN" optional="true"/>
+        <attribute name="meetingTheme" type="String" mode="IN" optional="true"/>
+        <attribute name="startTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="endTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="releaseDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="returnValue" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="showPersonList" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="showPersonList" auth="true">
+        <description>查询迟到和缺席人员list</description>
+        <attribute name="summaryId" type="String" mode="IN" optional="true"/>
+        <attribute name="personList" type="List" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteMeetingNoticeSummary" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="deleteMeetingNoticeSummary" auth="true">
+        <description>删除会议纪要</description>
+        <attribute name="summaryId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteMeetingNotice" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/MeetingNoticeServices.groovy"
+             invoke="deleteMeetingNotice" auth="true">
+        <description>删除会议通知</description>
+        <attribute name="meetingNoticeId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchWorkReportList" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="searchWorkReportList" auth="true">
+        <description>查询工作报告列表</description>
+        <attribute name="num" mode="IN" type="String" optional="true"/>
+        <attribute name="name" mode="IN" type="String" optional="true"/>
+        <attribute name="party" mode="IN" type="String" optional="true"/>
+        <attribute name="status" mode="IN" type="String" optional="true"/>
+        <attribute name="type" mode="IN" type="String" optional="true"/>
+        <attribute name="leader" mode="IN" type="String" optional="true"/>
+        <attribute name="executor" mode="IN" type="String" optional="true"/>
+        <attribute name="process" mode="IN" type="String" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="editWorkReport" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="editWorkReport" auth="true">
+        <description>保存修改工作报告</description>
+        <auto-attributes mode="IN" entity-name="TblWorkReport" optional="true"/>
+        <attribute name="testStaffSelect" mode="IN" type="String" optional="true"/>
+        <attribute name="dataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_level_only" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_level_like" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_position_only" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_position_like" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="descriptionHtml" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="addReportFeedback" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="addReportFeedback" auth="true">
+        <description>保存工作报告反馈</description>
+        <attribute name="workReportId" mode="IN" type="String" optional="true"/>
+        <attribute name="feedbackTime" mode="IN" type="Timestamp" optional="true"/>
+        <attribute name="processing" mode="IN" type="String" optional="true"/>
+        <attribute name="email" mode="IN" type="String" optional="true"/>
+        <attribute name="report" mode="IN" type="String" optional="true"/>
+        <attribute name="template" mode="IN" type="String" optional="true" allow-html="any"/>
+        <attribute name="permission" mode="IN" type="String" optional="true"/>
+        <attribute name="feedtype" mode="IN" type="String" optional="true"/>
+        <attribute name="processingTypeId" mode="IN" type="String" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="delWorkReport" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="delWorkReport" auth="true">
+        <description>删除工作报告</description>
+        <attribute name="workReportId" mode="IN" type="String" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchWorkReportById" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="searchWorkReportById" auth="true">
+        <description>根据ID查找工作报告</description>
+        <attribute name="workReportId" type="String" mode="IN" optional="true"/>
+        <attribute name="viewType" type="String" mode="IN" optional="true"/>
+        <attribute name="workReportMap" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchFeedbackList" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkReportServices.groovy"
+             invoke="searchFeedbackList" auth="true">
+        <description>工作反馈分页</description>
+        <attribute name="workReportId" type="String" mode="IN" optional="true"/>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="workReportMap" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="savePersonalTemplate" engine="groovy" location="component://oa/src/org/ofbiz/oa/LogSetService.groovy"
+             invoke="savePersonalTemplate" auth="true">
+        <description>保存个人模板</description>
+        <attribute name="positionId" type="String" mode="IN" optional="true"/>
+        <attribute name="template" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveTemplate" engine="groovy" location="component://oa/src/org/ofbiz/oa/LogSetService.groovy"
+             invoke="saveTemplate" auth="true">
+        <description>保存模板</description>
+        <attribute name="positionId" type="String" mode="IN" optional="true"/>
+        <attribute name="template" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveLogSet" engine="groovy" location="component://oa/src/org/ofbiz/oa/LogSetService.groovy"
+             invoke="saveLogSet" auth="true">
+        <description>保存日志参数</description>
+        <attribute name="department" type="String" mode="IN" optional="true"/>
+        <attribute name="checkboxForPlan" type="String" mode="IN" optional="true"/>
+        <attribute name="planText" type="String" mode="IN" optional="true"/>
+        <attribute name="checkboxForLog" type="String" mode="IN" optional="true"/>
+        <attribute name="logText" type="String" mode="IN" optional="true"/>
+        <attribute name="checkboxForInstructions" type="String" mode="IN" optional="true"/>
+        <attribute name="instructionsText" type="String" mode="IN" optional="true"/>
+        <attribute name="logSetId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveAttentionSubordinate" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/WorkLogServices.groovy"
+             invoke="saveAttentionSubordinate" auth="true">
+        <description>保存关注下属</description>
+        <attribute name="partyId" type="String" mode="IN" optional="false"/>
+        <attribute name="ifAttentionButton" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveWorkLog" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkLogServices.groovy"
+             invoke="saveWorkLog" auth="true">
+        <description>保存工作日志</description>
+        <attribute name="logTitle" type="String" mode="IN" optional="true"/>
+        <attribute name="logContent" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="reviewedBy" type="String" mode="IN" optional="true"/>
+        <attribute name="reviewContent" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="reviewDate" type="java.sql.Date" mode="IN" optional="true"/>
+        <attribute name="workLogDate" type="java.sql.Date" mode="IN" optional="true"/>
+        <attribute name="workLogId" type="String" mode="IN" optional="true"/>
+        <attribute name="reviewedById" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteSchedule" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkLogServices.groovy"
+             invoke="deleteSchedule" auth="true">
+        <description>delete日程</description>
+        <attribute name="workLogId" type="String" mode="IN" optional="true"/>
+        <attribute name="workLogDate" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveSchedule" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkLogServices.groovy"
+             invoke="saveSchedule" auth="true">
+        <description>保存日程</description>
+        <attribute name="scheduleId" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleStartDatetime" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleStartDatetime_hour" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleStartDatetime_minute" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleEndDatetime" type="String" mode="IN"  optional="true"/>
+        <attribute name="scheduleEndDatetime_hour" type="String" mode="IN"  optional="true"/>
+        <attribute name="scheduleEndDatetime_minute" type="String" mode="IN"  optional="true"/>
+        <attribute name="workLogId" type="String" mode="IN" optional="true"/>
+        <attribute name="scheduleTitle" type="String" mode="IN"  optional="true"/>
+        <attribute name="scheduleContent" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveLeadInstructions" engine="groovy"
+             location="component://oa/webapp/oa/WEB-INF/actions/workLog/WorkLogServices.groovy"
+             invoke="saveLeadInstructions" auth="true">
+        <description>保存工作日志批示</description>
+        <attribute name="logTitle" type="String" mode="IN" optional="true"/>
+        <attribute name="logContent" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="planTitle" type="String" mode="IN" optional="true"/>
+        <attribute name="planContent" type="String" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="workDate" type="String" mode="IN" optional="true"/>
+        <attribute name="workLogId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="reviewedBy" type="String" mode="IN" optional="true"/>
+        <attribute name="reviewContent" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="getDepartmentByPerson" engine="groovy"
+             location="component://oa/src/org/ofbiz/oa/OrganizationServices.groovy"
+             invoke="getDepartmentByPerson" auth="true">
+        <description>获取当前登录用户所在部门</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveVehicle" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveVehicle" auth="true">
+        <description>保存车辆</description>
+        <auto-attributes mode="IN" entity-name="TblVehicleManagement" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveResource" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="saveResource" auth="true">
+        <description>保存资源</description>
+        <auto-attributes mode="IN" entity-name="TblResourceManagement" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteVehicle" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="deleteVehicle" auth="true">
+        <description>删除车辆</description>
+        <attribute name="vehicleId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteVehicleByCostId" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="deleteVehicleByCostId" auth="true">
+        <description>删除指定车辆的指定费用</description>
+        <attribute name="costId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteResource" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="deleteResource" auth="true">
+        <description>删除车辆</description>
+        <attribute name="resourceId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveVehicleCost" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveVehicleCost" auth="true">
+        <description>保存车辆费用</description>
+        <auto-attributes mode="IN" entity-name="TblVehicleCost" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveVehicleByCostId" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveVehicleByCostId" auth="true">
+        <description>保存修改后的车辆费用和备注</description>
+        <attribute name="costId" type="String" mode="IN" optional="true"/>
+        <attribute name="cost" type="String" mode="IN" optional="true"/>
+        <attribute name="remarks" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveOrderVehicle" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveOrderVehicle" auth="true">
+        <description>保存预约信息</description>
+        <auto-attributes mode="IN" entity-name="TblVehicleOrder" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveAuditVehicleOrder" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveAuditVehicleOrder" auth="true">
+        <description>审核车辆预约信息</description>
+        <auto-attributes mode="IN" entity-name="TblVehicleOrder" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveArrangeVehicleOrder" engine="groovy" location="component://oa/src/org/ofbiz/oa/VehicleServices.groovy"
+             invoke="saveArrangeVehicleOrder" auth="true">
+        <description>车辆资源安排</description>
+        <auto-attributes mode="IN" entity-name="TblVehicleOrder" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="findResource" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="findResource" auth="true">
+        <description>查找资源信息</description>
+        <attribute name="dataResource" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveOrderResource" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="saveOrderResource" auth="true">
+        <description>保存资源预约信息</description>
+        <auto-attributes mode="IN" entity-name="TblResourceOrder" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveAuditResourceOrder" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="saveAuditResourceOrder" auth="true">
+        <description>审核资源预约信息</description>
+        <auto-attributes mode="IN" entity-name="TblResourceOrder" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveArrangeResourceOrder" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="saveArrangeResourceOrder" auth="true">
+        <description>资源安排</description>
+        <auto-attributes mode="IN" entity-name="TblResourceOrder" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="findResourceList" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="findResourceList" auth="true">
+        <description>预约资源列表显示</description>
+        <!--<auto-attributes mode="IN" entity-name="TblResourceOrder" optional="true"/>-->
+        <attribute name="dataResourceList" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="findResourceById" engine="groovy" location="component://oa/src/org/ofbiz/oa/ResourceServices.groovy"
+             invoke="findResourceById" auth="true">
+        <description>预约资源详情显示</description>
+        <auto-attributes mode="IN" entity-name="TblResourceOrder" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="salarySuccess" engine="groovy" location="component://oa/src/org/ofbiz/oa/SalaryServices.groovy"
+             invoke="salarySuccess" auth="true">
+        <description>返回值</description>
+        <attribute name="salary_success" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveWorkContactList" engine="groovy" location="component://oa/src/org/ofbiz/oa/WorkContactListServices.groovy"
+             invoke="saveWorkContactList" auth="true">
+        <description>保存工作联络单</description>
+        <auto-attributes mode="IN" entity-name="TblWorkContactList" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="AddTypeManagement" engine="groovy" location="component://oa/src/org/ofbiz/oa/TypeManagementList.groovy"
+             invoke="AddTypeManagement" auth="true">
+        <description>添加工作联系单类型管理</description>
+        <auto-attributes mode="IN" entity-name="TblTypeManagementList" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="checkLiaison" engine="groovy" location="component://oa/src/org/ofbiz/oa/liaison/LiaisonServices.groovy"
+             invoke="checkLiaison" auth="true">
+        <description>联络单审核</description>
+        <attribute type="String" mode="IN" name="workSheetAuditInforId" optional="true"/>
+        <attribute type="String" mode="IN" name="contactListId" optional="true"/>
+        <attribute type="String" mode="IN" name="reviewTheStatus" optional="true"/>
+        <attribute type="String" mode="IN" name="content" optional="true"/>
+        <attribute type="String" mode="IN" name="partyId" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchLiaison" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/liaison/FindCheckLiaison.groovy"
+             invoke="searchLiaison" auth="true">
+        <description>查询工作联络单</description>
+        <attribute type="String" mode="IN" name="responseTimeStart" optional="true"/>
+        <attribute type="String" mode="IN" name="responseTimeEnd" optional="true"/>
+        <attribute type="String" mode="IN" name="title" optional="true"/>
+        <attribute type="String" mode="IN" name="contactListType" optional="true"/>
+        <attribute type="String" mode="IN" name="reviewTheStatus" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="signedLiaison" engine="groovy" location="component://oa/src/org/ofbiz/oa/liaison/SignedForServices.groovy"
+             invoke="signedLiaison" auth="true">
+        <description>联络单签收</description>
+        <attribute type="String" mode="IN" name="workSheetSignForId" optional="true"/>
+        <attribute type="String" mode="IN" name="contactListId" optional="true"/>
+        <attribute type="String" mode="IN" name="reviewTheStatus" optional="true"/>
+        <attribute type="String" mode="IN" name="content" optional="true"/>
+        <attribute type="String" mode="IN" name="fullName" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="replyInformationLiaison" engine="groovy" location="component://oa/src/org/ofbiz/oa/liaison/ReplyInformationServices.groovy"
+             invoke="replyInformationLiaison" auth="true">
+        <description>联络单回复</description>
+        <attribute type="String" mode="IN" name="contactListId" optional="false"/>
+        <attribute type="String" mode="IN" name="content" allow-html="any" optional="false" />
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="findWorkSheetReplyInformation" engine="groovy" location="component://oa/src/org/ofbiz/oa/liaison/ReplyInformationServices.groovy"
+             invoke="findWorkSheetReplyInformation" auth="true">
+        <description>find回复信息</description>
+        <attribute type="String" mode="INOUT" name="contactListId" optional="false"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="viewIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="viewSize" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="highIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="lowIndex" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="totalCount" type="Integer" mode="OUT" optional="false"/>
+        <attribute name="sortField" type="String" mode="INOUT" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteLiaison" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/liaison/DeleteLiaison.groovy"
+             invoke="deleteLiaison" auth="true">
+        <description>删除联络单</description>
+        <attribute type="String" mode="IN" name="contactListId" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="changeLiaisonStatus" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/liaison/ChangeStatusLiaison.groovy"
+             invoke="changeLiaisonStatus" auth="true">
+        <description>更改联络单状态</description>
+        <attribute type="String" mode="IN" name="contactListId" optional="false"/>
+        <attribute type="String" mode="IN" name="reviewTheStatus" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchFixedAssets" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/FixedAssets.groovy"
+             invoke="searchFixedAssets" auth="true">
+        <description>查询固定资产</description>
+        <attribute type="String" mode="IN" name="fixedAssetsCode" optional="true"/>
+        <attribute type="String" mode="IN" name="fixedAssetsName" optional="true"/>
+        <attribute type="String" mode="IN" name="assetType" optional="true"/>
+        <attribute type="String" mode="IN" name="departmentForSearch" optional="true"/>
+        <attribute type="String" mode="IN" name="usePersonForSearch" optional="true"/>
+        <attribute type="String" mode="IN" name="useDepartmentForSearch" optional="true"/>
+        <attribute type="String" mode="IN" name="assetStatus" optional="true"/>
+        <attribute type="String" mode="IN" name="canLendOut" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveFixedAssets" engine="groovy" location="component://oa/src/org/ofbiz/oa/FixedAssetsServices.groovy" invoke="saveFixedAssets" auth="true">
+        <description>保存资产信息</description>
+        <auto-attributes mode="IN" entity-name="TblFixedAssets" optional="true"/>
+        <attribute name="fixedAssetsId" type="String" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsCode" type="String" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsCode1" type="String" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsName" type="String" mode="IN" optional="true"/>
+        <attribute name="inputPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="inputDate" type="java.sql.Date" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsManager" type="String" mode="IN" optional="true"/>
+        <attribute name="limitYear" type="java.lang.Integer" mode="IN" optional="true"/>
+        <attribute name="assetMaker" type="String" mode="IN" optional="true"/>
+        <attribute name="canLendOut" type="String" mode="IN" optional="true"/>
+        <attribute name="assetStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="reserveStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="buyDate" type="java.sql.Date" mode="IN" optional="true"/>
+        <attribute name="assetStandard" type="String" mode="IN" optional="true"/>
+        <attribute name="keepPlace" type="String" mode="IN" optional="true"/>
+        <attribute name="assetType" type="String" mode="IN" optional="true"/>
+        <attribute name="assetValue" type="java.lang.Double" mode="IN" optional="true"/>
+        <attribute name="assetCount" type="java.lang.Integer" mode="IN" optional="true"/>
+        <attribute name="department" type="String" mode="IN" optional="true"/>
+        <attribute name="usePerson" type="String" mode="IN" optional="true"/>
+        <attribute name="useDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="startDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="endDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="remarks" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteFixedAssets" engine="groovy" location="component://oa/src/org/ofbiz/oa/FixedAssetsServices.groovy"
+             invoke="deleteFixedAssets" auth="true">
+        <description>删除固定资产</description>
+        <attribute name="fixedAssetsId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="lookupUserDepartment" engine="groovy" location="component://oa/src/org/ofbiz/oa/FixedAssetsServices.groovy"
+             invoke="lookupUserDepartment" auth="true">
+        <description>当选择使用人后自动回显使用部门</description>
+        <attribute type="String" mode="IN" name="partyId" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveFileData" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="saveFileData" auth="true">
+        <description>保存档案资料</description>
+        <auto-attributes mode="IN" entity-name="TblFileData" optional="true"/>
+        <attribute name="fileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="parentTypeName" type="String" mode="IN" optional="true"/>
+        <attribute name="sonTypeName" type="String" mode="IN" optional="true"/>
+        <attribute name="documentTitle" type="String" mode="IN" optional="true"/>
+        <attribute name="documentNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="feedback" type="String" mode="IN" optional="true"/>
+        <attribute name="documentStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="releaseDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="releaseDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="modificationDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="auditor" type="String" mode="IN" optional="true"/>
+        <attribute name="remarks" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="browseStaff" type="String" mode="IN" optional="true"/>
+        <attribute name="documentPublishingRange_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="documentContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="reason" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="oldFileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="status" type="String" mode="IN" optional="true"/>
+        <attribute name="versionNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchFileData" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="searchFileData" auth="true">
+        <description>搜索档案</description>
+        <auto-attributes mode="IN" entity-name="TblFileData" optional="true"/>
+        <attribute name="parentTypeName" type="String" mode="IN" optional="true"/>
+        <attribute name="sonTypeName" type="String" mode="IN" optional="true"/>
+        <attribute name="documentTitle" type="String" mode="IN" optional="true"/>
+        <attribute name="documentNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="documentStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="releaseDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="modifyFileData" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="modifyFileData" auth="true">
+        <description>修改档案</description>
+        <auto-attributes mode="IN" entity-name="TblFileData" optional="true"/>
+        <attribute name="fileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="fileDataMap" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="showFileDataVersion" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="showFileDataVersion">
+        <description>查看档案历史版本</description>
+        <attribute name="fileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="oldFileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteFileData" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="deleteFileData" auth="true">
+        <description>删除档案</description>
+        <attribute name="fileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="saveFileType" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileDataType.groovy" invoke="saveFileType" auth="true">
+        <description>保存文档类别</description>
+        <attribute name="Id" type="String" mode="IN" optional="true"/>
+        <attribute name="fileTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="sonTypeName" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteFileType" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileDataType.groovy" invoke="deleteFileType" auth="true">
+        <description>删除文档类别</description>
+        <attribute name="fileTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <service name="modifyFileType" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileDataType.groovy" invoke="modifyFileType" auth="true">
+        <description>修改文档类别</description>
+        <attribute name="fileTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="fileTypeMap" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="getFileDataTypes" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileDataType.groovy" invoke="getFileDataItemTypes" auth="true">
+        <description>查找文档类型</description>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveAudit" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileData.groovy" invoke="saveAudit" auth="true">
+        <description>保存审核</description>
+        <attribute name="fileDataId" type="String" mode="IN" optional="true"/>
+        <attribute name="status" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="auditContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="searchSonTypeName" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fileData/FileDataType.groovy" invoke="searchSonTypeName" auth="true">
+        <attribute name="fileTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="findAssetsBorrow" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/CanLendFixedAssetsList.groovy" invoke="findAssetsBorrow">
+        <description>搜索资产借用</description>
+        <attribute name="fixedAssetsCode" type="String" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsName" type="String" mode="IN" optional="true"/>
+        <attribute name="assetType" type="String" mode="IN" optional="true"/>
+        <attribute name="fixedAssetsManager" type="String" mode="IN" optional="true"/>
+        <attribute name="applyPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="department" type="String" mode="IN" optional="true"/>
+        <attribute name="assetStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="lendStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createWarehouseInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="createWarehouseInfo">
+        <description>仓库信息创建</description>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveWarehouseInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="saveWarehouseInfo" auth="true">
+        <description>保存仓库信息</description>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="warehouseCode" type="String" mode="IN" optional="true"/>
+        <attribute name="warehouseName" type="String" mode="IN" optional="true"/>
+        <attribute name="warehouseAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="phone" type="String" mode="IN" optional="true"/>
+        <attribute name="linkman" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteInventoryInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="deleteInventoryInfo">
+        <description>仓库信息删除</description>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteLocation" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="deleteLocation">
+        <description>仓库货位信息删除</description>
+        <attribute name="locationId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="editWarehouseInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="editWarehouseInfo">
+        <description>仓库信息修改</description>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchWarehouseInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryInfo.groovy" invoke="searchWarehouseInfo">
+        <description>仓库信息查询</description>
+        <attribute name="warehouseName" type="String" mode="IN" optional="true"/>
+        <attribute name="man" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createPrdouctTypeCode" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/ProductInfoType.groovy" invoke="createPrdouctTypeCode">
+        <description>货品类别创建</description>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveProductType" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/ProductInfoType.groovy" invoke="saveProductType">
+        <description>货品类别保存</description>
+        <attribute name="productTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="productTypeCode" type="String" mode="IN" optional="true"/>
+        <attribute name="typeName" type="String" mode="IN" optional="true"/>
+        <attribute name="MaximumSafety" type="String" mode="IN" optional="true"/>
+        <attribute name="MinimumSafety" type="String" mode="IN" optional="true"/>
+        <attribute name="unit" type="String" mode="IN" optional="true"/>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="note" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteProductTypeInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/ProductInfoType.groovy" invoke="deleteProductTypeInfo">
+        <description>货品类别删除</description>
+        <attribute name="productTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="EditProductTypeInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/ProductInfoType.groovy" invoke="EditProductTypeInfo">
+        <description>货品类别修改</description>
+        <attribute name="productTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchProductTypeInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/ProductInfoType.groovy" invoke="searchProductTypeInfo">
+        <description>货品类别信息查询</description>
+        <attribute name="typeName" type="String" mode="IN" optional="true"/>
+        <attribute name="inputPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="standard" type="String" mode="IN" optional="true"/>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveCustomer" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/CustomerInfo.groovy" invoke="saveCustomer">
+        <description>保存客户信息</description>
+        <attribute name="customerInfoId" type="String" mode="IN" optional="true"/>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="customerType" type="String" mode="IN" optional="true"/>
+        <attribute name="linkman" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="telephone" type="String" mode="IN" optional="true"/>
+        <attribute name="linkFax" type="String" mode="IN" optional="true"/>
+        <attribute name="phone" type="String" mode="IN" optional="true"/>
+        <attribute name="note" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchCustomerInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/CustomerInfo.groovy" invoke="searchCustomerInfo">
+        <description>查询客户信息列表</description>
+        <attribute name="customerType" type="String" mode="IN" optional="true"/>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createCustomerInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/CustomerInfo.groovy" invoke="createCustomerInfo">
+        <description>创建客户信息</description>
+        <attribute name="customerInfoId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteCustomerInfo" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/CustomerInfo.groovy" invoke="deleteCustomerInfo">
+        <description>删除客户信息</description>
+        <attribute name="customerInfoId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchInventoryList" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryList.groovy"
+             invoke="searchInventoryList">
+        <description>查询库存管理列表</description>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="productTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="suppliesName" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="EditInputInventory" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryList.groovy" invoke="EditInputInventory">
+        <description>入库</description>
+        <attribute name="osManagementId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="EditOutInventory" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryList.groovy" invoke="EditOutInventory">
+        <description>出库</description>
+        <attribute name="osManagementId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveInputInventory" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryList.groovy" invoke="saveInputInventory">
+        <description>保存入库</description>
+        <auto-attributes mode="IN" entity-name="TblInputInventory" optional="true">
+            <exclude field-name="content"/>
+        </auto-attributes>
+        <attribute name="storageLocation" type="String" mode="IN" optional="true"/>
+        <attribute name="repertoryAmount" type="Integer" mode="IN" optional="true"/>
+        <attribute name="inputInventoryId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveOutInventory" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/InventoryList.groovy" invoke="saveOutInventory">
+        <description>保存出库</description>
+        <auto-attributes mode="IN" entity-name="TblOutInventory" optional="true">
+            <exclude field-name="content"/>
+        </auto-attributes>
+        <attribute name="outInventoryId" type="String" mode="IN" optional="true"/>
+        <attribute name="repertoryAmount" type="Integer" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchOutInventory" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Unreviewed.groovy" invoke="searchOutInventory">
+        <description>审批管理</description>
+        <attribute name="warehouseId" type="String" mode="IN" optional="true"/>
+        <attribute name="outInventoryType" type="String" mode="IN" optional="true"/>
+        <attribute name="receiveDepartment" type="String" mode="IN" optional="true"/>
+        <attribute name="checkResult" type="String" mode="IN" optional="true"/>
+        <attribute name="showSelect" type="String" mode="IN" optional="true"/>
+        <attribute name="receivePerson" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveReceive" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Unreviewed.groovy" invoke="saveReceive">
+        <description>保存领用单</description>
+        <auto-attributes mode="IN" entity-name="TblReceive" optional="true">
+            <exclude field-name="content"/>
+        </auto-attributes>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="ApproveReceive" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Reviewed.groovy" invoke="ApproveReceive">
+        <description>审批通过的领用单</description>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchReceive" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Unreviewed.groovy" invoke="searchReceive">
+        <description>领用单审批</description>
+        <attribute name="receiveId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="checkAllow" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Unreviewed.groovy" invoke="checkAllow">
+        <description>领用单审批通过</description>
+        <attribute name="receiveId" type="String" mode="IN" optional="true"/>
+        <attribute name="checkNote" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="checkRefuse" engine="groovy" location="component://oa/webapp/oa/WEB-INF/actions/organization/Unreviewed.groovy" invoke="checkRefuse">
+        <description>领用单审批不通过</description>
+        <attribute name="receiveId" type="String" mode="IN" optional="true"/>
+        <attribute name="checkNote" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveUnitContract" engine="groovy" location="component://oa/src/org/ofbiz/oa/UnitContract.groovy" invoke="saveUnitContract">
+        <description>保存单位合同</description>
+        <auto-attributes mode="IN" entity-name="TblUnitContract" optional="true" allow-html="any"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchUnitContract" engine="groovy" location="component://oa/src/org/ofbiz/oa/UnitContract.groovy" invoke="searchUnitContract">
+        <description>查询单位合同</description>
+        <auto-attributes mode="IN" entity-name="TblUnitContract" optional="true"/>
+        <attribute name="department1" type="String" mode="IN" optional="true"/>
+        <attribute name="contractMoneyStart" type="java.lang.Double" mode="IN" optional="true"/>
+        <attribute name="contractMoneyEnd" type="java.lang.Double" mode="IN" optional="true"/>
+        <attribute name="signContractStartDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="signContractEndDate" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createUnitContract" engine="groovy" location="component://oa/src/org/ofbiz/oa/UnitContract.groovy" invoke="createUnitContract">
+        <description>创建单位合同</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="editUnitContract" engine="groovy" location="component://oa/src/org/ofbiz/oa/UnitContract.groovy" invoke="editUnitContract">
+        <description>修改单位合同</description>
+        <attribute name="unitContractId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteUnitContract" engine="groovy" location="component://oa/src/org/ofbiz/oa/UnitContract.groovy" invoke="deleteUnitContract">
+        <description>删除单位合同</description>
+        <attribute name="unitContractId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createProposal" engine="groovy" location="component://oa/src/org/ofbiz/oa/Proposal.groovy" invoke="createProposal">
+        <description>创建提案</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveProposal" engine="groovy" location="component://oa/src/org/ofbiz/oa/Proposal.groovy" invoke="saveProposal">
+        <description>保存提案</description>
+        <auto-attributes entity-name="TblProposal" mode="IN" allow-html="any" optional="true"/>
+        <attribute name="canSeePerson_entity_name" type="String" mode="IN" optional="true" default-value="TblNotice"/>
+        <attribute name="canSeePerson_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_level_only" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_level_like" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_position_only" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_position_like" type="String" mode="IN" optional="true"/>
+        <attribute name="canSeePerson_user" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchProposalList" engine="groovy" location="component://oa/src/org/ofbiz/oa/Proposal.groovy" invoke="searchProposalList">
+        <description>查询提案</description>
+        <attribute name="submitDateStart" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="submitDateEnd" type="java.sql.Timestamp" mode="IN" optional="true"/>
+        <attribute name="proposalType" mode="IN" type="String" optional="true"/>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="editProposal" engine="groovy" location="component://oa/src/org/ofbiz/oa/Proposal.groovy" invoke="editProposal">
+        <description>更新提案</description>
+        <attribute name="proposalId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteProposal" engine="groovy" location="component://oa/src/org/ofbiz/oa/Proposal.groovy" invoke="deleteProposal">
+        <description>删除提案</description>
+        <attribute name="proposalId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="startBusinessProcess" engine="java" location="activiti.ActivitiProcessUtils" invoke="startProcess" auth="true">
+        <description>启动业务流程</description>
+        <attribute name="bizKey" type="String" mode="IN" optional="true"/>
+        <attribute name="workflowKey" type="String" mode="IN" optional="true"/>
+    </service>
+
+    <service name="searchBusinessStatus" engine="java" location="activiti.ActivitiProcessUtils" invoke="searchBusinessStatus" auth="true">
+        <description>启动业务流程</description>
+        <attribute name="bizKey" type="String" mode="IN" optional="true"/>
+        <attribute name="workflowKey" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+</services>

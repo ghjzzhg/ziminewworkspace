@@ -1,0 +1,163 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="FindVehicleManagement">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="FindVehicleManagement"/>
+    </request-map>
+    <request-map uri="CreateVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="CreateVehicle"/>
+    </request-map>
+    <request-map uri="pendingAuditForVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="pendingAuditForVehicle"/>
+    </request-map>
+    <request-map uri="pendingArrangeForVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="pendingArrangeForVehicle"/>
+    </request-map>
+    <request-map uri="todayUseSituationForVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="todayUseSituationForVehicle"/>
+    </request-map>
+    <!--当月当前车辆费用详情-->
+    <request-map uri="ShowVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="ShowVehicle"/>
+    </request-map>
+    <!--根据费用类型来查询当月当前车辆费用详情-->
+    <request-map uri="vehicleForDetailsScreens">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="vehicleForDetailsScreens"/>
+    </request-map>
+
+    <request-map uri="ListVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="ListVehicle"/>
+    </request-map>
+    <request-map uri="AjaxEditVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="editVehicle"/>
+    </request-map>
+    <request-map uri="OrderVehicle">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="OrderVehicle"/>
+    </request-map>
+    <request-map uri="saveVehicle">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveVehicle"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveOrderVehicle">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveOrderVehicle"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteVehicle">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="deleteVehicle"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--车辆费用详情中删除指定费用-->
+    <request-map uri="deleteVehicleByCostId">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="deleteVehicleByCostId"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveVehicleCost">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveVehicleCost"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--保存修改后的金额和备注-->
+    <request-map uri="saveVehicleByCostId">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveVehicleByCostId"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="vehicleForCost">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="vehicleForCost"/>
+    </request-map>
+    <request-map uri="VehicleOrderView">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="VehicleOrderView"/>
+    </request-map>
+    <request-map uri="searchVehicleSituationByDate">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="searchVehicleSituationByDate"/>
+    </request-map>
+    <request-map uri="vehicleOccupySituationForOrder">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="vehicleOccupySituationForOrder"/>
+    </request-map>
+    <request-map uri="vehicleOrderList">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="vehicleOrderList"/>
+    </request-map>
+    <request-map uri="vehicleOccupy">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="vehicleOccupy"/>
+    </request-map>
+    <request-map uri="searchVehicleSituationForCostByDate">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="searchVehicleSituationForCostByDate"/>
+    </request-map>
+    <request-map uri="AuditVehicleOrder">
+        <security auth="true" https="true"/>
+        <!--<event type="service" invoke="findResourceById"/>-->
+        <response name="success" type="view" value="AuditVehicleOrder"/>
+    </request-map>
+    <request-map uri="saveAuditVehicleOrder">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveAuditVehicleOrder"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ArrangeVehicleOrder">
+        <security auth="true" https="true"/>
+        <!--<event type="service" invoke="findResourceById"/>-->
+        <response name="success" type="view" value="ArrangeVehicleOrder"/>
+    </request-map>
+    <request-map uri="saveArrangeVehicleOrder">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveArrangeVehicleOrder"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--view-map-->
+    <view-map name="FindVehicleManagement" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#findVehicle"/>
+    <view-map name="pendingAuditForVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#pendingAuditForVehicle"/>
+    <view-map name="pendingArrangeForVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#pendingArrangeForVehicle"/>
+    <view-map name="todayUseSituationForVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#todayUseSituationForVehicle"/>
+    <view-map name="CreateVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#createVehicle"/>
+    <view-map name="OrderVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#OrderVehicle"/>
+    <view-map name="ListVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#listVehicleForList"/>
+    <view-map name="editVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#editVehicle"/>
+    <view-map name="vehicleForCost" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#vehicleForCost"/>
+    <view-map name="VehicleOrderView" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#VehicleOrderView"/>
+    <view-map name="searchVehicleSituationByDate" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#vehicleOccupy"/>
+    <view-map name="vehicleOccupySituationForOrder" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#vehicleOccupySituationForOrder"/>
+    <view-map name="searchVehicleSituationForCostByDate" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#searchVehicleSituationForCostByDate"/>
+    <view-map name="vehicleOrderList" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#vehicleOrderList"/>
+    <view-map name="ShowVehicle" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#ShowVehicle"/>
+    <view-map name="vehicleForDetailsScreens" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#vehicleForDetailsScreens"/>
+    <view-map name="AuditVehicleOrder" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#AuditVehicleOrder"/>
+    <view-map name="ArrangeVehicleOrder" type="screen"
+              page="component://oa/widget/VehicleManagementScreens.xml#ArrangeVehicleOrder"/>
+</site-conf>

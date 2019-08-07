@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--增加事务-->
+    <request-map uri="TransactionAdd">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionAdd"/>
+    </request-map>
+    <!--周期性事务跟踪管理 -->
+    <request-map uri="TransactionTracking">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionTracking"/>
+    </request-map>
+    <!--ajax添加事务-->
+    <request-map uri="TransactionAddAjax">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionAddAjax"/>
+    </request-map>
+    <!--事务类别列表-->
+    <request-map uri="TransactionType">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionType"/>
+    </request-map>
+    <!--添加事务类别-->
+    <request-map uri="AddTransactionType">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="AddTransactionType"/>
+    </request-map>
+    <!--事务进度-->
+    <request-map uri="TransactionProgress">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionProgress"/>
+    </request-map>
+    <request-map uri="TransactionProgressAjax">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TransactionProgressList"/>
+    </request-map>
+    <request-map uri="AddTransactionProgress">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="AddTransactionProgress"/>
+    </request-map>
+
+    <request-map uri="transactionInfo">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="transactionInfo"/>
+    </request-map>
+
+    <!--访问日志-->
+    <request-map uri="visitLogList">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="visitLogList"/>
+    </request-map>
+
+    <view-map name="TransactionAdd" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionAdd"/>
+    <view-map name="TransactionTracking" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionTracking"/>
+    <view-map name="TransactionAddAjax" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionAddAjax"/>
+    <view-map name="TransactionType" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionType"/>
+    <view-map name="AddTransactionType" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#AddTransactionType"/>
+    <view-map name="TransactionProgress" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionProgress"/>
+    <view-map name="AddTransactionProgress" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#AddTransactionProgress"/>
+    <view-map name="TransactionProgressList" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#TransactionProgressList"/>
+    <view-map name="transactionInfo" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#transactionInfo"/>
+    <view-map name="visitLogList" type="screen" page="component://oa/widget/osManager/TransactionScreens.xml#visitLogList"/>
+</site-conf>

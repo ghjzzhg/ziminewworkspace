@@ -1,0 +1,2 @@
+context.template = from("TblCaseTemplate").where("id", parameters.templateId).cache().queryOne();
+context.nodes = from("TblCaseTemplateBaseTime").where("templateId", parameters.templateId).cache().orderBy("seq").queryList();

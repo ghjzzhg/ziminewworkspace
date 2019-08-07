@@ -1,0 +1,123 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="FindResourcesManagement">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceList"/>
+        <response name="success" type="view" value="FindResourcesManagement"/>
+    </request-map>
+    <request-map uri="CreateResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="CreateResource"/>
+    </request-map>
+    <request-map uri="ListResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="ListResource"/>
+    </request-map>
+    <request-map uri="AjaxEditResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="editResource"/>
+    </request-map>
+    <request-map uri="OrderResource">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResource"/>
+        <response name="success" type="view" value="OrderResource"/>
+    </request-map>
+    <request-map uri="saveResource">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="saveResource"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveOrderResource">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="saveOrderResource"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteResource">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="deleteResource"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ResourceOrderView">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceById"/>
+        <response name="success" type="view" value="resourceOrderView"/>
+    </request-map>
+    <request-map uri="resourceOrderList">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceList"/>
+        <response name="success" type="view" value="resourceOrderList"/>
+    </request-map>
+    <request-map uri="pendingAudit">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceList"/>
+        <response name="success" type="view" value="pendingAudit"/>
+    </request-map>
+    <request-map uri="pendingArrange">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceList"/>
+        <response name="success" type="view" value="pendingArrange"/>
+    </request-map>
+    <request-map uri="todayUseSituation">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceList"/>
+        <response name="success" type="view" value="todayUseSituation"/>
+    </request-map>
+    <request-map uri="searchResourceSituationByDate">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResource"/>
+        <response name="success" type="view" value="searchResourceSituationByDate"/>
+    </request-map>
+    <request-map uri="searchResourceSituationByDateForOrder">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResource"/>
+        <response name="success" type="view" value="searchResourceSituationByDateForOrder"/>
+    </request-map>
+    <request-map uri="AuditResourceOrder">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceById"/>
+        <response name="success" type="view" value="AuditResourceOrder"/>
+    </request-map>
+    <request-map uri="saveAuditResourceOrder">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="saveAuditResourceOrder"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ArrangeResourceOrder">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="findResourceById"/>
+        <response name="success" type="view" value="ArrangeResourceOrder"/>
+    </request-map>
+    <request-map uri="saveArrangeResourceOrder">
+        <security auth="true" https="false"/>
+        <event type="service" invoke="saveArrangeResourceOrder"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <view-map name="FindResourcesManagement" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#findResources"/>
+    <view-map name="CreateResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#createResource"/>
+    <view-map name="OrderResource" type="screen" page="component://oa/widget/ResourcesManagementScreens.xml#orderResource"/>
+    <view-map name="ListResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#listResourcesForList"/>
+    <view-map name="editResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#editResource"/>
+    <view-map name="resourceOrderView" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#resourceOrderView"/>
+    <view-map name="resourceOrderList" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#resourceOrderList"/>
+    <view-map name="pendingAudit" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#pendingAudit"/>
+    <view-map name="pendingArrange" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#pendingArrange"/>
+    <view-map name="todayUseSituation" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#todayUseSituation"/>
+    <view-map name="searchResourceSituationByDate" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#searchResourceSituationByDate"/>
+    <view-map name="searchResourceSituationByDateForOrder" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#searchResourceSituationByDateForOrder"/>
+    <view-map name="AuditResourceOrder" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#AuditResourceOrder"/>
+    <view-map name="ArrangeResourceOrder" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#ArrangeResourceOrder"/>
+</site-conf>

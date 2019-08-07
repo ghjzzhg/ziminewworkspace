@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/ViewOrganization.groovy"></script>-->
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/bumphNotice.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+                <set field="headerItem" value="Memo"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--个人备忘录list-->
+    <screen name="memoList">
+        <section>
+            <actions>
+                <set field="tabButtonItem" value="b"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/memo/FindMemo.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <include-form name="MemoSearchForm"
+                                                  location="component://oa/widget/osManager/MemoForms.xml"/>
+                                </screenlet>
+                                <screenlet title="查询结果">
+                                    <include-form name="MemoList"
+                                                  location="component://oa/widget/osManager/MemoForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="addMemo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/memo/editMemo.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/memo/editMemo.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="showMemoInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/memo/MemoInfo.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
+

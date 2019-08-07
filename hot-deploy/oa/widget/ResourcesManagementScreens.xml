@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="listResourcesForList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ListResource"
+                                      location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="listResource">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator"
+                                          location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-options">
+                                <include-form name="FindFixedAssets"
+                                              location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="search-results">
+                                <include-screen name="listResourceForList"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="findResources">
+        <section>
+            <actions>
+                <set field="headerItem" value="Resources"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <set field="titleProperty" value="资源管理"/>
+                <set field="data1" value="${parameters.dataResourceList.resource}"/>
+                <set field="data" value="${parameters.dataResourceList.listPendingAuditResource}"/>
+                <set field="data2" value="${parameters.dataResourceList.ListPendingArrangedResource}"/>
+                <set field="data3" value="${parameters.dataResourceList.ListTodayUseResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="ResourceManagementDecorator"
+                                          location="component://oa/widget/CommonScreens.xml">
+                            <decorator-section name="menu-bar">
+                                <container style="button-bar">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/resourceManagement/resourceManagementButton.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </decorator-section>
+                            <decorator-section name="resourceOccupy-situation">
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/resourceManagement/resourceOccupySituation.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </decorator-section>
+                            <decorator-section name="pending-audit">
+                                <include-form name="ListPendingAuditResource"
+                                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="pending-arranged">
+                                <include-form name="ListPendingArrangedResource"
+                                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="today-useSituation">
+                                <include-form name="ListTodayUseResource"
+                                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="findVechicless">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OAFindFixedAssets"/>
+                <set field="headerItem" value="PerfReview"/>
+                <set field="employeePartyId" from-field="parameters.partyId"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize"
+                                   field="viewSizeDefaultValue"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/FindFixedAssetsServices.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/category/FixedAssetsForCRUD.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator"
+                                          location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="menu-bar">
+                                <container style="button-bar">
+                                    <include-form name="CreateFixedAssetsButton"
+                                                  location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                                </container>
+                            </decorator-section>
+                            <decorator-section name="search-options">
+                                <include-form name="FindFixedAssets"
+                                              location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="search-results">
+                                <include-screen name="ListAssets"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="createResource">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForEdit.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template location="component://oa/webapp/oa/humanres/resourceManagement/createResource.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="createResourceForm" location="component://oa/widget/forms/ResourceManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="editResource">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForEdit.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                    </html>
+                </platform-specific>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://oa/webapp/oa/humanres/resourceManagement/createResource.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="createResourceForm" location="component://oa/widget/forms/ResourceManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="searchResourceSituationByDate">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/resourceOccupySituation.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchResourceSituationByDateForOrder">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/resourceOccupySituationForOrder.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="orderResource">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/resourceManagement/resourceManagementButtonForSearch.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <container id="forOrder">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/resourceManagement/resourceOccupySituationForOrder.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </widgets>
+                </section>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/resourceManagementButtonForOrder.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="orderResourceForm"-->
+                              <!--location="component://oa/widget/forms/ResourceManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+    <screen name="resourceOrderList">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResourceList.resource}"/>
+                <set field="data" value="${parameters.dataResourceList.listPendingAuditResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/resourceOccupySituation.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="pendingAudit">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResourceList.resource}"/>
+                <set field="data" value="${parameters.dataResourceList.listPendingAuditResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <include-form name="ListPendingAuditResource"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="pendingArrange">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResourceList.resource}"/>
+                <set field="data" value="${parameters.dataResourceList.listPendingAuditResource}"/>
+                <set field="data2" value="${parameters.dataResourceList.ListPendingArrangedResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <include-form name="ListPendingArrangedResource"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="todayUseSituation">
+        <section>
+            <actions>
+                <set field="data1" value="${parameters.dataResourceList.resource}"/>
+                <set field="data" value="${parameters.dataResourceList.listPendingAuditResource}"/>
+                <set field="data2" value="${parameters.dataResourceList.ListPendingArrangedResource}"/>
+                <set field="data3" value="${parameters.dataResourceList.ListTodayUseResource}"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResource.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/resourceManagement/FindResourceForOrder.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <include-form name="ListTodayUseResource"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="resourceOrderView">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/showKindEditorContent.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="orderResourceView"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="AuditResourceOrder">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/auditKindEditor.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="AuditResourceOrder"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ArrangeResourceOrder">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/resourceManagement/arrangeKindEditor.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="ArrangeResourceOrder"
+                              location="component://oa/widget/forms/ResourceManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+</screens>

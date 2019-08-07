@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="EditOrganization" type="single" target="updateOrganization"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <alt-target use-when="partyId == null" target="createOrganization"/>
+        <field name="parentPartyId"><hidden/></field>
+        <field name="partyId" title="组织ID" tooltip="唯一标识由系统生成"><display/></field>
+        <field name="groupName" title="组织名称" widget-style="required validate[required]"><text size="25" maxlength="30"/></field>
+        <field name="manager" title="负责人">
+            <lookup target-form-name="LookupPartyName" position="center" width="750"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.organization.saveOrganization();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="EditOrganization1" type="single" target="updateOrganization"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <alt-target use-when="partyId == null" target="createOrganization"/>
+        <field name="parentPartyId"><hidden/></field>
+        <field name="partyId" title="组织ID" tooltip="唯一标识由系统生成"><display/></field>
+        <field name="groupName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}组织名称" widget-style="required validate[required]"><text size="25" maxlength="30"/></field>
+        <field name="manager" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}负责人" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.organization.saveOrganization1();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="EditSubOrganization" type="single" target="updateOrganization"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <alt-target use-when="partyId == null" target="createOrganization"/>
+        <field name="parentPartyId"><hidden/></field>
+        <field name="partyId" title="组织ID" tooltip="唯一标识由系统生成"><display/></field>
+        <field name="groupName" title="组织名称" widget-style="required validate[required]"><text size="25" maxlength="30"/></field>
+        <field name="manager" title="负责人">
+            <lookup target-form-name="LookupPartyName" position="center" width="750"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit"  use-when="saveFun == null" title="操作" event="onClick" action="javascript:$.organization.saveSubOrganization();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" use-when="saveFun != null" title="操作" event="onClick" action="javascript:${saveFun};">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ListSubOrgs" type="list" list-name="listSubOrgs" separate-columns="true" target="removeSubOrg" paginate-target="" paginate="true" view-size="3"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyIdFrom"><hidden/></field>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="groupName" sort-field="true"><display/></field>
+        <field name="manager" title="负责人" sort-field="true"><display/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}"
+               event="onClick" action="javascript:$.organization.editOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}"
+               event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListSubOrgs" area-target="ListSubOrgs"/>
+        <on-event-update-area event-type="sort-column" area-id="ListSubOrgs" area-target="ListSubOrgs"/>
+    </form>
+    <form name="AddOccupation" type="single" target="addOccupation"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <field name="partyId"><hidden/></field>
+        <field name="generalOccupation" title="通用岗位">
+            <drop-down>
+                <entity-options entity-name="RoleType" description="${description}" key-field-name="roleTypeId">
+                    <entity-constraint name="parentTypeId" operator="equals" value="JOB_POSITION"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="newOccupation" title="新的岗位" tooltip="通用岗位中无所需岗位时添加新的岗位"><text size="25" maxlength="30"/></field>
+        <field name="newOccupationMaster" title="新岗位主管岗位" tooltip="下级岗位需选择上级主管岗位">
+            <lookup target-form-name="LookupOccupation" position="center" width="750"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit" title-style="hide" title="添加" event="onClick" action="javascript:$.organization.addOccupation();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="EditOccupation" type="single" target="editOccupation"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <field name="partyId"><hidden/></field>
+        <field name="oldOccupation" title="岗位id">
+            <hidden value="${roleTypeId}"/>
+        </field>
+        <field name="newOccupation" title="岗位名称">
+            <text size="25" maxlength="30" default-value="${description}"/>
+        </field>
+        <field name="newOccupationMaster" title="岗位主管" tooltip="下级岗位需选择上级主管岗位">
+            <lookup target-form-name="LookupOccupation" position="center" width="750"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit" title-style="hide" title="更新" event="onClick" action="javascript:$.organization.saveOccupation();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="更新" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ListOccupations" type="list" paginate="true" list-entry-name="occupation" list-name="occupations" separate-columns="true" target="removeSubOrg" paginate-target="" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="name" title="岗位名称" widget-style="linktext" event="onClick" action="javascript:$.organization.listOccupationMembers('${occupation.positionId}');$.organization.listLowerOccupations('${occupation.positionId}');">
+            <hyperlink target="#nowhere" description="${occupation.name}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="y" title="人数"><display default-value="${occupation.y}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="javascript:$.organization.editOccupation('${occupation.positionId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="occupationInfo" area-target="GetOccupationDetail"/>
+        <on-event-update-area event-type="sort-column" area-id="occupationInfo" area-target="GetOccupationDetail"/>
+    </form>
+    <form name="ListLowerOccupations" type="list" paginate="false" list-name="data" separate-columns="true" target="removeSubOrg" paginate-target="" view-size="2"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+            <set field="positionId" from-field="parameters.positionId"/>
+            <service service-name="getLowerOccupations" result-map-list="data">
+                <field-map field-name="positionId" from-field="parameters.positionId"/>
+            </service>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="departmentName" title="部门"><display/></field>
+        <field name="description" title="岗位"><display/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="javascript:$.organization.editOccupation('${positionId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="lowerOccupationsContainer" area-target="ListLowerOccupations"/>
+        <!--<on-event-update-area event-type="sort-column" area-id="lowerOccupationsContainer" area-target="ListLowerOccupations"/>-->
+    </form>
+    <form name="ListTitles" type="list" paginate="false" list-name="listTitles" separate-columns="true" target="removeSubOrg" paginate-target="" view-size="2"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="enumId"><hidden/></field>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="name" title="名称">
+            <display>
+                <in-place-editor url="updateTitle" cancel-control="button" cancel-text="取消" click-to-edit-text="点击编辑" ok-control="确定" saving-text="更新..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="enumId" from-field="enumId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="level" title="职级">
+            <display>
+                <in-place-editor url="updateTitle" cancel-control="button" cancel-text="取消" click-to-edit-text="点击编辑" ok-control="确定" saving-text="更新..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="enumId" from-field="enumId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.deleteTitle('${enumId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListSubOrgs" area-target="ListSubOrgs"/>
+        <on-event-update-area event-type="sort-column" area-id="ListSubOrgs" area-target="ListSubOrgs"/>
+    </form>
+    <form name="AddTitle" type="single" target="addTitle"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <field name="enumTypeId"><hidden value="POSITION_LEVEL"/></field>
+        <field name="sequenceId"><hidden/></field>
+        <field name="description" position="1" title="名称" sort-field="true"><text size="15"/></field>
+        <field name="enumCode" position="2" title="职级" sort-field="true" event="onChange" action="javascript:$.organization.updateEnumSeq(this.value)">
+            <text size="3" maxlength="2"/>
+        </field>
+        <field name="saveLink" position="3" widget-style="smallSubmit" title-style="hide" title="添加">
+            <submit/>
+        </field>
+        <field name="tooltip" title=" " tooltip="职级为大于0的正整数整数，尽量控制在2位数以内，单位的最高级主管的职级务必设置为1">
+            <display/>
+        </field>
+        <on-event-update-area event-type="submit" area-id="EditTitlesWrapper" area-target="EditTitles"/>
+    </form>
+    <form name="AddOccupationMember" type="single" target="addOccupationMember"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="organization">
+        <field name="positionId"><hidden/></field>
+        <field name="member" title="选择员工">
+            <lookup target-form-name="LookupPartyName" position="center" width="750"/>
+        </field>
+        <field name="saveLink" widget-style="smallSubmit" title-style="hide" title="添加" event="onClick" action="javascript:$.organization.saveOccupationMember();">
+            <hyperlink target="#nowhere" style="smallSubmit" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="OccupationMemberList" extends="ListRecord" extends-resource="component://oa/widget/forms/RecordManagementForms.xml"
+          type="list" title="" separate-columns="true" default-entity-name="" list-name="recordList" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" view-size="2">
+        <row-actions>
+            <entity-one entity-name="RoleType" value-field="memberOccupation" auto-field-map="false">
+                <field-map field-name="roleTypeId" from-field="roleTypeIdTo"/>
+            </entity-one>
+            <set field="post" from-field="memberOccupation.description"/>
+            <set field="employeeName" from-field="partyIdTo"/>
+        </row-actions>
+        <on-event-update-area event-type="paginate" area-id="occupationMembersContainer" area-target="ListOccupationMembers"/>
+        <on-event-update-area event-type="sort-column" area-id="occupationMembersContainer" area-target="ListOccupationMembers"/>
+    </form>
+    <form name="lowerOccupationMemberList" extends="ListRecord" extends-resource="component://oa/widget/forms/RecordManagementForms.xml"
+          type="list" title="" separate-columns="true" default-entity-name="" list-name="recordList" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" view-size="2">
+        <row-actions>
+            <entity-one entity-name="RoleType" value-field="memberOccupation" auto-field-map="false">
+                <field-map field-name="roleTypeId" from-field="roleTypeIdTo"/>
+            </entity-one>
+            <set field="post" from-field="memberOccupation.description"/>
+            <set field="employeeName" from-field="partyIdTo"/>
+        </row-actions>
+        <on-event-update-area event-type="paginate" area-id="occupationMembersContainer" area-target="ListOccupationMembers"/>
+        <on-event-update-area event-type="sort-column" area-id="occupationMembersContainer" area-target="ListOccupationMembers"/>
+    </form>
+</forms>
+

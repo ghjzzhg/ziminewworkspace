@@ -1,0 +1,1 @@
+request.setAttribute("counts", from("PartyGroupStatsByRole").where("statusId", "PARTY_DISABLED").queryList());

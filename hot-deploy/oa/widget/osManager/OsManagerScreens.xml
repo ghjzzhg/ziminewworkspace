@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="headerItem" value="OsManager"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/bumphNotice.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FindOsManager">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="lefthalf">
+                                    <include-screen name="OrgTree"/>
+                                </container>
+                                <container style="righthalf">
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OrgTree">
+        <section>
+            <actions>
+                <set field="partyId" from-field="defaultOrganizationPartyId"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/category/CategoryTree.groovy"/>
+            </actions>
+            <widgets>
+                <screenlet title="${uiLabelMap.OrgStructure}">
+                    <section>
+                        <widgets>
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/humanres/humanres/osManager/CategoryTree.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </widgets>
+                    </section>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="SearchOsManager">
+        <section>
+            <actions>
+                <script location="component://oa/src/org/ofbiz/oa/FindOsManagerServices.groovy"></script>
+            </actions>
+
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+
+                            <widgets>
+                                <screenlet title="查询">
+                                    <include-form name="SearchOsManager" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="查询结果" >
+                            <container id="ListOsManager">
+                                <include-screen name="ListOsManager"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditOsManager">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template location="component://oa/webapp/oa/humanres/perishableProducts/OsManagerEdit.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListOsManager">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <!--<include-form name="ListOsManager" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                            <section>
+                                <widgets>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/perishableProducts/OsManagerList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--仓库信息查询-->
+    <screen name="SearchInventoryInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/SearchInventoryInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                                <screenlet title="查询结果" >
+                                    <container id="inventoryList">
+                                        <include-screen name="InventoryInfoList"/>
+                                    </container>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--仓库信息列表-->
+    <screen name="InventoryInfoList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <decorator-screen name="main-decorator">
+                            <decorator-section name="body">
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/perishableProducts/WarehouseInfoList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </decorator-section>
+                        </decorator-screen>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+<!--仓库编辑-->
+    <screen name="createWarehouseInfo">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/perishableProducts/WarehouseInfo.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <!--仓库信息修改-->
+    <screen name="EditWarehouseInfo">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/perishableProducts/WarehouseInfoEdit.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <!--删除仓库信息-->
+    <screen name="deleteInventoryInfo">
+        <section>
+            <actions>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="仓库信息列表" >
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/oa/humanres/perishableProducts/WarehouseInfoList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--客户信息-->
+    <screen name="CustomerInfo">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/ViewOrganization.groovy"></script>-->
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+                <set field="tabButtonItem" value="b"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件  ">
+                                    <!--<include-form name="EditOrganization" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                    <include-form name="SearchCustomerInfo" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果" >
+                            <container id="ListCustomerInfo">
+                                <include-screen name="ListCustomerInfo"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+<!--客户信息列表-->
+    <screen name="ListCustomerInfo">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/CustomerInfo.groovy"></script>-->
+            </actions>
+            <widgets>
+                <!-- <label text="${listosManagers}"/>-->
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <!--<include-form name="ListCustomerInfo" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                            <section>
+                                <widgets>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/CustomerList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+<!--维护客户信息-->
+    <screen name="EditCustomerInfo">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/EditCustomerInfo.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <!--<section>-->
+                            <!--<widgets>-->
+                                <!--<include-form name="EditCustomerInfo" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                            <!--</widgets>-->
+                        <!--</section>-->
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template location="component://oa/webapp/oa/humanres/osManager/EditCoutomerInfo.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--客户信息详情-->
+    <screen name="ShowCustomerInfo">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template location="component://oa/webapp/oa/humanres/osManager/ShowCustomerInfo.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+<!--货品类别列表-->
+    <screen name="ProductType">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator">
+                        <decorator-section name="body">
+                            <screenlet title="类别信息列表">
+                                <container id="ListSubOrgs">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/SearchProductTypeInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </screenlet>
+                            <screenlet title="搜索结果" >
+                                <container id="ProductType">
+                                    <include-screen name="ProductTypeList"/>
+                                </container>
+                            </screenlet>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--货品类别信息列表-->
+    <screen name="ProductTypeList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <section>
+                                <widgets>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/perishableProducts/ProductTypeList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditProductType">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/organization/EditProductType.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-form name="EditProductType" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<!--货品类别创建-->
+    <screen name="createProductType">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                    <html-template location="component://oa/webapp/oa/humanres/perishableProducts/ProductTypeInfoEdit.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--货品类别修改-->
+    <screen name="EditProductTypeInfo">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template location="component://oa/webapp/oa/humanres/perishableProducts/ProductTypeInfoEdit.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <!--库存管理列表-->
+    <screen name="InventoryList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <!--<include-form name="EditOrganization" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                    <include-form name="SearchInventory" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="查询结果" >
+                            <container id="InventoryListResult">
+                                <include-screen name="ListInventory"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <section>
+                                <widgets>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/InventoryList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+<!--入库-->
+    <screen name="EditInputInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/EditProductType.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <!--<include-form name="EditInputInventory" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/osManager/InputInventory.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--出库-->
+    <screen name="EditOutInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+               <!-- <script location="component://oa/webapp/oa/WEB-INF/actions/organization/EditProductType.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <!--<include-form name="EditOutInventory" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/osManager/OutInventory.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--一次多个货品出库-->
+    <screen name="OutInventoryMany">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="领用单">
+                                    <!--<include-form name="EditOutInventoryMany" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                                    <!--<include-menu name="addOutInventoryBar" location="component://oa/widget/AdministrationMenus.xml"/>-->
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/EditReview.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <!--<section>-->
+                            <!--<widgets>-->
+                                <!--<screenlet title="新增货品明细" navigation-menu-name="addOutInventoryBar">-->
+                                    <!--<include-menu name="addOutInventoryBar" location="component://oa/widget/HumanresMenus.xml"/>-->
+                                    <!--<container id="ListSubOrgs">-->
+                                        <!--<include-screen name="addOutInventory"/>-->
+                                    <!--</container>-->
+                                <!--</screenlet>-->
+                            <!--</widgets>-->
+                        <!--</section>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--领用单审核-->
+    <screen name="checkReceive">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="审核">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/CheckReceive.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--领用单查看-->
+    <screen name="seeReceive">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="领用单">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/SeeReceive.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--领用单发货-->
+    <screen name="delivery">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/oa/humanres/osManager/delivery.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="addOutInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa\webapp\humanres\WEB-INF\actions\organization/addOutInventory.groovy"></script>-->
+                <!--<set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <!--<include-form name="OutInventoryManyList" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/oa/humanres/osManager/AddProductInfo.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<!--领用单查询-->
+    <screen name="receiveCommon-decorator">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchOutInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="receiveCommon-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <!--<include-form name="ReceiveForm" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/SearchReviewList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="领用单查询结果" >
+                            <container id="ListReceiveResult">
+                                <include-screen name="ListReceive"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+<!--审核通过领用单-->
+    <screen name="ApproveReceive">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindApproveReceive.groovy"></script>-->
+                <!--<set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="receiveCommon-decorator">
+                    <decorator-section name="body">
+                        <screenlet title="已通过审核的领用单" id="ApproveReceive">
+                            <!--<include-form name="ApproveReceiveList" location="component://oa/widget/osManager/OsManagerForms.xml"/>-->
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/oa/humanres/osManager/ReviewedList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--领用单列表-->
+    <screen name="ListReceive">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/oa/humanres/osManager/ReviewList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="receiveInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindReceiveInfo.groovy"></script>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ReceiveInfoForm" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                        <include-form name="ReceiveInfoList" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+
+                        <screenlet title="审核历史记录" >
+                            <container id="ListSubOrgs">
+                                <include-form name="checkHistory" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<!--发货-->
+    <screen name="sendOut">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindReceiveInfo.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ReceiveInfoForm" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                        <include-form name="ReceiveInfoList" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                        <include-form name="ApproveReceiveSubmit" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="FindInventory">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/ReceiveSearchInventory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="查询结果" >
+                            <container id="InventoryList2">
+                                <include-screen name="ListInventory2"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListInventory2">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <section>
+                                <widgets>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/osManager/FindInventory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
+

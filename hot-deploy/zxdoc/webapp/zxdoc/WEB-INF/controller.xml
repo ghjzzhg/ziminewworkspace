@@ -1,0 +1,1923 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <include location="component://common/webcommon/WEB-INF/portal-controller.xml"/>
+    <include location="component://party/webapp/partymgr/WEB-INF/controller.xml"/>
+    <include location="component://ckfinder/webapp/ckfinder/WEB-INF/controller.xml"/>
+
+    <description>Office Automation Module Site Configuration File</description>
+    
+    <!-- view handlers -->
+    <errorpage>/error/errorMsg.jsp</errorpage>
+    <handler name="service-multi" type="request" class="org.ofbiz.webapp.event.ServiceMultiEventHandler"/>
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+    <request-map uri="login">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
+        <response name="success" type="request-redirect" value="main"/>
+        <response name="requirePasswordChange" type="view" value="passwordError"/>
+        <!--<response name="passwordError" type="view" value="passwordError"/>-->
+        <response name="error" type="request-redirect" value="frameLogin">
+            <redirect-parameter name="frameLogin" value="true"/>
+        </response>
+    </request-map>
+    <request-map uri="ajaxCheckLogin">
+        <description>Verify a user is logged in.</description>
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="extensionCheckLogin"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="logout">
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="logout"/>
+        <response name="success" type="request-redirect" value="frameLogin">
+                <redirect-parameter name="frameLogin" value="true"/>
+        </response>
+    </request-map>
+    <request-map uri="index">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="Index"/>
+    </request-map>
+    <request-map uri="registerUser">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="register"/>
+    </request-map>
+    <request-map uri="frameLogin">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="register"/>
+    </request-map>
+    <request-map uri="forgetPassword">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="register"/>
+    </request-map>
+    <request-map uri="resetPassInfo">
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/ResetPassInfo.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="view">
+        <security https="true" auth="true"/>
+        <response name="success" type="request" value="index"/>
+    </request-map>
+
+    <request-map uri="main">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/MainRedirect.groovy"/>
+        <response name="success" type="view" value="Index"/>
+        <response name="default" type="request" value="logout"/>
+        <response name="qualification" type="request" value="Qualification"/>
+        <response name="subAccounts" type="request" value="SubAccounts"/>
+        <response name="ProviderCases" type="request" value="ProviderCases"/>
+        <response name="ManageAccounts" type="request" value="ManageAccounts"/>
+    </request-map>
+
+    <request-map uri="Styles">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="Styles"/>
+    </request-map>
+    <request-map uri="Workspace">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="Workspace"/>
+    </request-map>
+    <request-map uri="CaseHome">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="caseHome"/>
+        <response name="success" type="view" value="CaseHome"/>
+        <response name="error" type="request" value="ProviderCases"/>
+    </request-map>
+    <request-map uri="PendingAccounts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PendingAccounts"/>
+    </request-map>
+    <request-map uri="QualifyAccounts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="QualifyAccounts"/>
+    </request-map>
+    <request-map uri="QualifyPersonAccounts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="QualifyPersonAccounts"/>
+    </request-map>
+    <request-map uri="Qualification">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ifSubmitQualification"/>
+        <response name="isNotQualification" type="view" value="Qualification"/>
+        <response name="hasPersonQualification" type="request" value="ViewQualificationPerson"/>
+        <response name="hasQualification" type="request" value="ViewQualification"/>
+    </request-map>
+    <request-map uri="FinQualification">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FinQualification"/>
+    </request-map>
+    <request-map uri="LawQualification">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LawQualification"/>
+    </request-map>
+    <request-map uri="BrokeQualification">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="BrokeQualification"/>
+    </request-map>
+    <request-map uri="ComQualification">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ComQualification"/>
+    </request-map>
+    <request-map uri="ViewQualification">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="viewQualification"/>
+        <response name="success" type="view" value="ViewQualification"/>
+    </request-map>
+    <request-map uri="ViewBussiness">
+        <description>展示待审核账户信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ViewBussiness"/>
+    </request-map>
+    <request-map uri="ViewQualificationPerson">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="viewQualificationPerson"/>
+        <response name="success" type="view" value="ViewQualificationPerson"/>
+    </request-map>
+    <request-map uri="deleteQualification">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteQualification"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deletePersonQualify">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePersonQualify"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="NewTicket">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewTicket"/>
+    </request-map>
+    <request-map uri="ViewTicket">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ViewTicket"/>
+    </request-map>
+    <request-map uri="ListTickets">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListTickets"/>
+    </request-map>
+    <request-map uri="CompanyCases">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CompanyCases"/>
+    </request-map>
+    <request-map uri="ProviderCases">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ProviderCases"/>
+    </request-map>
+    <request-map uri="getProviderCases">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/ProviderCasesList.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="NewContract">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewContract"/>
+    </request-map>
+    <request-map uri="editContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveContract"/>
+        <response name="success" type="view" value="NewContract"/>
+    </request-map>
+    <request-map uri="ListContracts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListContracts"/>
+    </request-map>
+    <!--<request-map uri="searchContracts">-->
+        <!--<security https="false" auth="true"/>-->
+        <!--<event type="service" invoke="searchContracts"/>-->
+        <!--<response name="success" type="view" value="searchContracts"/>-->
+    <!--</request-map>-->
+    <request-map uri="GetContractsJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/contract/FindContracts.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="addContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addContract"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="deleteContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteContract"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <!--<request-map uri="ListContractJson">-->
+    <!--<security https="false" auth="true"/>-->
+    <!--<event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/contract/ContractReleated.groovy"/>-->
+    <!--<response name="success" type="request" value="json"/>-->
+    <!--</request-map>-->
+    <request-map uri="isHideImg">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="isHideImg"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--资料-->
+    <request-map uri="addLibrary">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addLibrary"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="NewQuestion">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editQuestion"/>
+        <response name="success" type="view" value="NewQuestion"/>
+    </request-map>
+    <request-map uri="ListQuestions">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchTypeQuestion"/>
+        <response name="success" type="view" value="ListQuestions"/>
+    </request-map>
+    <request-map uri="InvitedQuestions">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInvitedQuestion"/>
+        <response name="success" type="view" value="InvitedQuestions"/>
+    </request-map>
+    <request-map uri="AnswerQuestion">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findQuestionAnswer"/>
+        <response name="success" type="view" value="AnswerQuestion"/>
+    </request-map>
+    <request-map uri="WendaHistory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchQuestion"/>
+        <response name="success" type="view" value="WendaHistory"/>
+    </request-map>
+    <request-map uri="ChatHome">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="xmppLogin"/>
+        <response name="success" type="view" value="ChatHome"/>
+    </request-map>
+    <request-map uri="DocHome">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="DocHome"/>
+    </request-map>
+    <request-map uri="addChatFiles">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addChatFiles"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="LoginOpenFire">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="xmppLogin"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ChatOnlineWithDoc">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="xmppLogin"/>
+        <response name="success" type="view" value="ChatOnlineWithDoc"/>
+    </request-map>
+
+    <request-map uri="DeleteOpenFireSessions">
+        <description>从聊天服务器下线</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteOpenFireSessions"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="CreateChatRoom">
+        <description>创建聊天室</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createChatRoom"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="checkIsExist">
+        <description>检查是否存在房间</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkIsExist"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="GetChatRoomInfo">
+        <description>获取聊天室信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getChatRoomInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="checkIsManage">
+        <description>检查登录用户是否为项目经理</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkIsManage"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetOtherMembers">
+        <description>添加新聊天室成员时获取要添加的成员列表</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getOtherMembers"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="AddUserToChatRoom">
+        <description>将一个新成员加进聊天室（相当于给他权限进入聊天室）</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addUserToChatRoom"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RemoveChatRoomMember">
+        <description>移除聊天室成员</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeChatRoomMember"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RemoveChatRoomTeamMember">
+        <description>移除项目经理公司的其他成员</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="RemoveChatRoomTeamMember"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="whichRoom">
+        <description>房间类型选择</description>
+        <security auth="true" https="false"/>
+        <event type="service" invoke="whichRoom"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="checkUserIsMember">
+        <description>检查用户是否是case成员</description>
+        <security auth="true" https="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/checkUserIsMember.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+    <request-map uri="createInstantMessage">
+        <description>创建即时聊天</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createInstantMessage"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="openInstantMessage">
+        <description>打开即时聊天</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="xmppLogin"/>
+        <response name="success" type="view" value="openInstantMessage"/>
+    </request-map>
+    <request-map uri="addOtherPeople">
+        <description>邀请即时聊天用户</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addOtherPeople"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="chatPersonJson">
+        <description>搜索即时聊天对象</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/getChatPersonJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="getInviteUsername">
+        <description>获取邀请人名</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getInviteUsername"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateChatTime">
+        <description>更新聊天时间</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/updateChatTime.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="chatHistoryJson">
+        <description>搜索历史聊天对象</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/getChatHistoryJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchChatPerson">
+        <description>打开聊天对象搜索页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="searchChatPerson"/>
+    </request-map>
+    <request-map uri="searchChatHistory">
+        <description>搜索聊天历史对象</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="searchChatHistory"/>
+    </request-map>
+    <request-map uri="checkRoomExist">
+        <description>检查即时聊天房间是否存在</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkRoomExist"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+    <request-map uri="GetFullNameByJid">
+        <description>根据JID获取全名（昵称）</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getFullNameByJid"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="UpLoadFileTest">
+        <description>上传测试文件</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="upLoadFileTest"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="GetFileList">
+        <description>获取文件列表</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getFileList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ChangeFileStatus">
+        <description>改变文件的锁定状态</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeFileStatus"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="TicketCandidates">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TicketCandidates"/>
+    </request-map>
+    <request-map uri="NewPartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showPartner"/>
+        <response name="success" type="view" value="NewPartner"/>
+    </request-map>
+    <request-map uri="LoadFile">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LoadFile"/>
+    </request-map>
+    <request-map uri="loadUpFile">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="loadFile"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="NewPartnerJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/partner/FindPartner.groovy"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="ListPartners">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPartner"/>
+        <response name="success" type="view" value="ListPartners"/>
+    </request-map>
+    <request-map uri="SubAccounts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="SubAccounts"/>
+    </request-map>
+    <request-map uri="SubAccountsJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/SubAccountsJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="NewAccount">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewAccount"/>
+    </request-map>
+    <request-map uri="createAccountForCompany">
+        <description>账户管理：新建子账户</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewSubAccountForCompany"/>
+    </request-map>
+    <request-map uri="NewSubAccount">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewSubAccount"/>
+    </request-map>
+    <request-map uri="ManageAccounts">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ManageAccounts"/>
+    </request-map>
+    <request-map uri="ManageAccountsJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/ManageAccounts.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="LoginHistory">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LoginHistory"/>
+    </request-map>
+    <request-map uri="loginHistoryJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/loginHistoryJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SystemSetting">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="SystemSetting"/>
+    </request-map>
+    <request-map uri="ScoreRules">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchScoreRules"/>
+        <response name="success" type="view" value="ScoreRules"/>
+    </request-map>
+    <request-map uri="EditScoreRule">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editScoreRule"/>
+        <response name="success" type="view" value="EditScoreRule"/>
+    </request-map>
+    <request-map uri="getGroupInfo">
+        <description>获取当前登录账户的主账户信息或者挂靠机构信息</description>
+        <security https="false" auth="true"/>
+        <event type="groovy"  path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/getGroupInfo.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchCompany">
+        <description>查找乙方公司</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/searchCompany.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchPerson">
+        <description>查找乙方个人</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/searchPerson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="addScoreRule">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addScoreRule"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="saveRule">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveRule"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="removeScoreRule">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeScoreRule"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="UserScores">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="userScores"/>
+        <response name="success" type="view" value="UserScores"/>
+    </request-map>
+    <request-map uri="EditUserScore">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editUserScore"/>
+        <response name="success" type="view" value="EditUserScore"/>
+    </request-map>
+    <request-map uri="saveUserScore">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveUserScore"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="ScoreHistory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="scoreHistory"/>
+        <response name="success" type="view" value="ScoreHistory"/>
+    </request-map>
+    <request-map uri="UserScoreHistory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="userScoreHistory"/>
+        <response name="success" type="view" value="UserScoreHistory"/>
+    </request-map>
+    <request-map uri="showUserScoresHistoryJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/showUserScoresHistory.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="DeliverScore">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="DeliverScore"/>
+    </request-map>
+    <request-map uri="deliverScore">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deliverScore"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="AdSettings">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AdSettings"/>
+    </request-map>
+    <request-map uri="AdSettingsList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AdSettingsList"/>
+    </request-map>
+    <request-map uri="AdSettingsHeader">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AdSettingsHeader"/>
+    </request-map>
+    <request-map uri="ApproveQuestions">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchNeedJudge"/>
+        <response name="success" type="view" value="ApproveQuestions"/>
+    </request-map>
+    <request-map uri="ApproveQuestion">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findQuestionAnswer"/>
+        <response name="success" type="view" value="ApproveQuestion"/>
+    </request-map>
+    <request-map uri="LibraryHome">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="libraryHome"/>
+        <response name="success" type="view" value="LibraryHome"/>
+    </request-map>
+    <request-map uri="NewFileUpload">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="newFileUpload"/>
+        <response name="success" type="view" value="NewFileUpload"/>
+    </request-map>
+    <request-map uri="LibraryList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="libraryHome"/>
+        <response name="success" type="view" value="LibraryList"/>
+    </request-map>
+    <request-map uri="ApproveFileUploads">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ListFileUploads"/>
+        <response name="success" type="view" value="ApproveFileUploads"/>
+    </request-map>
+    <request-map uri="EmailInfoManage">
+        <description>邮件管理</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EmailInfoManage"/>
+    </request-map>
+    <request-map uri="editEmailInfo">
+        <description>打开编辑页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editEmailInfo"/>
+    </request-map>
+    <request-map uri="saveEmailInfo">
+        <description>保存邮件编辑</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveEmailInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ApproveFileUpload">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ListFileUpload"/>
+        <response name="success" type="view" value="ApproveFileUpload"/>
+    </request-map>
+    <request-map uri="changeLibraryStatus">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeLibraryStatus"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CaseTemplates">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CaseTemplates"/>
+    </request-map>
+    <request-map uri="CaseTemplatesJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseTemplates.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="openCaseSummary">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="openCaseSummary"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="loseEfficacy">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/loseEfficacy.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ScoreRulesJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/FindScoreRules.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="UserScoresJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/FindUserScores.groovy"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="UserScoresHistoryJson">
+        <description>我的积分</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/FindUserScoresHistory.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showRule">
+        <description>积分规则</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/showRule.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ScoreHistoryJson">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/FindScoreHistory.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="NewCaseTemplate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewCaseTemplate"/>
+    </request-map>
+    <request-map uri="EditCaseTemplate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplate"/>
+    </request-map>
+    <request-map uri="ChooseCaseTemplate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getCaseTemplates"/>
+        <response name="success" type="view" value="ChooseCaseTemplate"/>
+    </request-map>
+
+    <request-map uri="addPartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addPartner"/>
+        <response name="error" type="request" value="json"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchPartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPartner"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="savePartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePartner"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="deletePartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePartner"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="ChartPartners">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="chartPartners"/>
+        <response name="success" type="view" value="ChartPartners"></response>
+    </request-map>
+    <request-map uri="ViewPartner">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editPartner"/>
+        <response name="success" type="view" value="ViewPartner"/>
+    </request-map>
+    <request-map uri="BlankCaseTemplate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="BlankCaseTemplate"/>
+    </request-map>
+    <request-map uri="FixedCaseTemplate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="fixedCaseTemplate"/>
+        <response name="success" type="view" value="FixedCaseTemplate"/>
+    </request-map>
+    <request-map uri="CompleteCaseStep">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CompleteCaseStep"/>
+    </request-map>
+    <request-map uri="createCaseTemplate">
+        <description>创建一条新的CASE模板基本信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCaseTemplate"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="updateCaseTemplate">
+        <description>更新一条CASE模板基本信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateCaseTemplate"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="deleteCaseTemplate">
+        <description>删除一条CASE模板</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteCaseTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="EditCaseTemplateNodes">
+        <description>编辑一个CASE模板的节点页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplateNodes"/>
+    </request-map>
+    <request-map uri="EditCaseTemplateNodesTime">
+        <description>编辑一个CASE模板的时间设置</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplateNodesTime"/>
+    </request-map>
+    <request-map uri="EditCaseNodesTime">
+        <description>编辑一个CASE的时间设置</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplateNodesTime"/>
+    </request-map>
+    <request-map uri="saveCaseTemplateNodes">
+        <description>保存CASE模板的节点记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseTemplateNodes"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="EditCaseTemplateBaseTime">
+        <description>编辑一个CASE模板的基准时间</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplateBaseTime"/>
+    </request-map>
+    <request-map uri="EditCaseTemplateNodeGroups">
+        <description>编辑一个CASE模板的大节点页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseTemplateNodeGroups"/>
+    </request-map>
+    <request-map uri="saveCaseTemplateNodeGroups">
+        <description>保存CASE模板的大节点记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseTemplateNodeGroups"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveCaseTemplateBaseTime">
+        <description>保存CASE模板的基准时间</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseTemplateBaseTime"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveCaseProgressGroup">
+        <description>保存CASE进程的大节点记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseProgressGroup"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveBlankCaseProgressGroup">
+        <description>保存CASE进程的大节点记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveBlankCaseProgressGroup"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="addCaseCompletedFiles">
+        <description>上传已完成的case进程文件</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addCaseCompletedFiles"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="register">
+        <description>注册信息</description>
+        <security https="false" auth="false"/>
+        <event type="service" invoke="register"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+
+    <request-map uri="PendingAccountsJson">
+        <description>查询所有未审核的账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/FindNewRegistration.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="PendingAccountsCountJson">
+        <description>查询所有未审核的账户按类型统计数量</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/CountNewRegistration.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="QualifyAccountsJson">
+        <description>查询所有未审核的账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/FindUnQualifiedAccounts.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="QualifyPersonAccountsJson">
+        <description>查看所有未审核的子帐户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/QualifyPersonAccountsJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="QualifyAccountsCountJson">
+        <description>查询所有未审核的账户按类型统计数量</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/CountUnQualifiedAccounts.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="passRegistration">
+        <description>账户审核通过</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="passRegistration"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="rejectRegistration">
+        <description>驳回账户审核</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="rejectRegistration"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="passQualification">
+        <description>账户审核通过实名认证</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="passQualification"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="passPersonQualification">
+        <description>账户审核通过实名认证</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="passPersonQualification"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="createNewAccount">
+        <description>保存新主账号信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="register"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="updateGroupAccount">
+        <description>更新主账户信息</description>
+        <security auth="true" https="false"/>
+        <event type="service" invoke="updateGroupAccount"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveSubAccounts">
+        <description>保存子账号信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveSubAccounts"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="editSubInfos">
+        <description>编辑子账户信息</description>
+        <security auth="true" https="false"/>
+        <event type="service" invoke="editSubInfos"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveCompanySubInfo">
+        <description>管理员添加子账户</description>
+        <security auth="true" https="false"/>
+        <event type="service" invoke="saveCompanySubInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="editCompanySubInfo">
+        <description>管理员编辑子账户</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editCompanySubInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RemoveSubAccount">
+        <description>删除子账户(未实现)</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/RemoveSubAccount.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ForbidSubAccount">
+        <description>禁用子账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/ForbidSubAccount.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RecoverSubAccount">
+        <description>恢复子账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/RecoverSubAccount.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ForbidAccount">
+        <description>禁用主账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/ForbidAccount.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RecoverAccount">
+        <description>恢复主账户</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/RecoverAccount.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="FolderMaintain">
+        <description>文件目录维护</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FolderMaintain"/>
+    </request-map>
+    <request-map uri="NewFolderTemplate">
+        <description>新建目录结构</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="NewFolder"/>
+    </request-map>
+    <request-map uri="SaveCase">
+        <description>根据模板保存case</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCase"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SaveBlankCase">
+        <description>临时保存case</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveBlankCase"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SaveCaseProgress">
+        <description>保存case进程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseProgress"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="SaveBlankCaseProgress">
+        <description>保存case进程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveBlankCaseProgress"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="MemberChooser">
+        <description>CASE参与方参与人员选择</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="MemberChooser"/>
+    </request-map>
+    <request-map uri="AddCasePartyMember">
+        <description>添加参与方人员</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="AddCasePartyMember"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CasePartyMemberJson">
+        <description>查找参与方人员</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCasePartyMembers.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetCaseCooperationRecordJson">
+        <description>查找case协作记录</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/GetCaseCooperationRecords.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RemoveMember">
+        <description>移除参与方人员</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeMember"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="FillCaseBasicInfo">
+        <description>填写case基本信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FillCaseBasicInfo"/>
+    </request-map>
+    <request-map uri="FillBlankCaseBasicInfo">
+        <description>填写case基本信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FillBlankCaseBasicInfo"/>
+    </request-map>
+    <request-map uri="CaseProgress">
+        <description>获取case进度</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/CaseProgress.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SaveCaseStep">
+        <description>完成case进度</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseStep"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CreateCaseChatRoom">
+        <description>创建case讨论组的界面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CreateCaseChatRoom"/>
+    </request-map>
+    <!--提交问题-->
+    <request-map uri="handelQuestion">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="handelQuestion"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="searchGroupName">
+        <description>首页模糊查询企业名</description>
+        <security https="false" auth="false"/>
+        <event type="service" invoke="searchGroupName"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchGroupNameJsonp">
+        <description>首页模糊查询企业名</description>
+        <security https="false" auth="false"/>
+        <event type="service" invoke="searchGroupNameJsonp"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="renewVip">
+        <description>续费</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="renewVip"/>
+        <response name="success" type="view" value="renewVip"/>
+    </request-map>
+    <request-map uri="renewAccount">
+        <description>账号续费</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="renewAccount"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--查询问题-->
+    <!--<request-map uri="searchQuestion">-->
+    <!--<security https="false" auth="true"/>-->
+    <!--<event type="service" invoke="searchQuestion"/>-->
+    <!--<response name="success" type="request" value="json"></response>-->
+    <!--</request-map>-->
+    <!--上面直接调用-->
+
+    <!--逻辑删除-->
+    <request-map uri="changeQuestionStatus">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeQuestionStatus"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+
+    <request-map uri="reOpenFire">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/changeOpenFire.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--保存问题-->
+    <request-map uri="saveQuestion">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveQuestion"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+
+    <!--回复问题-->
+    <request-map uri="handelAnswer">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="handelAnswer"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+
+    <!--采纳问题-->
+    <request-map uri="getAnswer">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getAnswer"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+
+    <request-map uri="passQualification">
+        <description>账户审核通过实名认证</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="passQualification"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="EditCaseFolders">
+        <description>设置模板目录</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditCaseFolders"/>
+    </request-map>
+    <request-map uri="EditBlankCaseFolders">
+        <description>设置模板目录</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditBlankCaseFolders"/>
+    </request-map>
+
+    <request-map uri="saveCaseFolders">
+        <description>设置模板目录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseFolders"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveBlankCaseFolders">
+        <description>设置模板目录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveBlankCaseFolders"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="createCaseRemark">
+        <description>创建备忘录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCaseRemark"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CaseRemarkJson">
+        <description>查找Case的备忘录</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseRemarks.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="UploadAvatar">
+        <description>上传头像</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UploadAvatar"/>
+    </request-map>
+    <request-map uri="uploadAvatar">
+        <description>上传头像</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="uploadAvatar"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="ProviderSelectJson">
+        <description>服务机构选择下拉框数据源请求</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/GetProviderPartyJson.groovy"/>
+        <!--<event type="service" invoke="getProviderSelectJson"/>-->
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SelectAllGroupJson">
+        <description>筛选所有的未禁用公司(非合伙人)</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/SelectAllGroupJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ProviderPersonSelectJson">
+        <description>人员选择下拉框数据源请求</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/GetProviderPersonSelectJson.groovy"/>
+        <!--<event type="service" invoke="getProviderSelectJson"/>-->
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="UserCalendar">
+        <description>用户日程</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UserCalendar"/>
+    </request-map>
+    <request-map uri="CalendarEvent">
+        <description>用户日程</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CalendarEvent"/>
+    </request-map>
+    <request-map uri="createCalendarEvent">
+        <description>用户日程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCalendarEvent"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteCalendarEvent">
+        <description>删除日程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteCalendarEvent"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateCalendarEvent">
+        <description>用户日程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateCalendarEvent"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="UserCalendarJson">
+        <description>用户日程数据</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/GetUserCalendarJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteAccount">
+        <description>删除用户</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteAccount"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="initCaseTask">
+        <description>初始化任务页面</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="initCaseTask"/>
+        <response name="leaderCaseTask" type="view" value="leaderCaseTask"/>
+        <response name="memberCaseTask" type="view" value="memberCaseTask"/>
+    </request-map>
+    <request-map uri="initCaseContract">
+        <description>初始化case合同</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="initCaseContract"/>
+        <response name="success" type="view" value="initCaseContract"/>
+    </request-map>
+    <request-map uri="openContractInfo">
+        <description>打开合同详情</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="openContractInfo"/>
+        <response name="success" type="view" value="openContractInfo"/>
+    </request-map>
+    <request-map uri="saveCaseTask">
+        <description>保存组员任务列表</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseTask"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    <request-map uri="delCaseTask">
+        <description>删除组员任务</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="delCaseTask"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="openCaseTaskEdit">
+        <description>删除组员任务</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="openCaseTaskEdit"/>
+        <response name="success" type="view" value="openCaseTaskEdit"/>
+    </request-map>
+    <request-map uri="editCaseTask">
+        <description>修改组员任务</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editCaseTask"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="UpdateCaseBaseTime">
+        <description>更新CASE基准日</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UpdateCaseBaseTime"/>
+    </request-map>
+    <request-map uri="UpdateBlankCaseBaseInfo">
+        <description>更新CASE基本信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UpdateBlankCaseBaseInfo"/>
+    </request-map>
+    <request-map uri="UpdateCaseBaseInfo">
+        <description>更新CASE基本信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UpdateCaseBaseInfo"/>
+    </request-map>
+    <request-map uri="updateCaseBasicInfo">
+        <description>更新CASE基本信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateCaseBasicInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveCaseBaseTime">
+        <description>保存CASE基准日</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCaseBaseTime"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="groupList">
+        <description>组织列表</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="groupList"/>
+    </request-map>
+
+    <request-map uri="groupInfo">
+        <description>组织列表</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="groupInfo"/>
+    </request-map>
+
+    <request-map uri="SaveTicket">
+        <description>发布信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveTicket"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="RelatedTickets">
+        <description>可竞选</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="RelatedTickets"/>
+    </request-map>
+    <request-map uri="RunForTicket">
+        <description>竞选</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="runForTicket"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetTickets">
+        <description>发布历史</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/GetTicketListJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="AcceptParty">
+        <description>同意该机构的竞选</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/AcceptParty.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CreateCaseByTicket">
+        <description>根据发布的信息创建case</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCaseByTicket"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteCaseByTicket">
+        <description>信息归档（逻辑删除）</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteCaseByTicket"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="submitAuthentication">
+        <description>机构实名认证</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="submitAuthentication"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="submitPersonQualification">
+        <description>机构子帐号实名认证</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="submitPersonQualification"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="PersonalInfo">
+        <description>个人信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PersonalInfo"/>
+    </request-map>
+    <request-map uri="updatePassword">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="updatePassword"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="isTicketCase">
+        <description>是否为信息发布生成的case</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/isTicketCase.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showTicketInfo">
+        <description>展示相关发布信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showTicketInfo"/>
+    </request-map>
+
+    <request-map uri="downloadPolicyFile">
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/DownloadPolicyFile.groovy"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="PreviewPolicyFile">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="PreviewPolicyFile"/>
+    </request-map>
+    <request-map uri="previewPolicyFile">
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/PreviewPolicyFile.groovy"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="listPolicyFile">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="ListPolicyFiles"/>
+    </request-map>
+
+    <request-map uri="PolicyFilesJson">
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/ListPolicyFiles.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ProviderInfoView">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="ProviderInfoView"/>
+    </request-map>
+
+
+    <request-map uri="createAdvert">
+        <description>新建广告</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createAdvert"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="FindAdvert">
+        <description>广告列表</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/ListAdvert.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateAdvertmentSatus">
+        <description>禁用广告</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateAdvertmentSatus"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="getAdvert">
+        <description>首页广告</description>
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/getAdvert.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteAdvert">
+        <description>删除广告</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteAdvert"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="EditAdvert">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditAdvert"/>
+    </request-map>
+    <request-map uri="saveAdvert">
+        <description>编辑广告</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAdvert"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showManage">
+        <description>账号编辑</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editManage"/>
+    </request-map>
+    <request-map uri="showManageForCompany">
+        <description>管理员：子账户编辑</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showManageForCompany"/>
+    </request-map>
+    <request-map uri="checkCodes">
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/checkCodes.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showServices">
+        <description>服务条款</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="showServices"/>
+    </request-map>
+    <request-map uri="showSecrecy">
+        <description>保密协议</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="showSecrecy"/>
+    </request-map>
+    <request-map uri="VIPDue">
+        <description>会员到期时间查询</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="VIPDue"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="getMessageList">
+        <description>得到消息通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getMessageList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="remindInfo">
+        <description>得到消息通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="remindInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--<request-map uri="getCasePrompt">
+        <description>未完成case提示</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getCasePrompt"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>-->
+    <request-map uri="CaseActiveProgressJson">
+        <description>未完成case任务</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/CaseProgressTask.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="delCasePrompt">
+        <description>删除case提示</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="delCasePrompt"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="readSiteMsg">
+        <description>消息已读</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="readSiteMsg"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="updateCaseFiledStatus">
+        <description>case归档</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateCaseFiledStatus"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="campaignList">
+        <description>最新消息详情</description>
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="campaignList"/>
+    </request-map>
+    
+    <request-map uri="sendVerificationCode">
+        <description>发送短信验证码</description>
+        <security https="false" auth="false"/>
+        <event type="service" invoke="sendVerificationCode"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--<request-map uri="validationImage">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/framework/common/src/org/ofbiz/common/CommonEvents" invoke="getCaptcha"/>
+        <response name="success" type="request" value="login"/>
+    </request-map>-->
+    <request-map uri="resetPassword">
+        <description>重置密码</description>
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/ResetPassword.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchCompanyByAddress">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="searchCompanyByAddress"/>
+    </request-map>
+    <request-map uri="searchCompanyByAddressJson">
+        <description>第三方机构搜索</description>
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/GroupList.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showPartners">
+        <description>展示合伙人账户</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="showPartners"/>
+    </request-map>
+    <request-map uri="showPartnersJson">
+        <description>获取合伙人账户json数据</description>
+        <security https="false" auth="false"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/showPartners.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchLibraryFileListByName">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchLibraryFileListByName"/>
+        <response name="success" type="view" value="fileList"/>
+    </request-map>
+
+    <request-map uri="systemHelp">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="systemHelp"/>
+    </request-map>
+
+    <request-map uri="getTemplateName">
+        <description>获取模板名</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/getTemplateName.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="getRoles">
+        <description>发布信息获取参与方</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/getRoles.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="searchScoreByUserId">
+        <description>查询用户积分</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchScoreByUserId"/>
+        <response name="success" type="view" value="downloadLibrary"/>
+    </request-map>
+
+    <request-map uri="uploadFileList4kindEditor">
+        <description>富文本编辑框上传文件</description>
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.content.content.ContentServices" invoke="fineUpload"/>
+        <response name="success" type="view" value="uploadResult4kindEditor"/>
+        <response name="error" type="view" value="uploadResult4kindEditor"/>
+    </request-map>
+
+    <request-map uri="policyFile">
+        <description>政策管理页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="policyFileList"/>
+    </request-map>
+    
+    <request-map uri="searchPolicyFileList">
+        <description>查询政策文件</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/PolicyFileList.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="searchPolicyTypeTwo">
+        <description>查询二级分类</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPolicyTypeTwo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="newPolicyFile">
+        <description>新增政策文件页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="newPolicyFile"/>
+    </request-map>
+
+    <request-map uri="savePolicyFile">
+        <description>保存政策文件</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePolicyFile"/>
+        <response name="success" type="view" value="msgPage"/>
+    </request-map>
+    
+    <request-map uri="delPolicyFile">
+        <description>删除政策文件</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="delPolicyFile"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="orgFolderPatch">
+        <description>企业目录修复</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/src/org/ofbiz/zxdoc/orgFolderPatch.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="PartyGroupChooser">
+        <description>组织机构选择</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PartyGroupChooser"/>
+    </request-map>
+    <request-map uri="PartyPersonChooser">
+        <description>人员机构选择</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PartyPersonChooser"/>
+    </request-map>
+    <request-map uri="PartyGroupChooserJson">
+        <description>筛选所有的未禁用企业机构</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/PartyGroupChooserJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="PartyPersonChooserJson">
+        <description>筛选所有的未禁用人员</description>
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/PartyPersonChooserJson.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="registerUpload">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.content.content.ContentServices" invoke="fineUpload"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ManageFileShare">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ManageFileShare"/>
+    </request-map>
+    
+    <request-map uri="ManageFileSharePrivate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ManageFileSharePrivate"/>
+    </request-map>
+
+    <request-map uri="saveCaseShareFile">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/saveCaseShareFile.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="saveShareFilePrivate">
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.content.content.ContentServices" invoke="saveShareFilePrivate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="TestFileView">
+        <description>测试文件查看</description>
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="FileHandler"/>
+    </request-map>
+
+    <view-map name="FileHandler" type="screen" page="component://content/widget/content/DataResourceScreens.xml#FileHandler"/>
+
+    <view-map name="ManageFileShare" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ManageFileShare"/>
+    <view-map name="ManageFileSharePrivate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ManageFileSharePrivate"/>
+    <view-map name="newPolicyFile" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#newPolicyFile"/>
+    <view-map name="policyFileList"  type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#policyFileList"/>
+    <view-map name="uploadResult4kindEditor" type="ftl" page="component://content/webapp/content/content/UploadResult4KindEditor.ftl"/>
+    <view-map name="showServices" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#showServices"/>
+    <view-map name="showSecrecy" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#showSecrecy"/>
+    <view-map name="editManage" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#editManage"/>
+    <view-map name="showManageForCompany" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#showManageForCompany"/>
+    <view-map name="EditAdvert" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditAdvert"/>
+    <view-map name="Index" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Index"/>
+    <view-map name="getGroupList" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#getGroupList"/>
+    <view-map name="searchCompanyByAddress" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#searchCompanyByAddress"/>
+    <view-map name="showPartners" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#showPartners"/>
+    <!--未登录时访问受保护资源跳转至登录界面，登录界面定义到首页-->
+    <view-map name="searchChatPerson" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#searchChatPerson"/>
+    <view-map name="searchChatHistory" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#searchChatHistory"/>
+    <view-map name="NewSubAccountForCompany" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewSubAccountForCompany"/>
+    <view-map name="openInstantMessage" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#openInstantMessage"/>
+    <view-map name="campaignList" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#campaignList"/>
+    <view-map name="renewVip" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#renewVip"/>
+    <view-map name="login" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FrameLogin"/>
+    <view-map name="register" type="screen" page="component://common/widget/CommonScreens.xml#login"/>
+    <view-map name="ChatOnlineWithDoc" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ChatOnlineWithDoc"/>
+    <view-map name="main" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ProviderCases"/>
+    <view-map name="Styles" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Styles"/>
+    <view-map name="Workspace" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Workspace"/>
+    <view-map name="CaseHome" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CaseHome"/>
+    <view-map name="PendingAccounts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PendingAccounts"/>
+    <view-map name="QualifyAccounts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#QualifyAccounts"/>
+    <view-map name="QualifyPersonAccounts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#QualifyPersonAccounts"/>
+    <view-map name="Qualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Qualification"/>
+    <view-map name="FinQualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FinQualification"/>
+    <view-map name="LawQualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#LawQualification"/>
+    <view-map name="BrokeQualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#BrokeQualification"/>
+    <view-map name="ComQualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ComQualification"/>
+    <view-map name="ViewQualification" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ViewQualification"/>
+    <view-map name="ViewQualificationPerson" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ViewQualificationPerson"/>
+    <view-map name="NewTicket" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewTicket"/>
+    <view-map name="ListTickets" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ListTickets"/>
+    <view-map name="CompanyCases" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CompanyCases"/>
+    <view-map name="ProviderCases" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ProviderCases"/>
+    <view-map name="ViewTicket" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ViewTicket"/>
+    <view-map name="NewContract" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewContract"/>
+    <view-map name="ListContracts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ListContracts"/>
+    <view-map name="NewQuestion" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewQuestion"/>
+    <view-map name="ListQuestions" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ListQuestions"/>
+    <view-map name="AnswerQuestion" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#AnswerQuestion"/>
+    <view-map name="WendaHistory" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#WendaHistory"/>
+    <view-map name="InvitedQuestions" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#InvitedQuestions"/>
+    <view-map name="ChatHome" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ChatHome"/>
+    <view-map name="DocHome" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#DocHome"/>
+    <view-map name="showTicketInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#showTicketInfo"/>
+    <view-map name="TicketCandidates" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#TicketCandidates"/>
+    <view-map name="NewPartner" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewPartner"/>
+    <view-map name="LoadFile" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#LoadFile"/>
+    <view-map name="ListPartners" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ListPartners"/>
+    <view-map name="ChartPartners" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ChartPartners"/>
+    <view-map name="ViewPartner" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ViewPartner"/>
+    <view-map name="SubAccounts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#SubAccounts"/>
+    <view-map name="NewAccount" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewAccount"/>
+    <view-map name="NewSubAccount" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewSubAccount"/>
+    <view-map name="ManageAccounts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ManageAccounts"/>
+    <view-map name="LoginHistory" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#LoginHistory"/>
+    <view-map name="SystemSetting" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#SystemSetting"/>
+    <view-map name="ScoreRules" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ScoreRules"/>
+    <view-map name="EditScoreRule" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditScoreRule"/>
+    <view-map name="UserScores" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UserScores"/>
+    <view-map name="EditUserScore" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditUserScore"/>
+    <view-map name="ScoreHistory" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ScoreHistory"/>
+    <view-map name="UserScoreHistory" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UserScoreHistory"/>
+    <view-map name="AdSettings" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#AdSettings"/>
+    <view-map name="AdSettingsList" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#AdSettingsList"/>
+    <view-map name="AdSettingsHeader" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#AdSettingsHeader"/>
+    <view-map name="ApproveQuestions" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ApproveQuestions"/>
+    <view-map name="ApproveQuestion" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ApproveQuestion"/>
+    <view-map name="LibraryHome" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#LibraryHome"/>
+    <view-map name="LibraryList" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#LibraryList"/>
+    <view-map name="NewFileUpload" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewFileUpload"/>
+    <view-map name="ApproveFileUploads" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ApproveFileUploads"/>
+    <view-map name="EmailInfoManage" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EmailInfoManage"/>
+    <view-map name="editEmailInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#editEmailInfo"/>
+    <view-map name="ApproveFileUpload" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ApproveFileUpload"/>
+    <view-map name="CaseTemplates" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CaseTemplates"/>
+    <view-map name="NewCaseTemplate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewCaseTemplate"/>
+    <view-map name="EditCaseTemplate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseTemplate"/>
+    <view-map name="ChooseCaseTemplate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ChooseCaseTemplate"/>
+    <view-map name="BlankCaseTemplate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#BlankCaseTemplate"/>
+    <view-map name="FixedCaseTemplate" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FixedCaseTemplate"/>
+    <view-map name="CompleteCaseStep" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CompleteCaseStep"/>
+    <view-map name="EditCaseTemplateNodes" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseTemplateNodes"/>
+    <view-map name="EditCaseTemplateNodesTime" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseTemplateNodesTime"/>
+    <view-map name="EditCaseTemplateNodeGroups" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseTemplateNodeGroups"/>
+    <view-map name="EditCaseTemplateBaseTime" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseTemplateBaseTime"/>
+    <view-map name="addContract" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#addContract"/>
+    <view-map name="SearchContracts" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#SearchContracts"/>
+    <view-map name="FolderMaintain" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FolderMaintain"/>
+    <view-map name="NewFolder" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#NewFolder"/>
+    <view-map name="MemberChooser" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#MemberChooser"/>
+    <view-map name="FillCaseBasicInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FillCaseBasicInfo"/>
+    <view-map name="FillBlankCaseBasicInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#FillCaseBasicInfo"/>
+    <view-map name="CreateCaseChatRoom" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CreateCaseChatRoom"/>
+    <view-map name="EditCaseFolders" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditCaseFolders"/>
+    <view-map name="EditBlankCaseFolders" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#EditBlankCaseFolders"/>
+    <view-map name="UploadAvatar" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UploadAvatar"/>
+    <view-map name="RelatedTickets" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#RelatedTickets"/>
+    <view-map name="UserCalendar" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UserCalendar"/>
+    <view-map name="CalendarEvent" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#CalendarEvent"/>
+    <view-map name="leaderCaseTask" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#leaderCaseTask"/>
+    <view-map name="memberCaseTask" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#memberCaseTask"/>
+    <view-map name="initCaseContract" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#initCaseContract"/>
+    <view-map name="openContractInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#openContractInfo"/>
+    <view-map name="openCaseTaskEdit" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#openCaseTaskEdit"/>
+    <view-map name="groupList" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#groupList"/>
+    <view-map name="groupInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#groupInfo"/>
+    <view-map name="ListPolicyFiles" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ListPolicyFiles"/>
+    <view-map name="UpdateCaseBaseTime" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UpdateCaseBaseTime"/>
+    <view-map name="UpdateCaseBaseInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UpdateCaseBaseInfo"/>
+    <view-map name="UpdateBlankCaseBaseInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#UpdateBlankCaseBaseInfo"/>
+    <view-map name="PersonalInfo" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PersonalInfo"/>
+    <view-map name="PreviewPolicyFile" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PreviewPolicyFile"/>
+    <view-map name="ProviderInfoView" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ProviderInfoView"/>
+    <view-map name="ViewBussiness" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#ViewBussiness"/>
+    <view-map name="requirePasswordChange" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PersonalInfo2"/>
+    <view-map name="passwordError" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#passwordError"/>
+    <view-map name="systemHelp" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#systemHelp"/>
+    <view-map name="fileList" type="screen" page="component://ckfinder/widget/CommonScreens.xml#fileNameList"/>
+    <view-map name="downloadLibrary"  type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#downloadLibrary"/>
+    <view-map name="msgPage" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#msgPage"/>
+    <view-map name="PartyGroupChooser" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PartyGroupChooser"/>
+    <view-map name="PartyPersonChooser" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#PartyPersonChooser"/>
+    <view-map name="DeliverScore" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#DeliverScore"/>
+</site-conf>

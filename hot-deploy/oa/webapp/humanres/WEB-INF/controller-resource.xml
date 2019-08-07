@@ -1,0 +1,43 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="FindResourcesManagement">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="FindResourcesManagement"/>
+    </request-map>
+    <request-map uri="CreateResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="CreateResource"/>
+    </request-map>
+    <request-map uri="ListResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="ListResource"/>
+    </request-map>
+    <request-map uri="AjaxEditResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="editResource"/>
+    </request-map>
+    <request-map uri="OrderResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="OrderResource"/>
+    </request-map>
+    <request-map uri="saveResource">
+        <security auth="true" https="false"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ResourceOrderView">
+        <security auth="true" https="false"/>
+        <response name="success" type="view" value="resourceOrderView"/>
+    </request-map>
+
+    <view-map name="FindResourcesManagement" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#findResources"/>
+    <view-map name="CreateResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#createResource"/>
+    <view-map name="OrderResource" type="screen" page="component://oa/widget/ResourcesManagementScreens.xml#orderResource"/>
+    <view-map name="ListResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#listResourcesForList"/>
+    <view-map name="editResource" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#editResource"/>
+    <view-map name="resourceOrderView" type="screen"
+              page="component://oa/widget/ResourcesManagementScreens.xml#resourceOrderView"/>
+</site-conf>

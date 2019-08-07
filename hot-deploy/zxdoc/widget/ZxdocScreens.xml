@@ -1,0 +1,3381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="index-decorator">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/PrepareBrowserInfo.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/indexHeader.ftl"/>
+                    </html>
+                </platform-specific>
+                <decorator-section-include name="body"/>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/indexFooter.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BasicConfiguation">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/BasicConfiguration.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ChatOnline">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/common/ChatOnline.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="list">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/common/FileList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="file">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/common/FileContent.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ChatOnlineWithDoc">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container style="col-xs-5">
+                            <include-screen name="ChatOnline"/>
+                        </container>
+                        <container style="col-xs-2">
+                            <include-screen name="list"/>
+                        </container>
+                        <container style="col-xs-5">
+                            <include-screen name="file"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Styles">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/stylesDemo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Workspace">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/StylesDemo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PendingAccounts">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/pendingAccountList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="QualifyAccounts">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/qualifyAccountList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="renewVip">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/RenewVip.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="QualifyPersonAccounts">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/qualifyPersonAccounts.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Qualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/PrepareQualification.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/qualificationForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FinQualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/finQualificationForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LawQualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/lawQualificationForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BrokeQualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/brokeQualificationForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ComQualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/comQualificationForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewQualification">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/qualificationView.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewQualificationPerson">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/qualificationPersonView.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CaseHome">
+        <section>
+            <actions>
+                <set field="caseId" value="${parameters.caseId}"/>
+                <set field="caseName" value="${parameters.caseName}"/>
+                <set field="partyId" value="${parameters.partyId}"/>
+                <set field="groupId" value="${parameters.groupId}"/>
+                <set field="joinParties" value="${parameters.joinParties}"/>
+                <set field="roleTypeId" value="${parameters.roleTypeId}"/>
+                <set field="companyPartyId" value="${parameters.companyPartyId}"/>
+                <set field="layoutSettings.styleSheets[]" value="/metronic-web/layout/css/light.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/metronic-web/layout/layout.min.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/ckfinder/static/file-manage-layout.css"
+                     global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseFolders.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseHome.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewTicket">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/src/org/ofbiz/zxdoc/findTemplateType.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/newTicket.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewTicket">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/ViewTicket.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/viewTicket.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListTickets">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/listTickets.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="RelatedTickets">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/RelatedTickets.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/relatedTickets.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ProviderCases">
+        <section>
+            <actions>
+                <set field="caseList" value="${parameters.caseList}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/listProviderCases.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CompanyCases">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/listCompanyCases.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewContract">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="contract" value="${parameters.data.contract}"/>
+                <set field="dataResourceId" value="${parameters.data.dataResourceId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/contract/CaseFinder.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/contract/newContract.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SearchContracts">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/contract/searchContracts.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                                <container id="searchContracts">
+                                    <include-screen name="ListContracts"/>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListContracts">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/contract/listContracts.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="NewQuestion">
+        <section>
+            <actions>
+                <set field="question" value="${parameters.result.question}"/>
+                <set field="questionType" value="${parameters.result.questionType}"/>
+                <set field="description" value="${parameters.result.description}"/>
+                <set field="dataResourceId" value="${parameters.result.dataResourceId}"/>
+                <set field="groupName" value="${parameters.result.groupName}"/>
+                <set field="partyId" value="${parameters.result.partyId}"/>
+                <set field="fullName" value="${parameters.result.fullName}"/>
+                <set field="maxScore" value="${parameters.result.maxScore}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/newQuestion.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListQuestions">
+        <section>
+            <actions>
+                <set field="totalPage" value="${parameters.data.totalPage}"/>
+                <set field="questionList" value="${parameters.data.result}"/>
+                <set field="filterParty" value="${parameters.filterParty}"/>
+                <set field="isPage" value="${parameters.data.isPage}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/wenda/QuestionTypeFinder.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/listQuestions.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AnswerQuestion">
+        <section>
+            <actions>
+                <set field="find" value="${parameters.data.result}"/>
+                <set field="show" value="${parameters.data.content}"/>
+                <set field="description" value="${parameters.data.description}"/>
+                <set field="answerMap" value="${parameters.data.answerMap}"/>
+                <set field="userMap" value="${parameters.data.userMap}"/>
+                <set field="fileList" value="${parameters.data.fileList}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/answerQuestion.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="WendaHistory">
+        <section>
+            <actions>
+                <set field="search" value="${parameters.result.questionall}"/>
+                <set field="answernum" value="${parameters.result.answernum}"/>
+                <set field="description" value="${parameters.result.description.description}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/myQuestions.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="InvitedQuestions">
+        <section>
+            <actions>
+                <set field="search" value="${parameters.result.questionall}"/>
+                <set field="answernum" value="${parameters.result.answernum}"/>
+                <set field="description" value="${parameters.result.description.description}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/invitedQuestions.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="QuestionDetailsContent">
+        <section>
+            <!--<actions>-->
+            <!--<set field="data" value="${parameters.msg}"/>-->
+            <!--</actions>-->
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/questionDetailsContent.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ChatHome">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="clientDate" value="${parameters.clientDate}"/>
+                <set field="chatRoomId" value="${parameters.data.chatRoomJID}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseFolders.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/chat/chatHome.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DocHome">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="clientDate" value="${parameters.clientDate}"/>
+                <set field="chatRoomId" value="${parameters.data.chatRoomJID}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <!--<actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseFolders.groovy"/>
+                            </actions>-->
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/chat/docHome.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showTicketInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/src/org/ofbiz/zxdoc/showTicketInfo.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/showTicketInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="openInstantMessage">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="chatRoomId" value="${parameters.data.chatRoomJID}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/chat/PrepareInstantMessage.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/chat/InstantMessage.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TicketCandidates">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/TicketReasons.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/ticketCandidates.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewPartner">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.data.id}"/>
+                <set field="site" value="${parameters.data.site}"/>
+                <set field="customer" value="${parameters.data.map.partner}"/>
+                <set field="postalCode" value="${parameters.data.postalCode}"/>
+                <set field="personInfo" value="${parameters.data.map.personInfo}"/>
+                <set field="List2" value="${parameters.data.mapList2}"/>
+                <set field="List3" value="${parameters.data.mapList3}"/>
+                <set field="partyRelationshipTypeId" value="${parameters.data.partyRelationshipTypeId}"/>
+                <set field="partnersFlag" value="${parameters.partnersFlag}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/crm/newPartner.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListPartners">
+        <section>
+            <actions>
+                <set field="List2" from-field="parameters.data.mapList2"/>
+                <set field="List3" from-field="parameters.data.mapList3"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/crm/listPartners.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LoadFile">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/crm/loadFile.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ChartPartners">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/crm/chartPartners.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewPartner">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.data.id}"/>
+                <set field="site" value="${parameters.data.site}"/>
+                <set field="postalCode" value="${parameters.data.postalCode}"/>
+                <set field="customer" value="${parameters.data.map.partner}"/>
+                <set field="personInfo" value="${parameters.data.map.personInfo}"/>
+                <set field="List2" value="${parameters.data.mapList2}"/>
+                <set field="List3" value="${parameters.data.mapList3}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/crm/viewPartner.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SubAccounts">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/subAccounts.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewSubAccount">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/AccountBaseInfoFinder.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/newSubAccount.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ManageAccounts">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/manageAccounts.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LoginHistory">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/loginHistory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SystemSetting">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/common/settingsHeader.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_CATEGORY_GROUP"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_CATEGORY"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="QUESTIONTYPE_STATUS"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CUSTOMER_LEVEL"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4 clear-left">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CUSTOMER_STATUS"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="LIBRARY_TYPE"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_ROLE_OWNER"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_ROLE_ACCOUNTING"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_ROLE_INVESTOR"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_ROLE_LAW"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <set field="enumTypeId" value="CASE_ROLE_STOCK"/>
+                            </actions>
+                            <widgets>
+                                <container style="col-md-4">
+                                    <include-screen name="EditEnumeration"/>
+                                </container>
+                            </widgets>
+                        </section>
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/common/settingsFooter.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ScoreRules">
+        <section>
+            <actions>
+                <set field="listRules" from-field="parameters.data.map"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/scoreRules.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditScoreRule">
+        <section>
+            <actions>
+                <set field="editRule" from-field="parameters.data.map"/>
+                <set field="list1" from-field="parameters.data.list"/>
+                <set field="rules" from-field="parameters.data.rules"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/editScoreRule.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UserScores">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/userScores.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditUserScore">
+        <section>
+            <actions>
+                <set field="userScore" from-field="parameters.data.list"/>
+                <set field="userName" from-field="parameters.data.userName"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/editUserScore.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ScoreHistory">
+        <section>
+            <actions>
+                <set field="data" from-field="parameters.data.list"/>
+                <set field="scoreRule" from-field="parameters.data.listRule"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/scoreHistory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UserScoreHistory">
+        <section>
+            <actions>
+                <set field="userLoginId" from-field="parameters.userLoginId"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/showScoreHistory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AdSettings">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/adManage/adSettings.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AdSettingsList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/adManage/adSettingsList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AdSettingsHeader">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/adManage/adSettingsHeaderEdit.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ApproveQuestions">
+        <section>
+            <actions>
+                <set field="search" value="${parameters.result.questionall}"/>
+                <set field="description" value="${parameters.result.description.description}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/approveQuestions.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ApproveQuestion">
+        <section>
+            <actions>
+                <set field="find" value="${parameters.data.result}"/>
+                <set field="description" value="${parameters.data.description}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/approveQuestion.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LibraryHome">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/libraryHome.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LibraryList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/libraryList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewFileUpload">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/newFileUpload.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="addLibrary">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/newFileUpload.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ApproveFileUploads">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/approveFileUploads.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailInfoManage">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/src/org/ofbiz/zxdoc/EmailService.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/emailInfoManage.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editEmailInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/src/org/ofbiz/zxdoc/EmailReader.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/editEmailInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ApproveFileUpload">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <set field="dataResourceId" from-field="${parameters.data.dataResourceId}"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/approveFileUpload.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CaseTemplates">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseTemplateList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewCaseTemplate">
+        <section>
+            <actions>
+                <set field="privateFlag" value="${parameters.privateFlag}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/newCaseTemplate.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseTemplate">
+        <section>
+            <actions>
+                <set field="privateFlag" value="${parameters.privateFlag}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <entity-one entity-name="TblCaseTemplate" value-field="template">
+                                    <field-map field-name="id" from-field="parameters.templateId"/>
+                                </entity-one>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/newCaseTemplate.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseTemplateNodes">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseTemplateNodes.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseTemplateNodes.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseTemplateNodesTime">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseTemplateNodes.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseNodesTime.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseTemplateNodeGroups">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseTemplateNodeGroups.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseTemplateNodeGroups.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseTemplateBaseTime">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/FindCaseTemplateBaseTime.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseTemplateBaseTime.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ChooseCaseTemplate">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="caseId" value="${parameters.caseId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseTemplateChooser.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BlankCaseTemplate">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/blankCaseTemplate.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FixedCaseTemplate">
+        <section>
+            <actions>
+                <set field="templateId" value="${parameters.templateId}"/>
+                <set field="caseId" value="${parameters.caseId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet>
+                                    <container>
+                                        <include-screen name="EditCaseTemplateNodes"/>
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/fixedCaseTemplate.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                    </container>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CompleteCaseStep">
+        <section>
+            <actions>
+                <set field="progressId" value="${parameters.progressId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/completeCaseStep.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FolderMaintain">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/fileManage/folderList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewFolder">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/fileManage/newFolder.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="MemberChooser">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/MemberChooser.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/MemberChooser.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FillCaseBasicInfo">
+        <section>
+            <actions>
+                <set field="templateName" value="${parameters.templateName}"/>
+                <set field="templateId" value="${parameters.templateId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/caseTemplateParty.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseBasicInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UpdateCaseBaseInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/caseTemplateParty.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseBasicInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UpdateBlankCaseBaseInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/blankCaseTemplateParty.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseBasicInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateCaseChatRoom">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/caseChatInventor.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseChatInventor.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplateCaseNodeStart">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/caseNodeStartTpl.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplateResetPassword">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/resetPasswordInfo.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplatePassRegistration">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/passRegistration.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplateApproaching">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/timeApproaching.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplateCueTime">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/cueTime.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmailTemplatePassQualification">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://zxdoc/webapp/zxdoc/zxdoc/email/passRegistration.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditCaseFolders">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/GetAllCaseFolders.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseCategoryFolders.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditBlankCaseFolders">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/GetAllBlankCaseFolders.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseCategoryFolders.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UploadAvatar">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/userAvatar.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditEnumeration">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/GetEnumeration.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://zxdoc/webapp/zxdoc/zxdoc/common/editEnum.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="UserCalendar">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/calendar.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CalendarEvent">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/PrepareCalendarEvent.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/common/calendarEvent.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Index">
+        <section>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/PrepareIndexData.groovy"/>
+                            </actions>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/index.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListPolicyFiles">
+        <section>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/ListPolicyFiles.groovy"/>
+                            </actions>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/policyFileList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PreviewPolicyFile">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/policyFileViewer.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="groupList">
+        <section>
+            <actions>
+                <set field="groupType" value="${parameters.groupType}"/>
+                <entity-one entity-name="RoleType" value-field="role">
+                    <field-map field-name="roleTypeId" from-field="parameters.groupType"/>
+                </entity-one>
+            </actions>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/group/groupList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchCompanyByAddress">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/group/groupResult.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showPartners">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.partyId}"/>
+                <set field="groupName" value="${parameters.groupName}"/>
+                <set field="groupType" value="${parameters.groupType}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/group/showPartners.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="groupInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/GroupInfo.groovy"/>
+                            </actions>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/group/groupInfo.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ProviderInfoView">
+        <section>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/index/group/groupFooter.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="leaderCaseTask">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="caseId" value="${parameters.data.caseId}"/>
+                <set field="partyGroupId" value="${parameters.data.partyGroupId}"/>
+                <set field="fileList" value="${parameters.fileList}"/>
+                <set field="companyPartyId" value="${parameters.companyPartyId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/leaderCaseTask.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="memberCaseTask">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="caseId" value="${parameters.data.caseId}"/>
+                <set field="partyGroupId" value="${parameters.data.partyGroupId}"/>
+                <set field="fileList" value="${parameters.fileList}"/>
+                <set field="companyPartyId" value="${parameters.companyPartyId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/memberCaseTask.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="initCaseContract">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseContract.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="openContractInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/contractByMember.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="openCaseTaskEdit">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="caseId" value="${parameters.caseId}"/>
+                <set field="partyGroupId" value="${parameters.partyGroupId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/editCaseTask.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="UpdateCaseBaseTime">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseBaseTime.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/updateCaseBaseTime.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="PersonalInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/InfoShow.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/personalInfo.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="PersonalInfo2">
+        <section>
+            <widgets>
+                <decorator-screen name="index-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="row">
+                                    <container style="col-xs-4 col-xs-offset-4">
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://zxdoc/webapp/zxdoc/zxdoc/account/personalInfo.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                    </container>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="passwordError">
+        <section>
+            <widgets>
+                <section>
+                    <actions>
+                        <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/passwordResult.groovy"/>
+                    </actions>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/account/passwordError.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewBussiness">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/index/GroupShow.groovy"/>
+                            </actions>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://zxdoc/webapp/zxdoc/zxdoc/account/ViewBussiness.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditAdvert">
+        <section>
+            <actions>
+                <entity-one entity-name="TblAdvert" value-field="adver">
+                    <field-map field-name="AdvertId" from-field="parameters.AdvertId"/>
+                </entity-one>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/adManage/newAdvert.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editManage">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/findAccounts.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/editAccount.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewAccount">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/newAccount.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="NewSubAccountForCompany">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/NewSubAccountForCompany.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showManageForCompany">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/account/findSubAccount.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/account/NewSubAccountForCompany.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showServices">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://metronic-web/includes/ServiceProvision.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showSecrecy">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://metronic-web/includes/Secrecy.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="campaignList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/ConfirmTickets.groovy"/>
+                            </actions>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/campaignList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="systemHelp">
+        <section>
+            <actions>
+                <!--<script location="component://content/webapp/content/WEB-INF/actions/content/PrepareFileHandler.groovy"/>-->
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/help/PrepareHelpContent.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <!--<html>
+                                <html-template
+                                        location="component://content/webapp/content/content/pdfViewer.ftl"/>
+                            </html>-->
+                            <html>
+                                <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/help/helpSection.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchChatPerson">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/chat/searchChatPerson.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchChatHistory">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/chat/searchChatHistory.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="downloadLibrary">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/library/downloadLibrary.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="msgPage">
+        <section>
+            <actions>
+                <set field="result" value="${parameters.result}"/>
+                <set field="msg" value="${parameters.msg}"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/index/msgPage.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="policyFileList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/policy/policyFileList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="newPolicyFile">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://zxdoc/webapp/zxdoc/zxdoc/policy/newPolicyFile.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PartyGroupChooser">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/common/partyGroupChooser.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PartyPersonChooser">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/common/partyPersonChooser.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ManageFileShare">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseFileShare.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseShareFile.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ManageFileSharePrivate">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/PrepareCaseFileSharePrivate.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/caseShareFilePrivate.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DeliverScore">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/scoreManage/PrepareDeliverScore.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://zxdoc/webapp/zxdoc/zxdoc/scoreManage/deliverScore.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FrameLogin">
+        <section>
+            <actions>
+                <set field="parameters.frameLogin" value="true" type="Boolean"/>
+            </actions>
+            <widgets>
+                <include-screen name="login" location="component://common/widget/CommonScreens.xml"/>
+            </widgets>
+        </section>
+    </screen>
+</screens>

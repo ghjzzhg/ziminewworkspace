@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="ModelForm" type="single" target="saveModel" default-map-name="model"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="name" title="名称" required-field="true"><text size="10"/></field>
+        <field name="key" title="KEY" required-field="true">
+            <text size="10"/>
+        </field>
+        <field name="category" title="分类">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORKFLOW_CATEGORY"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="description" title="描述">
+            <textarea cols="60" rows="3"/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="保存" event="onClick" action="javascript:$.workflow.saveModel()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ModelList" type="list" list-name="modelList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="category" title="分类"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/> </field>
+        <field name="id" title="ID"><display/></field>
+        <field name="key" title="KEY"><display/></field>
+        <field name="name" title="名称">
+            <display/>
+        </field>
+        <field name="revision" title="版本">
+            <display/>
+        </field>
+        <field name="metaInfo" title="描述"><display/></field>
+        <field name="createTime" title="创建时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(createTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="lastUpdateTime" title="最后更新时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(lastUpdateTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-pencil" title="定义" event="onClick" action="javascript:$.workflow.defineModel(this, '${id}');" >
+            <hyperlink target="#nowhere" title="定义" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deployLink" title-style="hide" widget-area-style="function-column" widget-style="icon-thumbs-up" event="onClick" action="javascript:$.workflow.deployModel('${id}');" title="部署">
+            <hyperlink target="#nowhere" title="部署" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="exportLink" title-style="hide" widget-area-style="function-column" widget-style="icon-circle-arrow-up" title="导出">
+            <hyperlink target="exportModel?modelId=${id}" title="导出" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash" event="onClick" action="javascript:$.workflow.deleteModel('${id}');" title="删除">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ModelList" area-target="ModelListOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ModelList" area-target="ModelListOnly"/>
+    </form>
+    <form name="ProcessList" type="list" list-name="processList" separate-columns="true" target="confirmPerfExam" paginate-target="ProcessListOnly" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="processDefinition.version"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="category" entry-name="deployment.category" title="分类"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/> </field>
+        <!--<field name="id" entry-name="processDefinition.id" title="定义标识"><display/></field>-->
+        <!--<field name="deploymentId" entry-name="processDefinition.deploymentId" title="部署标识"><display/></field>-->
+        <field name="key" entry-name="processDefinition.key" title="Key" sort-field="true"><display/></field>
+        <field name="name" entry-name="processDefinition.name" title="名称"><display/></field>
+        <field name="version" entry-name="processDefinition.version" title="版本" sort-field="true"><display/></field>
+        <field name="deploymentTime" title="部署时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(deployment.deploymentTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="suspendStatus" entry-name="processDefinition.suspendStatus" title="流程状态" encode-output="false"><display/></field>
+        <field name="startLink" title-style="hide" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.startProcess({workflowKey:'${processDefinition.key}',workflowVersion:'${processDefinition.version}'})"  title="启动">
+            <hyperlink target="#nowhere" title="启动" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="activeLink" title-style="hide" widget-area-style="function-column" widget-style="icon-random" event="onClick" action="javascript:$.workflow.toggleProcessSuspend('${processDefinition.id}')"  title="激活/挂起">
+            <hyperlink target="#nowhere" title="${processDefinition.activeToggleTitle}" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="setLink" title-style="hide" widget-area-style="function-column" widget-style="icon-wrench" event="onClick" action="javascript:;" title="设置">
+            <hyperlink target="/workflow/diagram-viewer/index.html?processDefinitionId=${processDefinition.id}" target-window="processEditor" title="设置" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="exportLink" title-style="hide" widget-area-style="function-column" widget-style="icon-circle-arrow-up" title="导出Xml">
+            <hyperlink target="exportProcess?defId=${processDefinition.id}&amp;resourceType=xml" title="导出Xml" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="exportLink1" title-style="hide" widget-area-style="function-column" widget-style="icon-qrcode" title="导出图片">
+            <hyperlink target="exportProcess?defId=${processDefinition.id}&amp;resourceType=image" title="导出图片" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title-style="hide" use-when="${groovy: org.ofbiz.base.util.UtilValidate.isNotEmpty(deployment.modelId)}" widget-area-style="function-column" widget-style="icon-pencil"  title="定义">
+            <hyperlink target="DefineModel?modelId=${deployment.modelId}" target-window="processEditor" title="定义" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="convertLink" title-style="hide" widget-area-style="function-column" widget-style="icon-filter" event="onClick" action="javascript:$.workflow.convert2Model('${processDefinition.id}')" title="抽取模型">
+            <hyperlink target="#nowhere" title="抽取模型" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash" event="onClick" action="javascript:$.workflow.deleteProcess('${deployment.id}');" title="删除">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ProcessList" area-target="ProcessListOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ProcessList" area-target="ProcessListOnly"/>
+    </form>
+    <form name="UploadProcessForm" type="single" target="saveModel" default-map-name="model"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="processFile" title="流程文件" required-field="true" tooltip="zip、bar、bpmn、bpmn20.xml">
+            <file/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="保存" event="onClick" action="javascript:$.workflow.uploadProcess()">
+            <hyperlink target="#nowhere" description="部署" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ActFormList" type="list" list-name="formList" separate-columns="true" target="" paginate-target="ActFormList" view-size="20"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="category" title="分类"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/> </field>
+        <field name="formName" title="名称"><display/></field>
+        <field name="formKey" title="Key"><display/></field>
+        <field name="servicePrefix" title="服务前缀"><display/></field>
+        <field name="formType" title="类型"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/></field>
+        <field name="formUrl" title="路径"><display/></field>
+
+        <field name="description" title="描述">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-pencil" event="onClick" action="javascript:$.workflow.editActForm('${formId}');" title="修改">
+            <hyperlink target="#nowhere" title="修改" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash" event="onClick" action="javascript:$.workflow.deleteActForm('${formId}');" title="删除">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ActFormList" area-target="ActFormListOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ActFormList" area-target="ActFormListOnly"/>
+    </form>
+    <form name="ActForm" type="single" target="updateActForm" default-map-name="form"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="formId"><hidden/></field>
+        <field name="formType" title="类型" required-field="true">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="ACT_TASK_FORM_TYPE"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="formName" title="名称" event="onBlur" action="getPinYin(this.value, ['ActForm_formKey','ActForm_servicePrefix'])">
+            <text size="20"/>
+        </field>
+        <field name="formKey" title="key" required-field="true">
+            <text size="20"/>
+        </field>
+        <field name="servicePrefix" title="服务前缀" tooltip="流程流转时用到业务对应的服务时约定按此前缀获取对应的服务名称, 其中保存服务必须返回业务主键bizKey">
+            <text size="20"/>
+        </field>
+        <field name="formUrl" title="路径">
+            <text size="20"/>
+        </field>
+        <field name="category" title="分类">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORKFLOW_CATEGORY"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="description" title="描述">
+            <textarea cols="60" rows="3"/>
+        </field>
+        <field name="content" title="表单设计">
+            <textarea cols="60" rows="3"/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="保存" event="onClick" action="javascript:$.workflow.saveActForm('${form.formId}')">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ApplyProcessList" type="list" list-name="processList" separate-columns="true" target="confirmPerfExam" paginate-target="ApplyProcessListOnly" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="name"/>
+        </actions>
+        <alt-row-style use-when="deleteReason != null" style="teminate-process"/>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="category" title="分类"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/> </field>
+        <field name="name" title="流程名称" event="onClick" action="javascript:$.workflow.showProcessHistory('${processInstanceId}')">
+            <hyperlink target="#nowhere" title="${name}" description="${name}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="version" title="版本" sort-field="true"><display/></field>
+        <field name="startTime" title="流程启动时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="endTime" title="流程结束时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(endTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="activityNames" title="当前节点" encode-output="false"><display/></field>
+        <field name="candidates" title="当前处理人" encode-output="false"><display/></field>
+        <field name="exportLink1" title="流程图" title-style="hide" widget-area-style="function-column" widget-style="icon-qrcode" event="onClick" action="javascript:$.workflow.graphTrace('${processDefinitionId}', '${processInstanceId}');">
+            <hyperlink target="#nowhere" title="流程图" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ProcessList" area-target="ApplyProcessListOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ProcessList" area-target="ApplyProcessListOnly"/>
+    </form>
+    <form name="ProcessHistory" type="list" list-name="processList" separate-columns="true" target="confirmPerfExam" paginate-target="" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="name"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="taskName" title="任务名"><display/> </field>
+        <field name="staffName" title="执行人"><display/> </field>
+        <field name="startTime" title="开始时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="endTime" title="结束时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(endTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="approveComment" title="审批意见"><display/> </field>
+    </form>
+    <form name="MyTaskList" type="list" list-name="taskList" separate-columns="true" target="confirmPerfExam" paginate="false" paginate-target="MyTaskListOnly" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="name"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="category" title="分类"><display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/> </field>
+        <field name="name" title="流程名称" event="onClick" action="javascript:$.workflow.showProcessHistory('${processInstanceId}')">
+            <hyperlink target="#nowhere" title="流程图" description="${name}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="version" title="版本" sort-field="true"><display/></field>
+        <field name="taskName"  title="任务名称" event="onClick" action="javascript:$.workflow.graphTrace('${processDefinitionId}', '${processInstanceId}');">
+            <hyperlink target="#nowhere" title="${taskName}" description="${taskName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="startTime" title="任务开始时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="endTime" title="任务截止时间"><display/></field>
+        <field name="freeTime" title="有效时间"><display/></field>
+        <field name="candidates" title="执行候选人" encode-output="false"><display/></field>
+        <field name="processLink" title="处理" title-style="hide" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskId}', '${nextViewType}', '${nextView}');">
+            <hyperlink target="#nowhere" title="处理" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="TaskList" area-target="MyTaskListOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="TaskList" area-target="MyTaskListOnly"/>
+    </form>
+</forms>
+

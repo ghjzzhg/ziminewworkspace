@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="LookupDataScope">
+        <section>
+            <actions>
+                <set field="lookupId" from-field="parameters.lookupId"/>
+                <set field="lookupName" from-field="parameters.lookupName"/>
+                <set field="deptOnly" from-field="parameters.deptOnly"/>
+                <set field="deptLike" from-field="parameters.deptLike"/>
+                <set field="positionOnly" from-field="parameters.positionOnly"/>
+                <set field="positionLike" from-field="parameters.positionLike"/>
+                <set field="levelOnly" from-field="parameters.levelOnly"/>
+                <set field="levelLike" from-field="parameters.levelLike"/>
+                <set field="userValue" from-field="parameters.userValue"/>
+                <set field="dept" from-field="parameters.dept" type="Boolean"/>
+                <set field="level" from-field="parameters.level" type="Boolean"/>
+                <set field="position" from-field="parameters.position" type="Boolean"/>
+                <set field="user" from-field="parameters.user" type="Boolean"/>
+                <set field="like" from-field="parameters.like" type="Boolean"/>
+                <set field="parameters.includeStaff" value="true"/>
+                <set field="parameters.includePartyId" value="false"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/LookupOccupations.groovy"/>
+                <entity-and entity-name="Enumeration" list="levelData">
+                    <field-map field-name="enumTypeId" value="POSITION_LEVEL"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <if-compare field="parameters.iframe" operator="equals" value="true"/>
+                    </condition>
+                    <widgets>
+                        <section>
+                            <widgets>
+                                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                                    <decorator-section name="body">
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                    location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                                                <html-template location="component://oa/webapp/humanres/humanres/LookupDataScope.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </widgets>
+                    <fail-widgets>
+                        <section>
+                            <widgets>
+                                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                                    <decorator-section name="body">
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                    location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                                                <html-template location="component://oa/webapp/humanres/humanres/LookupDataScope.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </fail-widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupStaffSelect">
+        <section>
+            <actions>
+                <set field="lookupId" from-field="parameters.lookupId"/>
+                <set field="lookupName" from-field="parameters.lookupName"/>
+                <set field="partyIds" from-field="parameters.partyIds"/>
+                <set field="multiple" from-field="parameters.multiple"/>
+                <set field="onchange" from-field="parameters.onchange"/>
+                <set field="parameters.includeStaff" value="true"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                                <html-template location="component://oa/webapp/humanres/humanres/LookupStaffSelect.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--员工选择-->
+    <screen name="LookupStaff">
+        <section>
+            <condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>
+            <actions>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="查询条件"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+
+                <!-- entries needed for lookup ajax auto completer -->
+                <!-- required: entity to search in -->
+                <set field="entityName" value="StaffDetail"/>
+
+                <!-- required: fields to search a match -->
+                <!-- the first element from searchFields is returned after user selection -->
+                <!-- it might be hidden based on widget.autocompleter.displayReturnField property in widget.properties -->
+                <set field="searchFields" value="[partyId, fullName, firstName, middleName, lastName, departmentName, occupationName]"/>
+
+                <!-- optional: fields to display in the given order, default is searchFields -->
+                <set field="displayFields" value="[fullName, lastName, firstName, occupationName]"/>
+
+                <!-- optional: additional entity condition (named andCondition) added to search query -->
+                <!--<script location="component://party/webapp/partymgr/WEB-INF/actions/party/StatusCondition.groovy"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="lookupStaff" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="listLookupStaff" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="LookupEmployee">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <!--<label text="${parameters.name}"/>-->
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/humanres/humanres/LookupEmployee.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <screenlet title="查询结果" id="LookupEmployeeList">
+                                    <include-screen name="searchLookupEmployee"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="searchLookupEmployee">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/humanres/humanres/LookupEmployeeList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--岗位选择-->
+    <screen name="LookupOccupations">
+        <section>
+            <!--<condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>-->
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="name" value="parameters.name"/>
+                <set field="title" value="选择岗位"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+
+                <!-- entries needed for lookup ajax auto completer -->
+                <!-- required: entity to search in -->
+                <set field="entityName" value="DepartmentPositionView"/>
+
+                <!-- required: fields to search a match -->
+                <!-- the first element from searchFields is returned after user selection -->
+                <!-- it might be hidden based on widget.autocompleter.displayReturnField property in widget.properties -->
+                <set field="searchFields" value="[positionId, groupName, description]"/>
+
+                <!-- optional: fields to display in the given order, default is searchFields -->
+                <set field="displayFields" value="[description]"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/organization/LookupOccupations.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-results">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/humanres/humanres/LookupOccupation.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--部门选择-->
+    <screen name="LookupDepartments">
+        <section>
+            <!--<condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>-->
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="选择部门"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+                <set field="name" value="${parameters.name}"/>
+                <!-- entries needed for lookup ajax auto completer -->
+                <!-- required: entity to search in -->
+                <set field="entityName" value="PartyGroup"/>
+
+                <!-- required: fields to search a match -->
+                <!-- the first element from searchFields is returned after user selection -->
+                <!-- it might be hidden based on widget.autocompleter.displayReturnField property in widget.properties -->
+                <set field="searchFields" value="[partyId, groupName]"/>
+
+                <!-- optional: fields to display in the given order, default is searchFields -->
+                <set field="displayFields" value="[groupName]"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/organization/LookupOccupations.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-results">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/humanres/humanres/LookupDepartment.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupBudget">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupBudgetByName}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupBudget" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListBudgets" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupBudgetItem">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupBudgetItemByName}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupBudgetItem" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListBudgetItems" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupEmplPosition">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupEmplPositionByName}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+                <set field="entityName" value="EmplPosition"/>
+                <set field="searchFields" value="[emplPositionId, partyId, emplPositionTypeId]"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupEmplPosition" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListEmplPositions" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupTerminationReason">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupTerminationReason}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupTerminationReason" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListTerminationReasons" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupSalaryStep">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupSalaryStepSeqId}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupSalaryStep" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListSalarySteps" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupPayGrade">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupPayGrade}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupPayGrade" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListPayGrades" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupPayRollPreference">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupPayRollPreference}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupPayRollPreference" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListPayRollPreferences" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupUnemploymentClaim">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupUnemploymentClaim}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupUnemploymentClaim" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListUnemploymentClaims" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!-- TO BE REMOVED
+    <screen name="LookupAgreement">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupAgreement}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupAgreement" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListAgreements" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    -->
+
+    <screen name="LookupAgreementEmploymentAppl">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupAgreementEmploymentAppl}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupAgreementEmploymentAppl" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListAgreementEmploymentAppls" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupPerfReview">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupPerfReview}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupPerfReview" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListPerfReviews" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupPartyResume">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupPartyResume}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupPartyResume" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListPartyResumes" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupEmploymentApp">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.HumanResLookupEmploymentApp}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupEmploymentApp" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListEmploymentApps" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupJobRequisition">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.LookupJobReq}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <include-form name="LookupJobRequisition" location="component://oa/widget/forms/LookupForms.xml"/>
+                        <include-form name="ListLookupJobRequisition" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--  unused screen
+    <screen name="LookupJobInterview">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.LookupJobInterview}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <include-form name="LookupJobInterview" location="component://oa/widget/forms/LookupForms.xml"/>
+                        <include-form name="ListLookupJobInterview" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    -->
+    <screen name="LookupTraining">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.LookupTraining}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize" field="viewSizeDefaultValue"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupTraining" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="ListLookupTraining" location="component://oa/widget/forms/LookupForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

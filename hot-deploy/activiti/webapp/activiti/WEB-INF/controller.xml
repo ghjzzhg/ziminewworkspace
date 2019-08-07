@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!-- The controller elements that are common to all OFBiz components
+         can be found in the following xml file. A component can override the
+         elements found in the common-controller.xml file. -->
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <include location="component://common/webcommon/WEB-INF/security-controller.xml"/>
+    <include location="component://commonext/webapp/WEB-INF/controller.xml"/>
+    <include location="component://oa/webapp/humanres/WEB-INF/controller-lookup.xml"/>
+    <include location="component://activiti/webapp/activiti/WEB-INF/controller-android.xml"/>
+
+    <description>Workflow Component Site Configuration File</description>
+
+    <!-- event handlers -->
+    <handler name="java" type="request" class="org.ofbiz.webapp.event.JavaEventHandler"/>
+    <handler name="soap" type="request" class="org.ofbiz.webapp.event.SOAPEventHandler"/>
+    <handler name="service" type="request" class="org.ofbiz.webapp.event.ServiceEventHandler"/>
+    <handler name="simple" type="request" class="org.ofbiz.webapp.event.SimpleEventHandler"/>
+
+    <!-- view handlers -->
+    <handler name="screen" type="view" class="org.ofbiz.widget.renderer.macro.MacroScreenViewHandler"/>
+
+    <handler name="jsp" type="view" class="org.ofbiz.webapp.view.JspViewHandler"/>
+    <handler name="http" type="view" class="org.ofbiz.webapp.view.HttpViewHandler"/>
+    <handler name="groovy" type="request" class="org.ofbiz.webapp.event.GroovyEventHandler"/>
+
+    <preprocessor>
+        <!-- Events to run on every request before security (chains exempt) -->
+        <event name="check509CertLogin" type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="check509CertLogin"/>
+        <event name="checkExternalLoginKey" type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="checkExternalLoginKey"/>
+    </preprocessor>
+    <postprocessor>
+        <!-- Events to run on every request after all other processing (chains exempt) -->
+        <!-- <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/> -->
+    </postprocessor>
+
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+    <request-map uri="main">
+        <security https="false" auth="true"/>
+        <response name="success" type="request" value="MyTaskList"/>
+    </request-map>
+    <!-- Security Mappings -->
+    <!--<request-map uri="checkLogin" edit="false">
+        <description>Verify a user is logged in.</description>
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="checkLogin"/>
+        <response name="success" type="request" value="main"/>
+        <response name="error" type="request" value="login"/>
+    </request-map>
+
+    <request-map uri="login">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
+        <response name="success" type="request" value="main"/>
+        <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
+        <response name="error" type="view" value="login"/>
+    </request-map>
+
+    <request-map uri="logout">
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="logout"/>
+        <response name="success" type="request" value="checkLogin"/>
+        <response name="error" type="view" value="login"/>
+    </request-map>-->
+    <!-- End of Security Mappings -->
+
+    <!-- Common Mappings used for locales and timezones -->
+    <request-map uri="setSessionLocale">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.common.CommonEvents" invoke="setSessionLocale"/>
+        <response name="success" type="request" value="main"/>
+        <response name="error" type="request" value="main"/>
+    </request-map>
+    <request-map uri="setSessionTimeZone">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.common.CommonEvents" invoke="setSessionTimeZone"/>
+        <response name="success" type="request" value="main"/>
+        <response name="error" type="request" value="main"/>
+    </request-map>
+    <request-map uri="ListLocales">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="ListLocales"/>
+    </request-map>
+    <request-map uri="ListTimezones">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="ListTimezones"/>
+    </request-map>
+
+    <!-- Request Mappings -->
+    <request-map uri="ProcessList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processList"/>
+        <response name="success" type="view" value="ProcessList"/>
+    </request-map>
+    <request-map uri="ProcessListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processList"/>
+        <response name="success" type="view" value="ProcessListOnly"/>
+    </request-map>
+    <request-map uri="ApplyProcessList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="applyList"/>
+        <response name="success" type="view" value="ApplyProcessList"/>
+    </request-map>
+    <request-map uri="ApplyProcessListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="applyList"/>
+        <response name="success" type="view" value="ApplyProcessListOnly"/>
+    </request-map>
+    <request-map uri="ParticipateProcessList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="participateList"/>
+        <response name="success" type="view" value="ParticipateProcessList"/>
+    </request-map>
+    <request-map uri="ParticipateProcessListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="participateList"/>
+        <response name="success" type="view" value="ParticipateProcessListOnly"/>
+    </request-map>
+    <request-map uri="MyTaskList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="taskList"/>
+        <response name="success" type="view" value="MyTaskList"/>
+    </request-map>
+    <request-map uri="MyTaskListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="taskList"/>
+        <response name="success" type="view" value="MyTaskListOnly"/>
+    </request-map>
+    <request-map uri="ModelList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="modelList"/>
+        <response name="success" type="view" value="ModelList"/>
+    </request-map>
+    <request-map uri="ModelListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="modelList"/>
+        <response name="success" type="view" value="ModelListOnly"/>
+    </request-map>
+    <request-map uri="CreateModel">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CreateModel"/>
+    </request-map>
+    <request-map uri="saveModel">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="saveModel"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateModelCategory">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="updateCategory"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="DefineModel">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ModelDefinition"/>
+    </request-map>
+    <request-map uri="deployModel">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="deployModel"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="exportModel">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="exportModel"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="deleteModel">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ModelController.groovy" invoke="deleteModel"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="toggleProcessSuspend">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="toggleProcessSuspend"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="exportProcess">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="exportProcess"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="convert2Model">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="convert2Model"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteProcess">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="deleteProcess"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--启动一个流程-->
+    <request-map uri="startProcess">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="startProcess"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--流程任务审批通过-->
+    <request-map uri="passTask">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="passTask"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--流程任务审批驳回-->
+    <request-map uri="rejectTask">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="rejectTask"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--终止流程任务-->
+    <request-map uri="terminateTask">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="terminateTask"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--转办页面-->
+    <request-map uri="allot">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="allot"/>
+    </request-map>
+    <!--转办-->
+    <request-map uri="setAllot">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="setAllot"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--流程任务驳回至发起人-->
+    <request-map uri="backToStart">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="backToStart"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ProcessHistory">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processHistory"/>
+        <response name="success" type="view" value="ProcessHistory"/>
+    </request-map>
+    <request-map uri="UploadProcess">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UploadProcess"/>
+    </request-map>
+    <request-map uri="uploadProcess">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="uploadProcess"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ActFormList">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="formList"/>
+        <response name="success" type="view" value="ActFormList"/>
+    </request-map>
+    <request-map uri="ActFormListOnly">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="formList"/>
+        <response name="success" type="view" value="ActFormListOnly"/>
+    </request-map>
+    <request-map uri="CreateActForm">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="initActForm"/>
+        <response name="success" type="view" value="CreateActForm"/>
+    </request-map>
+    <request-map uri="createActForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createActFormExt"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateActForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateActFormExt"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteActForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteActFormExt"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="CreateActTaskExtForm">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="initActTaskExtForm"/>
+        <response name="success" type="view" value="CreateActTaskExtForm"/>
+    </request-map>
+
+    <request-map uri="CreateLineActTaskExtForm">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="initLineActTaskExtForm"/>
+        <response name="success" type="view" value="CreateLineActTaskExtForm"/>
+    </request-map>
+
+    <request-map uri="createActTaskExtForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createActTaskExtForm"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateActTaskExtForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateActTaskExtForm"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteActTaskExtForm">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteActTaskExtForm"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SetTaskUser">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="initActTaskUser"/>
+        <response name="success" type="view" value="SetTaskUser"/>
+    </request-map>
+    <request-map uri="saveTaskUser">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveDataScope"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ProcessTaskForm">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ProcessTaskForm"/>
+    </request-map>
+
+    <request-map uri="showUploadFileView">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.content.content.UploadFileService" invoke="selectUploadFileList"/>
+        <response name="success" type="view" value="showUploadFileView"/>
+    </request-map>
+    <request-map uri="setControlInfo">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setControlInfo"/>
+    </request-map>
+    <request-map uri="showControlPage">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showControlPage"/>
+    </request-map>
+    <request-map uri="setText">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setText"/>
+    </request-map>
+    <request-map uri="setCheckboxs">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setCheckboxs"/>
+    </request-map>
+    <request-map uri="setRadios">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setRadios"/>
+    </request-map>
+    <request-map uri="setSelect">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setSelect"/>
+    </request-map>
+    <request-map uri="setTextarea">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setTextarea"/>
+    </request-map>
+    <request-map uri="setFormInfo">
+        <security https="true" auth="true"/>
+        <event type="java" path="activiti.ActivitiProcessUtils" invoke="setFormInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showContent">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showContent"/>
+    </request-map>
+    <request-map uri="setDepartment">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="activitiChooser"/>
+    </request-map>
+    <request-map uri="showContentPage">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showContentPage"/>
+    </request-map>
+    <request-map uri="setOtherConstant">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="setOtherConstant"/>
+    </request-map>
+    <request-map uri="searchConstantList">
+        <security https="true" auth="true"/>
+        <event type="java" path="activiti.ActivitiProcessUtils" invoke="searchConstantList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveHiddenChooserValue">
+        <security https="true" auth="true"/>
+        <event type="java" path="activiti.ActivitiProcessUtils" invoke="saveHiddenChooserValue"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchChooseValueList">
+        <security https="true" auth="true"/>
+        <event type="java" path="activiti.ActivitiProcessUtils" invoke="searchChooseValueList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!-- end of request mappings -->
+
+    <!-- View Mappings -->
+    <view-map name="ListLocales" type="screen" page="component://common/widget/LookupScreens.xml#ListLocales"/>
+    <view-map name="ListTimezones" type="screen" page="component://common/widget/LookupScreens.xml#ListTimezones"/>
+
+    <view-map name="ProcessList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ProcessList"/>
+    <view-map name="ApplyProcessList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ApplyProcessList"/>
+    <view-map name="ProcessListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ProcessListOnly"/>
+    <view-map name="ApplyProcessListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ApplyProcessListOnly"/>
+    <view-map name="ParticipateProcessList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ParticipateProcessList"/>
+    <view-map name="ParticipateProcessListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ParticipateProcessListOnly"/>
+    <view-map name="MyTaskList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#MyTaskList"/>
+    <view-map name="MyTaskListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#MyTaskListOnly"/>
+    <view-map name="ModelList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ModelList"/>
+    <view-map name="ModelListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ModelListOnly"/>
+    <view-map name="CreateModel" type="screen" page="component://activiti/widget/WorkflowScreens.xml#CreateModel"/>
+    <view-map name="ModelDefinition" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ModelDefinition"/>
+    <view-map name="UploadProcess" type="screen" page="component://activiti/widget/WorkflowScreens.xml#UploadProcess"/>
+    <view-map name="ActFormList" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ActFormList"/>
+    <view-map name="ActFormListOnly" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ActFormListOnly"/>
+    <view-map name="CreateActForm" type="screen" page="component://activiti/widget/WorkflowScreens.xml#CreateActForm"/>
+    <view-map name="ProcessHistory" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ProcessHistory"/>
+    <view-map name="SetTaskUser" type="screen" page="component://activiti/widget/WorkflowScreens.xml#SetTaskUser"/>
+    <view-map name="CreateActTaskExtForm" type="screen" page="component://activiti/widget/WorkflowScreens.xml#CreateActTaskExtForm"/>
+    <view-map name="ProcessTaskForm" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ProcessTaskForm"/>
+    <view-map name="showUploadFileView" type="screen" page="component://content/widget/FileScreens.xml#showUploadFileView"/>
+    <view-map name="setControlInfo" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setControlInfo"/>
+    <view-map name="showControlPage" type="screen" page="component://activiti/widget/WorkflowScreens.xml#showControlPage"/>
+
+    <view-map name="setText" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setText"/>
+    <view-map name="setCheckboxs" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setCheckboxs"/>
+    <view-map name="setRadios" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setRadios"/>
+    <view-map name="setSelect" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setSelect"/>
+    <view-map name="setTextarea" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setTextarea"/>
+    <view-map name="showContent" type="screen" page="component://activiti/widget/WorkflowScreens.xml#showContent"/>
+    <view-map name="activitiChooser" type="screen" page="component://activiti/widget/WorkflowScreens.xml#activitiChooser"/>
+    <view-map name="showContentPage" type="screen" page="component://activiti/widget/WorkflowScreens.xml#showContentPage"/>
+    <view-map name="setOtherConstant" type="screen" page="component://activiti/widget/WorkflowScreens.xml#setOtherConstant"/>
+    <view-map name="allot" type="screen" page="component://activiti/widget/WorkflowScreens.xml#allot"/>
+    <view-map name="CreateLineActTaskExtForm" type="screen" page="component://activiti/widget/WorkflowScreens.xml#CreateLineActTaskExtForm"/>
+</site-conf>

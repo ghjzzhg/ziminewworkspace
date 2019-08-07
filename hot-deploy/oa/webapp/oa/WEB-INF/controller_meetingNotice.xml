@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--发布会议通知-->
+    <request-map uri="MeetingNoticeList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchMeetingNotice"/>
+        <response name="success" type="view" value="MeetingNoticeList"/>
+    </request-map>
+    <request-map uri="MeetingNoticeRelease">
+        <description>发布会议页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="MeetingNoticeRelease"/>
+    </request-map>
+    <request-map uri="saveMeetingNotice">
+        <description>保存会议通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveMeetingNotice"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveEnumeration">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createPlanType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchMeetingNotice">
+        <description>搜索会议通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchMeetingNotice"/>
+        <response name="success" type="view" value="SearchMeetingNoticeList"/>
+    </request-map>
+    <request-map uri="meetingNoticeInfo">
+        <description>会议通知签收反馈</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="meetingNoticeInfo"/>
+        <response name="success" type="view" value="MeetingNoticeInfo"/>
+    </request-map>
+    <request-map uri="saveMeetingNoticeFeedback">
+        <description>保存反馈</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveFeedbackOfMeetingNotice"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateSignInRecord">
+        <description>更新签收状态</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updateSignInRecord"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="findRecordList">
+        <description>获取签收列表</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findRecord"/>
+        <response name="success" type="view" value="findRecordList"/>
+    </request-map>
+    <request-map uri="summaryRelease">
+        <description>发布纪要页面</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showPersonList"/>
+        <response name="success" type="view" value="summaryRelease"/>
+    </request-map>
+    <request-map uri="saveMeetingNoticeSummary">
+        <description>保存纪要</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveMeetingNoticeSummary"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="meetingWorkPlan">
+        <description>添加子计划页面</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="meetingWorkPlan"/>
+    </request-map>
+    <request-map uri="meetingWorkPlanCreate">
+        <description>保存工作计划</description>
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.oa.MeetingNoticeEvents" invoke="addWorkPlan"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="BrowseMeetingSummary">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchMeetingNoticeSummary"/>
+        <response name="success" type="view" value="BrowseMeetingSummary"/>
+    </request-map>
+    <request-map uri="searchMeetingSummary">
+        <description>搜索</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchMeetingNoticeSummary"/>
+        <response name="success" type="view" value="MeetingSummaryList"/>
+    </request-map>
+    <request-map uri="deleteMeetingNoticeSummary">
+        <description>删除纪要</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteMeetingNoticeSummary"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteMeetingNotice">
+        <description>删除会议通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteMeetingNotice"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showMeetingSummaryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showPersonList"/>
+        <response name="success" type="view" value="showMeetingSummaryInfo"/>
+    </request-map>
+
+    <view-map name="MeetingNoticeList" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#MeetingNoticeList"/>
+    <view-map name="MeetingNoticeRelease" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#MeetingNoticeRelease"/>
+    <view-map name="summaryRelease" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#summaryRelease"/>
+    <view-map name="showMeetingSummaryInfo" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#showMeetingSummaryInfo"/>
+    <view-map name="BrowseMeetingSummary" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#BrowseMeetingSummary"/>
+    <view-map name="SearchMeetingNoticeList" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#SearchMeetingNoticeList"/>
+    <view-map name="MeetingNoticeInfo" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#MeetingNoticeInfo"/>
+
+    <view-map name="meetingWorkPlan" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#meetingWorkPlan"/>
+    <view-map name="MeetingSummaryList" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#MeetingSummaryList"/>
+    <view-map name="findRecordList" type="screen" page="component://oa/widget/osManager/MeetingNoticeScreens.xml#findRecordList"/>
+</site-conf>

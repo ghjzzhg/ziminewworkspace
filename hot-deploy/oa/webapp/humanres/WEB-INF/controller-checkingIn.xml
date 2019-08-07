@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--考勤信息-->
+    <request-map uri="CheckingInInfo">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CheckingInInfo"/>
+    </request-map>
+
+    <request-map uri="SearchCheckingInInfoForm">
+        <description>搜索</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListCheckingInInfo"/>
+    </request-map>
+    <request-map uri="deleteCheckingIn">
+        <description>delete</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteCheckingIn"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--新增考勤信息-->
+    <request-map uri="AddCheckingIn">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AddCheckingIn"/>
+    </request-map>
+    <request-map uri="CheckingStatistics">
+        <description>考勤统计</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CheckingStatistics"/>
+    </request-map>
+    <!--加班-->
+    <request-map uri="searchOvertime">
+        <description>搜索加班信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchOvertime"/>
+        <response name="success" type="view" value="OvertimeList"/>
+    </request-map>
+    <request-map uri="AddOvertime">
+        <description>新增加班</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AddOvertime"/>
+    </request-map>
+    <request-map uri="auditorOvertime">
+        <description>审核加班</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="auditorOvertime"/>
+    </request-map>
+    <request-map uri="saveAuditOvertime">
+        <description>保存加班审核</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAuditOvertime"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveOvertime">
+        <description>保存加班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveOvertime"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteOvertime">
+        <description>删除加班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteOvertime"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="OvertimeStatistics">
+        <description>加班统计</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchOvertime"/>
+        <response name="success" type="view" value="OvertimeStatistics"/>
+    </request-map>
+    <request-map uri="searcheCheckingInStatistics">
+        <description>统计搜索</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CheckingInStatisticsResult"/>
+    </request-map>
+    <request-map uri="staffChekingInCalendar">
+        <description>签到信息日历</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="staffChekingInCalendar"/>
+    </request-map>
+    <request-map uri="getStaffCheckingStatus">
+        <description>签到日历数据</description>
+        <event type="java" path="org.ofbiz.oa.CalendarScheduleEvents" invoke="getCheckingInStatus"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <!--日历-->
+    <request-map uri="LookCheckingStatistics">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookCheckingStatistics"/>
+    </request-map>
+    <request-map uri="HolidaySet">
+        <description>考勤设置</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchHoliday"/>
+        <response name="success" type="view" value="HolidaySet"/>
+    </request-map>
+    <request-map uri="AddHolidayInfo">
+        <description>新增假期信息/update</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AddHolidayInfo"/>
+    </request-map>
+    <request-map uri="saveHoliday">
+        <description>save假期信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveHoliday"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchHoliday">
+        <description>serach假期信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchHoliday"/>
+        <response name="success" type="view" value="ListHolidayInfo"/>
+    </request-map>
+    <request-map uri="deleteHoliday">
+        <description>delete假期</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteHoliday"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--查看假期信息-->
+    <request-map uri="LookHolidayInfo">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookHolidayInfo"/>
+    </request-map>
+    <request-map uri="ListOfWork">
+        <description>查看班次信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListOfWork"/>
+    </request-map>
+
+    <!--ajax查看班次信息-->
+    <request-map uri="WorkNumAjax">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkNumAjax"/>
+    </request-map>
+    <request-map uri="EditListOfWork">
+        <description>增加班次信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditListOfWork"/>
+    </request-map>
+    <request-map uri="saveListOfWork">
+        <description>save班次</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveListOfWork"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchListOfWork">
+        <description>搜索班次</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListOfWorkList"/>
+    </request-map>
+    <request-map uri="findListOfWorkAll">
+        <description>findAll</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findListOfWorkAll"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteListOfWork">
+        <description>delete班次</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteListOfWork"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ListOfWorkByWeek">
+        <description>班制定义</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchListOfWorkByWeek"/>
+        <response name="success" type="view" value="ListOfWorkByWeek"/>
+    </request-map>
+    <request-map uri="EditListOfWorkByWeek">
+        <description>班制添加</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditListOfWorkByWeek"/>
+    </request-map>
+    <request-map uri="saveListOfWorkByWeek">
+        <description>save班制</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveListOfWorkByWeek"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchListOfWorkByWeek">
+        <description>搜索班制</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchListOfWorkByWeek"/>
+        <response name="success" type="view" value="ListOfWorkByWeekList"/>
+    </request-map>
+    <request-map uri="deleteListOfWorkByWeek">
+        <description>delete班制</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteListOfWorkByWeek"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="getPersonalWorkSchdule">
+        <description>个人排班</description>
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.oa.CalendarScheduleEvents" invoke="findPersonalSchedule"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="savePersonalWorkSchedule">
+        <description>save个人排班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePersonalWorkSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="deletePersonalWorkSchedule">
+        <description>delete个人排班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePersonalWorkSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="AutoWorkScheduleGroup">
+        <description>班组select</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AutoWorkScheduleGroup"/>
+    </request-map>
+
+    <!--查看班制信息-->
+    <request-map uri="WorkRegimeShow">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkRegimeShow"/>
+    </request-map>
+
+    <request-map uri="WorkSchedule">
+        <description>排班管理</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkSchedule"/>
+        <response name="success" type="view" value="WorkSchedule"/>
+    </request-map>
+    <request-map uri="EditWorkSchedule">
+        <description>新增排班信息</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditWorkSchedule"/>
+    </request-map>
+    <request-map uri="saveWorkSchedule">
+        <description>save排班信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveWorkSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="AutoScheduling">
+        <description>新增自动排班</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="AutoScheduling"/>
+    </request-map>
+    <request-map uri="getAutoWorkScheduleSource">
+        <description>日历数据</description>
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.oa.CalendarScheduleEvents" invoke="returnAutoSchedul"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="getGroupSchedule">
+        <description>日历数据</description>
+        <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.oa.CalendarScheduleEvents" invoke="getGroupSchedule"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="showAutoSchedule">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showAutoSchedule"/>
+    </request-map>
+    <request-map uri="deleteautoSchedule">
+        <description>delete自动排班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteautoSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteWorkCycleSchedule">
+        <description>delete周期排班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteWorkCycleSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveAutoSchedule">
+        <description>save自动排班</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAutoSchedule"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="WorkerCheckingIn">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkerCheckingIn"/>
+    </request-map>
+
+    <request-map uri="DepartmentScheduleCalendar">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="DepartmentScheduleCalendar"/>
+    </request-map>
+    <request-map uri="searchScheduleOfWork">
+        <description>搜索排班信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkSchedule"/>
+        <response name="success" type="view" value="WorkScheduleList"/>
+    </request-map>
+
+    <request-map uri="saveCheckingIn">
+        <description>save考勤信息</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCheckingIn"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ShowPerson">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ShowPerson"/>
+    </request-map>
+    <request-map uri="ShowStaff">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ShowStaff"/>
+    </request-map>
+    <request-map uri="showCalendar">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookCheckingStatistics"/>
+    </request-map>
+    <!--自动排班日历-->
+    <request-map uri="AutoSchedulingCalendar">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookCheckingStatistics"/>
+    </request-map>
+    <!--lxx View Map start-->
+
+    <!--lxx View Map end-->
+
+
+
+    <request-map uri="Test">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="Test"/>
+    </request-map>
+    <view-map name="Test" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#Test"/>
+    <view-map name="CheckingInInfo" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#CheckingInInfo"/>
+    <view-map name="WorkRegimeShow" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#WorkRegimeShow"/>
+    <view-map name="WorkSchedule" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#WorkSchedule"/>
+    <view-map name="EditWorkSchedule" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#EditWorkSchedule"/>
+    <view-map name="AutoScheduling" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#AutoScheduling"/>
+    <view-map name="LookCheckingStatistics" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#LookCheckingStatistics"/>
+    <view-map name="WorkerCheckingIn" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#WorkerCheckingIn"/>
+    <view-map name="ShowPerson" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ShowPerson"/>
+    <view-map name="ShowStaff" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ShowStaff"/>
+    <view-map name="EditListOfWorkByWeek" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#EditListOfWorkByWeek"/>
+    <view-map name="ListOfWorkByWeek" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListOfWorkByWeek"/>
+    <view-map name="WorkNumAjax" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#WorkNumAjax"/>
+    <view-map name="EditListOfWork" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#EditListOfWork"/>
+    <view-map name="ListOfWork" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListOfWork"/>
+    <view-map name="LookHolidayInfo" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#LookHolidayInfo"/>
+    <view-map name="AddHolidayInfo" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#AddHolidayInfo"/>
+    <view-map name="AddCheckingIn" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#AddCheckingIn"/>
+    <view-map name="CheckingStatistics" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#CheckingStatistics"/>
+    <view-map name="OvertimeStatistics" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#OvertimeStatistics"/>
+    <view-map name="AddOvertime" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#AddOvertime"/>
+    <view-map name="auditorOvertime" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#auditorOvertime"/>
+    <view-map name="OvertimeList" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#OvertimeList"/>
+    <view-map name="HolidaySet" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#HolidaySet"/>
+    <view-map name="ListOfWorkList" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListOfWorkList"/>
+    <view-map name="ListOfWorkByWeekList" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListOfWorkByWeekList"/>
+    <view-map name="AutoWorkScheduleGroup" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#AutoWorkScheduleGroup"/>
+    <view-map name="ListHolidayInfo" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListHolidayInfo"/>
+    <view-map name="showAutoSchedule" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#showAutoSchedule"/>
+    <view-map name="DepartmentScheduleCalendar" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#DepartmentScheduleCalendar"/>
+    <view-map name="WorkScheduleList" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#WorkScheduleList"/>
+    <view-map name="CheckingInStatisticsResult" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#CheckingInStatisticsResult"/>
+    <view-map name="ListCheckingInInfo" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#ListCheckingInInfo"/>
+    <view-map name="staffChekingInCalendar" type="screen" page="component://oa/widget/osManager/CheckingInScreens.xml#staffChekingInCalendar"/>
+
+</site-conf>

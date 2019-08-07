@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>OA Common Services</description>
+    <vendor>RexTec</vendor>
+    <version>1.0</version>
+    <service name="getNextSequenceId" engine="groovy" location="component://oa/src/org/ofbiz/oa/OACommonServices.groovy"
+             invoke="getNextSequenceId" auth="true">
+        <description>获取带有前缀的id</description>
+        <attribute name="entityName" type="String" mode="IN" optional="false"/>
+        <attribute name="prefix" type="String" mode="IN" optional="true"/>
+        <attribute name="staggerMax" type="java.lang.Integer" mode="IN" optional="false" default-value="1"/>
+        <attribute name="seq" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchUniqueNumber" engine="groovy" location="component://oa/src/org/ofbiz/oa/OACommonServices.groovy" invoke="searchUniqueNumber" auth="true">
+        <description>生成编号</description>
+        <attribute name="entityName" type="String" mode="IN" optional="false"/>
+        <attribute name="numName" type="String" mode="IN" optional="true"/>
+        <attribute name="prefix" type="String" mode="IN" optional="true"/>
+        <attribute name="number" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="verifyViewPermissions" engine="groovy" location="component://oa/src/org/ofbiz/oa/OACommonServices.groovy" invoke="verifyViewPermissions" auth="true">
+        <description>查询符合查看权限的资料</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"><description>用户ID</description></attribute>
+        <attribute name="entityName" type="String" mode="IN" optional="true"><description>表名</description></attribute>
+        <attribute name="entityId" type="String" mode="IN" optional="true"><description>主键ID</description></attribute>
+        <attribute name="isSelect" type="Boolean" mode="IN" optional="true"><description>是否查看所有</description></attribute>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="saveEnumeration" engine="groovy" location="component://oa/src/org/ofbiz/oa/OACommonServices.groovy" invoke="saveEnumeration" auth="true">
+        <description>查询符合查看权限的资料</description>
+        <attribute name="enumTypeId" type="String" mode="IN" optional="true"><description>用户ID</description></attribute>
+        <attribute name="enumName" type="String" mode="IN" optional="true"><description>表名</description></attribute>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="lookUpChooserInfo" engine="groovy" location="component://oa/src/org/ofbiz/oa/OACommonServices.groovy" invoke="lookUpChooserInfo" auth="true">
+        <description>查询部门、岗位、人员信息</description>
+        <attribute name="chooserType" type="String" mode="IN" optional="true"><description>选择器类型：部门(LookupDepartment)，岗位(LookupOccupation)，职级，人员(LookupStaff)</description></attribute>
+        <attribute name="chooserId" type="String" mode="IN" optional="true"><description>选择的id</description></attribute>
+        <attribute name="dropDown" type="String" mode="IN" optional="true"><description>是否启用下拉框</description></attribute>
+        <attribute name="dropDownType" type="String" mode="IN" optional="true"><description>使用的下拉框类型</description></attribute>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchLookupEmployee" engine="groovy" location="component://oa/src/org/ofbiz/oa/FindLookUpEmployee.groovy" invoke="searchLookupEmployee" auth="true">
+        <description>查询部门、岗位、人员信息</description>
+        <attribute name="name" type="String" mode="IN" optional="true"><description>搜索参数</description></attribute>
+        <attribute name="fullName" type="String" mode="IN" optional="true"><description>用户名</description></attribute>
+        <attribute name="lookUpGroupName" type="String" mode="IN" optional="true"><description>部门</description></attribute>
+        <attribute name="showlookUpGroupName" type="String" mode="IN" optional="true"><description>部门</description></attribute>
+        <attribute name="lookUpOccupation" type="String" mode="IN" optional="true"><description>岗位</description></attribute>
+        <attribute name="showlookUpOccupation" type="String" mode="IN" optional="true"><description>岗位</description></attribute>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchInbox" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Inbox.groovy" invoke="searchInbox">
+        <description>查询收件箱信息</description>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" mode="OUT" type="Map" optional="true"/>
+    </service>
+
+    <service name="checkEmail" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Inbox.groovy" invoke="checkEmail">
+        <description>查看邮件详情</description>
+        <attribute name="communicationEventId" type="String" mode="IN" optional="true"/>
+        <attribute name="type" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="deleteEmail" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Inbox.groovy" invoke="deleteEmail">
+        <description>逻辑删除邮件</description>
+        <attribute name="communicationEventIdList" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="removeEmail" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Inbox.groovy" invoke="removeEmail">
+        <description>物理删除邮件</description>
+        <attribute name="communicationEventIdList" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchTrash" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Trash.groovy" invoke="searchTrash">
+        <description>查询垃圾箱信息</description>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" mode="OUT" type="Map" optional="true"/>
+    </service>
+
+    <service name="sendEmail" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/SendEmail.groovy" invoke="sendEmail">
+        <description>发送邮件</description>
+        <attribute name="toString" mode="IN" type="String" optional="true"/>
+        <attribute name="ccString" mode="IN" type="String" optional="true"/>
+        <attribute name="bccString" mode="IN" type="String" optional="true" />
+        <attribute name="content" mode="IN" type="String" optional="true" allow-html="any"/>
+        <attribute name="subject" mode="IN" type="String" optional="true"/>
+        <attribute name="fileId" mode="IN" type="String" optional="true"/>
+        <attribute name="type" mode="IN" type="String" optional="true"/>
+        <attribute name="data" mode="OUT" type="Map" optional="true"/>
+    </service>
+
+    <service name="searchDraft" engine="groovy" location="component://oa/webapp/email/WEB-INF/actions/Draft.groovy" invoke="searchDraft">
+        <description>查询草稿信息</description>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="data" mode="OUT" type="Map" optional="true"/>
+    </service>
+
+    <service name="sendCommEventAsEmail" engine="java"
+             location="org.ofbiz.party.communication.CommunicationEventServices" invoke="sendCommEventAsEmail" auth="true"
+             transaction-timeout="7200">  <!-- set transaction time out for 2 hours, since this sometimes may run as an async service to send emails to lots of people -->
+        <description>Sends a communication event as a single-part email using sendMail.  All parameters come from CommunicationEvent, which must
+            be of type EMAIL_COMMUNICATION. Will look for a contactMechIdTo to send the emails</description>
+        <attribute name="communicationEventId" type="String" mode="IN" optional="false"/>
+    </service>
+</services>

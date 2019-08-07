@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="ListEnums" type="list" paginate="false" list-name="listEnums" separate-columns="true" target="" paginate-target="" view-size="2"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="enumId"><hidden/></field>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="description" title="名称">
+            <display>
+                <in-place-editor url="updateEnum" cancel-control="button" cancel-text="取消" click-to-edit-text="点击编辑" ok-control="确定" saving-text="更新..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="enumId" from-field="enumId"/>
+                    <field-map field-name="enumTypeId" from-field="enumTypeId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="enumCode" title="编码">
+            <display>
+                <in-place-editor url="updateEnum" cancel-control="button" cancel-text="取消" click-to-edit-text="点击编辑" ok-control="确定" saving-text="更新..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="enumId" from-field="enumId"/>
+                    <field-map field-name="enumTypeId" from-field="enumTypeId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="sequenceId" title="排序">
+            <display>
+                <in-place-editor url="updateEnum" cancel-control="button" cancel-text="取消" click-to-edit-text="点击编辑" ok-control="确定" saving-text="更新..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="enumId" from-field="enumId"/>
+                    <field-map field-name="enumTypeId" from-field="enumTypeId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:deleteEnum('${enumId}','${enumTypeId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="EditEnumsWrapper" area-target="EditEnums?enumTypeId=${enumTypeId}"/>
+        <on-event-update-area event-type="sort-column" area-id="EditEnumsWrapper" area-target="EditEnums?enumTypeId=${enumTypeId}"/>
+    </form>
+    <form name="AddEnum" type="single" target="addEnum"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar" default-map-name="enumeration">
+        <field name="enumTypeId"><hidden/></field>
+        <field name="description" position="1" title="名称" sort-field="true" required-field="true"><text size="15"/></field>
+        <field name="enumCode" position="2" title="编码" sort-field="true" required-field="true">
+            <text size="10"/>
+        </field>
+        <field name="sequenceId" position="1" title="排序" required-field="true"><text size="2"/></field>
+        <field name="saveLink" position="2" widget-style="smallSubmit" title-style="hide" title="保存">
+            <submit/>
+        </field>
+        <on-event-update-area event-type="submit" area-id="EditEnumsWrapper" area-target="EditEnums?enumTypeId=${parameters.enumTypeId}"/>
+    </form>
+</forms>
+

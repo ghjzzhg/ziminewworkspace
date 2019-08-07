@@ -1,0 +1,465 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="FindRecordManagement">
+        <security  auth="true"/>
+        <event type="service" invoke="searchRecordManagement"></event>
+        <response name="success" type="view" value="FindRecordManagement"/>
+    </request-map>
+
+    <request-map uri="ListRecordForDepartment">
+    <description>搜索档案</description>
+    <security https="false" auth="true"/>
+    <event type="service" invoke="searchRecordManagement"/>
+    <response name="success" type="view" value="ListRecordForDepartment"/>
+    </request-map>
+
+    <request-map uri="ViewEmployeeRecord">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ViewEmployeeRecord"/>
+    </request-map>
+
+    <request-map uri="Overview">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="Overview"/>
+    </request-map>
+
+    <request-map uri="SalaryManagementList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="SalaryManagementList"/>
+        <response name="success" type="view" value="SalaryManagementList"/>
+    </request-map>
+
+    <request-map uri="TrainManagementList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TrainManagementList"/>
+    </request-map>
+
+    <request-map uri="RewardsAndPunishmentRecordList">
+        <security https="false" auth="true"/>
+        <!--<event type="service" invoke="findRewardsAndPunishment"></event>-->
+        <response name="success" type="view" value="RewardsAndPunishmentRecordList"/>
+    </request-map>
+
+    <request-map uri="ContractRecordList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ContractRecordList"/>
+    </request-map>
+
+    <request-map uri="DepartureManagement">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="DepartureManagement"/>
+    </request-map>
+
+    <request-map uri="TransactionRecordList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TransactionRecordList"/>
+    </request-map>
+
+    <request-map uri="WorkExperienceList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkExperienceList"/>
+    </request-map>
+
+    <request-map uri="FindRecord">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FindRecord"/>
+    </request-map>
+
+    <request-map uri="EducationExperienceList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EducationExperienceList"/>
+    </request-map>
+
+    <request-map uri="EducationSituationCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EducationSituationCreate"/>
+    </request-map>
+
+    <request-map uri="editFamilySituation">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editFamilySituation"/>
+    </request-map>
+
+    <request-map uri="createFamilySituation">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="createFamilySituation"/>
+    </request-map>
+
+    <request-map uri="FamilySituationList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FamilySituationList"/>
+    </request-map>
+
+    <request-map uri="EditRecord">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchRecordManagement"></event>
+        <response name="success" type="view" value="EditRecord"/>
+    </request-map>
+
+    <request-map uri="WorkSituationCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkSituationCreate"/>
+    </request-map>
+
+    <request-map uri="TransactionRecordCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TransactionRecordCreate"/>
+    </request-map>
+    <request-map uri="TransactionRecord">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="transactionRecord"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="editDeparture">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editDeparture"/>
+    </request-map>
+    <request-map uri="editDepartures">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editDepartures"/>
+    </request-map>
+
+    <request-map uri="ContractRecordCreate">
+        <security https="false" auth="true"/>
+        <!--<event type="service" invoke="editContract"/>-->
+        <response name="success" type="view" value="ContractRecordCreate"/>
+    </request-map>
+
+    <request-map uri="editContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editContract"/>
+        <response name="success" type="view" value="ContractRecordCreate"/>
+    </request-map>
+
+    <request-map uri="RewardsAndPunishmentRecordCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="RewardsAndPunishmentRecordCreate"/>
+    </request-map>
+
+    <request-map uri="TrainManagementCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TrainManagementCreate"/>
+    </request-map>
+
+    <request-map uri="SalaryManagementCreate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSalaryInfo"/>
+        <response name="success" type="view" value="SalaryManagementCreate"/>
+    </request-map>
+
+    <request-map uri="saveSalary">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveSalary"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeSalaryById">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeSalaryById"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ViewEmployeeInformation">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ViewEmployeeInformation"/>
+    </request-map>
+
+    <request-map uri="TransferRecord">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="TransferRecord"/>
+    </request-map>
+
+    <request-map uri="DepartureManagementForEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchDeparture"></event>
+        <response name="success" type="view" value="DepartureManagementForEmployee"/>
+    </request-map>
+
+    <request-map uri="changeContractType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeContractType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ContractForEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ListContractForEmployee"/>
+        <response name="success" type="view" value="ContractForEmployee"/>
+    </request-map>
+
+    <request-map uri="searchContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ListContractForEmployee"/>
+        <response name="success" type="view" value="contractList"/>
+    </request-map>
+
+    <request-map uri="FindContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="FindContract"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="RewardAndPunishment">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchRewardAndPunishment"></event>
+        <response name="success" type="view" value="RewardAndPunishment"/>
+    </request-map>
+
+    <request-map uri="TrainForEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchTrain"></event>
+        <response name="success" type="view" value="TrainForEmployee"/>
+    </request-map>
+
+    <request-map uri="CreateEmployee">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CreateEmployee"/>
+    </request-map>
+    <request-map uri="CreateEmployees">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CreateEmployees"/>
+    </request-map>
+
+    <request-map uri="FindRecordForDeparture">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FindRecordForDeparture"/>
+    </request-map>
+
+    <request-map uri="EmployeeDetail">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EmployeeDetail"/>
+    </request-map>
+
+    <request-map uri="searchCardId">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchCardId"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="ListEmployeeRecord">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListEmployeeRecord"/>
+    </request-map>
+
+    <request-map uri="ListDepartureManagement">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchDeparture"></event>
+        <response name="success" type="view" value="ListDepartureManagement"/>
+    </request-map>
+
+    <request-map uri="postChangeList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="postChangeList"/>
+    </request-map>
+
+    <request-map uri="saveEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveEmployee"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeEmployee"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveFamilySituation">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveFamilySituation"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeFamilySituation">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeFamilySituation"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveEducational">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveEducational"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="removeEducation">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeEducation"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveWorkExperience">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveWorkExperience"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeWorkExperience">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeWorkExperience"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+    <request-map uri="savePostChange">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePostChange"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removePostChange">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removePostChange"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveDeparture">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveDeparture"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveContract"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchPartyInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPartyInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="cancelContract">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="cancelContract"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveReword">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveReword"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeReword">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeReword"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="removeTrain">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeTrain"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="saveTrain">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveTrain"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="contractList">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="contractList"/>
+    </request-map>
+
+    <request-map uri="rewordList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchRewardAndPunishment"></event>
+        <response name="success" type="view" value="rewordList"/>
+    </request-map>
+
+    <request-map uri="trainList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchTrain"></event>
+        <response name="success" type="view" value="trainList"/>
+    </request-map>
+
+    <request-map uri="searchPostChange">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="searchPostChange"/>
+    </request-map>
+
+    <request-map uri="FindRecordForPage">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FindRecordForPage"/>
+    </request-map>
+
+    <request-map uri="HrCreateUserLogin">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="HrCreateUserLogin"/>
+    </request-map>
+    <request-map uri="hrCreateUserLogin">
+        <security https="false" auth="true"/>
+        <event type="service" path="" invoke="createUserLoginWithSecurityGroup"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="HrEditUserLogin">
+        <security https="false" auth="true"/>
+        <event type="service" path="" invoke="hrEditUserLogin"/>
+        <response name="success" type="view" value="HrEditUserLogin"/>
+    </request-map>
+    <request-map uri="hrUpdateUserLogin">
+        <security https="false" auth="true"/>
+        <event type="service" path="" invoke="updateUserLoginWithSecurityGroup"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="uploadExcels">
+        <security https="false" auth="true"/>
+        <event type="java" invoke="uploadExcels" path="org.ofbiz.content.content.ExcelImport"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--+++++++++++++ <request-map uri="CreateEmployee">
+    <security https="false" auth="true"/>
+    <response name="success" type="view" value="CreateEmployee"/>
+</request-map>++++++++++++++++++++++++++FindRecordManagement++++++++++++++++++++++++++++++++-->
+    <view-map name="FindRecordManagement" type="screen" page="component://oa/widget/RecordManagementScreens.xml#findRecordManagement"/>
+    <view-map name="ListRecordForDepartment" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListRecordForDepartment"/>
+    <view-map name="FindRecord" type="screen" page="component://oa/widget/RecordManagementScreens.xml#FindRecord"/>
+    <view-map name="FindRecordForPage" type="screen" page="component://oa/widget/RecordManagementScreens.xml#FindRecordForPage"/>
+    <view-map name="Overview" type="screen" page="component://oa/widget/RecordManagementScreens.xml#Overview"/>
+    <view-map name="ViewEmployeeRecord" type="screen" page="component://oa/widget/RecordManagementScreens.xml#MenuAndInformation"/>
+    <view-map name="FamilySituationList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#FamilySituationList"/>
+    <view-map name="createFamilySituation" type="screen" page="component://oa/widget/RecordManagementScreens.xml#createFamilySituation"/>
+    <view-map name="editFamilySituation" type="screen" page="component://oa/widget/RecordManagementScreens.xml#editFamilySituation"/>
+    <view-map name="EducationExperienceList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#EducationExperienceList"/>
+    <view-map name="EducationSituationCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#EducationSituationCreate"/>
+    <view-map name="WorkExperienceList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#WorkExperienceList"/>
+    <view-map name="TransactionRecordList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TransactionRecordList"/>
+    <view-map name="DepartureManagement" type="screen" page="component://oa/widget/RecordManagementScreens.xml#DepartureManagement"/>
+    <view-map name="ContractRecordList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ContractRecordList"/>
+    <view-map name="TrainManagementList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TrainManagementList"/>
+    <view-map name="SalaryManagementList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#SalaryManagementList"/>
+    <view-map name="RewardsAndPunishmentRecordList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#RewardsAndPunishmentRecordList"/>
+    <view-map name="EditRecord" type="screen" page="component://oa/widget/RecordManagementScreens.xml#FindRecord"/>
+    <view-map name="TransactionRecordCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TransactionRecordCreate"/>
+    <view-map name="editDeparture" type="screen" page="component://oa/widget/RecordManagementScreens.xml#editDeparture"/>
+    <view-map name="editDepartures" type="screen" page="component://oa/widget/RecordManagementScreens.xml#editDepartures"/>
+    <view-map name="EmployeeDetail" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ViewEmployeeRecord"/>
+    <view-map name="ContractRecordCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ContractRecordCreate"/>
+    <view-map name="TrainManagementCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TrainManagementCreate"/>
+    <view-map name="SalaryManagementCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#SalaryManagementCreate"/>
+    <view-map name="ViewEmployeeInformation" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ViewEmployeeInformation"/>
+    <view-map name="TransferRecord" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TransferRecord"/>
+    <view-map name="DepartureManagementForEmployee" type="screen" page="component://oa/widget/RecordManagementScreens.xml#DepartureManagementForEmployee"/>
+    <view-map name="ContractForEmployee" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ContractForEmployee"/>
+    <view-map name="RewardAndPunishment" type="screen" page="component://oa/widget/RecordManagementScreens.xml#RewardAndPunishment"/>
+    <view-map name="ListDepartureManagement" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListDepartureManagement"/>
+    <view-map name="TrainForEmployee" type="screen" page="component://oa/widget/RecordManagementScreens.xml#TrainForEmployee"/>
+    <view-map name="WorkSituationCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#WorkSituationCreate"/>
+    <view-map name="CreateEmployee" type="screen" page="component://oa/widget/RecordManagementScreens.xml#CreateEmployee"/>
+    <view-map name="CreateEmployees" type="screen" page="component://oa/widget/RecordManagementScreens.xml#CreateEmployees"/>
+    <view-map name="ListEmployeeRecord" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListEmployeeRecord"/>
+    <view-map name="postChangeList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListTransferRecord"/>
+    <view-map name="searchPostChange" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListTransferRecord"/>
+    <view-map name="contractList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListContractForEmployee"/>
+    <view-map name="rewordList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListRewardsAndPunishmentForEmployee"/>
+    <view-map name="trainList" type="screen" page="component://oa/widget/RecordManagementScreens.xml#ListTrainForEmployee"/>
+    <view-map name="FindRecordForDeparture" type="screen" page="component://oa/widget/RecordManagementScreens.xml#FindRecordForDeparture"/>
+    <view-map name="RewardsAndPunishmentRecordCreate" type="screen" page="component://oa/widget/RecordManagementScreens.xml#RewardsAndPunishmentRecordCreate"/>
+    <view-map name="HrCreateUserLogin" type="screen" page="component://oa/widget/RecordManagementScreens.xml#CreateUserLogin"/>
+    <view-map name="HrEditUserLogin" type="screen" page="component://oa/widget/RecordManagementScreens.xml#EditUserLogin"/>
+</site-conf>

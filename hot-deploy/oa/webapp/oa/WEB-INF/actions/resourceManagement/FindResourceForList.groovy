@@ -1,0 +1,23 @@
+resourceMap = [:];
+    resourceMap.put("resourceName","投影仪")
+    resourceMap.put("resourceExplain","公司公有财产")
+    resourceMap.put("examinePerson","张二麻子")
+    resourceMap.put("examinePost","研发经理")
+    resourceMap.put("resourceUseState","正在使用")
+resourceForOrderMap = [:];
+resourceForOrderMap.put("orderResource","投影仪")
+resourceForOrderMap.put("bespeakParty","研发部")
+resourceForOrderMap.put("bespeakPerson","张二麻子")
+resourceForOrderMap.put("arrangedTime","2015-5-23")
+resourceForOrderMap.put("useStartDate","2015-6-1")
+resourceForOrderMap.put("useEndDate","2015-6-2")
+resourceForOrderMap.put("contactInformation","18012932982")
+resourceForOrderMap.put("useReason","开会")
+resourceForOrderMap.put("remarks","无")
+resourceForOrderMap.put("auditOpinion","同意")
+resourceForOrderMap.put("auditPerson","张经理")
+resourceForOrderMap.put("auditTime","2015-2-16")
+resourceForOrderMap.put("leadOpinion","认真使用")
+resourceForOrderMap.put("arrangeConfirmation","暂无安排")
+resourceForOrderMap.put("remarks","无")
+context.orderResourceView = resourceForOrderMap;

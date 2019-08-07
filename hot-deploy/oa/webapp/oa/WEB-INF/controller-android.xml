@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <include location="component://party/webapp/partymgr/WEB-INF/controller.xml"/>
+    <include location="component://oa/webapp/humanres/WEB-INF/controller-lookup.xml"/>
+    <request-map uri="loginForAndroid">
+        <description>登录</description>
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="androidLogin"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="getWorkLogListForAndroid">
+        <description>日志列表信息</description>
+        <!--<event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getWorkLogList"/>-->
+        <event type="java" path="org.ofbiz.oa.android.WorkLogAndroidServices" invoke="getWorkLogList"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="saveWorkLogForAndroid">
+        <description>保存我的日志</description>
+        <!--<event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="saveWorkLog"/>-->
+        <event type="java" path="org.ofbiz.oa.android.WorkLogAndroidServices" invoke="saveWorkLog"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="saveWorkPlanForAndroid">
+        <description>保存我的日程</description>
+        <!--<event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="saveWorkPlan"/>-->
+        <event type="java" path="org.ofbiz.oa.android.WorkLogAndroidServices" invoke="saveSchedule"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getVehicleOrderListReviewForAndroid">
+        <description>车辆预约列表</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getVehicleOrderListForReview"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getVehicleOrderInfoReviewForAndroid">
+        <description>车辆预约详情</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getVehicleOrderInfoForReview"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getVehicleOrderListArrangeForAndroid">
+        <description>车辆安排预约列表</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getVehicleOrderListForArrange"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getResourceOrderListReviewForAndroid">
+        <description>资源预约列表</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getResourceOrderListForReview"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getResourceOrderInfoReviewForAndroid">
+        <description>资源预约详情</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getResourceOrderInfoForReview"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getResourceOrderListArrangeForAndroid">
+        <description>资源安排预约列表</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="getResourceOrderListForArrange"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="reviewVehicleOrder">
+        <description>车辆审批</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="reviewVehicleOrder"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="arrangeVehicleOrder">
+        <description>车辆安排</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="arrangeVehicleOrder"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="reviewResourceOrder">
+        <description>资源审批</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="reviewResourceOrder"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="arrangeResourceOrder">
+        <description>资源安排</description>
+        <event type="java" path="org.ofbiz.oa.android.AndroidServices" invoke="arrangeResourceOrder"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getBumphNoticeList_android">
+        <description>公文通知简略信息</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="getBumphNoticeList"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getBumphNoticeInfo_android">
+        <description>公文通知具体内容</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="getBumphNoticeById"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getSignInPersonInfo_android">
+        <description>公文通知签收记录</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="getSignInPersonInfo"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getFeedback_android">
+        <description>获取公文通知反馈</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="getFeedback"/>
+        <response name="success" type="none"></response>
+    </request-map>
+
+    <request-map uri="updateSignInPerson_android">
+        <description>公文通知保存签收记录</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="updateSignInPerson"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="saveFeedback_android">
+        <description>公文通知保存反馈信息</description>
+        <event type="java" path="org.ofbiz.oa.android.BumphNoticeAndroidServices" invoke="saveFeedback"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeList_android">
+        <description>获取会议通知简要信息</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getMeetingNoticeList"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeSummaryList_android">
+        <description>获取会议纪要简要信息</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getMeetingNoticeSummaryList"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeById_android">
+        <description>获取会议通知具体内容</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getMeetingNoticeById"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeSummaryById_android">
+        <description>获取会议纪要具体内容</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getMeetingNoticeSummaryById"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="saveMeetingNoticeFeedback_android">
+        <description>会议通知保存反馈信息</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="saveFeedback"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeSignInPersonInfo_android">
+        <description>获取会议（纪要）签收记录</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getSignInPersonInfo"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="getMeetingNoticeFeedback_android">
+        <description>获取会议（纪要）反馈</description>
+        <event type="java" path="org.ofbiz.oa.android.MeetingNoticeAndroidServices" invoke="getFeedback"/>
+        <response name="success" type="none"></response>
+    </request-map>
+    <request-map uri="searchFileListAndroid">
+        <description>获取文件列表</description>
+        <event type="java" path="com.ckfinder.connector.handlers.command.GetFileListForAndroid" invoke="searchFileList"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="getFileForAndroid">
+        <description>下载文件</description>
+        <event type="java" path="com.ckfinder.connector.handlers.command.FileUploadForAndroid" invoke="downloadForAndroid"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="uploadFileForAndroid">
+        <description>上传文件</description>
+        <event type="java" path="com.ckfinder.connector.handlers.command.FileUploadForAndroid" invoke="uploadForAndroid"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="fullTextSearchForAndroid">
+        <description>全文检索</description>
+        <event type="java" path="org.ofbiz.oa.android.FullTextSearchAndroidServices" invoke="getFullTextSearch"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+    <request-map uri="staffListForAndroid">
+        <description>员工连接</description>
+        <event type="java" path="org.ofbiz.oa.android.StaffListAndroidServices" invoke="getStaffList"/>
+        <response name="success" type="request" value="json"></response>
+    </request-map>
+
+</site-conf>

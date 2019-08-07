@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<ofbiz-component name="oa"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+    <resource-loader name="main" type="component"/>
+    <classpath type="jar" location="lib/*"/>
+    <!--<classpath type="jar" location="lib-atmosphere/*"/>-->
+    <classpath type="jar" location="build/lib/*"/>
+    <classpath type="dir" location="config"/>
+    <entity-resource type="model" reader-name="main" loader="main" location="entitydef/entitymodel.xml"/>
+    <!--<entity-resource type="model" reader-name="main" loader="main" location="entitydef/entitymodel_old.xml"/>-->
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OATypeData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OAHelpData.xml"/>
+    <!--<entity-resource type="data" reader-name="seed" loader="main" location="data/OASecurityPermissionSeedData.xml"/>-->
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OAPortletData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OAPortalSeedData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OAPermissionSeedData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/OAWebSiteExtData.xml"/>
+    <entity-resource type="data" reader-name="demo" loader="main" location="data/OASecurityGroupDemoData.xml"/>
+    <!--<entity-resource type="data" reader-name="seed" loader="main" location="data/HumanResPortletData.xml"/>-->
+    <entity-resource type="data" reader-name="demo" loader="main" location="data/OADemoData.xml"/>
+    <service-resource type="model" loader="main" location="servicedef/services.xml"/>
+    <service-resource type="model" loader="main" location="servicedef/services-hr.xml"/>
+    <service-resource type="model" loader="main" location="servicedef/services-oa.xml"/>
+    <service-resource type="model" loader="main" location="servicedef/services-android.xml"/>
+    <webapp name="OA"
+        title="Business"
+        description="Business"
+        server="default-server"
+        location="webapp/oa"
+        base-permission="OFBTOOLS,OA"
+        mount-point="/oa"
+        app-bar-display="false"
+        position="A"/>
+    <webapp name="hr"
+        title="HR"
+        description="HumanResourceApplication"
+        server="default-server"
+        location="webapp/humanres"
+        base-permission="OFBTOOLS,HUMANRES"
+        mount-point="/hr"
+        app-bar-display="true"
+        position="B"/>
+    <!--<webapp name="email"
+        title="Email"
+        description="Email"
+        server="default-server"
+        location="webapp/email"
+        base-permission="OFBTOOLS,OA"
+        mount-point="/email"
+        app-bar-display="false"
+        position="C"/>
+
+    <webapp name="im"
+        title="IM"
+        description="Instant Messaging"
+        server="default-server"
+        location="webapp/im"
+        base-permission="OFBTOOLS"
+        mount-point="/im"
+        app-bar-display="false"
+        position="D"/>-->
+
+    <!-- 与易飞erp对接
+    <container name="yifei-container" loaders="main" class="org.ofbiz.oa.YiFeiInterfaceContainer">
+    </container>-->
+</ofbiz-component>

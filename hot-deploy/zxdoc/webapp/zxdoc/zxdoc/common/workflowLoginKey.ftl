@@ -1,0 +1,1 @@
+<input type="hidden" name="externalLoginKey" value="${requestAttributes.externalLoginKey!}">

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<ofbiz-component name="activiti"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+    <!-- define resource loaders; most common is to use the component resource loader -->
+    <resource-loader name="main" type="component"/>
+
+    <!-- place the config directory on the classpath to access configuration files -->
+    <classpath type="dir" location="config"/>
+    <classpath type="dir" location="dtd"/>
+
+    <!-- load single or multiple external libraries -->
+    <classpath type="jar" location="build/lib/*"/>
+    <classpath type="jar" location="lib/*"/>
+    <!--<classpath type="jar" location="webapp/activiti-explorer/WEB-INF/lib/*"/>-->
+
+    <!-- entity resources: model(s), eca(s), group, and data definitions -->
+    <entity-resource type="model" reader-name="main" loader="main" location="entitydef/entitymodel.xml"/>
+    <entity-resource type="eca" reader-name="main" loader="main" location="entitydef/eecas.xml"/>
+<!--     <entity-resource type="group" reader-name="main" loader="main" location="entitydef/entitygroup.xml"/> -->
+    
+    <!-- <entity-resource type="eca" reader-name="main" loader="main" location="entitydef/eecas.xml"/> -->
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/WorkflowTypeData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/WorkflowSecurityData.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/WorkflowWebSiteExtData.xml"/>
+    <!--<entity-resource type="data" reader-name="ext" loader="main" location="data/ActivitiDemoData.xml"/>-->
+    <entity-resource type="data" reader-name="demo" loader="main" location="data/WorkflowDemoData.xml"/>
+    <!--<entity-resource type="data" reader-name="demo" loader="main" location="data/OrderProcessWorkflow.xml"/>-->
+    <!--<entity-resource type="data" reader-name="demo" loader="main" location="data/WorkflowSecurityGroupDemoData.xml"/>-->
+    
+    <!-- service resources: model(s), eca(s) and group definitions -->
+    <service-resource type="model" loader="main" location="servicedef/services.xml"/>
+    <!--
+    <service-resource type="eca" loader="main" location="servicedef/secas.xml"/>
+    <service-resource type="group" loader="main" location="servicedef/groups.xml"/>
+    -->
+    
+    <test-suite loader="main" location="testdef/WorkflowTests.xml"/>
+
+    <!-- web applications; will be mounted when using the embedded container -->
+    <webapp name="workflow"
+        title="Workflow"
+        server="default-server"
+        location="webapp/activiti"
+        base-permission="OFBTOOLS"
+        mount-point="/workflow"/>
+    
+     <!--<webapp name="activiti-explorer"
+        title="activiti-explorer"
+        server="default-server"
+        location="webapp/activiti-explorer"
+        base-permission="OFBTOOLS,WORKEFFORTMGR"
+        mount-point="/activiti-explorer"
+        app-bar-display="false"/>-->
+    
+    
+    <!-- For Postgresql -->
+    <!-- <container name="activiti-container" loaders="install" class="org.ofbiz.activiti.container.ActivitiContainer">
+        <property name="engine-name" value="Activiti"/>
+        <property name="driver" value="postgresql" />
+        <property name="jdbcUrl" value="jdbc:postgresql://127.0.0.1/growerp" />
+        <property name="jdbcDriver" value="org.postgresql.Driver" />
+        <property name="jdbcUsername" value="ofbiz" />
+        <property name="jdbcPassword" value="ofbiz" />
+    </container> -->
+    
+    <!-- For Derby -->
+    <container name="activiti-container" loaders="main" class="org.ofbiz.activiti.container.ActivitiContainer">
+        <property name="engine-name" value="Activiti"/>
+        <property name="datasource-name" value="localmysql" />
+        <property name="databaseSchemaUpdate" value="true" />
+
+        <property name="jobExecutorActivate" value="false" />
+        <property name="asyncExecutorEnabled" value="true" />
+        <property name="asyncExecutorActivate" value="false" />
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
+        <!--<property name="activityFontName" value="simsun"></property>-->
+        <!--<property name="labelFontName" value="simsun"></property>-->
+        <property name="history" value="audit"/>
+        <!--<property name="jpaHandleTransaction" value="true" />
+        <property name="jpaCloseEntityManager" value="true" />-->
+        <property name="idGenerator" value="org.activiti.engine.impl.persistence.StrongUuidGenerator"/>
+        <property name="postBpmnParseHandlers">
+            <property name="RextecUserTaskParseHandler" value="com.rextec.workflow.RextecUserTaskParseHandler"/>
+        </property>
+        <property name="activityBehaviorFactory" value="com.rextec.workflow.RextecActivityBehaviorFactory"/>
+        <property name="bpmnParser" value="com.rextec.workflow.RextecBpmnParser"/>
+
+        <property name="mailServerHost" value="mail.rextec.com.cn" />
+        <property name="mailServerPort" value="5025" />
+        <!--<property name="jdbcUrl" value="jdbc:derby:growerp;create=true" />
+        <property name="jdbcDriver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+        <property name="jdbcUsername" value="ofbiz" />
+        <property name="jdbcPassword" value="ofbiz" />-->
+    </container>
+</ofbiz-component>

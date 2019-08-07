@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="FindTickets" type="single" target="" header-row-style="header-row" default-table-style="basic-table">
+        <!--    <auto-fields-entity entity-name="FixedAssets" default-field-type="find"/>-->
+        <field name="ticketSn" title="工单编号" tooltip="模糊查询" position="1" ><text/></field>
+        <field name="ticketStatus" title="工单状态" position="2">
+            <drop-down allow-empty="true">
+                <option key="" description="--请选择--"></option>
+                <entity-options entity-name="StatusItem" key-field-name="statusId" description="${description}">
+                    <entity-constraint name="statusTypeId" operator="equals" value="TICKET_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="subjectParty" title="诉求人" tooltip="模糊查询" position="1" ><text/></field>
+        <field name="contentType" title="诉求类型" position="2">
+            <drop-down allow-empty="true">
+                <option key="" description="--请选择--"></option>
+                <entity-options entity-name="Enumeration" key-field-name="enumId" description="${description}">
+                    <entity-constraint name="enumTypeId" operator="equals" value="TICKET_CONTENT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="addButton" position="1" title=" " widget-style="btn btn-primary" event="onClick" action="javascript:$.dispatch.editTicket();">
+            <hyperlink target="#nowhere" description="新建工单" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="searchButton" position="2" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.dispatch.findTickets('${ajaxUpdateUrl}');">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ListTickets" type="list" list-name="listTickets" separate-columns="true" target="removeSubOrg" paginate-target="" paginate="true" view-size="10"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="ticketId"/>
+                <field-map field-name="workflowKey" value="NeedReview"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="ticketSn" title="工单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTicket('${ticketId}');">
+            <hyperlink target="#nowhere" description="${ticketSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="ticketStatus" title="工单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="inboundChannel" title="受理渠道"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="inboundType" title="受理方式"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="subjectParty" title="诉求人"><display-entity entity-name="Person" key-field-name="partyId" description="${firstName}"/></field>
+        <field name="contentType" title="诉求类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="reviewType" title="回访类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}"
+               event="onClick" action="javascript:$.dispatch.editTicket('${ticketId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="processLink" use-when="${groovy: taskAssign.taskId != null}" title="处理" title-style="hide" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" use-when="${groovy: ticketStatus == &quot;TICKET_DRAFT&quot;}" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}"
+               event="onClick" action="javascript:$.dispatch.removeTicket('${ticketId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListTickets" area-target="${ajaxUpdateUrl}"/>
+        <on-event-update-area event-type="sort-column" area-id="ListTickets" area-target="${ajaxUpdateUrl}"/>
+    </form>
+    <form name="ListHardTickets" type="list" list-name="listTickets" separate-columns="true" target="removeSubOrg" paginate-target="" paginate="true" view-size="10"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="ticketId"/>
+                <field-map field-name="workflowKey" value="NeedReview"/>
+            </service>
+            <entity-and entity-name="TblDdTicketSupervise" list="superviseRecords">
+                <field-map field-name="ticketId" from-field="ticketId"/>
+                <field-map field-name="createdByUserLogin" from-field="userLogin.userLoginId"/>
+            </entity-and>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="ticketSn" title="工单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTicket('${ticketId}');">
+            <hyperlink target="#nowhere" description="${ticketSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="ticketStatus" title="工单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="inboundChannel" title="受理渠道"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="inboundType" title="受理方式"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="subjectParty" title="诉求人"><display-entity entity-name="Person" key-field-name="partyId" description="${firstName}"/></field>
+        <field name="contentType" title="诉求类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="reviewType" title="回访类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="processLink" use-when="${groovy: taskAssign.taskId != null}" title="处理" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="superviseLink" title="督办" use-when="${groovy: superviseRecords.size() == 0}" widget-area-style="function-column" widget-style="icon-star" event="onClick" action="javascript:$.dispatch.editTicketSupervise('${ticketId}', '');">
+            <hyperlink target="#nowhere" title="督办" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListTickets" area-target="${ajaxUpdateUrl}"/>
+        <on-event-update-area event-type="sort-column" area-id="ListTickets" area-target="${ajaxUpdateUrl}"/>
+    </form>
+    <form name="ListTicketSupervise" type="list" list-name="listTickets" separate-columns="true" target="removeSubOrg" paginate-target="" paginate="true" view-size="10"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <entity-one entity-name="TblDdTicket" value-field="ticket">
+                <field-map field-name="ticketId"/>
+            </entity-one>
+            <!--<entity-and entity-name="TblDdTicket" list="tickets">
+                <field-map field-name="ticketId"/>
+            </entity-and>-->
+            <entity-and entity-name="TblDdTicketSuperviseResponse" list="superviseResponses">
+                <field-map field-name="superviseId" from-field="superviseId"/>
+            </entity-and>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="ticket.ticketSn" title="工单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTicket('${ticketId}');">
+            <hyperlink target="#nowhere" description="${ticket.ticketSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="ticket.ticketStatus" title="工单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="ticket.inboundChannel" title="受理渠道"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="ticket.inboundType" title="受理方式"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="ticket.subjectParty" title="诉求人"><display-entity entity-name="Person" key-field-name="partyId" description="${firstName}"/></field>
+        <field name="ticket.contentType" title="诉求类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="ticket.reviewType" title="回访类型"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="superviseTime" title="督办时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(createdStamp,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="reason" title="督办说明"><display/></field>
+        <field name="superviseLink" title="督办" widget-area-style="function-column" widget-style="icon-star" event="onClick" action="javascript:$.dispatch.editTicketSupervise('${ticketId}', '${superviseId}');">
+            <hyperlink target="#nowhere" title="督办" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="superviseResLink" title="督办回复" use-when="${groovy: superviseResponses.size > 0}" widget-area-style="function-column" widget-style="icon-list-alt" event="onClick" action="javascript:$.dispatch.listTicketSuperviseResponse('${superviseId}');">
+            <hyperlink target="#nowhere" title="督办回复" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListTickets" area-target="SuperviseTicketsOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ListTickets" area-target="SuperviseTicketsOnly"/>
+    </form>
+    <form name="ListTaskSuperviseResponse" type="list" list-name="listResponse" separate-columns="true" target="" paginate-target="" paginate="false" view-size="10"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <entity-and entity-name="TblDdTicketSuperviseResponse" list="listResponse">
+                <field-map field-name="superviseId" from-field="superviseId"/>
+            </entity-and>
+        </actions>
+        <row-actions>
+            <entity-one entity-name="UserLogin" value-field="responseUser">
+                <field-map field-name="userLoginId" from-field="createdByUserLogin"/>
+            </entity-one>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="responseUser.partyId" title="回复人"><display-entity entity-name="Person" key-field-name="partyId" description="${groovy: fullName == null ? firstName : fullName}"/></field>
+        <field name="responseTime" title="回复时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(createdStamp,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="content" title="回复内容"><display/></field>
+    </form>
+    <form name="ListSupervisedTasks" type="list" list-name="listTasks" separate-columns="true" target="removeSubOrg" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskId" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${task.taskId}');">
+            <hyperlink target="#nowhere" description="${task.taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="task.taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="task.startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(task.startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="task.dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(task.dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="task.review" title="是否回访">
+            <display description="${groovy: task.review ? '是' : '否'}"/>
+        </field>
+        <field name="task.content" title="任务说明">
+            <display/>
+        </field>
+        <field name="supervise.createdByUserLogin" title="督办人"><display-entity entity-name="Person" key-field-name="partyId" description="${groovy: fullName == null ? firstName : fullName}"/> </field>
+        <field name="superviseTime" title="督办时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(supervise.createdStamp,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="supervise.reason" title="督办说明"><display/></field>
+        <field name="responseTime" title="回复时间"><display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(response.createdStamp,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/></field>
+        <field name="superviseResLink" title="督办回复" widget-area-style="function-column" widget-style="icon-star" event="onClick" action="javascript:$.dispatch.editTicketSuperviseResponse('${supervise.superviseId}');">
+            <hyperlink target="#nowhere" title="督办回复" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListTickets" area-target="TasksSupervisedOnly"/>
+        <on-event-update-area event-type="sort-column" area-id="ListTickets" area-target="TasksSupervisedOnly"/>
+    </form>
+    <form name="ListTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="TaskProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+                       event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="processLink" title="处理" use-when="${groovy: taskAssign.taskId != null}" title-style="hide" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="ListTasksOnly"/>
+    </form>
+    <form name="ListTasksOfUser" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="TaskProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="followLink" title="申请跟踪" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-eye-open" event="onClick" action="javascript:$.dispatch.applyFollow('${taskId}');">
+            <hyperlink target="#nowhere" title="申请跟踪" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="noReviewLink" title="申请不回访" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-stop" event="onClick" action="javascript:$.dispatch.applyNoReview('${taskId}');">
+            <hyperlink target="#nowhere" title="申请不回访" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="delayLink" title="申请延时" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-fast-forward" event="onClick" action="javascript:$.dispatch.applyDelay('${taskId}');">
+            <hyperlink target="#nowhere" title="申请延时" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="responseLink" title="反馈信息" widget-area-style="function-column" widget-style="icon-envelope" event="onClick" action="javascript:$.dispatch.editTaskResponse('${taskId}', '');">
+            <hyperlink target="#nowhere" title="反馈信息" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="ListTasksOnly"/>
+    </form>
+    <form name="FindTasks" type="single" target="" header-row-style="header-row" default-table-style="basic-table">
+        <!--    <auto-fields-entity entity-name="FixedAssets" default-field-type="find"/>-->
+        <field name="taskSn" title="任务单编号" tooltip="模糊查询" position="1" ><text/></field>
+        <field name="taskStatus" title="任务单状态" position="2">
+            <drop-down allow-empty="true">
+                <option key="" description="--请选择--"></option>
+                <entity-options entity-name="StatusItem" key-field-name="statusId" description="${description}">
+                    <entity-constraint name="statusTypeId" operator="equals" value="TASK_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="subjectParty" title="责任单位" tooltip="模糊查询" position="1" ><text/></field>
+
+        <field name="searchButton" position="2" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.dispatch.findAllTasks();">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="AllTask" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="completeTime" title="结束时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(completeTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="AllTaskOnly"/>
+    </form>
+    <form name="ListDueTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="TaskProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="delayLink" title="申请延时" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-fast-forward" event="onClick" action="javascript:$.dispatch.applyDelay('${taskId}');">
+            <hyperlink target="#nowhere" title="申请延时" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="responseLink" title="反馈信息" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.dispatch.editTaskResponse('${taskId}', '');">
+            <hyperlink target="#nowhere" title="反馈信息" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="ListDueTasksOnly"/>
+    </form>
+    <form name="ListExpireTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="TaskProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="delayLink" title="申请延时" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-fast-forward" event="onClick" action="javascript:$.dispatch.applyDelay('${taskId}');">
+            <hyperlink target="#nowhere" title="申请延时" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="responseLink" title="反馈信息" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.dispatch.editTaskResponse('${taskId}', '');">
+            <hyperlink target="#nowhere" title="反馈信息" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="ListExpireTasksOnly"/>
+    </form>
+    <form name="ListFollowTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="TaskProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="responseLink" title="反馈信息" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.dispatch.editTaskResponse('${taskId}', '');">
+            <hyperlink target="#nowhere" title="反馈信息" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="FollowTasksOnly"/>
+    </form>
+    <form name="ListFollowRequests" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="FollowProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="requestStatus" title="申请状态"><display/></field>
+        <field name="reason" title="申请理由">
+            <display/>
+        </field>
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="FollowTasksOnly"/>
+    </form>
+    <form name="ListDelayRequests" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="DeplayProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="requestStatus" title="申请状态"><display/></field>
+        <field name="reason" title="申请理由">
+            <display/>
+        </field>
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="原任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="requestTime" title="申请期限">
+            <display/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="FollowTasksOnly"/>
+    </form>
+    <form name="ListNoReviewRequests" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" value="NoReviewProcess"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="requestStatus" title="申请状态"><display/></field>
+        <field name="reason" title="申请理由">
+            <display/>
+        </field>
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="review" title="当前回访状态">
+            <display description="${groovy: review ? '需回访' : '无需回访'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+        <field name="processLink" title="处理流程" use-when="${groovy: taskAssign.taskId != null}" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理流程" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="FollowTasksOnly"/>
+    </form>
+    <form name="ListMonitorTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <alt-row-style use-when="completeTime == null" style="active-task-row"/>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskSn" title="任务单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="subjectParty" title="责任部门" sort-field="true"><display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/></field>
+        <field name="taskStatus" title="任务单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="任务期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="completeTime" title="完成时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(completeTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="任务说明">
+            <display/>
+        </field>
+    </form>
+    <form name="ListPendApproveTasks" type="list" list-name="listTasks" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <service service-name="taskAssignedToUser" result-map="taskAssign">
+                <field-map field-name="businessKey" from-field="taskId"/>
+                <field-map field-name="workflowKey" from-field="workflowKey"/>
+            </service>
+        </row-actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="taskName" title="审批内容">
+            <display description="${taskAssign.taskName}"/>
+        </field>
+        <field name="taskSn" title="任务/工单编号" sort-field="true"
+               event="onClick" action="javascript:$.dispatch.viewTask('${taskId}');">
+            <hyperlink target="#nowhere" description="${taskSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="taskStatus" title="任务/工单状态" sort-field="true"><display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/></field>
+        <field name="startTime" title="开始时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(startTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="dueTime" title="期限">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(dueTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="completeTime" title="完成时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(completeTime,&quot;yyyy-MM-dd HH:mm&quot;)}"/>
+        </field>
+        <field name="review" title="是否回访">
+            <display description="${groovy: review == 'Y' ? '是' : '否'}"/>
+        </field>
+        <field name="content" title="内容">
+            <display/>
+        </field>
+        <field name="processLink" title="处理" use-when="${groovy: taskAssign.taskId != null}" title-style="hide" widget-area-style="function-column" widget-style="icon-play" event="onClick" action="javascript:$.workflow.processTask('${taskAssign.taskId}', '${taskAssign.nextViewType}', '${taskAssign.nextView}');">
+            <hyperlink target="#nowhere" title="处理" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="sort-column" area-id="ListTasks" area-target="PendingApproveTasksOnly"/>
+    </form>
+    <form name="ListTaskReponse" type="list" list-name="listRespones" separate-columns="true" target="" paginate-target="" paginate="false"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="partyId" title="组织ID"><display/></field>-->
+        <field name="responsePerson" title="反馈人">
+            <display/>
+        </field>
+        <field name="handleTime" title="反馈时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(handleTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="content" title="反馈内容">
+            <display/>
+        </field>
+    </form>
+</forms>
+

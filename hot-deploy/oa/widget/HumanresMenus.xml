@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="HumanResAppBar" default-menu-item-name="main" id="app-navigation" default-selected-style="selected" menu-container-style="left-bar" selected-menuitem-context-field-name="headerItem" title="${uiLabelMap.HumanResManager}">
+        <menu-item name="main" title="${uiLabelMap.CommonMain}">
+            <condition><not><if-empty field="userLogin"/></not></condition>
+            <link target="main" link-type="anchor" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-home"/>
+            </link>
+        </menu-item>
+
+        <menu-item name="Record" title="人事管理">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-user"/>
+            </link>
+            <menu-item name="FindRecordManagement" title="${uiLabelMap.Record}" tooltip="${uiLabelMap.Record}">
+                <link target="javascript:showSubMenuAjax('FindRecordManagement');" url-mode="plain" />
+            </menu-item>
+            <menu-item name="ViewEmployeeInformationByDepartment" title="员工信息管理" >
+                <link target="javascript:showSubMenuAjax('ViewEmployeeInformation');" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="TransferRecord" title="员工岗位调动管理">
+                <link target="javascript:showSubMenuAjax('TransferRecord');" url-mode="plain"/>
+
+            </menu-item>
+            <menu-item name="DepartureManagementForEmployee" title="员工离职管理">
+                <link target="javascript:showSubMenuAjax('DepartureManagementForEmployee');" url-mode="plain"/>
+
+            </menu-item>
+            <menu-item name="ContractForEmployee" title="员工合同管理">
+                <link target="javascript:showSubMenuAjax('ContractForEmployee');" url-mode="plain"/>
+
+            </menu-item>
+            <menu-item name="RewardAndPunishment" title="员工奖惩记录">
+                <link target="javascript:showSubMenuAjax('RewardAndPunishment');" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="TrainForEmployee" title="员工培训管理">
+                <link target="javascript:showSubMenuAjax('TrainForEmployee');" url-mode="plain"/>
+            </menu-item>
+        </menu-item>
+
+        <menu-item name="CheckingIn" title="${uiLabelMap.CheckingIn}">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-time"/>
+            </link>
+            <menu-item name="CheckingStatistics" title="考勤统计" tooltip="考勤统计">
+                <link target="javascript:showSubMenuAjax('CheckingStatistics')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="OvertimeStatistics" title="加班统计" tooltip="加班统计">
+                <link target="javascript:showSubMenuAjax('OvertimeStatistics')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="CheckingInInfo" title="考勤信息" tooltip="增加资产明细">
+                <link target="javascript:showSubMenuAjax('CheckingInInfo')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="HolidaySet" title="考勤设置" tooltip="考勤设置">
+                <link target="#" url-mode="plain" />
+                <menu-item name="HolidaySet" title="假期设定" tooltip="假期设定">
+                    <link target="javascript:showSubMenuAjax('HolidaySet')" url-mode="plain" />
+                </menu-item>
+                <menu-item name="ListOfWork" title="班次定义" tooltip="班次定义">
+                    <link target="javascript:showSubMenuAjax('ListOfWork')" url-mode="plain" />
+                </menu-item>
+
+                <menu-item name="ListOfWorkByWeek" title="班制定义" tooltip="班制定义">
+                    <link target="javascript:showSubMenuAjax('ListOfWorkByWeek')" url-mode="plain" />
+                </menu-item>
+                <menu-item name="WorkSchedule" title="排班管理" tooltip="排班管理">
+                    <link target="javascript:showSubMenuAjax('WorkSchedule')" url-mode="plain"/>
+                </menu-item>
+            </menu-item>
+        </menu-item>
+        <menu-item name="PerfExam" title="绩效考核">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-stats"/>
+            </link>
+            <menu-item name="PerfExamMain" title="考核管理">
+                <link target="javascript:showSubMenuAjax('PerfExamMain')" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="PerfExamItems" title="考评项目维护">
+                <link target="javascript:showSubMenuAjax('PerfExamItems')" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="PerfExamPersons" title="绩效考核人员">
+                <link target="javascript:showSubMenuAjax('PerfExamPersons')" url-mode="plain"/>
+            </menu-item>
+        </menu-item>
+        <menu-item name="Salary" title="薪资管理">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="fa fa-cny fa-2x"/>
+            </link>
+            <menu-item name="SalaryPayOff" title="" tooltip="薪资发放">
+                <link target="javascript:showSubMenuAjax('SalaryPayOff')" text="薪资发放" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="SalaryItems" title="" tooltip="薪资条目维护">
+                <link target="javascript:showSubMenuAjax('SalaryItems')" text="薪资条目维护" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="SalaryNotice" title="" tooltip="工资条模板">
+                <link target="javascript:showSubMenuAjax('SalaryNotice')" text="工资条模板" url-mode="plain"/>
+            </menu-item>
+            <menu-item name="SalaryOnAttendance" title="" tooltip="考勤规则维护">
+                <link target="javascript:showSubMenuAjax('SalaryOnAttendance')" text="考勤规则维护" url-mode="plain"/>
+            </menu-item>
+        </menu-item>
+        <menu-item name="GlobalHRSettings" title="${uiLabelMap.HumanResGlobalHRSettings}" selected-style="selected">
+            <link target="main" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-wrench"/>
+            </link>
+        </menu-item>
+    </menu>
+
+    <menu name="ListSubOrgsBar" extends-resource="component://common/widget/CommonMenus.xml"
+        default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+        default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.organization.addSubOrg('${parameters.partyId}')" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="addOutInventoryBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.InventoryManagement.addOutInventoryBar()" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="HolidaySetBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+    </menu>
+    <!--lxx end-->
+    <menu name="OccupationMemeberListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.organization.addOccupationMember('${parameters.positionId}')" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+    <menu name="OrgMemeberListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.recordManagement.CreateEmployee('${parameters.partyId}')" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="CheckingInPortletMenu" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="More" title="更多" tooltip="更多">
+            <link target="/hr/control/CheckingStatistics" url-mode="plain"/>
+        </menu-item>
+    </menu>
+    <menu name="OccupationsListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.organization.createOccupation('${parameters.partyId}')" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+    <menu name="EditTitlesBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="职级管理">
+            <link target="javascript:$.organization.editTitles()" url-mode="plain" text="职级管理"/>
+        </menu-item>
+    </menu>
+</menus>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/ViewOrganization.groovy"></script>-->
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/bumphNotice.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+                <set field="headerItem" value="BumphNotice"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--浏览公文/通知-->
+    <screen name="BumphNoticeBrowseList">
+        <section>
+            <actions>
+                <entity-and entity-name="Enumeration" list="noticeTypeList">
+                    <field-map field-name="enumTypeId" value="NOTICE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <screenlet title="查询条件">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/bumphNotice/BumphNoticeForSearch.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <!--<include-form name="BumphNoticeSearchForm"-->
+                                          <!--location="component://oa/widget/osManager/BumphNoticeForms.xml"/>-->
+                        </screenlet>
+                        <container id="BumphNoticeList">
+                            <include-screen name="BumphNoticeList"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BumphNoticeList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.returnValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询结果">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/bumphNotice/BumphNoticeList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <!--<include-form name="BumphNoticeList"-->
+                                      <!--location="component://oa/widget/osManager/BumphNoticeForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BumphNoticeBrowseAddForm">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/workPlan/GetDepartment.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/bumphNotice/FindTemplateManager.groovy"/>
+                <set field="data" value="${parameters.data}"/>
+                <entity-and entity-name="Enumeration" list="noticeHeadList">
+                    <field-map field-name="enumTypeId" value="NOTICE_HEAD"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="noticeTypeList">
+                    <field-map field-name="enumTypeId" value="NOTICE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="hasFeedbackList">
+                    <field-map field-name="enumTypeId" value="NOTICE_HAS_FEEDBACK"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="TblNoticeTemplate" list="templateNameListAdd">
+                    <field-map field-name="createPerson" value="${parameters.userLogin.partyId}"/>
+                    <field-map field-name="logicDelete" value="N"/>
+                    <order-by field-name="createTime"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/editBumphNotice.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="checkPerson">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/bumphNotice/selectPersonAndRange.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                    </html>
+                </platform-specific>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/selectPerson.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showBumphNoticeInfo">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.userLogin.partyId}"/>
+                <set field="noticeId" value="${parameters.noticeId}"/>
+                <entity-one entity-name="NoticeInfo" value-field="noticeInfo">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                </entity-one>
+                <entity-and entity-name="SignInPersonInfo" list="signInPersonList">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                    <field-map field-name="signInPersonType" value="TblNotice"/>
+                </entity-and>
+                <service service-name="findNoticeFeedback" result-map="feedback">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                </service>
+                <entity-and entity-name="Enumeration" list="statusList">
+                    <field-map field-name="enumTypeId" value="NOTICE_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="hasSignInList">
+                    <field-map field-name="enumTypeId" value="NOTICE_SIGNIN"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <!--<label text="${feedback}"/>-->
+                <!--<label text="${parameters.userLogin.partyId}"/>-->
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/BumphNotice.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<!--公文签收列表-->
+    <screen name="BumphNoticeSignIn">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/workPlan/GetDepartment.groovy"/>
+                <entity-and entity-name="Enumeration" list="statusList">
+                    <field-map field-name="enumTypeId" value="NOTICE_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="hasSignInList">
+                    <field-map field-name="enumTypeId" value="NOTICE_SIGNIN"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="noticeTypeList">
+                    <field-map field-name="enumTypeId" value="NOTICE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-one entity-name="TblStaff" value-field="staff">
+                    <field-map field-name="partyId" value="${userLogin.partyId}"/>
+                </entity-one>
+                <set field="feedbackDepart" value="${staff.department}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <screenlet title="查询条件" navigation-menu-name="BumphNoticeMenu">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/bumphNotice/BumphNoticeSignInForSearch.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <!--<include-form name="BumphNoticeSignInSearchForm"-->
+                                          <!--location="component://oa/widget/osManager/BumphNoticeForms.xml"/>-->
+                        </screenlet>
+                        <container id="BumphNoticeSignInList">
+                            <include-screen name="BumphNoticeSignInList"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="BumphNoticeSignInList">
+        <section>
+            <actions>
+               <set field="data" value="${parameters.returnValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询结果">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/bumphNotice/BumphNoticeSignInList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<!--签收详情-->
+    <screen name="showBumphNotice">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.userLogin.partyId}"/>
+                <set field="noticeId" value="${parameters.noticeId}"/>
+                <entity-one entity-name="NoticeInfo" value-field="noticeInfo">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                </entity-one>
+                <entity-and entity-name="SignInPersonInfo" list="signInPersonList">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                    <!--<field-map field-name="staffId" value="${parameters.userLogin.partyId}"/>-->
+                    <field-map field-name="signInPersonType" value="TblNotice"/>
+                </entity-and>
+                <service service-name="findNoticeFeedback" result-map="feedback">
+                    <field-map field-name="noticeId" value="${parameters.noticeId}"/>
+                </service>
+                <entity-and entity-name="Enumeration" list="statusList">
+                    <field-map field-name="enumTypeId" value="NOTICE_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="hasSignInList">
+                    <field-map field-name="enumTypeId" value="NOTICE_SIGNIN"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/BumphNoticeSignIn.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+
+    <screen name="BumphNoticeTest">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/testCalendar.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="UseTemplateManagement">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/bumphNotice/FindTemplateManager.groovy"/>
+                <set field="noticeId" value="${parameters.noticeId}"/>
+            </actions>
+            <widgets>
+                <!--<label text="${parameters.noticeId}"/>-->
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="已有模板" id="noticeTemplateList">
+                                    <include-form name="TemplateManagementListForm"
+                                                  location="component://oa/widget/osManager/BumphNoticeForms.xml"/>
+                                </screenlet>
+                                <screenlet title="模板管理" id="editNoticeTemplate">
+                                    <container id="editTemplate">
+                                        <include-screen name="editTemplate"/>
+                                    </container>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--查看模板详情-->
+    <screen name="showTemplateInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/bumphNotice/FindTemplateManager.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet>
+                                    <container id="editTemplate1">
+                                        <include-screen name="editTemplate"/>
+                                    </container>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+
+        </section>
+    </screen>
+
+    <screen name="editTemplate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/bumphNotice/FindTemplateManager.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/bumphNotice/editTemplate.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
+

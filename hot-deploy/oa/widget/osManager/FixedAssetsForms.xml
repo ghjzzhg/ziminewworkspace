@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="FixedAssetsForm" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssetsMap">
+        <field name="fixedAssetsId" title="" position="1">
+            <hidden/>
+        </field>
+        <field name="fixedAssetsCode1" title="" position="1" use-when="fixedAssetsId == null">
+            <hidden value="${number}"/>
+        </field>
+        <field name="fixedAssetsCode" title="资产编码" position="1">
+            <display default-value="${number}"/>
+        </field>
+        <field name="fixedAssetsName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}资产名称" position="2" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[30]]">
+            <text/>
+        </field>
+        <field name="fixedAssetsManager" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}管理者" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="limitYear" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}使用年限" position="2" tooltip="单位：年" widget-style="validate[required,custom[onlyNumberSp],maxSize[9]]">
+            <text default-value="0"/>
+        </field>
+        <field name="assetMaker" title="生产厂家" position="1" widget-style="validate[custom[onlyLetterNumberChinese],maxSize[125]]">
+            <text/>
+        </field>
+        <field name="canLendOut" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}可否外借" position="2" widget-style="validate[required]">
+            <drop-down>
+                <option key="Y" description="可外借"/>
+                <option key="N" description="不可外借"/>
+            </drop-down>
+        </field>
+        <field name="assetStatus" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}资产状态" position="1" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="assetStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="reserveStatus" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}预约状态" position="2" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="assetReserveList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="buyDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}购买日期" position="1" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="assetStandard" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}资产规格" position="1" widget-style="validate[required,custom[onlyLetterNumber],maxSize[30]]">
+            <text/>
+        </field>
+
+        <field name="keepPlace" title="存放地点" position="2" widget-style="validate[custom[onlyLetterNumberChinese],maxSize[125]]">
+            <text/>
+        </field>
+        <field name="assetType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}资产类别" position="1" widget-style="validate[required]">
+            <drop-down  importability="true" enumTypeId="FIXED_ASSETS_TYPE" callback="$.fixedAssets.changeAssetType">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="FIXED_ASSETS_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="assetValue" title="资产价值" position="2" tooltip="单位：元" widget-style="validate[custom[twoDecimalNumber],maxSize[9]]">
+            <text/>
+        </field>
+        <field name="assetCount" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}资产数量" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]">
+            <text default-value="0"/>
+        </field>
+        <field name="department" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}归属部门" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+
+        <field name="usePerson" title="使用人" position="1" event="onChange">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="useDepartment" title="使用部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="startDate" title="开始时间" position="1">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'endDate\\')}'"/>
+        </field>
+        <field name="endDate" title="结束时间" position="2">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'startDate\\')}'"/>
+        </field>
+        <field name="remarks" title="备注" position="1" widget-style="validate[maxSize[500]]">
+            <textarea/>
+        </field>
+        <field name="addLink" title-style="hide" position="1"
+               widget-style="smallSubmit" title="" event="onClick" action="$.fixedAssets.saveFixedAssets()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="searchFixedAssetsForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="OsManager">
+        <field name="fixedAssetsCode" title="编码" position="1"><text /></field>
+        <field name="fixedAssetsName" title="名称" position="2"><text /></field>
+        <field name="assetType" title="类别" position="3">
+            <drop-down>
+                <list-options list-name="fixedAssetsTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+            <!--<drop-down>-->
+                <!--<list-options list-name="fixedAssetsTypeList" key-name="enumId" description="${description}"/>-->
+            <!--</drop-down>-->
+        </field>
+        <field name="department" title="归属部门" position="4">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="usePerson" title="使用人" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="useDepartment" title="使用部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="assetStatus" title="状态" position="3">
+            <drop-down>
+                <list-options list-name="assetStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="canLendOut" title="可否外借" position="4">
+            <drop-down>
+                <option key="Y" description="可外借"/>
+                <option key="N" description="不可外借"/>
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" position="1"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.searchFixedAssets()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" position="2"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.addFixedAssets()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="AssetPartysForm" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="assetsPartsMap">
+        <field name="fixedAssetsId"><hidden value="${fixedAssetsId}"/></field>
+        <field name="assetsPartsId"><hidden/></field>
+        <field name="assetsPartsName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}名称" position="1" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text default-value="${assetsPartsMap.assetsPartsName}"/>
+        </field>
+        <field name="assetsPartsStandard" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}规格" position="2" widget-style="validate[required,custom[onlyLetterNumber],maxSize[20]]">
+            <text default-value="${assetsPartsMap.assetsPartsStandard}"/>
+        </field>
+        <field name="assetsPartsMaker" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}厂家" position="1" widget-style="validate[required,maxSize[20]]">
+            <text default-value="${assetsPartsMap.assetsPartsMaker}"/>
+        </field>
+        <field name="assetsPartsUnit" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}单位" position="2" widget-style="validate[required,maxSize[20]]">
+            <text default-value="${assetsPartsMap.assetsPartsUnit}"/>
+        </field>
+        <field name="assetsPartsCount" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}数量" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[9]]">
+            <text default-value="${assetsPartsMap.assetsPartsCount}"/>
+        </field>
+        <field name="assetsPartsStatus" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}状态" position="2" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="assetsStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="isNewPlay" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}是否新购" position="1" widget-style="validate[required]">
+            <drop-down>
+                <option key="Y" description="是"/>
+                <option key="N" description="否"/>
+            </drop-down>
+        </field>
+        <field name="remarks" title="备注" position="1" widget-style="validate[maxSize[500]]">
+            <textarea default-value="${assetsPartsMap.remarks}"/>
+        </field>
+        <field name="addLink" title-style="hide" position="1"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveAssetsPartys()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="AssetsUseInfoForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="assetsUserInfo">
+        <field name="fixedAssetsId">
+            <hidden value="${fixedAssetsId}"/>
+        </field>
+        <field name="assetsUseInfoId">
+            <hidden/>
+        </field>
+        <field name="fixedAssetsCode" title="资产编号" position="1">
+            <display default-value="${fixedAssetsCode}"/>
+        </field>
+        <field name="usePerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}使用人" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff" default-value="${usePerson}"/>
+        </field>
+        <field name="useDepartment" title="使用部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="startDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}开始日期" position="1" widget-style="validate[required,past[endDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'endDate\\')}'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="endDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}结束日期" position="2" widget-style="validate[required,future[startDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'startDate\\')}'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="addLink" title-style="hide" position="1"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveUseInfo()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="AssetsRepairForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="assetsRepair">
+        <field name="fixedAssetsId">
+            <hidden value="${fixedAssetsId}"/>
+        </field>
+        <field name="assetsRepairId">
+            <hidden/>
+        </field>
+        <field name="fixedAssetsCode" title="资产编号" position="1">
+            <display default-value="${fixedAssetsCode}"/>
+        </field>
+        <field name="repairPerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}检修人" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="repairDepartment" title="检修部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="repairDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}检修时间" position="2" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="repairContent" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}检修内容" position="1" widget-style="validate[required]">
+            <textarea/>
+        </field>
+        <field name="addLink" title-style="hide" position="1"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveAssetsRepair()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="FixedAssetsList" type="list" separate-columns="true" paginate-target="" list-name="fixedAssetsList"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="fixedAssetsCode" title="资产编码" event="onClick" action="$.fixedAssets.showFixedAssetsInfoForm('${fixedAssetsId}')" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${fixedAssetsCode}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="fixedAssetsName" title="资产名称">
+            <display/>
+        </field>
+        <field name="assetType" title="资产类别">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="assetStandard" title="规格">
+            <display/>
+        </field>
+        <field name="limitYear" title="使用年限">
+            <display/>
+        </field>
+        <field name="assetCount" title="数量">
+            <display/>
+        </field>
+        <field name="useDepartment" title="使用部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="usePerson" title="使用人">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="assetStatus" title="状态">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="keepPlace" title="存放地点">
+            <display/>
+        </field>
+        <field name="remarks" title="备注">
+            <display/>
+        </field>
+        <field name="updateLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick"
+               action="$.fixedAssets.addFixedAssets('${fixedAssetsId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="$.fixedAssets.deleteFixedsAssets('${fixedAssetsId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--资产借用查询条件-->
+    <form name="searchFixedAssetsBorrow" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="OsManager">
+        <field name="fixedAssetsCode" title="资产编码" position="1"><text /></field>
+        <field name="fixedAssetsName" title="资产名称" position="2"><text /></field>
+        <field name="assetType" title="资产类别" position="3">
+            <drop-down>
+                <list-options list-name="assetTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="fixedAssetsManager" title="管理者" position="4">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="applyPerson" title="借用人" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="department" title="归属部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="assetStatus" title="资产状况" position="3">
+            <drop-down>
+                <list-options list-name="assetStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="lendStatus" title="借用状态" position="4">
+            <drop-down>
+                <list-options list-name="assetLendStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <!--<field name="i" title="显示选项" position="1">
+            <check>
+                <option key="1" description="包含下属部门"></option>
+                <option key="2" description="归属部门"></option>
+                <option key="3" description="购买日期"></option>
+                <option key="4" description="生产厂家"></option>
+                <option key="5" description="可否外借"></option>
+                <option key="6" description="录入人"></option>
+                <option key="7" description="录入日期"></option>
+                <option key="8" description="最近检修记录"></option>
+            </check>
+        </field>-->
+        <field name="update" title="查询" title-area-style="hidden" event="onClick" position="1" widget-style="smallSubmit"
+               action="$.fixedAssets.searchAssetsBorrow()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+
+<!--固定资产明细组合及相关配件-->
+    <form name="FixedAssetsPartsList" type="list" list-name="FixedAssetsPartsList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="assetsPartsName" title="名称">
+            <display/>
+        </field>
+        <field name="assetsPartsStandard" title="规格">
+            <display/>
+        </field>
+        <field name="assetsPartsMaker" title="厂家">
+            <display/>
+        </field>
+        <field name="assetsPartsUnit" title="单位">
+            <display/>
+        </field>
+        <field name="assetsPartsCount" title="数量">
+            <display/>
+        </field>
+        <field name="assetsPartsStatus" title="状态">
+           <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="isNewPlay" title="是否新购">
+            <display description="${groovy:isNewPlay == 'Y' ? '是' : '否'}"/>
+        </field>
+        <field name="remarks" title="备注">
+            <display/>
+        </field>
+        <field name="updateLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="$.fixedAssets.addAssetPartys('${fixedAssetsId}','${assetsPartsId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="$.fixedAssets.deleteParts('${fixedAssetsId}','${assetsPartsId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+
+    <form name="FixedAssetsInfoForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssets">
+        <field name="fixedAssetsCode" title="资产编码" position="1">
+            <display/>
+        </field>
+        <field name="fixedAssetsName" title="资产名称" position="2">
+            <display/>
+        </field>
+        <field name="inputPerson" title="录入人" position="3">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="limitYear" title="使用年限" position="4">
+            <display/>
+        </field>
+        <field name="assetMaker" title="生产厂家" position="1">
+            <display/>
+        </field>
+        <field name="canLendOut" title="可否外借" position="2">
+            <display/>
+        </field>
+        <field name="assetType" title="资产类别" position="3">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <!--<field name="u" title="可外借岗位" position="3">-->
+            <!--<display/>-->
+        <!--</field>-->
+        <field name="assetStatus" title="资产状态" position="4">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="buyDate" title="购买日期" position="1">
+            <display/>
+        </field>
+        <field name="assetStandard" title="资产规格" position="2">
+            <display/>
+        </field>
+
+        <field name="keepPlace" title="存放地点" position="3">
+            <display/>
+        </field>
+        <field name="assetValue" title="资产价值" position="4">
+            <display/>
+        </field>
+        <field name="assetCount" title="资产数量" position="1">
+            <display/>
+        </field>
+        <field name="department" title="归属部门" position="2">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="remarks" title="备注" position="3">
+            <display/>
+        </field>
+    </form>
+
+    <!--固定资产使用记录-->
+    <form name="UseFixedAssets" type="list" list-name="assetsUseInfoList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="usePerson" title="使用人">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="useDepartment" title="使用部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="startDate" title="开始时间">
+            <display/>
+        </field>
+        <field name="endDate" title="结束时间">
+            <display/>
+        </field>
+        <field name="inputPerson" title="录入人">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="inputDate" title="录入时间">
+            <display/>
+        </field>
+        <field name="updateLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="$.fixedAssets.addUserInfo('${fixedAssetsId}','${fixedAssetsCode}','${assetsUseInfoId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="$.fixedAssets.deleteUseInfo('${fixedAssetsId}','${assetsUseInfoId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--固定资产检修记录-->
+    <form name="ReconditionFixedAssets" type="list" list-name="assetsRepairList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="repairPerson" title="检修人" >
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="repairDepartment" title="检修部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="repairDate" title="检修时间">
+            <display/>
+        </field>
+        <field name="repairContent" title="检修内容">
+            <display/>
+        </field>
+        <field name="inputPerson" title="录入人">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="inputDate" title="录入时间">
+            <display/>
+        </field>
+        <field name="updateLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="$.fixedAssets.addRepair('${fixedAssetsId}','${fixedAssetsCode}','${assetsRepairId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="$.fixedAssets.deleteRepair('${fixedAssetsId}','${assetsRepairId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <form name="FixedAssetsBorrowList" type="list" list-name="canLendFixedAssetsList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="fixedAssetsCode" title="资产编码" event="onClick"
+               action="$.fixedAssets.borrowInfo('${fixedAssetsId}')" use-when="&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_2&quot;||&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_3&quot;">
+            <hyperlink target="#nowhere" description="${fixedAssetsCode}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="fixedAssetsCode" title="资产编码" use-when="&quot;${lendStatus}&quot; == &quot;FIXED_ASSETS_LEND_STATUS_1&quot;||&quot;${lendStatus}&quot;==&quot;&quot;">
+            <!--<hyperlink target="#nowhere" description="${fixedAssetsCode}" target-type="plain" url-mode="plain"/>-->
+            <display description="${fixedAssetsCode}"/>
+        </field>
+        <field name="fixedAssetsName" title="资产名称" ><display/></field>
+        <field name="assetType" title="资产类别" >
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="assetStandard" title="规格" >
+            <display/>
+        </field>
+        <field name="assetCount" title="数量" >
+            <display/>
+        </field>
+        <field name="lendCount" title="借出次数" event="onClick">
+            <display default-value="0"/>
+        </field>
+        <field name="lendStatus" title="借用状态" >
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="lendDate" title="借出时间" use-when="&quot;${lendStatus}&quot; == &quot;FIXED_ASSETS_LEND_STATUS_1&quot;||&quot;${lendStatus}&quot;==&quot;&quot;" event="onClick" widget-style="smallSubmit"
+               action="javascript:$.fixedAssets.borrowRegister('${fixedAssetsId}')">
+            <hyperlink target="#nowhere" description="我要借用" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="lendDate" title="借出时间" use-when="(&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_2&quot;)&amp;&amp;(&quot;${partyId}&quot;==&quot;${fixedAssetsManager}&quot;)"  event="onClick" widget-style="smallSubmit"
+               action="$.fixedAssets.borrowAssetsConfirm('${fixedAssetsId}'">
+            <hyperlink target="#nowhere" description="借用确认" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="lendDate" title="借出时间" use-when="(&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_2&quot;)&amp;&amp;(&quot;${partyId}&quot;!=&quot;${fixedAssetsManager}&quot;)">
+            <!--<hyperlink target="#nowhere" description="借用确认" target-type="plain" url-mode="plain"/>-->
+             <display description="待管理者确认借出"/>
+        </field>
+        <field name="lendDate" title="借出时间" use-when="(&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_3&quot;)&amp;&amp;(&quot;${partyId}&quot;==&quot;${applyPerson}&quot;)" event="onClick" widget-style="smallSubmit"
+               action="$.fixedAssets.returnAssets('${fixedAssetsId}')">
+            <hyperlink target="#nowhere" description="归还确认" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="lendDate" title="借出时间" use-when="(&quot;${lendStatus}&quot;==&quot;FIXED_ASSETS_LEND_STATUS_3&quot;)&amp;&amp;(&quot;${partyId}&quot;!=&quot;${applyPerson}&quot;)">
+            <!--<hyperlink target="#nowhere" description="归还确认" target-type="plain" url-mode="plain"/>-->
+            <display description="待借用者归还"/>
+        </field>
+        <field name="lendDayCount" title="借出天数" >
+            <display/>
+        </field>
+        <field name="remarks" title="备注">
+            <display/>
+        </field>
+    </form>
+
+
+    <form name="borrowRegisterCommon" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="borrowRegister">
+        <field name="fixedAssetsId">
+            <hidden/>
+        </field>
+        <field name="fixedAssetsCode" title="资产编码" position="1"><display/></field>
+        <field name="fixedAssetsName" title="资产名称" position="2"><display/></field>
+        <field name="assetStatus" title="资产状态" position="1">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="assetStandard" title="资产规格" position="2">
+            <display/>
+        </field>
+        <field name="keepPlace" title="存放地点" position="1">
+            <display/>
+        </field>
+        <field name="assetType" title="资产类别" position="2">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="assetCount" title="资产数量" position="1">
+            <display/>
+        </field>
+        <field name="department" title="归属部门" position="2">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="fixedAssetsManager" title="管理者" position="1">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+            <!--<display/>-->
+        </field>
+    </form>
+    <!--借用预登记-->
+    <form name="borrowRegister" type="single" extends="borrowRegisterCommon"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssets">
+        <!--<field name="applyPerson"><hidden value="${userLogin.partyId}"/></field>-->
+        <field name="applyDate" title="申请日期" position="1" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd'" default-value="${groovy:new Date()}"/>
+        </field>
+        <!--<field name="applyPerson" title="申请人" position="2">-->
+            <!--<display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>-->
+            <!--&lt;!&ndash;<lookup target-form-name="LookupStaff" default-value="${userLogin.partyId}"/>&ndash;&gt;-->
+        <!--</field>-->
+        <field name="applyInformation" title="申请信息">
+            <textarea/>
+        </field>
+        <field name="editLink" title-style="hide"
+               widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveBorrowRegister('${userLogin.partyId}')">
+            <hyperlink target="#nowhere" description="确定" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--借用预登记确认-->
+    <form name="borrowRegisterConfirm" type="single" extends="borrowRegisterCommon"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssets">
+        <field name="fixedAssetsLendId">
+            <hidden/>
+        </field>
+        <field name="applyDate" title="申请日期" position="1">
+            <display/>
+        </field>
+        <field name="applyPerson" title="申请人" position="2">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="applyInformation" title="申请信息" position="1">
+            <display default-value="无"/>
+        </field>
+        <field name="assetLendDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}借出日期" position="1" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="assetLendAdvice" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}借出意见" position="2" widget-style="validate[required]">
+            <drop-down>
+                <option key="Y" description="同意"/>
+                <option key="N" description="不同意"/>
+            </drop-down>
+        </field>
+        <field name="assetLendOutStatus" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}借出状况" position="3" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="assetLendOutStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="assetLendRemarks" title="借出备注">
+            <textarea/>
+        </field>
+        <!--<field name="editLink" title-style="hide"-->
+               <!--widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveborrowAssetsConfirm()">-->
+            <!--<hyperlink target="#nowhere" description="确定" target-type="plain" url-mode="plain"/>-->
+        <!--</field>-->
+    </form>
+
+    <form name="ReturnAssetsForm" type="single" extends="borrowRegisterCommon" header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssets">
+        <field name="fixedAssetsLendId">
+            <hidden/>
+        </field>
+        <field name="applyInformation" title="申请信息">
+            <display/>
+        </field>
+        <field name="assetLendDate" title="借出日期" position="1">
+            <display/>
+        </field>
+        <field name="assetLendAdvice" title="借出意见" position="2">
+            <!--&lt;!&ndash;<display/>&ndash;&gt;${groovy:lastFeedbackTime != null ? (lastFeedbackTime) : ''}-->
+            <display description="同意"/>
+        </field>
+        <field name="assetLendOutStatus" title="借出状况" position="3">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="assetLendRemarks" title="借出备注" position="1">
+            <display default-value="无"/>
+        </field>
+        <field name="assetReturnDate" title="归还日期" position="1" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="assetReturnStatus" title="归还状态" position="2" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="assetLendOutStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <!--<field name="assetReturnPerson" title="归还人" position="3" widget-style="validate[required]">-->
+            <!--<lookup target-form-name="LookupStaff" default-value="${userLogin.partyId}"/>-->
+        <!--</field>-->
+        <field name="assetReturnRemarks" title="归还备注">
+            <textarea/>
+        </field>
+        <!--<field name="editLink" title-style="hide"-->
+               <!--widget-style="smallSubmit" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.fixedAssets.saveReturnAssets('${userLogin.partyId}')">-->
+            <!--<hyperlink target="#nowhere" description="确定" target-type="plain" url-mode="plain"/>-->
+        <!--</field>-->
+    </form>
+
+    <!--资产借用单详情-->
+    <form name="borrowInfo" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssets">
+
+        <field name="fixedAssetsCode" title="资产编码:" position="1">
+            <display/>
+        </field>
+        <field name="fixedAssetsName" title="资产名称:" position="2">
+            <display/>
+        </field>
+        <field name="assetStatus" title="资产状态:" position="3">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="assetStandard" title="资产规格:" position="4">
+            <display/>
+        </field>
+        <field name="keepPlace" title="存放地点:" position="1">
+            <display/>
+        </field>
+        <field name="assetType" title="资产类别:" position="2">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="assetCount" title="资产数量:" position="3">
+            <display/>
+        </field>
+        <field name="department" title="归属部门:" position="4">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="applyPerson" title="申请人:" position="1">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="applyDate" title="申请日期:" position="2">
+            <display/>
+        </field>
+        <field name="lendStatus" title="当前状态:" position="3">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="applyInformation" title="申请信息:" position="4">
+            <display/>
+        </field>
+        <field name="fixedAssetsManager" title="借出经手人:" position="1">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="assetLendDate" title="借出日期:" position="2">
+            <display/>
+        </field>
+        <field name="assetLendOutStatus" title="借出状态:" position="3">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="assetLendRemarks" title="借出信息:" position="4">
+            <display/>
+        </field>
+        <field name="assetReturnPerson" title="归还经手人:" position="1">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="assetReturnDate" title="归还日期:" position="2">
+            <display/>
+        </field>
+        <field name="assetReturnStatus" title="归还状态:" position="3">
+            <display-entity entity-name="Enumeration" description="${description}" key-field-name="enumId"/>
+        </field>
+        <field name="assetReturnRemarks" title="归还信息:" position="4">
+            <display/>
+        </field>
+    </form>
+
+
+    <form name="SearchDepreciation" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="fixedAssetsInfoForm">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+
+        <field name="q" title="折旧开始日期" position="1">
+            <date-time type="dateFmt:'yyyy-MM-dd'" />
+        </field>
+        <field name="w" title="折旧结束日期" position="2">
+            <date-time type="dateFmt:'yyyy-MM-dd'"/>
+        </field>
+        <field name="e" title="资产名称" position="3">
+            <text/>
+        </field>
+
+        <field name="editLink" title-style="hide"
+               widget-style="smallSubmit" title="" event="onClick" action="">
+            <hyperlink target="#nowhere" description="搜索" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="DepreciationList" type="list" list-name="depreciationList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="序号">
+            <display/>
+        </field>
+        <field name="w" title="资产名称">
+            <display/>
+        </field>
+        <field name="e" title="折算类型">
+            <display/>
+        </field>
+        <field name="r" title="工作量">
+            <display/>
+        </field>
+        <field name="t" title="折旧值">
+            <display/>
+        </field>
+    </form>
+</forms>
+

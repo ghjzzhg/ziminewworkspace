@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <!--新增会议纪要-->
+    <form name="LiaisonList" type="list" list-name="liaisonList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="number" title="编号">
+            <display/>
+        </field>
+        <field name="q" title="操作类型">
+            <display/>
+        </field>
+        <field name="createdStamp" title="发送日期">
+            <display/>
+        </field>
+        <field name="fullName" title="发送人">
+            <display/>
+        </field>
+        <field name="mainPersonName" title="主送人">
+            <display/>
+        </field>
+        <field name="copyPersonName" title="抄送人" event="onClick" action="$.liaison.showLiaison()">
+            <display/>
+        </field>
+        <field name="title" title="工作联络单标题" event="onClick" action="$.liaison.showLiaison()">
+            <display/>
+        </field>
+        <field name="contactListTypeName" title="联络单类型" event="onClick" action="$.liaison.showLiaison()">
+            <display/>
+        </field>
+        <field name="reviewTheStatus" title="状态">
+            <display/>
+        </field>
+        <field name="a" title="审核进度">
+            <display/>
+        </field>
+        <field name="lastUpdatedTxStamp" title="最后反馈人（反馈时间）">
+            <display/>
+        </field>
+        <field name="d" title="最后反馈内容">
+            <display/>
+        </field>
+        <field name="f" title="跟进结果">
+            <display/>
+        </field>
+    </form>
+
+    <!--联络单类型管理列表-->
+    <form name="TypeManagementListForm" type="list" list-name="TypeManagementList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="typeManagement" title="类型管理">
+            <display/>
+        </field>
+    </form>
+
+    <!--添加联络单类型-->
+    <form name="AddTypeManagement" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="typeManagement" title="添加类型" position="1">
+            <text/>
+        </field>
+        <field name="addTypeManage" title-style="hide" widget-style="smallSubmit" title="添加" event="onClick" action="$.typeManagement.saveTypeManagement()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <form name="LiaisonSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="a" title="发送日期" position="1">
+            <date-time />
+        </field>
+        <field name="b" title="至" position="2">
+            <date-time/>
+        </field>
+        <field name="c" title="标题" position="3">
+            <text/>
+        </field>
+        <field name="d" title="类型" position="4">
+            <drop-down>
+                <option key="0" description="全部"></option>
+                <option key="1" description="业务联络"></option>
+                <option key="2" description="进度联络"></option>
+
+            </drop-down>
+        </field>
+        <field name="e" title="状态" position="1">
+            <drop-down>
+                <option key="0" description="全部"></option>
+                <option key="1" description="未完成"></option>
+                <option key="2" description="已完成"></option>
+            </drop-down>
+        </field>
+        <field name="f" title="浏览状态" position="2">
+            <drop-down>
+                <option key="0" description="全部"></option>
+                <option key="1" description="未浏览"></option>
+                <option key="2" description="已浏览"></option>
+            </drop-down>
+        </field>
+        <field name="g" title="跟进结果" position="3">
+           <text/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <form name="LiaisonCheckList" type="list" list-name="liaisonCheckList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="title" title="工作联络单标题" event="onClick" action="$.liaison.showLiaisonInfo(${contactListId})" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${title}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="contactListTypeName" title="联络单类型">
+            <display/>
+        </field>
+        <field name="departmentName" title="发送者所在部门">
+            <display/>
+        </field>
+        <field name="fullNameString" title="发送者">
+            <display/>
+        </field>
+        <field name="auditorPersonName" title="所有审核人">
+            <display/>
+        </field>
+        <field name="reviewTheStatus" title="状态" use-when="&quot;${fullName}&quot; == &quot;${userLogin.partyId}&quot;" event="ondblclick" action="$.liaison.onClickStatus($(this),'${contactListId}','${reviewTheStatus}')" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${reviewTheStatusString}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="reviewTheStatus" title="状态" use-when="&quot;${fullName}&quot;!=&quot;${userLogin.partyId}&quot;" >
+            <display description="${reviewTheStatusString}"/>
+        </field>
+        <field name="reviewTheStatus" title="状态" use-when="&quot;${reviewTheStatus}&quot;==&quot;LIAISON_STATUS_ONE&quot;" >
+            <display description="${reviewTheStatusString}" />
+        </field>
+        <field name="audit" title="审核" event="onClick" action="$.liaison.showLiaisonInfos(${contactListId})" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="审核" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createdStamp" title="发送日期">
+            <display/>
+        </field>
+        <field name="delete" title-style="hide" widget-style="icon-trash"
+               title="作废" event="onClick" action="$.liaison.deleteLiaison(${contactListId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="LiaisonMangerList" type="list" list-name="liaisonCheckList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="工作联络单标题" event="onClick" action="$.liaison.showLiaison()">
+            <hyperlink target="#nowhere" description="${q}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="w" title="联络单类型">
+            <display/>
+        </field>
+
+        <field name="e" title="主送人">
+            <display/>
+        </field>
+        <field name="r" title="抄送人">
+            <display/>
+        </field>
+
+
+        <field name="t" title="发送者所在部门">
+            <display/>
+        </field>
+        <field name="y" title="发送者">
+            <display/>
+        </field>
+
+        <field name="u" title="状态">
+            <display/>
+        </field>
+        <field name="i" title="发送日期">
+            <display/>
+        </field>
+
+        <field name="delete" title-style="hide" widget-style="icon-trash"
+               title="删除" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+
+    <form name="LiaisonCheckSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="responseTimeStart" title="发送日期" position="1">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'LiaisonCheckSearchForm_responseTimeEnd\\')}'"/>
+        </field>
+        <field name="responseTimeEnd" title="至" position="2">
+            <date-time type="dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'LiaisonCheckSearchForm_responseTimeStart\\')}'"/>
+        </field>
+        <field name="title" title="联络单标题" position="3">
+            <text/>
+        </field>
+        <field name="contactListType" title="类型" position="1">
+            <drop-down>
+                <option key="1" description="全部"/>
+                <entity-options entity-name="TblTypeManagementList" description="${typeManagement}" key-field-name="typeManagementListId"></entity-options>
+            </drop-down>
+        </field>
+        <field name="reviewTheStatus" title="状态" position="2">
+            <drop-down>
+                <option key="1" description="全部"></option>
+                <entity-options entity-name="Enumeration" key-field-name="enumId" description="${description}">
+                    <entity-constraint name="enumTypeId" value="LIAISON_STATUS"></entity-constraint>
+                </entity-options>
+            </drop-down>
+        </field>
+       <!-- <field name="f" title=" " title-style="hide" position="2" use-when="${liaisonManager=='n'}">
+            <check>
+                <option key="1" description="所有待审"></option>
+            </check>
+        </field>-->
+
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.liaison.searchLiaison()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <field name="sendContactList" title-style="hide" widget-style="smallSubmit" position="2"
+               title="发送联络单" event="onClick" action="$.liaison.showSendContactList()">
+            <hyperlink target="#nowhere" description="发送联络单" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>
+

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <description>Email Site Configuration File</description>
+    
+    <!-- view handlers -->
+    <handler name="service-multi" type="request" class="org.ofbiz.webapp.event.ServiceMultiEventHandler"/>
+
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+    <request-map uri="main">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInbox"/>
+        <response name="success" type="view" value="main"/>
+    </request-map>
+    <request-map uri="LookupEmailContacts">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="LookupEmailContacts"/>
+    </request-map>
+    <request-map uri="AutoGetEmailAddress">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/email/WEB-INF/actions/AutoGetEmailAddress.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetInternalContact">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/email/WEB-INF/actions/GetInternalContact.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetExternalContact">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/email/WEB-INF/actions/GetExternalContact.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetGroupContact">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/email/WEB-INF/actions/GetGroupContact.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetEmailBox">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/email/WEB-INF/actions/GetEmailBox.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ComposeMail">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ComposeMail"/>
+    </request-map>
+    <request-map uri="Folders">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Folders"/>
+    </request-map>
+    <!--查询收件箱内的邮件-->
+    <request-map uri="Inbox">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInbox"/>
+        <response name="success" type="view" value="Inbox"/>
+    </request-map>
+    <!--逻辑删除邮件-->
+    <request-map uri="deleteEmail">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteEmail"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--物理删除邮件-->
+    <request-map uri="removeEmail">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="removeEmail"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--发送邮件-->
+    <request-map uri="sendEmail">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="sendEmail"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <!--下载附件-->
+    <request-map uri="stream">
+        <event type="java" path="org.ofbiz.content.data.DataEvents" invoke="serveObjectData"/>
+        <response name="success" type="none"/>
+        <response name="error" type="view" value="error"/>
+        <response name="io-error" type="none"/>
+    </request-map>
+    <request-map uri="Draft">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchDraft"/>
+        <response name="success" type="view" value="Draft"/>
+    </request-map>
+    <request-map uri="Sent">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Sent"/>
+    </request-map>
+    <request-map uri="Trash">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="searchTrash"/>
+        <response name="success" type="view" value="Trash"/>
+    </request-map>
+    <request-map uri="ViewMail">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkEmail"/>
+        <response name="success" type="view" value="ViewMail"/>
+    </request-map>
+    <request-map uri="CustomFolder">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="CustomFolder"/>
+    </request-map>
+    <request-map uri="Groups">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Groups"/>
+    </request-map>
+
+    <request-map uri="CreateEmailGroup">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="CreateEmailGroup"/>
+    </request-map>
+    <request-map uri="InternalContactList">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="InternalContactList"/>
+    </request-map>
+    <request-map uri="ExternalContactList">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExternalContactList"/>
+    </request-map>
+    <request-map uri="Reject">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Reject"/>
+    </request-map>
+    <request-map uri="Filter">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Filter"/>
+    </request-map>
+    <request-map uri="SearchMail">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="SearchMail"/>
+    </request-map>
+    <request-map uri="Signature">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Signature"/>
+    </request-map>
+    <request-map uri="AutoReply">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="AutoReply"/>
+    </request-map>
+    <request-map uri="Settings">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="Settings"/>
+    </request-map>
+
+    <request-map uri="showUploadFileView">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.content.content.UploadFileService" invoke="selectUploadFileList"/>
+        <response name="success" type="view" value="showUploadFileView"/>
+    </request-map>
+
+    <request-map uri="uploadFileList">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.content.content.UploadFileService" invoke="uploadFileList"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchDataResourceById">
+        <security https="true" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.command.FileService" invoke="searchDataResourceById"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="fileList">
+        <security https="true" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.command.FileService" invoke="showFileList"/>
+        <response name="success" type="view" value="fileList"/>
+    </request-map>
+
+    <view-map name="main" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Main"/>
+    <view-map name="GetEmailBox" type="screen" page="component://oa/widget/EmailCommonScreens.xml#GetEmailBox"/>
+    <view-map name="ComposeMail" type="screen" page="component://oa/widget/EmailCommonScreens.xml#ComposeMail"/>
+    <view-map name="Folders" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Folders"/>
+    <view-map name="Inbox" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Inbox"/>
+    <view-map name="Draft" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Draft"/>
+    <view-map name="Sent" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Sent"/>
+    <view-map name="Trash" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Trash"/>
+    <view-map name="ViewMail" type="screen" page="component://oa/widget/EmailCommonScreens.xml#ViewMail"/>
+    <view-map name="CustomFolder" type="screen" page="component://oa/widget/EmailCommonScreens.xml#CustomFolder"/>
+    <view-map name="Groups" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Groups"/>
+    <view-map name="CreateEmailGroup" type="screen" page="component://oa/widget/EmailCommonScreens.xml#CreateEmailGroup"/>
+    <view-map name="InternalContactList" type="screen" page="component://oa/widget/EmailCommonScreens.xml#InternalContactList"/>
+    <view-map name="ExternalContactList" type="screen" page="component://oa/widget/EmailCommonScreens.xml#ExternalContactList"/>
+    <view-map name="LookupEmailContacts" type="screen" page="component://oa/widget/EmailCommonScreens.xml#LookupEmailContacts"/>
+    <view-map name="Reject" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Reject"/>
+    <view-map name="Filter" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Filter"/>
+    <view-map name="SearchMail" type="screen" page="component://oa/widget/EmailCommonScreens.xml#SearchMail"/>
+    <view-map name="Signature" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Signature"/>
+    <view-map name="AutoReply" type="screen" page="component://oa/widget/EmailCommonScreens.xml#AutoReply"/>
+    <view-map name="Settings" type="screen" page="component://oa/widget/EmailCommonScreens.xml#Settings"/>
+    <view-map name="fileList" type="screen" page="component://content/widget/FileScreens.xml#fileList"/>
+    <view-map name="showUploadFileView" type="screen" page="component://content/widget/FileScreens.xml#showUploadFileView"/>
+</site-conf>

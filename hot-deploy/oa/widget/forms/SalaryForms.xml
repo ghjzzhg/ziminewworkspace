@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="SalaryFindOptions" type="single" target="SalaryMain"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="name" title="姓名"><text size="10"/></field>
+        <field name="department" title="部门">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="position" title="职位">
+            <drop-down>
+                <option key="1" description="班长"/>
+                <option key="2" description="组长"/>
+                <option key="2" description="主任"/>
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:showInfo('查询中...')">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="SalaryApproveList" type="list" list-name="salaryApproveList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="year" title="年份"><display/></field>
+        <field name="month" title="月份"><display/></field>
+        <field name="workerSn" title="工号">
+            <display/>
+        </field>
+        <field name="name" title="员工姓名">
+            <display/>
+        </field>
+        <field name="department" title="部门"><display/></field>
+        <field name="occupation" title="岗位"><display/></field>
+        <field name="expectedDays" title="工作天数"><display/></field>
+        <field name="actualDays" title="实到天数"><display/></field>
+        <field name="baseSalary" title="基本工资"><display/></field>
+        <field name="bonus" title="奖金"><display/></field>
+        <field name="finalScore" title="终审分数"><display/></field>
+        <field name="perfExamResult" title="考评结果"><display/></field>
+        <field name="examSponsorDate" title="考评人&lt;br/&gt;考评日期" encode-output="false"><display description="${groovy: examSponsor + &quot;\n&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(examDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examReviewerDate" title="初审人&lt;br/&gt;初审日期" encode-output="false"><display description="${groovy: examReviewer + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(reviewDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examApproverDate" title="终审人&lt;br/&gt;终审日期" encode-output="false"><display description="${groovy: examApprover + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(approveDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examFinalizerDate" title="归档人&lt;br/&gt;归档日期" encode-output="false"><display description="${groovy: examFinalizer + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(finalizeDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="glyphicon glyphicon-screenshot"  title="审核" event="onClick" action="javascript:$.organization.editOrg('${partyId}');">
+            <hyperlink target="#nowhere" title="审核" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="PerfExamList" area-target="PerfExamMain"/>
+        <on-event-update-area event-type="sort-column" area-id="PerfExamList" area-target="PerfExamMain"/>
+    </form>
+    <form name="SalaryItemsList" type="list" paginate="false" list-name="salaryItemsList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryItems.groovy"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="entryId" title="标识">
+        <hidden/>
+        </field>
+        <field name="title" title="标题" widget-style="validate[required]">
+            <text size="25"/>
+        </field>
+        <field name="type" title="款项类型" >
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="AMOUNT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="relativeEntry" title="相对条目" widget-style="validate[required]">
+            <drop-down allow-empty="true">
+                <option key="" description="无"/>
+                <entity-options entity-name="TblSalaryEntry" description="${title}" key-field-name="entryId">
+                    <entity-order-by field-name="entryId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="amount" title="默认值(元)" tooltip="${groovy: basedOnSalary > 0 ? '%' : ''}" widget-style="validate[required,custom[twoDecimalNumber]]">
+            <text size="25"/>
+        </field>
+        <field name="remarks" title="备注">
+            <text size="25"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icosg-database"  title="保存" event="onClick" action="$.salary.editSalaryEntry('${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}')">
+            <hyperlink target="#nowhere" title="保存" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="EditSalaryItem" type="single" target="SalaryItems" default-map-name="perfExamItem"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="title" position="1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}标题" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <field name="type" position="1" title="款项类型" tooltip="&quot;显示&quot;表示仅用于显示作用，已包含在应扣或应发中了">
+            <drop-down  allow-empty="true">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="AMOUNT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="relativeEntry" position="1" title="相对条目" tooltip="是否基于其他条目计算" >
+            <drop-down allow-empty="true">
+                <option key="" description="无"/>
+                <entity-options entity-name="TblSalaryEntry" description="${title}" key-field-name="entryId">
+                    <entity-order-by field-name="entryId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="amount" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}默认值" tooltip="百分比使用整数表示，例如15%填入数字15而不是0.15"
+               widget-style="validate[required,custom[twoDecimalNumber],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <!--<field name="allUseEntry" position="1" title="通用条目" tooltip="是否所有员工通用的条目">-->
+            <!--<radio no-current-selected-key="1">-->
+                <!--<option key="1" description="是"/>-->
+                <!--<option key="2" description="否"/>-->
+            <!--</radio>-->
+        <!--</field>-->
+        <field name="remarks" title="备注" widget-style="validate[maxSize[20]]">
+            <textarea cols="50"/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="$.salary.saveSalaryEntry()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="SalaryPayOffFindOptions" type="single" target="SalaryMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="year" title="年份">
+            <drop-down allow-empty="true">
+            <list-options list-name="dateList" key-name="yearValue" description="${yearValue}"/>
+            </drop-down>
+        </field>
+        <field name="partyId" title="员工">
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <field name="department" title="部门">
+            <lookup target-form-name="LookupDepartment" position="center" width="700"/>
+        </field>
+        <field name="position" title="岗位">
+            <lookup target-form-name="LookupOccupation" position="center" width="700"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.salary.searchByYear();">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="SalaryPayOffList" type="list" list-name="salaryPayOffList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="checkBox" title="选择">
+            <check />
+        </field>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="groupName" title="部门">
+            <display/>
+        </field>
+        <field name="staffId" title="标识">
+            <hidden/>
+        </field>
+        <field name="workerSn" title="工号"><display/></field>
+        <field name="name" title="姓名"><display/></field>
+        <field name="occupation" title="岗位"><display/></field>
+        <field name="genderName" title="性别"><display/></field>
+        <field name="1" title="1月" encode-output="false"><display/></field>
+        <field name="2" title="2月" encode-output="false"><display/></field>
+        <field name="3" title="3月" encode-output="false"><display/></field>
+        <field name="4" title="4月" encode-output="false"><display/></field>
+        <field name="5" title="5月" encode-output="false"><display/></field>
+        <field name="6" title="6月" encode-output="false"><display/></field>
+        <field name="7" title="7月" encode-output="false"><display/></field>
+        <field name="8" title="8月" encode-output="false"><display/></field>
+        <field name="9" title="9月" encode-output="false"><display/></field>
+        <field name="10" title="10月" encode-output="false"><display/></field>
+        <field name="11" title="11月" encode-output="false"><display/></field>
+        <field name="12" title="12月" encode-output="false"><display/></field>
+        <!--<field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="维护" event="onClick" action="javascript:$.salary.editPersonSalaryItems('1');">
+            <hyperlink target="#nowhere" title="维护" description=" " target-type="plain" url-mode="plain"/>
+        </field>-->
+        <on-event-update-area event-type="paginate" area-id="SalaryPayOffList" area-target="SalaryPayOffList"/>
+        <on-event-update-area event-type="sort-column" area-id="SalaryPayOffList" area-target="SalaryPayOffList"/>
+    </form>
+    <form name="PersonSalaryItems" type="list" paginate="false" list-name="personSalaryItems" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindPersonSalaryItems.groovy"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="active" title="启用">
+            <check>
+                <option key="1" description="${&quot;quot;}"/>
+            </check>
+        </field>
+        <field name="id" title="标识">
+            <display/>
+        </field>
+        <field name="title" title="标题">
+            <display/>
+        </field>
+        <field name="inOut" title="款项类型" encode-output="false">
+            <display/>
+        </field>
+        <field name="basedOnSalary" title="相对条目">
+            <display/>
+        </field>
+        <field name="value" title="数值(元)" tooltip="${groovy: basedOnSalary != '' ? '%' : ''}">
+            <text size="5"/>
+        </field>
+        <field name="remark" title="备注">
+            <display/>
+        </field>
+        <sort-order>
+            <sort-field name="sn"/>
+            <sort-field name="active"/>
+            <sort-field name="id"/>
+            <sort-field name="title"/>
+            <sort-field name="inOut"/>
+            <sort-field name="basedOnSalary"/>
+            <sort-field name="value"/>
+            <sort-field name="remark"/>
+        </sort-order>
+    </form>
+    <form name="SubmitPersonSalaryForm" type="multi" paginate="false" list-name="personSalaryItems" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="detailId" title="detailId">
+            <hidden/>
+        </field>
+        <field name="entryId" title="entryId">
+            <hidden/>
+        </field>
+        <field name="sendId" title="sendId">
+            <hidden/>
+        </field>
+        <field name="year">
+            <hidden/>
+        </field>
+        <field name="month">
+            <hidden/>
+        </field>
+        <field name="staffId">
+        <display default-value="${staffId}"/>
+        </field>
+        <field name="title" title="标题">
+            <display/>
+        </field>
+        <field name="typeFor" title="款项类型" encode-output="false">
+            <display/>
+        </field>
+        <field name="type" title="款项类型" encode-output="false">
+            <hidden/>
+        </field>
+        <field name="relativeEntryFor" title="相对条目">
+            <display/>
+        </field>
+        <field name="relativeEntry" title="相对条目">
+            <hidden/>
+        </field>
+        <field name="prevValue" title="上月数值" tooltip="${groovy: basedOnSalary != '' ? '%' : ''}">
+            <display/>
+        </field>
+        <field name="salary" title="数值(元)" tooltip="${groovy: basedOnSalary != '' ? '%' : ''}">
+            <text size="5"/>
+        </field>
+        <field name="remarks" title="备注">
+            <text size="15"/>
+        </field>
+  <!--      <sort-order>
+            <sort-field name="sn"/>
+            <sort-field name="detailId"/>
+            <sort-field name="entryId"/>
+            <sort-field name="sendId"/>
+            <sort-field name="year"/>
+            <sort-field name="month"/>
+            <sort-field name="staffId"/>
+            <sort-field name="title"/>
+            <sort-field name="typeFor"/>
+            <sort-field name="relativeEntryFor"/>
+            <sort-field name="prevValue"/>
+            <sort-field name="salary"/>
+            <sort-field name="remarks"/>
+        </sort-order>-->
+    </form>
+    <form name="ViewPersonSalary" type="list" paginate="false" list-name="personSalaryItems" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+            <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/salary/SubmitPersonSalaryItems.groovy"></script>-->
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="id" title="标识">
+            <hidden/>
+        </field>
+        <field name="title" title="标题">
+            <display/>
+        </field>
+        <field name="description" title="款项类型" encode-output="false">
+            <display/>
+        </field>
+        <field name="relativeEntryFor" title="相对条目">
+            <display/>
+        </field>
+        <field name="salary" title="数值(元)" tooltip="${groovy: basedOnSalary != '' ? '%' : ''}">
+            <display/>
+        </field>
+        <field name="remarks" title="备注">
+            <display/>
+        </field>
+        <sort-order>
+            <sort-field name="sn"/>
+            <sort-field name="id"/>
+            <sort-field name="title"/>
+            <sort-field name="description"/>
+            <sort-field name="relativeEntryFor"/>
+            <sort-field name="salary"/>
+            <sort-field name="remarks"/>
+        </sort-order>
+    </form>
+    <form name="SalaryNoticeOperation" type="single" target="SalaryMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="month" title="月份">
+            <drop-down>
+                <option key="01" description="1月"/>
+                <option key="02" description="2月"/>
+                <option key="03" description="3月"/>
+                <option key="04" description="4月"/>
+                <option key="05" description="5月"/>
+                <option key="06" description="6月"/>
+                <option key="07" description="7月"/>
+                <option key="08" description="8月"/>
+                <option key="09" description="9月"/>
+                <option key="10" description="10月/"/>
+                <option key="11" description="11月"/>
+                <option key="12" description="12月"/>
+            </drop-down>
+        </field>
+        <field name="noticeWay" title="方式">
+            <check>
+                <option key="print" description="打印"/>
+                <option key="sendEmail" description="发送邮件"/>
+            </check>
+        </field>
+        <field name="scope" title="范围">
+            <radio>
+                <option key="select" description="所选"/>
+                <option key="all" description="全部"/>
+            </radio>
+        </field>
+        <field name="searchLink" tooltip="仅打印状态为已审的" title-style="hide" widget-style="smallSubmit" title="执行" event="onClick" action="javascript:$.salary.printSalaryBill('${year}');">
+            <hyperlink target="#nowhere" description="执行" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--工资条模板编辑列表-->
+    <form name="ListSalaryTemplate" type="list" title="" separate-columns="true" default-entity-name="" list-name="salaryMouldList"
+          paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="mouldId">
+            <hidden/>
+        </field>
+        <field name="mouldName" title="模板名称">
+            <display/>
+        </field>
+        <field name="createdPerson" title="创建人">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="createdTime" title="创建时间">
+            <display description="${groovy: org.ofbiz.base.util.UtilDateTime.toDateString(createdTime,&quot;yyyy-MM-dd HH:mm:ss&quot;)}"/>
+        </field>
+        <field name="useState" title="使用状态" use-when="&quot;${useState}&quot;==&quot;USING&quot;">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="useState" title="使用状态" widget-style="smallSubmit"
+               event="onClick" use-when="&quot;${useState}&quot;!=&quot;USING&quot;"
+               action="javascript:$.salary.changeTemplateState(${mouldId});">
+            <hyperlink target="#nowhere" description="选择使用" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.salary.addTemplateManagement(${mouldId});">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.salary.deleteSalaryTemplate(${mouldId});">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="AddAttendance" type="single" target="SalaryItems" default-map-name="attendanceMaps"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="title" position="1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}标题" widget-style="required validate[required,custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <field name="type" action="$.salary.changeType()" event="onChange" position="2" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}考勤类型">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="ATTENDANCE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="timeRangeStart" position="1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}时间范围" tooltip="分钟" widget-style="required validate[required,custom[onlyNumberSp],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <field name="timeRangeEnd" position="2" title="至" tooltip="分钟" widget-style="required validate[required,custom[onlyNumberSp],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <field name="numberRangeStart" position="1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}次数范围" tooltip="次" widget-style="required validate[required,custom[onlyNumberSp],maxSize[20]]" >
+            <text size="25"/>
+        </field>
+        <field name="numberRangeEnd" position="2" title="至" tooltip="次" widget-style="required validate[required,custom[onlyNumberSp],maxSize[20]]">
+            <text size="25"/>
+        </field>
+        <field name="deductType" position="1" title="扣除方式">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="DEDUCT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="value" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}值" position="2" widget-style="required validate[required,custom[number],maxSize[20]]" tooltip="（单位：%/元）百分比使用整数表示，例如15%填入数字15而不是0.15">
+            <text size="25"/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.salary.saveAttendance();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="AttendanceList" type="list" paginate="false" list-name="attendanceList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="id" title="标识">
+            <hidden/>
+        </field>
+        <field name="title" title="标题">
+            <display/>
+        </field>
+        <field name="typeFor" title="考勤类型">
+            <display/>
+        </field>
+        <field name="type">
+            <hidden/>
+        </field>
+        <field name="timeRangeStart" title="起始时间(时间范围)">
+            <display/>
+        </field>
+        <field name="timeRangeEnd" title="结束时间(时间范围)">
+            <display/>
+        </field>
+        <field name="numberRangeStart" title="起始次数(次数范围)">
+            <display/>
+        </field>
+        <field name="numberRangeEnd" title="结束次数(次数范围)">
+            <display/>
+        </field>
+        <field name="deductType">
+            <hidden/>
+        </field>
+        <field name="deductTypeFor" title="扣除方式">
+        <display/>
+    </field>
+        <field name="value" title="工资百分比/具体金额">
+            <display/>
+        </field>
+    </form>
+</forms>
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="Form1" type="single" target=""
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="fp_name" title="名称" required-field="true"><text size="10"/></field>
+        <field name="fp_key" title="KEY" required-field="true">
+            <text size="10"/>
+        </field>
+        <field name="fp_category" title="分类">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORKFLOW_CATEGORY"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="fp_description" title="描述">
+            <textarea cols="60" rows="3"/>
+        </field>
+    </form>
+    <form name="Form2" type="single" target=""
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="fp_name" title="名称" required-field="true"><display/></field>
+        <field name="fp_key" title="KEY" required-field="true"><display/></field>
+        <field name="fp_description" title="描述">
+            <display/>
+        </field>
+        <field name="fp_remark1" title="备注1">
+            <text/>
+        </field>
+    </form>
+    <form name="Form3" type="single" target=""
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="fp_name" title="名称" required-field="true"><display/></field>
+        <field name="fp_key" title="KEY" required-field="true"><display/></field>
+        <field name="fp_description" title="描述">
+            <display/>
+        </field>
+        <field name="fp_remark2" title="备注2">
+            <text/>
+        </field>
+    </form>
+</forms>
+

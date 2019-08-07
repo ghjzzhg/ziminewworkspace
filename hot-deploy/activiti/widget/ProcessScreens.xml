@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="processList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="titleProperty" value="SharkProcessList"/>
+
+<!--                 <script location="component://workflow/webapp/shark/WEB-INF/actions/process/processList.bsh"/> -->
+                <script location="component://workflow/webapp/shark/WEB-INF/actions/process/processList.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonSharkDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html><html-template location="component://workflow/webapp/shark/process/processList.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="processDetailList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="titleProperty" value="SharkProcessDetailList"/>
+
+                <script location="component://workflow/webapp/shark/WEB-INF/actions/process/processDetailList.bsh"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonSharkDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html><html-template location="component://workflow/webapp/shark/process/processDetailList.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="processHistory">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="titleProperty" value="SharkProcessHistory"/>
+
+                <script location="component://workflow/webapp/shark/WEB-INF/actions/process/processHistory.bsh"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonSharkDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html><html-template location="component://workflow/webapp/shark/process/processHistory.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="processSteps">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="titleProperty" value="SharkProcessSteps"/>
+
+                <script location="component://workflow/webapp/shark/WEB-INF/actions/process/processSteps.bsh"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonSharkDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html><html-template location="component://workflow/webapp/shark/process/processSteps.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="actProcessDefinitionsList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="screen" value="actProcessDefinitionsList"/>
+                <script location="component://workflow/webapp/workflow/WEB-INF/actions/workflow/deployedProcessDefinitionsList.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.WorkflowDeployProcessDef}">
+                            <platform-specific><html><html-template location="component://workflow/webapp/workflow/workflow/deployedProcessDefinitionsList.ftl"/></html></platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="actProcessDiagram">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <property-map resource="WorkflowUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://workflow/webapp/workflow/WEB-INF/actions/workflow/actProcessDiagram.groovy"/>
+            </actions>
+            <widgets>
+                <screenlet>
+                    <platform-specific><html><html-template location="component://workflow/webapp/workflow/workflow/actProcessDiagram.ftl"/></html></platform-specific>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="findProcess">
+        <section>
+            <actions>
+                <set field="headerItem" value="findProcess"/>
+                <property-map resource="WorkflowUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="screen" value="findProcess"/>
+                <script location="component://workflow/webapp/workflow/WEB-INF/actions/workflow/processFind.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="search-options">
+                                        <include-form name="findProcess" location="component://workflow/widget/WorkflowForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <section>
+                                           <widgets>
+                                               <include-form name="ListProcess" location="component://workflow/widget/WorkflowForms.xml"/>
+                                           </widgets>
+                                        </section>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

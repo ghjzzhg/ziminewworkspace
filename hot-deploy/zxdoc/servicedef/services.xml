@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>Dispatch Common Services</description>
+    <vendor>RexTec</vendor>
+    <version>1.0</version>
+
+    <service name="zxdocManagerPermission" engine="simple"
+             location="component://dispatch/script/org/ofbiz/zxdoc/permission/ZxdocPermissionServices.xml" invoke="zxdocManagerPermission" auth="true">
+        <implements service="permissionInterface"/>
+    </service>
+
+    <service name="createUserInOF" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="createUserInOF">
+        <description>聊天测试案例（添加用户）</description>
+        <!--<attribute name="fullName" type="String" mode="IN" optional="false"/>-->
+        <!--<attribute name="userLoginId" type="String" mode="IN" optional="false"/>-->
+        <!--<attribute name="staffName" type="String" mode="IN" optional="false"/>-->
+        <attribute name="data" type="Map" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createGroupInOF" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="createGroupInOF">
+        <description>在创建group时创建openfire分组</description>
+        <attribute name="groupName" type="String" mode="IN" optional="false"/>
+    </service>
+
+    <service name="xmppLogin" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="xmppLogin">
+        <description>登录xmpp服务器</description>
+        <attribute name="chatRoomJID" type="String" mode="IN" optional="true"/>
+        <attribute name="hideMem" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="deleteOpenFireSessions" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="deleteOpenFireSessions">
+        <description>从聊天服务器下线</description>
+    </service>
+
+    <service name="createChatRoom" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="createChatRoom">
+        <description>创建聊天室</description>
+        <attribute name="chatRoomName" type="String" mode="IN" optional="false"/>
+        <attribute name="caseId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="chatRoomMember" type="Map" mode="IN" optional="true" string-map-prefix="chatRoomMember_"/>
+        <attribute name="partyGroupName" type="Map" mode="IN" optional="true" string-map-prefix="partyGroupName_"/>
+        <attribute name="chatRoomDescription" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomJID" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomName" type="String" mode="OUT" optional="false"/>
+        <attribute name="members" type="List" mode="OUT" optional="false"/>
+    </service>
+    <service name="createFixedChatRoom" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="createFixedChatRoom">
+        <description>创建聊天室案例，数据时固定的</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="getChatRoomInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="getChatRoomInfo">
+        <description>取出聊天室信息</description>
+        <attribute name="charRoomJID" type="String" mode="IN" optional="false"/>
+        <attribute name="userLoginInfo" type="Map" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="getOtherMembers" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="getOtherMembers">
+        <description>添加新聊天室成员时获取要添加的成员列表</description>
+        <attribute name="arr" type="String" mode="IN" optional="true"/>
+        <attribute name="chatRoomJID" type="String" mode="IN" optional="false"/>
+        <attribute name="members" type="List" mode="OUT" optional="true"/>
+        <attribute name="manages" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="checkIsManage" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="checkIsManage">
+        <description>检查用户是否项目经理</description>
+        <attribute name="chatRoomJID" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="addUserToChatRoom" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="addUserToChatRoom">
+        <description>将一个新成员加进聊天室（相当于给他权限进入聊天室）</description>
+        <attribute name="JID" type="String" mode="IN" optional="false"/>
+        <attribute name="roomName" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="removeChatRoomMember" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="removeChatRoomMember">
+        <description>移除聊天室成员</description>
+        <attribute name="memberJID" type="String" mode="IN" optional="false"/>
+        <attribute name="roomJID" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+        <attribute name="xmlString" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="RemoveChatRoomTeamMember" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="RemoveChatRoomTeamMember">
+        <description>移除项目经理公司的其他成员</description>
+        <attribute name="memberJID" type="String" mode="IN" optional="false"/>
+        <attribute name="roomJID" type="String" mode="IN" optional="false"/>
+        <attribute name="parentId" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="getFullNameByJid" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="getFullNameByJid">
+        <description>根据JID获取全名（昵称）</description>
+        <attribute name="JID" type="String" mode="IN" optional="false"/>
+        <attribute name="name" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="getFileList" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="getFileList">
+        <description>获取文件列表</description>
+        <attribute name="chatRoomId" type="String" mode="IN" optional="false"/>
+        <attribute name="files" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="getFileListCase" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="getFileListCase">
+        <description>获取文件列表</description>
+        <attribute name="chatRoomId" type="String" mode="IN" optional="false"/>
+        <attribute name="Connector" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="upLoadFileTest" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="upLoadFileTest">
+        <description>上传测试文件</description>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="addChatFiles" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="addChatFiles">
+        <description>上传文件至协作空间</description>
+        <attribute name="chatRoomId" type="String" mode="IN" optional="false"/>
+        <attribute name="dataResourceIds" type="String" mode="IN" optional="false"/>
+        <attribute name="atta" type="Map" mode="IN" optional="true" string-map-prefix="atta_"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="changeFileStatus" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Chat.groovy" invoke="changeFileStatus">
+        <description>改变文件的锁定状态</description>
+        <attribute name="fileId" type="String" mode="IN" optional="false"/>
+        <!--如果没有lockedBy则代表解锁-->
+        <attribute name="lockedBy" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="createCaseTemplate" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="createCaseTemplate">
+        <description>创建一条新的CASE模板基本信息</description>
+        <implements service="uploadFileInterface" optional="true"/>
+        <auto-attributes mode="OUT" entity-name="TblCaseTemplate" include="pk" optional="false"/>
+        <auto-attributes mode="IN" entity-name="TblCaseTemplate" include="nonpk" optional="true"/>
+        <attribute name="privateFlag" type="String" mode="IN" optional="false"/>
+        <override name="key" type="String" mode="IN" optional="false"/>
+        <override name="name" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="updateCaseTemplate" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="updateCaseTemplate">
+        <description>更新CASE模板基本信息</description>
+        <implements service="uploadFileInterface" optional="true"/>
+        <auto-attributes mode="INOUT" entity-name="TblCaseTemplate" include="pk" optional="false"/>
+        <auto-attributes mode="IN" entity-name="TblCaseTemplate" include="nonpk" optional="true"/>
+        <override name="key" type="String" mode="IN" optional="false"/>
+        <override name="name" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="openCaseSummary" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="openCaseSummary">
+        <description>查看case概述</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="summary" type="String" mode="OUT" optional="true" allow-html="any"/>
+    </service>
+    <service name="deleteCaseTemplate" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="deleteCaseTemplate">
+        <description>删除CASE模板息</description>
+        <auto-attributes mode="IN" entity-name="TblCaseTemplate" include="pk" optional="false"/>
+    </service>
+    <service name="saveCaseTemplateNodeGroups" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseTemplateNodeGroups">
+        <description>保存模板大节点信息</description>
+        <attribute name="templateId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="templateName" type="String" mode="OUT" optional="true"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+    </service>
+    <service name="saveCaseTemplateBaseTime" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseTemplateBaseTime">
+        <description>保存模板大节点信息</description>
+        <attribute name="templateId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="templateName" type="String" mode="OUT" optional="true"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+    </service>
+    <service name="updateCaseProgressDueTimeOnBaseTime" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="updateCaseProgressDueTimeOnBaseTime">
+        <description>基于BaseTime更新CASE任务期限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="baseTimeId" type="String" mode="IN" optional="false"/>
+        <attribute name="baseTime" type="java.sql.Date" mode="IN" optional="true"/>
+    </service>
+    <service name="initUserScore" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="initUserScore">
+        <description>创建用户积分记录</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="deliverScore" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="deliverScore">
+        <description>赠送积分</description>
+        <attribute name="partyIdTo" type="String" mode="IN" optional="false"/>
+        <attribute name="score" type="Integer" mode="IN" optional="false"/>
+    </service>
+    <service name="deductUserAvailableScore" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="deductUserAvailableScore">
+        <description>减少用户可用积分</description>
+        <attribute name="partyId" type="String" mode="IN" optional="false"/>
+        <attribute name="score" type="Integer" mode="IN" optional="false"/>
+    </service>
+    <service name="saveCaseProgressGroup" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseProgressGroup">
+        <description>保存case进程大节点信息</description>
+        <attribute name="caseId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+        <attribute name="groupId" type="Map" mode="IN" optional="true" string-map-prefix="groupId_"/>
+        <attribute name="caseName" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveBlankCaseProgressGroup" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveBlankCaseProgressGroup">
+        <description>保存case进程大节点信息</description>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+        <attribute name="groupId" type="Map" mode="IN" optional="true" string-map-prefix="groupId_"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveCaseTemplateNodes" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseTemplateNodes">
+        <description>保存模板节点信息</description>
+        <attribute name="templateId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="templateName" type="String" mode="OUT" optional="true"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="group" type="Map" mode="IN" optional="true" string-map-prefix="group_"/>
+        <attribute name="executor" type="Map" mode="IN" optional="true" string-map-prefix="executor_"/>
+        <attribute name="dueDay" type="Map" mode="IN" optional="true" string-map-prefix="dueDay_"/>
+        <attribute name="dueBase" type="Map" mode="IN" optional="true" string-map-prefix="dueBase_"/>
+        <attribute name="dueTask" type="Map" mode="IN" optional="true" string-map-prefix="dueTask_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+        <attribute name="atta" type="Map" mode="IN" optional="true" string-map-prefix="atta_"/>
+        <attribute name="oldAtta" type="Map" mode="IN" optional="true" string-map-prefix="oldAtta_"/>
+    </service>
+    <service name="getCaseTemplates" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="getCaseTemplates">
+        <description>创建case时获取模板信息</description>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="fixedCaseTemplate" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="fixedCaseTemplate">
+        <description>根据模板创建case</description>
+        <attribute name="caseId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="templateId" type="String" mode="INOUT" optional="true"/>
+    </service>
+    <service name="saveCase" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCase">
+        <description>保存case</description>
+        <attribute name="caseName" type="String" mode="IN" optional="false"/>
+        <attribute name="templateId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseRemark" type="String" mode="IN" optional="true"  allow-html="any"/>
+        <attribute name="groupNames" type="Map" mode="IN" optional="true" string-map-prefix="groupName_"/>
+        <attribute name="personName" type="Map" mode="IN" optional="true" string-map-prefix="personName_"/>
+        <attribute name="baseTimes" type="Map" mode="IN" optional="true" string-map-prefix="baseTime_"/>
+        <attribute name="dueDate" type="String" mode="IN" optional="true"/>
+        <attribute name="caseProgressGroupId" type="String" mode="OUT" optional="false"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="createCaseRootFolder" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="createCaseRootFolder">
+        <description>创建CASE的根目录</description>
+        <attribute name="caseTitle" type="String" mode="IN" optional="false"/>
+        <attribute name="ownerPartyId" type="String" mode="IN" optional="false"/>
+        <attribute name="folderId" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveBlankCase" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveBlankCase">
+        <description>保存case</description>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest"/>
+        <attribute name="caseName" type="String" mode="IN" optional="false"/>
+        <attribute name="templateId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseRemark" type="String" mode="IN" optional="true"  allow-html="any"/>
+        <attribute name="groupNames" type="Map" mode="IN" optional="true" string-map-prefix="groupName_"/>
+        <attribute name="personName" type="Map" mode="IN" optional="true" string-map-prefix="personName_"/>
+        <attribute name="baseTimes" type="Map" mode="IN" optional="true" string-map-prefix="baseTime_"/>
+        <attribute name="dueDate" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="updateCaseBasicInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="updateCaseBasicInfo">
+        <description>保存case</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="caseName" type="String" mode="IN" optional="false"/>
+        <attribute name="caseRemark" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="groupNames" type="Map" mode="IN" optional="true" string-map-prefix="groupName_"/>
+        <attribute name="personName" type="Map" mode="IN" optional="true" string-map-prefix="personName_"/>
+        <attribute name="baseTimes" type="Map" mode="IN" optional="true" string-map-prefix="baseTime_"/>
+        <attribute name="dueDate" type="String" mode="IN" optional="true"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveCaseBaseTime" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseBaseTime">
+        <description>保存case</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="baseTimes" type="Map" mode="IN" optional="true" string-map-prefix="baseTime_"/>
+    </service>
+    <service name="saveCaseProgress" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseProgress">
+        <description>保存case进程</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="group" type="Map" mode="IN" optional="true" string-map-prefix="group_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="executor" type="Map" mode="IN" optional="true" string-map-prefix="executor_"/>
+        <attribute name="dueBase" type="Map" mode="IN" optional="true" string-map-prefix="dueBase_"/>
+        <attribute name="dueDay" type="Map" mode="IN" optional="true" string-map-prefix="dueDay_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+        <attribute name="atta" type="Map" mode="IN" optional="true" string-map-prefix="atta_"/>
+        <attribute name="oldAtta" type="Map" mode="IN" optional="true" string-map-prefix="oldAtta_"/>
+        <attribute name="isEmptyFlag" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveBlankCaseProgress" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveBlankCaseProgress">
+        <description>保存case进程</description>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest"/>
+        <attribute name="id" type="Map" mode="IN" optional="true" string-map-prefix="id_"/>
+        <attribute name="group" type="Map" mode="IN" optional="true" string-map-prefix="group_"/>
+        <attribute name="name" type="Map" mode="IN" optional="true" string-map-prefix="name_"/>
+        <attribute name="executor" type="Map" mode="IN" optional="true" string-map-prefix="executor_"/>
+        <attribute name="dueBase" type="Map" mode="IN" optional="true" string-map-prefix="dueBase_"/>
+        <attribute name="dueDay" type="Map" mode="IN" optional="true" string-map-prefix="dueDay_"/>
+        <attribute name="seq" type="Map" mode="IN" optional="true" string-map-prefix="seq_"/>
+        <attribute name="atta" type="Map" mode="IN" optional="true" string-map-prefix="atta_"/>
+        <attribute name="oldAtta" type="Map" mode="IN" optional="true" string-map-prefix="oldAtta_"/>
+        <attribute name="isEmptyFlag" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveCaseProgressFromTemplate" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseProgressFromTemplate">
+        <description>按模板直接创建步骤</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="templateId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="saveCaseStep" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseStep">
+        <description>完成case进程</description>
+        <attribute name="progressId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="isSkipped" type="Boolean" mode="IN" optional="false"/>
+        <attribute name="description" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="addCaseCompletedFiles" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="addCaseCompletedFiles">
+        <description>上传已完成的case进程文件</description>
+        <attribute name="progressId" type="String" mode="IN" optional="false"/>
+        <attribute name="dataResourceIds" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="caseCompleteMail" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="caseCompleteMail">
+        <description>caseStep完成之后发送邮件</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="progressId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="casesStartCompleteMail" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="casesStartCompleteMail">
+        <description>caseStep开始时发送邮件</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="caseProgressGroupId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="caseStartMail" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="caseStartMail">
+        <description>case启动之后发送邮件</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="updateCaseProgressDueTime" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="updateCaseProgressDueTime">
+        <description>caseStep完成之后更新其他步骤的期限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="progressId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="revokeAllCasePartyFolderPermission" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="revokeAllCasePartyFolderPermission">
+        <description>回收CASE所有分享权限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="providerCases" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="providerCases">
+        <description>列出case</description>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="pageParam" type="Map" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+        <attribute name="pageResult" type="org.ofbiz.entity.util.UtilPagination$PaginationResultDatatables" mode="OUT" optional="true"/>
+    </service>
+    <service name="caseHome" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="caseHome">
+        <description>case详情</description>
+        <attribute name="caseId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="caseName" type="String" mode="OUT" optional="false"/>
+        <attribute name="partyId" type="String" mode="OUT" optional="false"/>
+        <attribute name="groupId" type="String" mode="OUT" optional="false"/>
+        <attribute name="companyPartyId" type="String" mode="OUT" optional="false"/>
+        <attribute name="joinParties" type="List" mode="OUT" optional="false"/>
+    </service>
+    <service name="AddCasePartyMember" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="addCasePartyMember">
+        <description>添加(修改)参与方人员</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="isAdd" type="Boolean" mode="IN" optional="false"/>
+        <attribute name="partyId" type="String" mode="IN" optional="false"/>
+        <attribute name="groupPartyId" type="String" mode="IN" optional="false"/>
+        <attribute name="roleTypeId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="removeMember" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="removeMember">
+        <description>移除参与方人员</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="memberId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="register" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="register">
+    <!--<service name="register" engine="java" location="org.ofbiz.zxdoc.service.AccountServices" invoke="register">-->
+        <description>保存注册用户信息</description>
+        <attribute name="groupName" type="String" mode="IN" optional="false"/>
+        <attribute name="isPartner" type="String" mode="IN" optional="false"/>
+        <attribute name="contactName" type="String" mode="IN" optional="false"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="false"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="username" type="String" mode="IN" optional="false"/>
+        <attribute name="partnerUsername" type="String" mode="IN" optional="true"/>
+        <attribute name="password" type="String" mode="IN" optional="false"/>
+        <attribute name="groupType" type="String" mode="IN" optional="false"/>
+        <attribute name="webAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="inputCode" type="String" mode="IN" optional="true"/>
+        <attribute name="_CAPTCHA_CODE_" type="String" mode="IN" optional="true"/>
+        <attribute name="verificationCode" type="String" mode="IN" optional="true"/>
+        <attribute name="regNumber" type="String" mode="IN" optional="false"/>
+        <attribute name="infoString" type="String" mode="IN" optional="false"/>
+        <attribute name="regPhoto" type="String" mode="IN" optional="true"/>
+        <attribute name="partnerGroupName" type="String" mode="IN" optional="true"/>
+        <attribute name="partnerType" type="String" mode="IN" optional="true"/>
+        <attribute name="result" type="Map" mode="OUT" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveSubAccounts" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="saveSubAccounts">
+        <description>保存子账户信息</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="emailId" type="String" mode="IN" optional="true"/>
+        <attribute name="postalId" type="String" mode="IN" optional="true"/>
+        <attribute name="telId" type="String" mode="IN" optional="true"/>
+        <attribute name="groupName" type="String" mode="IN" optional="true"/>
+        <attribute name="contactName" type="String" mode="IN" optional="false"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="username" type="String" mode="IN" optional="true"/>
+        <attribute name="password" type="String" mode="IN" optional="true"/>
+        <attribute name="remark" type="String" mode="IN" optional="true"/>
+        <attribute name="category" type="String" mode="IN" optional="true"/>
+        <attribute name="contactName" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveCompanySubInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="saveCompanySubInfo">
+        <description>管理员添加子账户</description>
+        <attribute name="groupName" type="String" mode="IN" optional="false"/>
+        <attribute name="contactName" type="String" mode="IN" optional="false"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="username" type="String" mode="IN" optional="false"/>
+        <attribute name="password" type="String" mode="IN" optional="false"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="editCompanySubInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="editCompanySubInfo">
+        <description>管理员编辑子账户</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="emailId" type="String" mode="IN" optional="true"/>
+        <attribute name="postalId" type="String" mode="IN" optional="true"/>
+        <attribute name="telId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactName" type="String" mode="IN" optional="false"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="updateGroupAccount" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="updateGroupAccount">
+        <description>编辑保存主账户</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="emailId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactName" type="String" mode="IN" optional="true"/>
+        <attribute name="groupName" type="String" mode="IN" optional="true"/>
+        <attribute name="partnerGroupName" type="String" mode="IN" optional="true"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="telId" type="String" mode="IN" optional="true"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="editSubInfos" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="saveSubAccounts">
+        <description>编辑保存子账户</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="emailId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactName" type="String" mode="IN" optional="true"/>
+        <attribute name="contactNo" type="String" mode="IN" optional="false"/>
+        <attribute name="telId" type="String" mode="IN" optional="true"/>
+        <attribute name="email" type="String" mode="IN" optional="false"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="username" type="String" mode="IN" optional="true"/>
+        <attribute name="password" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="passRegistration" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="passRegistration">
+        <description>审核通过账户</description>
+        <attribute name="registerUserLoginId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="rejectRegistration" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="rejectRegistration">
+        <description>驳回账户审核</description>
+        <attribute name="rejectUserLoginId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="passQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="passQualification">
+        <description>审核通过实名认证</description>
+        <attribute name="registerUserLoginId" type="String" mode="IN" optional="false"/>
+        <attribute name="isPartner" type="Boolean" mode="IN" optional="true"/>
+    </service>
+    <service name="uploadAvatar" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="uploadAvatar">
+        <description>更新用户头像</description>
+        <attribute name="atta" type="java.nio.ByteBuffer" mode="IN" optional="false"/>
+        <attribute name="_atta_size" type="Long" mode="IN" optional="true"/>
+        <attribute name="_atta_fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="_atta_contentType" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+    <service name="addContract" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/ContractReleated.groovy"
+             invoke="addContract">
+        <description>新加合同</description>
+        <attribute name="contractId" type="String" mode="IN" optional="true"/>
+        <attribute name="contractName" type="String" mode="IN" optional="false"/>
+        <attribute name="firstPartyName" type="String" mode="IN" optional="false"/>
+        <attribute name="secondPartyId" type="String" mode="IN" optional="false"/>
+        <attribute name="secondPartyName" type="String" mode="IN" optional="false"/>
+        <attribute name="secondPersonName" type="String" mode="IN" optional="false"/>
+        <attribute name="startDate" type="Date" mode="IN" optional="true"/>
+        <attribute name="dateClose" type="Date" mode="IN" optional="true"/>
+        <attribute name="relatedCase" type="String" mode="IN" optional="true"/>
+        <attribute name="isCharge" type="String" mode="IN" optional="true"/>
+        <attribute name="fileFieldName" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="addScoreRule" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="addScoreRule">
+        <description>新建积分策略</description>
+        <attribute name="ruleName" type="String" mode="IN" optional="true"/>
+        <attribute name="rulePeriod" type="String" mode="IN" optional="true"/>
+        <attribute name="maxTimes" type="Integer" mode="IN" optional="true"/>
+        <attribute name="score" type="Integer" mode="IN" optional="true"/>
+    </service>
+
+    <service name="addPartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="addPartner">
+        <description>新建非平台客户</description>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="webAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="customerLevel" type="String" mode="IN" optional="true"/>
+        <attribute name="customerStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="remarks" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="contactNumber" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="searchScoreRules" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="searchScoreRules">
+        <description>查询积分策略</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="editScoreRule" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="editScoreRule">
+        <description>修改积分策略</description>
+        <attribute name="scoreRuleId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveRule" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="saveRule">
+        <description>保存修改积分</description>
+        <attribute name="scoreRuleId" type="String" mode="IN" optional="false"/>
+        <attribute name="ruleName" type="String" mode="IN" optional="true"/>
+        <attribute name="rulePeriod" type="String" mode="IN" optional="true"/>
+        <attribute name="maxTimes" type="Integer" mode="IN" optional="true"/>
+        <attribute name="score" type="Integer" mode="IN" optional="true"/>
+    </service>
+    <service name="removeScoreRule" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="removeScoreRule">
+        <description>删除积分</description>
+        <attribute name="scoreRuleId" type="String" mode="IN" optional="false"/>
+    </service>
+    <!--用户积分-->
+    <service name="userScores" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="userScores">
+        <description>用户积分查找</description>
+        <attribute name="userName" type="String" mode="IN" optional="true"/>
+        <attribute name="account" type="String" mode="IN" optional="true"/>
+        <attribute name="phoneNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="editUserScore" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="editUserScore">
+        <description>用户积分修改</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveUserScore" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="saveUserScore">
+        <description>保存用户积分</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+        <attribute name="scoreNow" type="Integer" mode="IN" optional="true"/>
+        <attribute name="scoreOn" type="Integer" mode="IN" optional="true"/>
+        <attribute name="scoreOff" type="Integer" mode="IN" optional="true"/>
+    </service>
+    <service name="scoreHistory" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="scoreHistory">
+        <description>查看积分日志</description>
+        <attribute name="userName" type="String" mode="IN" optional="true"/>
+        <attribute name="account" type="String" mode="IN" optional="true"/>
+        <attribute name="startTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="endTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="scoreRule" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="userScoreHistory" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="userScoreHistory">
+        <description>查看用户的积分记录</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+        <attribute name="userLoginId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="savePartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="savePartner">
+        <description>保存客户</description>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="address" type="String" mode="IN" optional="true"/>
+        <attribute name="webAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="customerLevel" type="String" mode="IN" optional="true"/>
+        <attribute name="customerStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="remarks" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="contactNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="partyRelationshipTypeId" type="String" mode="IN" optional="true"/>
+    </service>
+
+
+    <service name="searchPartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="searchPartner">
+        <description>搜索客户</description>
+        <attribute name="customerName" type="String" mode="IN" optional="true"/>
+        <attribute name="area" type="String" mode="IN" optional="true"/>
+        <attribute name="customerLevel" type="String" mode="IN" optional="true"/>
+        <attribute name="customerStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="showPartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="editPartner">
+        <description>编辑客户</description>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="editPartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="editPartner">
+        <description>获取客户信息</description>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="deletePartner" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="deletePartner">
+        <description>删除客户</description>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="chartPartners" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="chartPartners">
+        <description>客户图表统计</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="sendEmailNotice" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="sendEmailNotice">
+        <description>发送邮件通知</description>
+        <attribute name="templateId" type="String" mode="IN" optional="false"/>
+        <attribute name="toAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="partyIdTo" type="String" mode="IN" optional="true"/>
+        <attribute name="bodyParameters" type="Map" mode="IN" optional="true"/>
+        <attribute name="dataResourceIds" type="List" mode="IN" optional="true"/>
+    </service>
+    <service name="sendSiteMsg" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="sendMessage">
+        <description>即时发送站内通知</description>
+        <attribute name="userLoginId" mode="IN" type="String" optional="false"></attribute>
+        <attribute name="message" mode="IN" type="String" optional="false" allow-html="any"></attribute>
+        <attribute name="successMessage" mode="IN" type="String" optional="true"></attribute>
+    </service>
+
+    <service name="createSiteMsg" default-entity-name="TblSiteMsg" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="createSiteMsg">
+        <description>新建站内信，持久化</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="id" optional="true"/>
+        <override name="title" optional="false" allow-html="any"/>
+        <override name="content" optional="true" allow-html="any"/>
+        <override name="read" optional="true" default-value="N"/>
+    </service>
+    <service name="readSiteMsg" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="readSiteMsg">
+        <description>标记站内通知已读</description>
+        <attribute name="id" mode="IN" type="String" optional="false"></attribute>
+        <attribute name="successMessage" mode="IN" type="String" optional="true"></attribute>
+    </service>
+    <!--提交问题-->
+    <service name="handelQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="handelQuestion" auth="true">
+        <description>提交问题</description>
+        <attribute name="questionOverview" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="isSecret" type="String" mode="IN" optional="true"/>
+        <attribute name="isAnonymous" type="String" mode="IN" optional="true"/>
+        <!--<attribute name="targetUser" type="String" mode="IN" optional="true"/>-->
+        <attribute name="targetPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="questionDetail" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="questionType1" type="String" mode="IN" optional="true"/>
+        <attribute name="questionType2" type="String" mode="IN" optional="true"/>
+        <attribute name="fileFieldName" type="String" mode="IN" optional="true"/>
+        <attribute name="isMessage" type="String" mode="IN" optional="true"/>
+        <attribute name="integral" type="Integer" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT"/>
+    </service>
+
+    <!--查询问题-->
+    <service name="searchQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="searchQuestion" auth="true">
+        <description>查询问题</description>
+        <attribute name="statusId" type="String" mode="IN" optional="true"/>
+        <attribute name="result" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <!--查询受邀回答问题-->
+    <service name="searchInvitedQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="searchInvitedQuestion" auth="true">
+        <description>查询问题</description>
+        <attribute name="statusId" type="String" mode="IN" optional="true"/>
+        <attribute name="result" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+
+    <!--点击问题标题后-->
+    <service name="findQuestionAnswer" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="findQuestionAnswer" auth="true">
+        <description>点击问题标题</description>
+        <attribute name="questionId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <!--改状态-->
+    <service name="changeQuestionStatus" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="changeQuestionStatus" auth="true">
+        <description>改状态</description>
+        <attribute name="questionId" type="String" mode="IN" optional="false"/>
+        <attribute name="statusId" type="String" mode="IN" optional="false"/>
+        <attribute name="rejected" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <!--更新问题-->
+    <service name="editQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="editQuestion" auth="true">
+        <description>更新问题</description>
+        <attribute name="questionId" type="String" mode="IN" optional="true"/>
+        <attribute name="result" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <!--保存问题-->
+    <service name="saveQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="saveQuestion" auth="true">
+        <description>保存问题</description>
+        <attribute name="questionOverview" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="isSecret" type="String" mode="IN" optional="true"/>
+        <attribute name="isAnonymous" type="String" mode="IN" optional="true"/>
+        <attribute name="targetPerson" type="String" mode="IN" optional="true"/>
+        <attribute name="questionDetail" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="questionType1" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="questionType2" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="fileFieldName" type="String" mode="IN" optional="true"/>
+        <attribute name="isMessage" type="String" mode="IN" optional="true"/>
+        <attribute name="integral" type="Integer" mode="IN" optional="true"/>
+        <attribute name="questionId" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <!--回复问题-->
+    <service name="handelAnswer" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="handelAnswer" auth="true">
+        <description>回复问题</description>
+        <attribute name="questionId" type="String" mode="IN" optional="false"/>
+        <attribute name="answerTo" type="String" mode="IN" optional="true"/>
+        <attribute name="answerContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <!--<attribute name="msg" type="String" mode="OUT" optional="true"/>-->
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+
+    <!--采纳问题-->
+    <service name="getAnswer" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="getAnswer" auth="true">
+        <description>采纳问题</description>
+        <attribute name="answerId" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <!--根据问题类型查询问题-->
+    <service name="searchTypeQuestion" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="searchTypeQuestion" auth="true">
+        <description>根据问题类型查询问题</description>
+        <attribute name="page" type="Integer" mode="IN" optional="true"/>
+        <attribute name="isPage" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="questionType" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="filterParty" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <!--查询待审核问题-->
+    <service name="searchNeedJudge" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/QuestionService.groovy"
+             invoke="searchNeedJudge" auth="true">
+        <description>查询问题</description>
+        <attribute name="statusId" type="String" mode="IN" optional="true"/>
+        <attribute name="result" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <!--保存CASE模板目录设置-->
+    <service name="saveCaseFolders" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="saveCaseFolders" auth="true">
+        <description>保存CASE模板目录设置</description>
+        <attribute name="templateId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="isCompany" type="Boolean" mode="IN" optional="true"/>
+        <attribute name="caseProgressGroupId" type="String" mode="OUT" optional="false"/>
+        <attribute name="roleFolders" type="Map" mode="IN" optional="true" string-map-prefix="roleFolder_"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveBlankCaseFolders" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="saveBlankCaseFolders" auth="true">
+        <description>保存CASE模板目录设置</description>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest"/>
+        <attribute name="isCompany" type="Boolean" mode="IN" optional="true"/>
+        <attribute name="caseProgressGroupId" type="String" mode="OUT" optional="false"/>
+        <attribute name="roleFolders" type="Map" mode="IN" optional="true" string-map-prefix="roleFolder_"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="createCaseFromSession" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="createCaseFromSession" auth="true">
+        <description>无模板CASE创建CASE记录</description>
+        <attribute name="blankCaseData" mode="IN" type="Map"/>
+        <attribute name="caseProgressGroupId" type="String" mode="OUT" optional="false"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <!--新增参与方对企业账户目录的共享权限-->
+    <service name="addCasePartyFolderPermission" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="addCasePartyFolderPermission" auth="true">
+        <description>新增参与方对企业账户目录的共享权限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="fileId" type="String" mode="IN" optional="false"/>
+        <attribute name="fileType" type="String" mode="IN" optional="false"/>
+        <attribute name="sharedRoles" type="String" mode="IN" optional="true"/>
+    </service>
+
+    <!--更新参与方子账户对企业账户目录的共享权限-->
+    <service name="updateCasePartyFolderShare" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="updateCasePartyFolderShare" auth="true">
+        <description>更新参与方子账户对企业账户目录的共享权限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="fileId" type="String" mode="IN" optional="false"/>
+        <attribute name="fileType" type="String" mode="IN" optional="false"/>
+        <attribute name="sharedRoles" type="String" mode="IN" optional="true"/>
+    </service>
+
+    <!--收回参与方子账户对企业账户目录的共享权限-->
+    <service name="revokeCasePartyFolderPermission" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy"
+             invoke="revokeCasePartyFolderPermission" auth="true">
+        <description>收回参与方子账户对企业账户目录的共享权限</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="memberId" type="String" mode="IN" optional="false"/>
+    </service>
+
+    <!--<service name="searchContracts" engine="groovy"-->
+             <!--location="component://zxdoc/src/org/ofbiz/zxdoc/ContractReleated.groovy" invoke="searchContracts">-->
+        <!--<description>搜索签约合同</description>-->
+        <!--<attribute name="contractParty" type="String" mode="IN" optional="true"/>-->
+        <!--<attribute name="startDate" type="String" mode="IN" optional="true"/>-->
+        <!--<attribute name="dateClose" type="String" mode="IN" optional="true"/>-->
+        <!--<attribute name="data" type="List" mode="OUT" optional="true"/>-->
+    <!--</service>-->
+    <service name="saveContract" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/ContractReleated.groovy"
+             invoke="saveContract">
+        <description>修改合同</description>
+        <attribute name="contractId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteContract" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/ContractReleated.groovy"
+             invoke="deleteContract">
+        <description>删除记录</description>
+        <attribute name="contractId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+    <!--资料库-->
+    <service name="addLibrary" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy"
+             invoke="addLibrary">
+        <description>填写资料</description>
+        <implements service="uploadFileInterface" optional="true"/>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="title" type="String" mode="IN" optional="true"/>
+        <attribute name="type" type="String" mode="IN" optional="true"/>
+        <attribute name="score" type="String" mode="IN" optional="true"/>
+        <attribute name="tags" type="String" mode="IN" optional="true"/>
+        <attribute name="introduce" type="String" mode="IN" optional="true"/>
+        <attribute name="accessType" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createCaseRemark" default-entity-name="TblCaseRemark" engine="entity-auto" invoke="create" auth="true">
+        <description>新建CASE备忘录</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <attribute name="remark" type="String" mode="IN" optional="true" allow-html="any"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="updateCaseRemark" default-entity-name="TblCaseRemark" engine="entity-auto" invoke="update" auth="true">
+        <description>更新CASE备忘录</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteCaseRemark" default-entity-name="TblCaseRemark" engine="entity-auto" invoke="delete" auth="true">
+        <description>删除CASE备忘录</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="ListFileUploads" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="ListFileUploads">
+        <description>资料库审核列表</description>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="ListFileUpload" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="ListFileUpload">
+        <description>审核资料库</description>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="changeLibraryStatus" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="changeLibraryStatus">
+        <description>改变资料状态</description>
+        <attribute name="id" type="String" mode="IN" optional="true"/>
+        <attribute name="status" type="String" mode="IN" optional="true"/>
+        <attribute name="reason" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="libraryHome" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="libraryHome">
+        <description>资料库</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+        <attribute name="type" type="String" mode="IN" optional="true"/>
+        <attribute name="libraryData" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="newFileUpload" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="newFileUpload">
+        <description>发布资料的类型</description>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+        <attribute name="fileSize" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="saveTicket" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/TicketServices.groovy" invoke="saveTicket">
+        <description>发布信息</description>
+        <attribute name="title" type="String" mode="IN" optional="false"/>
+        <attribute name="endTime" type="Date" mode="IN" optional="true"/>
+        <attribute name="type" type="String" mode="IN" optional="false"/>
+        <attribute name="TemplateId" type="String" mode="IN" optional="false"/>
+        <attribute name="groupName" type="Map" mode="IN" optional="true" string-map-prefix="groupName_select_"/>
+        <attribute name="roles" type="List" mode="IN" optional="false"/>
+        <attribute name="ticketContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="runForTicket" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/TicketServices.groovy" invoke="runForTicket">
+        <description>竞选</description>
+        <attribute name="reason" type="String" mode="IN" optional="false"/>
+        <attribute name="ticketId" type="String" mode="IN" optional="false"/>
+        <attribute name="roleTypeId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="createCaseByTicket" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/TicketServices.groovy" invoke="createCaseByTicket">
+        <description>根据发布的信息创建case</description>
+        <attribute name="ticketId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteCaseByTicket" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/TicketServices.groovy" invoke="deleteCaseByTicket">
+        <description>信息归档（逻辑删除）</description>
+        <attribute name="ticketId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createCalendarEvent" default-entity-name="TblCalendarEvent" engine="entity-auto" invoke="create" auth="true">
+        <description>新建日程</description>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <attribute name="content" type="String" mode="IN" optional="true" allow-html="any"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="updateCalendarEvent" default-entity-name="TblCalendarEvent" engine="entity-auto" invoke="update" auth="true">
+        <description>更新日程</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <attribute name="content" type="String" mode="IN" optional="true" allow-html="any"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteCalendarEvent" default-entity-name="TblCalendarEvent" engine="entity-auto" invoke="delete" auth="true">
+        <description>删除日程</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+
+    <service name="initCaseTask" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="initCaseTask">
+        <description>初始化任务管理</description>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyGroupId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="initCaseContract" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="initCaseContract">
+        <description>初始化case合同</description>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="group" type="Map" mode="OUT" optional="false"/>
+        <attribute name="groupName" type="List" mode="OUT" optional="false"/>
+        <attribute name="hasContract" type="List" mode="OUT" optional="false"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="openContractInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="openContractInfo">
+        <description>打开合同详情</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="groupName" type="String" mode="IN" optional="false"/>
+        <attribute name="contracts" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchCaseTaskList" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="searchCaseTaskList">
+        <description>初始化任务管理</description>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyGroupId" type="String" mode="IN" optional="true"/>
+        <attribute name="memberId" type="String" mode="IN" optional="true"/>
+        <attribute name="isManageTask" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveCaseTask" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="saveCaseTask">
+        <description>保存任务</description>
+        <auto-attributes entity-name="TblCaseTask" mode="IN" optional="true"/>
+        <attribute name="caseTaskFile" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="delCaseTask" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="delCaseTask">
+        <description>删除任务</description>
+        <attribute name="caseTaskId" type="String" mode="IN" />
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="openCaseTaskEdit" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="openCaseTaskEdit">
+        <description>打开任务修改或保存页面</description>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyGroupId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseTaskId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="editCaseTask" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="editCaseTask">
+        <description>打开任务修改或保存页面</description>
+        <attribute name="caseTaskId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseTaskStatus" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="submitAuthentication" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="submitAuthentication">
+        <description>提交机构实名认证</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactMechId" type="String" mode="IN" optional="true"/>
+        <attribute name="regNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="infoString" type="String" mode="IN" optional="true"/>
+        <attribute name="paAddress1" type="String" mode="IN" optional="true"/>
+        <attribute name="regPhoto" type="Map" mode="IN" optional="true" string-map-prefix="regPhoto"/>
+        <attribute name="bizScope" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="viewQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="viewQualification">
+        <description>查看认证信息</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+        <attribute name="type" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="viewQualificationPerson" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="viewQualificationPerson">
+        <description>查看认证信息</description>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="ifSubmitQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="ifSubmitQualification">
+        <description>判断是否已经提交认证</description>
+    </service>
+    <service name="deleteQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="deleteQualification">
+        <description>拒绝机构认证</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="submitPersonQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="submitPersonQualification">
+        <description>提交个人子帐号</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="fullName" type="String" mode="IN" optional="true"/>
+        <attribute name="idCard" type="String" mode="IN" optional="true"/>
+        <attribute name="qualifiNum" type="String" mode="IN" optional="true"/>
+        <attribute name="regPhoto" type="Map" mode="IN" optional="true" string-map-prefix="regPhoto"/>
+    </service>
+    <service name="deletePersonQualify" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="deletePersonQualify">
+        <description>拒绝个人认证</description>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="passPersonQualification" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Qualification.groovy" invoke="passPersonQualification">
+        <description>审核通过个人认证</description>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="loadFile" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Partner.groovy" invoke="loadFile">
+        <description>导入客户信息</description>
+        <attribute name="file" type="java.nio.ByteBuffer" mode="IN" optional="false"/>
+    </service>
+    <service name="scoreMessageInterface" engine="interface" location="" invoke="">
+        <description>ScoreMessage Interface</description>
+        <attribute name="eventName" type="String" mode="IN" optional="false"/>
+        <attribute name="scoreSource" type="String" mode="IN" optional="true"/>
+        <attribute name="scoreTarget" type="String" mode="IN" optional="true"/>
+        <attribute name="bizScoreOnSource" type="Integer" mode="IN" optional="true"/>
+        <attribute name="bizScoreOnTarget" type="Integer" mode="IN" optional="true"/>
+    </service>
+<!--     <service name="sendScoreMessage" engine="jms" location="scoreMessenger" invoke="processScoreMsg"> -->
+<!--         <description>发送积分变化事件</description> -->
+<!--         <attribute name="message" type="org.ofbiz.zxdoc.ScoreMessage" mode="IN"/> -->
+<!--     </service> -->
+    <service name="sendScoreMessage" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" invoke="sendScoreMessageService">
+        <description>发送积分变化事件</description>
+        <attribute name="message" type="org.ofbiz.zxdoc.ScoreMessage" mode="IN"/>
+    </service> 
+    <service name="sendScoreMessage2" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" export="false" invoke="sendScoreMessage"  max-retry="3">
+        <description>发送积分变化事件, 直接给定scoreMessage的参数值</description>
+        <implements service="scoreMessageInterface"/>
+    </service>
+    <service name="processScoreMsg" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Score.groovy" export="true" invoke="processScoreMsg">
+        <description>处理积分消息</description>
+        <attribute name="message" type="org.ofbiz.zxdoc.ScoreMessage" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createAdvert" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Advert.groovy" invoke="createAdvert">
+        <description>创建广告</description>
+        <!--广告标题-->
+        <attribute name="ruleName" type="String" mode="IN" optional="false"/>
+        <!--起始时间-->
+        <attribute name="maxTimes" type="Date" mode="IN" optional="true"/>
+        <!--终止时间-->
+        <attribute name="score" type="Date" mode="IN" optional="true"/>
+        <!--广告内容-->
+        <attribute name="ticketContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <!--投放范围-->
+        <attribute name="range" type="List" mode="IN" optional="false"/>
+        <!--结果信息-->
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteAdvert" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Advert.groovy" invoke="deleteAdvert">
+        <description>删除广告</description>
+        <attribute name="AdvertId" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="updateAdvertmentSatus" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Advert.groovy" invoke="updateAdvertmentSatus">
+        <description>修改广告状态</description>
+        <attribute name="AdvertId" type="String" mode="IN" optional="false"/>
+        <attribute name="status" type="String" mode="IN" optional="false"/>
+    </service>
+    <service name="saveAdvert" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/Advert.groovy" invoke="saveAdvert">
+        <description>编辑广告</description>
+        <attribute name="AdvertId" type="String" mode="IN" optional="false"/>
+        <attribute name="ruleName" type="String" mode="IN" optional="false"/>
+        <attribute name="maxTimes" type="Date" mode="IN" optional="true"/>
+        <attribute name="score" type="Date" mode="IN" optional="true"/>
+        <attribute name="ticketContent" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="range" type="List" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+        <!--广告内容-->
+        <attribute name="ticketContent" type="String" mode="IN" optional="true" allow-html="any"/>
+    </service>
+    <service name="searchGroupName" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/SearchIndex.groovy" invoke="searchGroupName">
+        <description>企业名称模糊检索</description>
+        <attribute name="groupTips" type="String" mode="IN" optional="true"/>
+        <attribute name="groupType" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="searchGroupNameJsonp" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/SearchIndex.groovy" invoke="searchGroupNameJsonp">
+        <description>企业名称模糊检索</description>
+        <attribute name="groupTips" type="String" mode="IN" optional="true"/>
+        <attribute name="groupType" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="VIPDue" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/VIP.groovy" invoke="VIPDue">
+        <description>会员到期时间</description>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+        <attribute name="vipType" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="getMessageList" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/VIP.groovy" invoke="getMessageList">
+        <description>得到未读取信息</description>
+        <attribute name="roomIds" type="String" mode="IN" optional="true"/>
+        <attribute name="roomList" type="List" mode="OUT" optional="true"/>
+        <attribute name="noticeList" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="remindInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/VIP.groovy" invoke="remindInfo">
+        <description>保存未读取信息</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="roomIds" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="renewVip" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="renewVip">
+        <description>获取续费账号</description>
+        <attribute name="partyId" type="String" mode="IN" optional="false"/>
+        <attribute name="userLogins" type="List" mode="OUT" optional="true"/>
+        <attribute name="partyId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="renewAccount" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="renewAccount">
+        <description>账户续费</description>
+        <attribute name="partyId" type="String" mode="IN" optional="false"/>
+        <attribute name="times" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="deleteAccount" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="deleteAccount">
+        <description>账户删除</description>
+        <attribute name="userLoginId" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="getCasePrompt" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="getCasePrompt">
+        <description>未完成case查询</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+    <service name="delCasePrompt" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="delCasePrompt">
+        <description>未完成case删除</description>
+        <attribute name="caseId" type="String" mode="IN" optional="false"/>
+        <attribute name="progressId" type="String" mode="IN" optional="false"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="isHideImg" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="isHideImg">
+        <description>账户续费</description>
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="myScheduleMethod" engine="java"
+             location="org.ofbiz.zxdoc.EmailDaily" invoke="myScheduleMethod" auth="false"
+             use-transaction="false" semaphore="wait">
+        <description>my demo</description>
+        <attribute name="oper" type="String" mode="IN" optional="true" />
+    </service>
+
+
+    <service name="checkIsExist" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="checkIsExist">
+        <description>检查是否存在</description>
+        <attribute name="goalId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomName" type="String" mode="OUT" optional="true"/>
+        <attribute name="chatRoomJID" type="String" mode="OUT" optional="true"/>
+        <attribute name="goalName" type="String" mode="OUT" optional="true"/>
+        <attribute name="username" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="createInstantMessage" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="createInstantMessage">
+        <description>创建即时聊天</description>
+        <attribute name="isInstant" type="String" mode="IN" optional="true"/>
+        <attribute name="goalId" type="String" mode="IN" optional="true"/>
+        <attribute name="caseId" type="String" mode="OUT" optional="false"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomJID" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomName" type="String" mode="OUT" optional="false"/>
+        <attribute name="members" type="List" mode="OUT" optional="false"/>
+        <attribute name="goalName" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="getInviteUsername" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="getInviteUsername">
+        <description>获取邀请人名</description>
+        <attribute name="roomId" type="String" mode="IN" optional="false"/>
+        <attribute name="name" type="String" mode="IN" optional="false"/>
+        <attribute name="inviteName" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="addOtherPeople" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="addOtherPeople">
+        <description>添加即时聊天的参与用户</description>
+        <attribute name="arr" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="IN" optional="true"/>
+        <!--<attribute name="chatRoomJID" type="String" mode="IN" optional="false"/>-->
+        <attribute name="members" type="List" mode="OUT" optional="true"/>
+    </service>
+    <service name="whichRoom" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="whichRoom">
+        <description>添加即时聊天的参与用户</description>
+        <attribute name="jid" type="String" mode="IN" optional="false"/>
+        <attribute name="result" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="httpRequest" engine="java"
+             location="org.ofbiz.zxdoc.HtmlHandle" invoke="httpRequest" auth="false"
+             use-transaction="false" semaphore="wait">
+        <description>读取html文件</description>
+        <attribute name="emailId" type="String" mode="IN" optional="true" />
+        <attribute name="result" type="String" mode="IN" optional="true" />
+    </service>
+    <service name="updateCaseFiledStatus" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/CaseServices.groovy" invoke="updateCaseFiledStatus">
+        <description>case归档</description>
+        <attribute name="caseId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="sendVerificationCode" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="sendVerificationCode">
+        <description>保存短信code</description>
+        <attribute name="phoneNum" type="String" mode="INOUT" optional="false"/>
+        <attribute name="phoneCode" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="sendVerificationCodePhoneJms" engine="jms"
+             location="scoreMessenger" invoke="sendVerificationCodePhone" max-retry="3">
+        <description>通过jms发送</description>
+        <attribute name="phoneNum" type="String" mode="IN" optional="false"/>
+        <attribute name="phoneCode" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="sendVerificationCodePhone" engine="java"
+             location="org.ofbiz.zxdoc.NoticeServices" invoke="sendVerificationCodePhone" export="true" max-retry="3">
+        <description>发送短信code</description>
+        <attribute name="phoneNum" type="String" mode="IN" optional="false"/>
+        <attribute name="phoneCode" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="checkRoomExist" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/InstantMessage.groovy" invoke="checkRoomExist">
+        <description>检查是否存在</description>
+        <attribute name="personId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+        <attribute name="chatRoomName" type="String" mode="OUT" optional="true"/>
+        <attribute name="chatRoomJID" type="String" mode="OUT" optional="true"/>
+        <attribute name="goalName" type="String" mode="OUT" optional="true"/>
+        <attribute name="userId" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="searchLibraryFileListByName" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy"
+             invoke="searchLibraryFileListByName">
+        <description>填写资料</description>
+        <attribute name="isLibrary" type="String" mode="IN" optional="true"/>
+        <attribute name="fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="libraryDataType" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="false"/>
+    </service>
+    <service name="searchScoreByUserId" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/LibraryReleated.groovy" invoke="searchScoreByUserId">
+        <description>查询用户积分下载记录</description>
+        <attribute name="libraryId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="saveEmailInfo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/AccountServices.groovy" invoke="saveEmailInfo">
+        <description>保存邮件编辑</description>
+        <attribute name="emailId" type="String" mode="IN" optional="false"/>
+        <attribute name="info" type="String" mode="IN" optional="false" allow-html="any"/>
+        <attribute name="data" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchPolicyTypeTwo" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/PolicyFile.groovy" invoke="searchPolicyTypeTwo">
+        <description>政策文件根据一级分类查询二级分类</description>
+        <attribute name="oneTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="savePolicyFile" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/PolicyFile.groovy" invoke="savePolicyFile">
+        <description>保存政策文件</description>
+        <implements service="uploadFileInterface" optional="true"/>
+        <attribute name="addPolicySearchOne" type="String" mode="IN" optional="true"/>
+        <attribute name="addPolicySearchTwo" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="delPolicyFile" engine="groovy" location="component://zxdoc/src/org/ofbiz/zxdoc/PolicyFile.groovy" invoke="delPolicyFile">
+        <description>删除政策文件</description>
+        <implements service="uploadFileInterface" optional="true"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+</services>
+

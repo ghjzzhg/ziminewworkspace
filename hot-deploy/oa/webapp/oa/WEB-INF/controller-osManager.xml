@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+<!--易耗品管理-->
+    <request-map uri="ListOsManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findOsManager"/>
+        <response name="success" type="view" value="ListOsManager"/>
+    </request-map>
+
+    <!--查询易耗品-->
+    <request-map uri="SearchOsManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findOsManager"/>
+        <response name="success" type="view" value="SearchOsManager"/>
+    </request-map>
+
+    <!--编辑易耗品-->
+    <request-map uri="EditOsManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createOsManager"/>
+        <response name="success" type="view" value="EditOsManager"/>
+    </request-map>
+
+    <!--保存易耗品-->
+    <request-map uri="saveOsManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveOsManager"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--易耗品仓库与货品类型联动-->
+    <request-map uri="searchWarehouse">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWarehouse"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--删除易耗品-->
+    <request-map uri="deleteOsManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteOsManager"/>
+        <response name="success" type="view" value="ListOsManager"/>
+    </request-map>
+
+    <!--仓库信息列表-->
+    <request-map uri="InventoryInfoList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWarehouseInfo"/>
+        <response name="success" type="view" value="InventoryInfoList"/>
+    </request-map>
+
+    <!--仓库信息增加-->
+    <request-map uri="createWarehouseInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createWarehouseInfo"/>
+        <response name="success" type="view" value="createWarehouseInfo"/>
+    </request-map>
+
+    <!--删除仓库信息-->
+    <request-map uri="deleteInventoryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteInventoryInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--删除仓库的货位信息-->
+    <request-map uri="deleteLocation">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteLocation"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--仓库信息修改-->
+    <request-map uri="EditWarehouseInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editWarehouseInfo"/>
+        <response name="success" type="view" value="EditWarehouseInfo"/>
+    </request-map>
+
+    <!--仓库信息保存-->
+    <request-map uri="saveWarehouseInfo">
+        <security https="false" auth="true"/>
+        <!--<event type="service" invoke="saveWarehouseInfo"/>-->
+        <event type="java"  invoke="saveWarehouseInfo" path="org.ofbiz.oa.WorkPlanEvents"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--仓库信息查询-->
+    <request-map uri="searchWarehouseInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWarehouseInfo"/>
+        <response name="success" type="view" value="WarehouseInfo"/>
+    </request-map>
+
+<!--客户信息-->
+    <request-map uri="CustomerInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchCustomerInfo"/>
+        <response name="success" type="view" value="CustomerInfo"/>
+    </request-map>
+
+    <!--查询客户信息-->
+    <request-map uri="searchCustomerInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchCustomerInfo"/>
+        <response name="success" type="view" value="searchCustomerInfo"/>
+    </request-map>
+
+<!--维护客户信息-->
+    <request-map uri="EditCustomerInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCustomerInfo"/>
+        <response name="success" type="view" value="EditCustomerInfo"/>
+    </request-map>
+    <!--客户信息详情-->
+    <request-map uri="ShowCustomerInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createCustomerInfo"/>
+        <response name="success" type="view" value="ShowCustomerInfo"/>
+    </request-map>
+
+    <!--保存客户信息-->
+    <request-map uri="saveCustomer">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveCustomer"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--删除客户信息-->
+    <request-map uri="deleteCustomerInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteCustomerInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--货品类别列表-->
+    <request-map uri="ProductType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchProductTypeInfo"/>
+        <response name="success" type="view" value="ProductType"/>
+    </request-map>
+
+    <!--货品类别增加-->
+    <request-map uri="createProductType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createPrdouctTypeCode"/>
+        <response name="success" type="view" value="createProductType"/>
+    </request-map>
+
+    <!--货品类型保存-->
+    <request-map uri="saveProductType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveProductType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--删除货品类别信息-->
+    <request-map uri="deleteProductTypeInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteProductTypeInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--货品类别查询-->
+    <request-map uri="searchProductTypeInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchProductTypeInfo"/>
+        <response name="success" type="view" value="ProductType"/>
+    </request-map>
+
+    <!--货品类别列表-->
+    <request-map uri="ProductTypeList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchProductTypeInfo"/>
+        <response name="success" type="view" value="ProductTypeList"/>
+    </request-map>
+
+    <!--修改货品类别-->
+    <request-map uri="EditProductTypeInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="EditProductTypeInfo"/>
+        <response name="success" type="view" value="EditProductTypeInfo"/>
+    </request-map>
+
+<!--库存管理列表-->
+    <request-map uri="InventoryList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInventoryList"/>
+        <response name="success" type="view" value="InventoryList"/>
+    </request-map>
+
+    <!--查询库存管理列表-->
+    <request-map uri="searchInventoryList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInventoryList"/>
+        <response name="success" type="view" value="ListInventory"/>
+    </request-map>
+
+<!--入库-->
+    <request-map uri="EditInputInventory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="EditInputInventory"/>
+        <response name="success" type="view" value="EditInputInventory"/>
+    </request-map>
+
+    <!--出库-->
+    <request-map uri="EditOutInventory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="EditOutInventory"/>
+        <response name="success" type="view" value="EditOutInventory"/>
+    </request-map>
+
+    <!--一次多个货品出库-->
+    <request-map uri="OutInventoryMany">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchOutInventory"/>
+        <response name="success" type="view" value="OutInventoryMany"/>
+    </request-map>
+
+    <!--审核-->
+    <request-map uri="checkReceive">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchReceive"/>
+        <response name="success" type="view" value="checkReceive"/>
+    </request-map>
+
+    <!--查看-->
+    <request-map uri="seeReceive">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchReceive"/>
+        <response name="success" type="view" value="seeReceive"/>
+    </request-map>
+
+    <!--审核通过-->
+    <request-map uri="checkAllow">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkAllow"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--发货-->
+    <request-map uri="delivery">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchReceive"/>
+        <response name="success" type="view" value="delivery"/>
+    </request-map>
+
+    <!--审核通过-->
+    <request-map uri="checkRefuse">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkRefuse"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--保存领用单-->
+    <request-map uri="saveReceive">
+        <security https="false" auth="true"/>
+        <!--<event type="service" invoke="saveReceive"/>-->
+        <!--<event type="java" path="org.ofbiz.oa.AddProductList" invoke="saveReceive"/>-->
+        <event type="java" invoke="saveReceive" path="org.ofbiz.oa.WorkPlanEvents"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--保存入库信息-->
+    <request-map uri="saveInputInventory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveInputInventory"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--保存出库信息-->
+    <request-map uri="saveOutInventory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveOutInventory"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--保存发货信息-->
+    <request-map uri="saveDelivery">
+        <security https="false" auth="true"/>
+        <event type="java" invoke="saveDelivery" path="org.ofbiz.oa.WorkPlanEvents"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="AddOutInventoryMany">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="addOutInventory"/>
+    </request-map>
+    <!--领用审批-->
+    <request-map uri="searchOutInventory">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchOutInventory"/>
+        <response name="success" type="view" value="searchOutInventory"/>
+    </request-map>
+
+    <request-map uri="SearchListReceive">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchOutInventory"/>
+        <response name="success" type="view" value="SearchListReceive"/>
+    </request-map>
+
+    <!--领用单明细信息-->
+    <request-map uri="receiveInfo">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="receiveInfo"/>
+    </request-map>
+
+    <!--通过审核领用单-->
+    <request-map uri="ApproveReceive">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="ApproveReceive"/>
+        <response name="success" type="view" value="ApproveReceive"/>
+    </request-map>
+    <!--发货-->
+    <request-map uri="sendOut">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="sendOut"/>
+    </request-map>
+    <view-map name="searchOutInventory" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#searchOutInventory"/>
+    <!--lxx View Map start-->
+    <view-map name="SearchListReceive" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ListReceive"/>
+    <view-map name="checkReceive" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#checkReceive"/>
+    <view-map name="seeReceive" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#seeReceive"/>
+    <view-map name="delivery" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#delivery"/>
+    <view-map name="createWarehouseInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#createWarehouseInfo"/>
+    <view-map name="EditWarehouseInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditWarehouseInfo"/>
+    <view-map name="deleteInventoryInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#deleteInventoryInfo"/>
+    <view-map name="CustomerInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#CustomerInfo"/>
+    <view-map name="EditCustomerInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditCustomerInfo"/>
+    <view-map name="ProductType" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ProductType"/>
+    <view-map name="ProductTypeList" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ProductTypeList"/>
+    <view-map name="ShowCustomerInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ShowCustomerInfo"/>
+    <view-map name="OutInventoryMany" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#OutInventoryMany"/>
+    <view-map name="SearchOsManager" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#SearchOsManager"/>
+    <view-map name="EditOsManager" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditOsManager"/>
+    <view-map name="ListOsManager" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ListOsManager"/>
+    <view-map name="receiveInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#receiveInfo"/>
+    <view-map name="ApproveReceive" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ApproveReceive"/>
+    <view-map name="searchCustomerInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ListCustomerInfo"/>
+    <view-map name="sendOut" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#sendOut"/>
+    <view-map name="InventoryInfoList" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#SearchInventoryInfo"/>
+    <view-map name="WarehouseInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#InventoryInfoList"/>
+    <view-map name="EditOutInventory" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditOutInventory"/>
+    <view-map name="EditInputInventory" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditInputInventory"/>
+    <view-map name="InventoryList" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#InventoryList"/>
+    <view-map name="ListInventory" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ListInventory"/>
+    <view-map name="EditProductTypeInfo" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#EditProductTypeInfo"/>
+    <view-map name="createProductType" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#createProductType"/>
+    <!--lxx View Map end-->
+</site-conf>

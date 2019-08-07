@@ -1,0 +1,53 @@
+
+To install workflow component:
+
+Download the component with the command:
+git clone https://gerrit.antwebsystems.com/workflow
+git clone https://gerrit.antwebsystems.com/Activiti
+
+and copy the result into ofbiz latest trunk into the hot-deploy directory
+
+If you want to use the internal ofbiz derby database just run the normal OFBiz startup commands:
+
+./ant activiti-build
+./ant load-demo
+./ant start
+
+Then access the activiti component with http://localhost:8080/activiti-explorer
+
+
+If you want the postgresql database:
+1. In ofbiz-component.xml file, comment out "For derby" section and activate "For Postgresql"
+ 
+2. When using in tenant mode: In data/TenantData.xml file, comment out "For derby" section and activate "For Postgresql"
+
+3. In webapp/activiti-explorer/WEB-INF/class/db.properties file, comment out "For derby" section and activate "For Postgresql"
+
+then load ofbiz as normal.....
+
+
+To edit activiti-explorer
+1.Edit source file in component Activiti.
+
+2.Run command : ./ant activiti-build
+
+3.Restart project.
+
+
+To use activiti-explorer on staging you need to edit following files
+1.ofbiz-component.xml
+  - Change value in tag container name "activiti-container" to be value of server.
+
+2.data/WorkflowWebSiteExtData.xml
+  - Change httpHost, httpPort, httpsHost, httpsPort, standardContentPrefix, secureContentPrefix to be value of server.
+
+3.Activiti/modules/activiti-webapp-explorer2/src/main/resources/db.properties
+  - Change value to be value of server.
+
+To install activiti-designer plugin to eclipse
+- Go to Help > Install New Software on eclipse.
+1. add url "http://growerpbackend.growerpdemo.com/workflow/activiti-designer-download" to "Work With:" textbox.
+2. select plugin than click next.
+3. If don't have any error click next.
+4. Select accept then click finish.
+5. Wait util finish then restart eclipse.

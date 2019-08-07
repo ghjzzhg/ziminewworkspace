@@ -1,0 +1,2863 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of an Open For Business Project Component</title>
+    <description>None</description>
+    <version>1.0</version>
+
+    <entity entity-name="TblOpenFireChatRoom"
+            package-name="cn.com.rextec.oa.TblOpenFireChatRoom"
+            title="ChatRoom Entity">
+        <field name="roomId" type="id-ne"/>
+        <field name="roomJid" type="id-long"/>
+        <field name="roomName" type="id-long"/>
+        <field name="roomTheme" type="id-long"/>
+        <prim-key field="roomId"/>
+    </entity>
+    <entity entity-name="TblChatRoomMembers" package-name="cn.com.rextec.oa.TblChatRoomMembers" title="Members Entity">
+        <field name="id" type="id-ne"/>
+        <field name="roomJid" type="id-ne"/>
+        <field name="memberJid" type="id-ne"/>
+        <prim-key field="id"/>
+    </entity>
+
+    <entity entity-name="TblHistoryFiles" package-name="cn.com.rextec.oa.TblHistoryFile" title="History Files">
+        <field name="dataResourceId" type="id-ne"><description>文件ID</description></field>
+        <field name="historyFileId" type="id-ne"><description>文件ID对应的历史文件ID</description></field>
+        <field name="version" type="id"><description>版本号</description></field>
+        <prim-key field="dataResourceId"/>
+        <prim-key field="historyFileId"/>
+        <relation type="one" fk-name="FK_DATAID" rel-entity-name="DataResource">
+            <key-map field-name="dataResourceId"/>
+        </relation>
+        <relation type="one" fk-name="FK_HISTORYDATAID" rel-entity-name="DataResource">
+            <key-map field-name="historyFileId" rel-field-name="dataResourceId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="HistoryFileList"
+                 package-name="cn.com.rextec.oa.HistoryFileList"
+                 title="查看文件历史信息">
+        <member-entity entity-alias="TD" entity-name="TblHistoryFiles"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <alias-all entity-alias="TD"/>
+        <alias entity-alias="DR" name="dataResourceName"/>
+        <view-link entity-alias="TD" rel-entity-alias="DR">
+            <key-map field-name="historyFileId" rel-field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+
+    <extend-entity entity-name="Person">
+        <field name="openFireJid" type="id-long"/>
+        <field name="openFirePassword" type="id-long"/>
+        <field name="fullName" type="name"/>
+    </extend-entity>
+    <extend-entity entity-name="Party">
+        <field name="avatar" type="id">
+            <description>用户头像，DataResource表外键</description>
+        </field>
+    </extend-entity>
+    <extend-entity entity-name="PartyGroup">
+        <field name="partnerGroupName" type="name"/>
+        <field name="partnerType" type="name">
+            <description>与挂靠机构CASE_ROLE一致</description>
+        </field>
+        <field name="partnerCategory" type="name">
+            <description>P：个体, G:机构</description>
+        </field>
+    </extend-entity>
+    <extend-entity entity-name="DataResource">
+        <field name="lockedBy" type="id"/>
+    </extend-entity>
+    <!--积分模块-->
+    <entity entity-name="TblScoreRule" package-name="cn.com.rextec.zxdoc" title="tbl_scoreRule">
+        <field name="scoreRuleId" type="id-ne"/>
+        <field name="ruleName" type="name"/>
+        <field name="rulePeriod" type="id"/>
+        <field name="maxTimes" type="common-int"/>
+        <field name="score" type="common-int"/>
+        <prim-key field="scoreRuleId"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="rulePeriod" rel-field-name="enumId"/>
+        </relation>
+    </entity>
+    <view-entity entity-name="ScoreRuleView" package-name="cn.com.rextec.zxdoc" title="积分策略">
+        <member-entity entity-alias="TSR" entity-name="TblScoreRule"/>
+        <member-entity entity-alias="E" entity-name="Enumeration"/>
+        <member-entity entity-alias="R" entity-name="Enumeration"/>
+        <alias name="scoreRuleId" entity-alias="TSR" field="scoreRuleId"/>
+        <alias name="ruleName" entity-alias="TSR" field="ruleName"/>
+        <alias name="rulePeriod" entity-alias="TSR" field="rulePeriod"/>
+        <alias name="maxTimes" entity-alias="TSR" field="maxTimes"/>
+        <alias name="score" entity-alias="TSR" field="score"/>
+        <alias name="description" entity-alias="E" field="description"/>
+        <alias name="ruleType" entity-alias="R" field="description"/>
+        <view-link entity-alias="TSR" rel-entity-alias="E" rel-optional="true">
+            <key-map field-name="rulePeriod" rel-field-name="enumId"/>
+        </view-link>
+        <view-link entity-alias="TSR" rel-entity-alias="R" rel-optional="true">
+            <key-map field-name="ruleName" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+    <!--用户积分-->
+    <entity entity-name="TblUserScore" package-name="cn.com.rextec.zxdoc" title="tbl_user_score">
+        <field name="userLoginId" type="id-ne"/>
+        <field name="scoreOn" type="common-int"/>
+        <field name="scoreOff" type="common-int"/>
+        <field name="scoreNow" type="common-int">
+            <description>当前实际拥有积分</description>
+        </field>
+        <field name="scoreAvailable" type="common-int">
+            <description>当前可支配积分，不可超过scoreNow</description>
+        </field>
+        <prim-key field="userLoginId"/>
+        <relation type="one" rel-entity-name="UserLogin" fk-name="FK_SCORE_USERLOGIN">
+            <key-map field-name="userLoginId" rel-field-name="userLoginId"/>
+        </relation>
+    </entity>
+    <!--积分日志-->
+    <entity entity-name="TblScoreHistory" package-name="cn.com.rextec.zxdoc" title="tbl_score_history">
+        <field name="historyId" type="id-ne"/>
+        <field name="userLoginId" type="id-ne"/>
+        <field name="scoreChange" type="common-int"/>
+        <field name="createTime" type="date-time"/>
+        <field name="rule" type="id-ne"/>
+        <prim-key field="historyId"/>
+        <relation type="one" rel-entity-name="UserLogin" fk-name="FK_HISTORY_USERlOGIN">
+            <key-map field-name="userLoginId" rel-field-name="userLoginId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="ScoreHistoryParty" package-name="cn.com.rextec.zxdoc" title="条件查找历史积分所有信息">
+        <member-entity entity-alias="TSH" entity-name="TblScoreHistory"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="ENUM" entity-name="Enumeration"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <alias name="historyId" entity-alias="TSH" field="historyId"/>
+        <alias name="userLoginId" entity-alias="TSH" field="userLoginId"/>
+        <alias name="scoreChange" entity-alias="TSH" field="scoreChange"/>
+        <alias name="groupName" entity-alias="PG" field="groupName"/>
+        <alias name="rule" entity-alias="TSH" field="rule"/>
+        <alias name="createdStamp" entity-alias="TSH" field="createdStamp"/>
+        <alias name="userName" entity-alias="P" field="fullName"/>
+        <alias name="description" entity-alias="ENUM" field="description"/>
+        <view-link entity-alias="TSH" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="userLoginId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TSH" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="userLoginId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TSH" rel-entity-alias="ENUM" rel-optional="true">
+            <key-map field-name="rule" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="UserScoreParty" package-name="cn.com.rextec.zxdoc" title="条件查找用户积分所有信息">
+        <member-entity entity-alias="TUS" entity-name="TblUserScore"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <alias name="userLoginId" entity-alias="TUS" field="userLoginId"/>
+        <alias name="scoreOn" entity-alias="TUS" field="scoreOn"/>
+        <alias name="scoreOff" entity-alias="TUS" field="scoreOff"/>
+        <alias name="scoreNow" entity-alias="TUS" field="scoreNow"/>
+        <alias name="createdStamp" entity-alias="TUS" field="createdStamp"/>
+        <alias name="userName" entity-alias="P" field="fullName"/>
+        <view-link entity-alias="TUS" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="userLoginId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <entity entity-name="TblCaseTemplate" package-name="cn.com.rextec.zxdoc" title="CASE模板">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="templateGroup" type="id">
+            <description>模板类别</description>
+        </field>
+        <field name="templateKey" type="id">
+            <description>CASE类型</description>
+        </field>
+        <field name="templateName" type="name">
+            <description>模板名称</description>
+        </field>
+        <field name="version" type="common-int">
+            <description>模板版本</description>
+        </field>
+        <field name="activeTime" type="date-time">
+            <description>生效时间</description>
+        </field>
+        <field name="remark" type="long-varchar">
+            <description>备注</description>
+        </field>
+        <field name="active" type="indicator">
+            <description>生效状态</description>
+        </field>
+        <field name="deleted" type="indicator">
+            <description>是否删除</description>
+        </field>
+        <field name="partyId" type="id">
+            <description>所属机构</description>
+        </field>
+        <field name="dataResourceId" type="id">
+            <description>说明文件ID</description>
+        </field>
+        <field name="roles" type="id-vlong">
+            <description>参与方：多方用逗号分隔</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="templateKey" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Enumeration" title="Group">
+            <key-map field-name="templateGroup" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="CaseTemplateList" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-name="TblCaseTemplate" entity-alias="CT"/>
+        <member-entity entity-name="Enumeration" entity-alias="EN"/>
+        <alias-all entity-alias="CT"/>
+        <alias name="createdStamp" entity-alias="CT" field="createdStamp"/>
+        <alias name="templateKeyName" field="description" entity-alias="EN"/>
+        <view-link entity-alias="CT" rel-entity-alias="EN" rel-optional="true">
+            <key-map field-name="templateKey" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblCaseTemplateNodeGroup" package-name="cn.com.rextec.zxdoc" title="CASE模板总体步骤">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="templateId" type="id-ne">
+            <description>模板id</description>
+        </field>
+        <field name="seq" type="common-int">
+            <description>序号</description>
+        </field>
+        <field name="name" type="name">
+            <description>节点描述</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblCaseTemplate" title="Template">
+            <key-map field-name="templateId" rel-field-name="id"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="TblCaseTemplateBaseTime" package-name="cn.com.rextec.zxdoc" title="CASE期限基准时间">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="templateId" type="id-ne">
+            <description>模板id</description>
+        </field>
+        <field name="seq" type="common-int">
+            <description>序号</description>
+        </field>
+        <field name="name" type="name">
+            <description>名称</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblCaseTemplate" title="Template">
+            <key-map field-name="templateId" rel-field-name="id"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblCaseProgressGroup" package-name="cn.com.rextec.zxdoc" title="CASE总体步骤">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="templateGroupId" type="id-ne">
+            <description>模板groupId</description>
+        </field>
+        <field name="seq" type="common-int">
+            <description>序号</description>
+        </field>
+        <field name="name" type="name">
+            <description>节点描述</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblCase" title="Case">
+            <key-map field-name="caseId" rel-field-name="caseId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseTemplateNodeGroup" title="CaseTemplateNodeGroup">
+            <key-map field-name="templateGroupId" rel-field-name="id"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="TblCaseTemplateNode" package-name="cn.com.rextec.zxdoc" title="CASE模板子节点">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="templateId" type="id-ne">
+            <description>模板id</description>
+        </field>
+        <field name="groupId" type="id">
+            <description>父节点</description>
+        </field>
+        <field name="seq" type="common-int">
+            <description>序号</description>
+        </field>
+        <field name="name" type="name">
+            <description>节点描述</description>
+        </field>
+        <field name="executor" type="id">
+            <description>执行人</description>
+        </field>
+        <field name="dueBase" type="id">
+            <description>期限参考节点：如果是NG开头则为大步骤，BT开头为基准时间点，否则为具体任务</description>
+        </field>
+        <field name="dueTask" type="common-int">
+            <description>参考具体任务时，任务索引号,如果参考节点且本字段为空则为基于大步骤</description>
+        </field>
+        <field name="dueDay" type="common-int">
+            <description>期限:距离参考节点(前:负值)后第几天</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblCaseTemplate" title="Template">
+            <key-map field-name="templateId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseTemplateNodeGroup" title="Group">
+            <key-map field-name="groupId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseTemplateNodeGroup" title="DueBase">
+            <key-map field-name="groupId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="RoleType" title="Executor">
+            <key-map field-name="executor" rel-field-name="roleTypeId"/>
+        </relation>
+        <relation type="many" rel-entity-name="TblCaseTemplateNodeAtta">
+            <key-map field-name="id" rel-field-name="templateNodeId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="CaseTemplateNode"  package-name="cn.com.rextec.zxdoc" title="CASE模板子节点">
+        <member-entity entity-name="TblCaseTemplateNode" entity-alias="TN"/>
+        <member-entity entity-name="TblCaseTemplateNodeGroup" entity-alias="TG"/>
+        <alias-all entity-alias="TN"/>
+        <alias entity-alias="TG" field="name" name="nodeGroupName"/>
+        <view-link entity-alias="TN" rel-entity-alias="TG" rel-optional="true">
+            <key-map field-name="groupId" rel-field-name="id"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblCaseTemplateNodeAtta" package-name="cn.com.rextec.zxdoc" title="节点附件">
+        <field name="templateNodeId" type="id-ne">
+            <description>模板节点id</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <prim-key field="templateNodeId"/>
+        <prim-key field="dataResourceId"/>
+    </entity>
+
+    <entity entity-name="TblCaseRelatedContract" package-name="cn.com.rextec.zxdoc" title="case和合同的关系表">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>case的主键</description>
+        </field>
+        <field name="contractId" type="id-ne">
+            <description>合同的主键</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <entity entity-name="TblCase" package-name="cn.com.rextec.zxdoc" title="CASE">
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="caseSn" type="id">
+            <description>CASE编号</description>
+        </field>
+        <field name="caseCategory" type="id">
+            <description>CASE类型</description>
+        </field>
+        <field name="caseTemplate" type="id">
+            <description>CASE模板</description>
+        </field>
+        <field name="ticket" type="id">
+            <description>对应的发布信息id</description>
+        </field>
+        <field name="contract" type="id">
+            <description>相关合同的id（已修改，后续作废）</description>
+        </field>
+        <field name="title" type="name">
+            <description>标题</description>
+        </field>
+        <field name="summary" type="very-long">
+            <description>概述</description>
+        </field>
+        <field name="startDate" type="date">
+            <description>启动时间</description>
+        </field>
+        <field name="dueDate" type="date">
+            <description>预计结束时间</description>
+        </field>
+        <field name="completeDate" type="date">
+            <description>结束时间</description>
+        </field>
+        <field name="archiveDate" type="date">
+            <description>归档时间</description>
+        </field>
+        <field name="status" type="id">
+            <description>状态</description>
+        </field>
+        <field name="deleted" type="indicator">
+            <description>是否删除</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>发起方partyId</description>
+        </field>
+        <field name="createPartyId" type="id-ne">
+            <description>创建人的partyId</description>
+        </field>
+        <field name="folderId" type="id">
+            <description>CASE专用文件夹</description>
+        </field>
+        <prim-key field="caseId"/>
+        <relation type="one" rel-entity-name="StatusItem">
+            <key-map field-name="status" rel-field-name="statusId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="caseCategory" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseTemplate">
+            <key-map field-name="caseTemplate" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Party">
+            <key-map field-name="createPartyId" rel-field-name="partyId"/>
+        </relation>
+        <index name="idx_case_sn" unique="true">
+            <index-field name="caseSn"/>
+        </index>
+    </entity>
+
+    <entity entity-name="TblCaseBaseTime" package-name="cn.com.rextec.zxdoc" title="CASE期限基准时间">
+        <field name="caseId" type="id-ne">
+            <description>Case id</description>
+        </field>
+        <field name="baseTimeId" type="id-ne">
+            <description>模板设置的id</description>
+        </field>
+        <field name="baseTime" type="date">
+            <description>基准时间</description>
+        </field>
+        <prim-key field="caseId"/>
+        <prim-key field="baseTimeId"/>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseTemplateBaseTime">
+            <key-map field-name="baseTimeId" rel-field-name="id"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="TblCaseParty" package-name="cn.com.rextec.zxdoc" title="CASE参与方">
+        <field name="partyId" type="id-ne">
+            <description>参与方partyId</description>
+        </field>
+        <field name="personId" type="id-ne">
+            <description>参与方人员personId</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="roleTypeId" type="id-ne">
+            <description>参与角色</description>
+        </field>
+        <field name="joinDate" type="date">
+            <description>加入时间</description>
+        </field>
+        <prim-key field="caseId"/>
+        <prim-key field="partyId"/>
+        <relation type="one" rel-entity-name="RoleType">
+            <key-map field-name="roleTypeId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+    </entity>
+
+    <!--<entity entity-name="TblCasePrompt" package-name="cn.com.rextec.zxdoc" title="用户未未完成的case提示">
+        <field name="id" type="id-ne">
+            <description>id</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>参与方partyId</description>
+        </field>
+
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="progressId" type="id-ne">
+            <description>步骤Id</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseProgress">
+            <key-map field-name="progressId" rel-field-name="id"/>
+        </relation>
+    </entity>-->
+
+    <entity entity-name="TblSiteMsg" package-name="cn.com.rextec.zxdoc" title="站内信息">
+        <field name="id" type="id-ne">
+            <description>id</description>
+        </field>
+        <field name="partyId" type="id">
+            <description>个人partyId</description>
+        </field>
+        <field name="groupPartyId" type="id">
+            <description>团体partyId</description>
+        </field>
+        <field name="title" type="long-varchar">
+            <description>消息标题</description>
+        </field>
+        <field name="titleClickAction" type="long-varchar">
+            <description>消息标题点击事件</description>
+        </field>
+        <field name="content" type="very-varchar">
+            <description>消息内容</description>
+        </field>
+        <field name="read" col-name="read_" type="indicator">
+            <description>是否已读</description>
+        </field>
+        <field name="readClickAction" type="long-varchar">
+            <description>已读时触发</description>
+        </field>
+        <field name="type" type="name">
+            <description>类型：task, notice</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <!--<view-entity entity-name="CasePrompt" package-name="cn.com.rextec.zxdoc" title="用户未未完成的case提示列表">
+        <member-entity entity-name="TblCasePrompt" entity-alias="TCP"/>
+        <member-entity entity-name="TblCase" entity-alias="TC"/>
+        <member-entity entity-name="TblCaseProgress" entity-alias="TP"/>
+        <alias-all entity-alias="TCP"/>
+        <alias entity-alias="TC" field="title" name="caseTitle"/>
+        <alias entity-alias="TP" field="title" name="progressTitle"/>
+        <view-link entity-alias="TCP" rel-entity-alias="TC">
+            <key-map field-name="caseId" rel-field-name="caseId"/>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="TP">
+            <key-map field-name="progressId" rel-field-name="id"/>
+        </view-link>
+    </view-entity>-->
+
+    <entity entity-name="TblCasePartyMember" package-name="cn.com.rextec.zxdoc" title="CASE参与方参与人员">
+        <field name="partyId" type="id-ne">
+            <description>参与方人员partyId</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="roleTypeId" type="id-ne">
+            <description>各参与方中人员角色</description>
+        </field>
+        <field name="groupPartyId" type="id-ne">
+            <description>参与方partyId</description>
+        </field>
+        <field name="joinDate" type="date">
+            <description>加入时间</description>
+        </field>
+        <prim-key field="caseId"/>
+        <prim-key field="partyId"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="roleTypeId" rel-field-name="enumCode"/>
+        </relation>
+        <relation type="one" rel-entity-name="Person">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="groupPartyId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+    </entity>
+
+
+    <entity entity-name="TblCasePartyMemberShareFolder" package-name="cn.com.rextec.zxdoc" title="CASE参与方参与人员共享企业文档记录">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>参与方人员partyId</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="companyPartyId" type="id-ne">
+            <description>企业id</description>
+        </field>
+        <field name="folderPath" type="name">
+            <description>共享的目录</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <entity entity-name="TblVipCueTime" package-name="cn.com.rextec.zxdoc" title="会员到期时间">
+        <field name="partyId" type="id-ne">
+            <description>主账户主键</description>
+        </field>
+        <field name="CueTime" type="date">
+            <description>到期时间</description>
+        </field>
+        <field name="hasInfo" type="id">
+            <description>到期是否已经通知</description>
+        </field>
+        <prim-key field="partyId"/>
+    </entity>
+
+    <!--<entity entity-name="TblCaseFile" package-name="cn.com.rextec.zxdoc" title="CASE文件">
+        <field name="caseId" type="id-ne">
+            <description>case id</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <field name="folderId" type="id">
+            <description>对应的目录</description>
+        </field>
+        <field name="accessRoles" type="description">
+            <description>文件可见权限：多个role用逗号拼接</description>
+        </field>
+        <prim-key field="caseId"/>
+        <prim-key field="dataResourceId"/>
+    </entity>-->
+
+    <entity entity-name="TblCaseProgress" package-name="cn.com.rextec.zxdoc" title="CASE进程">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="caseTemplateNodeId" type="id">
+            <description>模板节点id</description>
+        </field>
+        <field name="executor" type="id">
+            <description>执行人</description>
+        </field>
+        <field name="caseProgressGroupId" type="id">
+            <description>CASE总体步骤id</description>
+        </field>
+        <field name="title" type="name">
+            <description>进度描述</description>
+        </field>
+        <field name="progressIndex" type="common-int">
+            <description>进度索引</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>任务所属party</description>
+        </field>
+        <field name="dueTime" type="date-time">
+            <description>期限</description>
+        </field>
+        <field name="dueBase" type="id">
+            <description>期限参考节点：如果是NG开头则为大步骤，BT开头为基准时间点，否则为具体任务</description>
+        </field>
+        <field name="dueTask" type="common-int">
+            <description>参考具体任务时，任务索引号,如果参考节点且本字段为空则为基于大步骤</description>
+        </field>
+        <field name="dueDay" type="common-int">
+            <description>期限:距离参考节点(前:负值)后第几天</description>
+        </field>
+        <field name="completeTime" type="date-time">
+            <description>完成时间</description>
+        </field>
+        <field name="completeDesc" type="very-varchar">
+            <description>完成描述</description>
+        </field>
+        <field name="skipped" type="indicator">
+            <description>是否跳过</description>
+        </field>
+        <field name="active" type="indicator">
+            <description>正在进行</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseProgressGroup">
+            <key-map field-name="caseProgressGroupId" rel-field-name="id"/>
+        </relation>
+        <relation type="many" rel-entity-name="TblCaseProgressAtta">
+            <key-map field-name="id" rel-field-name="progressId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="TblCaseProgressAtta" package-name="cn.com.rextec.zxdoc" title="节点附件">
+        <field name="progressId" type="id-ne">
+            <description>节点id</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <field name="template" type="indicator">
+            <description>是否是模板文件</description>
+        </field>
+        <field name="accessRoles" type="description">
+            <description>文件可见权限：多个role用逗号拼接</description>
+        </field>
+        <prim-key field="progressId"/>
+        <prim-key field="dataResourceId"/>
+    </entity>
+
+    <entity entity-name="TblCaseRemark" package-name="cn.com.rextec.zxdoc" title="CASE备忘录">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>参与方人员partyId</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="remark" type="description">
+            <description>备注内容</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Party">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblCaseCooperationRecord" package-name="cn.com.rextec.zxdoc" title="case协作记录">
+        <field name="caseId" type="id-ne"/>
+        <field name="chatRoomId" type="id-ne"/>
+        <field name="chatRoomName" type="id-ne"/>
+        <field name="groupNames" type="id-vlong-ne"/>
+        <field name="groupIds" type="id-vlong-ne"/>
+        <field name="administrator" type="id-ne"/>
+        <field name="lastChatTime" type="id-ne"/>
+        <field name="partyIds" type="id-vlong-ne"/>
+        <prim-key field="caseId"/>
+        <prim-key field="chatRoomId"/>
+    </entity>
+
+    <entity entity-name="TblCaseCooperationRecordFile" package-name="cn.com.rextec.zxdoc" title="case协作文件">
+        <field name="caseId" type="id-ne"/>
+        <field name="chatRoomId" type="id-ne"/>
+        <field name="dataResourceId" type="id-ne"/>
+        <prim-key field="caseId"/>
+        <prim-key field="chatRoomId"/>
+        <prim-key field="dataResourceId"/>
+    </entity>
+
+    <!--<entity entity-name="TblCaseFolder"
+            package-name="cn.com.rextec.zxdoc"
+            title="Case文件的目录结构">
+        <field name="folderId" type="id-ne"></field>
+        <field name="parentFolderId" type="id"></field>
+        <field name="rootFolderId" type="id">
+            <description>子目录对应的最顶级根目录，避免递归查询</description>
+        </field>
+        <field name="description" type="description"></field>
+        <prim-key field="folderId"/>
+        <relation type="one" title="Parent" rel-entity-name="TblCaseFolder">
+            <key-map field-name="parentFolderId" rel-field-name="folderId"/>
+        </relation>
+        <relation type="one" title="Root" rel-entity-name="TblCaseFolder">
+            <key-map field-name="rootFolderId" rel-field-name="folderId"/>
+        </relation>
+    </entity>-->
+
+    <!--<entity entity-name="TblCasePartyFolder" package-name="cn.com.rextec.zxdoc" title="CASE参与方文件目录">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>参与方partyId</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <field name="folderId" type="id-ne">
+            <description>根目录id</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblCaseFolder">
+            <key-map field-name="folderId"/>
+        </relation>
+    </entity>-->
+
+    <entity entity-name="TblCaseCategoryFolder" package-name="cn.com.rextec.zxdoc" title="CASE类型文件目录">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseCategory" type="id">
+            <description>CASE类型，应该为具体case模板的id</description>
+        </field>
+        <field name="folderPath" type="id-ne">
+            <description>目录路径</description>
+        </field>
+        <field name="roles" type="name">
+            <description>目录可见角色，用逗号分隔</description>
+        </field>
+        <field name="fileType" type="name">
+            <description>file:文件，folder:目录</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <entity entity-name="TblCaseShareFolder" package-name="cn.com.rextec.zxdoc" title="CASE分享文件目录">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id">
+            <description>CASEId</description>
+        </field>
+        <field name="folderPath" type="id-ne">
+            <description>目录路径</description>
+        </field>
+        <field name="roles" type="name">
+            <description>目录可见角色，用逗号分隔</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <entity entity-name="TblCaseTask" package-name="cn.com.rextec.zxdoc" title="CASE中各参与方内部任务">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>caseId</description>
+        </field>
+        <!--<field name="progressId" type="id">
+            <description>CASE进度id</description>
+        </field>-->
+        <field name="title" type="very-varchar">
+            <description>任务描述</description>
+        </field>
+        <!--<field name="taskTemplateId" type="id">
+            <description>任务模板id</description>
+        </field>-->
+        <field name="partyId" type="id-ne">
+            <description>任务所属party</description>
+        </field>
+        <field name="partyGroupId" type="id-ne">
+            <description>参与方party</description>
+        </field>
+        <field name="dueTime" type="date-time">
+            <description>期限</description>
+        </field>
+        <field name="status" type="id-ne">
+            <description>任务状态</description>
+        </field>
+        <field name="completeTime" type="date-time">
+            <description>完成时间</description>
+        </field>
+        <!--<field name="completePercent" type="common-int">
+            <description>完成百分比</description>
+        </field>-->
+        <prim-key field="id"/>
+        <!--<relation type="one" rel-entity-name="TblCaseProgress">
+            <key-map field-name="progressId" rel-field-name="id"/>
+        </relation>-->
+        <relation type="one" rel-entity-name="TblCase">
+            <key-map field-name="caseId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Person">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyGroupId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="status" rel-field-name="enumId"/>
+        </relation>
+        <!--<relation type="one" rel-entity-name="TblCaseTaskTemplate">
+            <key-map field-name="taskTemplateId" rel-field-name="id"/>
+        </relation>-->
+    </entity>
+    <entity entity-name="TblCaseTaskAtta" package-name="cn.com.rextec.zxdoc" title="任务节点模板文件">
+        <field name="taskId" type="id-ne">
+            <description>节点id</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <prim-key field="taskId"/>
+        <prim-key field="dataResourceId"/>
+        <relation type="one" rel-entity-name="TblCaseTask">
+            <key-map field-name="taskId" rel-field-name="id"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblAdvert" package-name="cn.com.rextec.zxdoc" title="广告设置">
+        <field name="AdvertId" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="ruleName" type="long-varchar">
+            <description>广告标题</description>
+        </field>
+        <field name="maxTimes" type="date">
+            <description>起始时间</description>
+        </field>
+        <field name="score" type="date">
+            <description>终止时间</description>
+        </field>
+        <field name="ranges" type="long-varchar">
+            <description>投放范围</description>
+        </field>
+        <field name="description" type="very-varchar">
+            <description>广告内容</description>
+        </field>
+        <field name="lockAdvert" type="indicator">
+            <description>禁用标记</description>
+        </field>
+        <field name="hasdelete" type="id">
+            <description>是否被删除</description>
+        </field>
+        <prim-key field="AdvertId"/>
+    </entity>
+
+    <view-entity entity-name="CasePartyGroupInfo" package-name="cn.com.rextec.zxdoc" title="CASE服务方信息">
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="TCP" entity-name="TblCaseParty"/>
+        <alias-all entity-alias="TCP"/>
+        <alias name="groupId" field="partyId" entity-alias="PG"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="partnerGroupName" entity-alias="PG"/>
+        <view-link entity-alias="TCP" rel-entity-alias="PG">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="CaseWithCreatePartyInfo" package-name="cn.com.rextec.zxdoc" title="CASE及创建人信息">
+        <member-entity entity-alias="TC" entity-name="TblCase"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="TCPG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="TCP" entity-name="TblCaseParty"/>
+        <alias-all entity-alias="TC"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="personId" field="partyId" entity-alias="P"/>
+        <alias name="groupId" field="partyId" entity-alias="PG"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="partnerGroupName" entity-alias="PG"/>
+        <alias name="ownerGroupName" field="groupName" entity-alias="TCPG"/>
+        <alias name="ownerGroupId" field="partyId" entity-alias="TCPG"/>
+        <view-link entity-alias="TC" rel-entity-alias="TCP">
+            <key-map field-name="caseId"/>
+            <entity-condition>
+                <condition-expr entity-alias="TCP" field-name="roleTypeId" operator="equals" value="CASE_ROLE_OWNER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="TCPG">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TC" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="createPartyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TC" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="createPartyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="ContractCase" package-name="cn.com.rextec.zxdoc" title="签约相关case">
+        <member-entity entity-alias="TC" entity-name="TblCase"/>
+        <member-entity entity-alias="TCP" entity-name="TblCaseParty"/>
+        <alias-all entity-alias="TC"/>
+        <alias name="partyId" field="partyId" entity-alias="TCP"/>
+        <view-link entity-alias="TCP" rel-entity-alias="TC" rel-optional="true">
+            <key-map field-name="caseId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="caseTaskDataResource" package-name="cn.com.rextec.zxdoc" title="任务模版列表">
+        <member-entity entity-name="TblCaseTaskAtta" entity-alias="TA"/>
+        <member-entity entity-name="DataResource" entity-alias="DR"/>
+        <alias-all entity-alias="TA"/>
+        <alias entity-alias="DR" name="dataResourceName" field="dataResourceName"/>
+        <view-link entity-alias="TA" rel-entity-alias="DR" rel-optional="true">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="caseTaskList" package-name="cn.com.rextec.zxdoc" title="查询任务列表">
+        <member-entity entity-name="TblCaseTask" entity-alias="TC"/>
+        <member-entity entity-name="Person" entity-alias="PS"/>
+        <member-entity entity-name="Enumeration" entity-alias="ER"/>
+        <alias-all entity-alias="TC"/>
+        <alias name="fullName" field="fullName" entity-alias="PS"/>
+        <alias name="description" field="description" entity-alias="ER"/>
+        <view-link entity-alias="TC" rel-entity-alias="PS" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TC" rel-entity-alias="ER" rel-optional="true">
+            <key-map field-name="status" rel-field-name="enumId"/>
+            <entity-condition>
+                <condition-expr field-name="enumTypeId" entity-alias="ER" operator="equals" value="CASE_STATUS"/>
+            </entity-condition>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="CaseActiveProgressTask" package-name="cn.com.rextec.zxdoc" title="CASE当前未完成任务">
+        <member-entity entity-alias="TC" entity-name="TblCase"/>
+        <member-entity entity-alias="TCP" entity-name="TblCaseProgress"/>
+        <member-entity entity-alias="PM" entity-name="TblCasePartyMember"/>
+        <alias-all entity-alias="TCP"/>
+        <alias name="caseTitle" field="title" entity-alias="TC"/>
+        <alias name="managerPartyId" field="partyId" entity-alias="PM"/>
+        <alias name="groupPartyId" entity-alias="PM"/>
+        <view-link entity-alias="TCP" rel-entity-alias="TC">
+            <key-map field-name="caseId"/>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="PM">
+            <key-map field-name="caseId"/>
+            <key-map field-name="partyId" rel-field-name="groupPartyId"/>
+            <entity-condition>
+                <condition-list>
+                    <!--项目经理-->
+                    <condition-expr entity-alias="PM" field-name="roleTypeId" operator="equals" value="CASE_PERSON_ROLE_MANAGER"/>
+                    <!--尚未完成-->
+                    <condition-expr entity-alias="TCP" field-name="completeTime" operator="equals" value=""/>
+                    <condition-expr entity-alias="TCP" field-name="skipped" operator="equals" value=""/>
+                    <condition-expr entity-alias="TCP" field-name="active" operator="equals" value="Y"/>
+                </condition-list>
+            </entity-condition>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblCaseTaskTemplate" package-name="cn.com.rextec.zxdoc" title="CASE任务模板">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseCategory" type="id">
+            <description>CASE类型</description>
+        </field>
+        <field name="title" type="description">
+            <description>任务描述</description>
+        </field>
+        <field name="partyId" type="id-ne">
+            <description>机构partyId</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="caseCategory" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblCaseTaskTemplateAtta" package-name="cn.com.rextec.zxdoc" title="任务节点模板文件">
+        <field name="taskId" type="id-ne">
+            <description>节点id</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <prim-key field="taskId"/>
+        <prim-key field="dataResourceId"/>
+        <relation type="one" rel-entity-name="TblCaseTaskTemplate">
+            <key-map field-name="taskId" rel-field-name="id"/>
+        </relation>
+    </entity>
+    <!--合同表-->
+    <entity entity-name="TblContract" package-name="cn.com.rextec.zxdoc">
+        <field name="contractId" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="contractName" type="description">
+            <description>合同名称</description>
+        </field>
+        <field name="createBy" type="id-ne">
+            <description>创建者</description>
+        </field>
+        <field name="firstPartyName" type="id-ne">
+            <description>甲方公司名称</description>
+        </field>
+        <field name="secondPartyName" type="id-ne">
+            <description>乙方公司名称</description>
+        </field>
+        <field name="secondPersonName" type="id-ne">
+            <description>乙方人员partyId</description>
+        </field>
+        <field name="startDate" type="date">
+            <description>开始日期</description>
+        </field>
+        <field name="dateClose" type="date">
+            <description>结束日期</description>
+        </field>
+        <field name="relateCase" type="long-varchar">
+            <description>关联case</description>
+        </field>
+        <field name="isCharge" type="indicator">
+            <description>是否收费</description>
+        </field>
+        <prim-key field="contractId"/>
+    </entity>
+
+    <entity entity-name="TblContractAccessory" package-name="cn.com.rextec.zxdoc" title="合同附件">
+        <field name="contractId" type="id-ne">
+            <description>合同ID</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <prim-key field="contractId"/>
+        <prim-key field="dataResourceId"/>
+    </entity>
+
+
+
+    <!--资料库补充消息-->
+    <entity entity-name="TblLibrary" package-name="cn.com.rextec.zxdoc">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="title" type="name">
+            <description>标题</description>
+        </field>
+        <field name="type" type="id-ne">
+            <description>分类</description>
+        </field>
+        <field name="tags" type="id">
+            <description>标签</description>
+        </field>
+        <field name="introduce" type="long-varchar">
+            <description>简介</description>
+        </field>
+        <field name="accessType" type="id">
+            <description>类型</description>
+        </field>
+        <field name="score" type="common-int">
+            <description>积分</description>
+        </field>
+        <field name="status" type="indicator">
+            <description>状态</description>
+        </field>
+        <field name="dataResourceId" type="id-ne">
+            <description>对应的资源文件</description>
+        </field>
+        <field name="userLoginId" type="id-ne">
+            <description>当前登入人</description>
+        </field>
+        <field name="reason" type="very-varchar">
+            <description>理由</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="DataResource" fk-name="FK_LIBRARY_DATARESOURCE">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblTicket" package-name="cn.com.rextec.zxdoc">
+        <description>信息发布</description>
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="caseId" type="id-ne">
+            <description>创建case后的caseId</description>
+        </field>
+        <field name="title" type="name">
+            <description>标题</description>
+        </field>
+        <field name="ticketPartyId" type="id-ne">
+            <description>发起方id</description>
+        </field>
+        <field name="startTime" type="date">
+            <description>发布时间</description>
+        </field>
+        <field name="endTime" type="date">
+            <description>截止时间</description>
+        </field>
+        <field name="description" type="very-varchar">
+            <description>信息描述</description>
+        </field>
+        <field name="type" type="id-ne">
+            <description>类型（定增、半年报、年报）</description>
+        </field>
+        <field name="templateId" type="id-ne">
+            <description>模板版本或者模板名</description>
+        </field>
+        <field name="hasdelete" type="id-ne">
+            <description>是否已经归档（逻辑删除）</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="type" rel-field-name="enumId"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblTicketRoles" package-name="cn.com.rextec.zxdoc">
+        <description>信息发布所需角色</description>
+        <field name="id" type="id-ne"/>
+        <field name="ticketId" type="id-ne"/>
+        <field name="roleTypeId" type="id-ne"/>
+        <field name="partyId" type="id-ne">
+            <description>已确认的参与方</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblTicket">
+            <key-map field-name="ticketId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="RoleType">
+            <key-map field-name="roleTypeId"/>
+        </relation>
+        <relation type="one" rel-entity-name="PartyGroup">
+            <key-map field-name="partyId"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblTicketRolesParty" package-name="cn.com.rextec.zxdoc">
+        <description>信息发布所需角色的参与方</description>
+        <field name="id" type="id-ne"/>
+        <field name="groupId" type="id-ne">
+            <description>发布时指定的参与方的groupName</description>
+        </field>
+        <prim-key field="id"/>
+        <prim-key field="groupId"/>
+        <relation type="one" rel-entity-name="TblTicketRoles">
+            <key-map field-name="id" rel-field-name="id"/>
+        </relation>
+    </entity>
+    <entity entity-name="TblTicketParties" package-name="cn.com.rextec.zxdoc">
+        <description>参与方竞选表</description>
+        <field name="ticketId" type="id-ne">
+            <description>发布的信息的id</description>
+        </field>
+        <field name="partyId" type="id">
+            <description>参与方id</description>
+        </field>
+        <field name="roleTypeId" type="id-ne">
+            <description>参与方角色</description>
+        </field>
+        <field name="runForTime" type="date">
+            <description>竞选时间</description>
+        </field>
+        <field name="reason" type="description">
+            <description>竞选说明</description>
+        </field>
+        <field name="joinDate" type="date">
+            <description>加入时间</description>
+        </field>
+        <prim-key field="ticketId"/>
+        <prim-key field="partyId"/>
+        <prim-key field="roleTypeId"/>
+        <relation type="one" rel-entity-name="TblTicket">
+            <key-map field-name="ticketId" rel-field-name="id"/>
+        </relation>
+        <relation type="one" rel-entity-name="RoleType">
+            <key-map field-name="roleTypeId"/>
+        </relation>
+    </entity>
+    <view-entity entity-name="TicketPartyNames" package-name="cn.com.rextec.zxdoc">
+        <description>竞选者及其名称</description>
+        <member-entity entity-alias="TTP" entity-name="TblTicketParties"/>
+        <member-entity entity-alias="PG" entity-name="Person"/>
+        <member-entity entity-alias="P" entity-name="Party"/>
+        <alias-all entity-alias="TTP"/>
+        <alias name="fullName" entity-alias="PG"/>
+        <alias name="avatar" entity-alias="P"/>
+        <view-link entity-alias="TTP" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PG" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="RoleDescriptionPartyName" package-name="cn.com.rextec.zxdoc">
+        <description>TblTicketRoles中roleTypeId和partyId对应的名称</description>
+        <member-entity entity-alias="TTR" entity-name="TblTicketRoles"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <alias-all entity-alias="TTR"/>
+        <alias name="description" entity-alias="RT"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <view-link entity-alias="TTR" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TTR" rel-entity-alias="RT" rel-optional="true">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="RoleTypeTickets" package-name="cn.com.rextec.zxdoc">
+        <description>与角色相关的发布信息</description>
+        <member-entity entity-alias="TT" entity-name="TblTicket"/>
+        <member-entity entity-alias="TTR" entity-name="TblTicketRoles"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="TTRP" entity-name="TblTicketRolesParty"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <alias-all entity-alias="TT"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="rolesId" field="id" entity-alias="TTR"/>
+        <alias name="roleTypeId" entity-alias="TTR"/>
+        <alias name="partyId" entity-alias="TTR">
+            <description>已确认的参与方</description>
+        </alias>
+        <alias name="candidatePartyName" field="groupId" entity-alias="TTRP">
+            <description>发布信息时指定的参与方</description>
+        </alias>
+        <alias name="roleTypeName" field="description" entity-alias="RT"/>
+
+        <view-link entity-alias="TT" rel-entity-alias="PG">
+            <key-map field-name="ticketPartyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TT" rel-entity-alias="TTR" rel-optional="true">
+            <key-map field-name="id" rel-field-name="ticketId"/>
+        </view-link>
+        <view-link entity-alias="TTR" rel-entity-alias="RT" rel-optional="true">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+        </view-link>
+        <view-link entity-alias="TTR" rel-entity-alias="TTRP" rel-optional="true">
+            <key-map field-name="id"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="TicketCondition" package-name="cn.com.rextec.zxdoc">
+        <description>竞选状态</description>
+        <member-entity entity-alias="TTP" entity-name="TblTicketParties"/>
+        <member-entity entity-alias="RTT" entity-name="RoleTypeTickets"/>
+        <member-entity entity-alias="ENU" entity-name="Enumeration"/>
+        <alias-all entity-alias="TTP"/>
+        <alias name="title" entity-alias="RTT"/>
+        <alias name="rolesId" entity-alias="RTT"/>
+        <alias name="hasdelete" entity-alias="RTT"/>
+        <alias name="ticketId" field="id" entity-alias="RTT"/>
+        <alias name="startTime" entity-alias="RTT"/>
+        <alias name="endTime" entity-alias="RTT"/>
+        <alias name="ticketContent" field="description" entity-alias="RTT"/>
+        <alias name="type" entity-alias="RTT"/>
+        <alias name="roleTypeId" entity-alias="RTT"/>
+        <alias name="ticketPartyId" entity-alias="RTT"/>
+        <alias name="typeName" field="description" entity-alias="ENU"/>
+        <view-link entity-alias="RTT" rel-entity-alias="TTP" rel-optional="true">
+            <key-map field-name="id" rel-field-name="ticketId"/>
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+        </view-link>
+        <view-link entity-alias="RTT" rel-entity-alias="ENU" rel-optional="true">
+            <key-map field-name="type" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="libraryDataResourceEnum" package-name="cn.com.rextec.zxdoc" title="资料库的信息">
+        <member-entity entity-alias="TL" entity-name="TblLibrary"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <member-entity entity-alias="ENUM" entity-name="Enumeration"/>
+        <member-entity entity-alias="PS" entity-name="Person"/>
+        <alias entity-alias="TL" name="id" field="id"/>
+        <alias entity-alias="TL" name="title" field="title"/>
+        <alias entity-alias="TL" name="type" field="type"/>
+        <alias entity-alias="TL" name="tags" field="tags"/>
+        <alias entity-alias="TL" name="status" field="status"/>
+        <alias entity-alias="TL" name="introduce" field="introduce"/>
+        <alias entity-alias="TL" name="dataResourceId" field="dataResourceId"/>
+        <alias entity-alias="TL" name="userLoginId" field="userLoginId"/>
+        <alias entity-alias="TL" name="createdStamp" field="createdStamp"/>
+        <alias entity-alias="DR" name="dataResourceName" field="dataResourceName"/>
+        <alias entity-alias="DR" name="createdByUserLogin" field="createdByUserLogin"/>
+        <alias entity-alias="ENUM" name="description" field="description"/>
+        <alias entity-alias="PS" name="fullName" field="fullName"/>
+        <view-link entity-alias="TL" rel-entity-alias="DR">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </view-link>
+        <view-link entity-alias="TL" rel-entity-alias="ENUM" rel-optional="true">
+            <key-map field-name="type" rel-field-name="enumId"/>
+        </view-link>
+        <view-link entity-alias="TL" rel-entity-alias="PS" rel-optional="true">
+            <key-map field-name="userLoginId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="templateNodes" package-name="cn.com.rextec.zxdoc" title="模板节点">
+        <member-entity entity-alias="TCTN" entity-name="TblCaseTemplateNode"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <alias entity-alias="TCTN" name="templateId"/>
+        <alias entity-alias="TCTN" name="seq"/>
+        <alias entity-alias="TCTN" name="name"/>
+        <alias entity-alias="TCTN" name="dueDay"/>
+        <alias entity-alias="TCTN" name="id"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="RT" name="roleTypeId"/>
+        <view-link entity-alias="TCTN" rel-entity-alias="RT" rel-optional="true">
+            <key-map field-name="executor" rel-field-name="roleTypeId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="nodeFiles" package-name="cn.com.rextec.zxdoc" title="节点文件">
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <member-entity entity-alias="TCTNA" entity-name="TblCaseTemplateNodeAtta"/>
+        <alias entity-alias="DR" name="dataResourceId"/>
+        <alias entity-alias="DR" name="dataResourceName"/>
+        <alias entity-alias="TCTNA" name="templateNodeId"/>
+        <view-link entity-alias="DR" rel-entity-alias="TCTNA" rel-optional="true">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="rolePartyGroups" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="P" entity-name="Party"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PG" name="groupName"/>
+        <alias entity-alias="PG" name="partyId"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <view-link entity-alias="P" rel-entity-alias="PG">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <!--实名认证过的机构-->
+                <condition-expr entity-alias="P" field-name="statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PG" rel-entity-alias="PR">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="casePartyIdNameDescription" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="TCP" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PS" entity-name="Person"/>
+        <alias name="caseId" entity-alias="TCP"/>
+        <alias name="partyId" entity-alias="TCP"/>
+        <alias name="personId" entity-alias="TCP"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="partnerGroupName" entity-alias="PG"/>
+        <alias name="partnerType" entity-alias="PG"/>
+        <alias name="fullName" entity-alias="PS"/>
+        <alias name="description" entity-alias="RT"/>
+        <alias name="roleTypeId" entity-alias="RT"/>
+        <view-link entity-alias="TCP" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="RT" rel-optional="true">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="PS" rel-optional="true">
+            <key-map field-name="personId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="CaseProviderAndOwner" package-name="cn.com.rextec.zxdoc">
+        <description>CASE服务方及所属企业信息</description>
+        <member-entity entity-alias="CPParty" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="COParty" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="OPG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PPG" entity-name="PartyGroup"/>
+        <alias name="caseId" entity-alias="COParty"/>
+        <alias name="groupName" entity-alias="PPG"/>
+        <alias name="partnerGroupName" entity-alias="PPG"/>
+        <alias name="providerPartyId" field="partyId" entity-alias="CPParty"/>
+        <alias name="providerRole" field="roleTypeId" entity-alias="CPParty"/>
+        <alias name="ownerPartyId" field="partyId" entity-alias="OPG"/>
+        <alias name="ownerGroupName" field="groupName" entity-alias="OPG"/>
+        <view-link entity-alias="COParty" rel-entity-alias="OPG">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="COParty" field-name="roleTypeId" operator="equals" value="CASE_ROLE_OWNER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="COParty" rel-entity-alias="CPParty" rel-optional="true">
+            <key-map field-name="caseId"/>
+            <entity-condition>
+                <condition-expr entity-alias="CPParty" field-name="roleTypeId" operator="not-equals" value="CASE_ROLE_OWNER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="CPParty" rel-entity-alias="PPG" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="CaseProviderPersonAndOwner" package-name="cn.com.rextec.zxdoc">
+        <description>CASE服务方子账户及所属企业信息</description>
+        <member-entity entity-alias="CPParty" entity-name="TblCasePartyMember"/>
+        <member-entity entity-alias="COParty" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="OPG" entity-name="PartyGroup"/>
+        <alias name="caseId" entity-alias="COParty"/>
+        <alias name="providerPartyId" field="partyId" entity-alias="CPParty"/>
+        <alias name="providerRole" field="roleTypeId" entity-alias="CPParty"/>
+        <alias name="ownerPartyId" field="partyId" entity-alias="OPG"/>
+        <alias name="ownerGroupName" field="groupName" entity-alias="OPG"/>
+        <view-link entity-alias="COParty" rel-entity-alias="OPG">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="COParty" field-name="roleTypeId" operator="equals" value="CASE_ROLE_OWNER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="COParty" rel-entity-alias="CPParty">
+            <key-map field-name="caseId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="CaseManagerInfo" package-name="cn.com.rextec.zxdoc">
+        <description>CASE各方项目经理视图</description>
+        <member-entity entity-alias="Member" entity-name="TblCasePartyMember"/>
+        <member-entity entity-alias="Party" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <alias name="caseId" entity-alias="Member"/>
+        <alias name="managerPartyId" field="partyId" entity-alias="Member"/>
+        <alias name="managerName" field="fullName" entity-alias="P"/>
+        <alias name="groupId" field="partyId" entity-alias="PG"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="partnerGroupName" entity-alias="PG"/>
+        <alias name="roleTypeId" entity-alias="Party"/>
+        <view-link entity-alias="Member" rel-entity-alias="P">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="Member" field-name="roleTypeId" operator="equals" value="CASE_PERSON_ROLE_MANAGER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="Member" rel-entity-alias="Party">
+            <key-map field-name="groupPartyId" rel-field-name="partyId"/>
+            <key-map field-name="caseId"/>
+        </view-link>
+        <view-link entity-alias="Party" rel-entity-alias="PG">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="personName" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PR" entity-name="PartyRelationship"/>
+        <alias name="partyId" entity-alias="P"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="partyIdFrom" entity-alias="PR"/>
+        <view-link entity-alias="PR" rel-entity-alias="P">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="FullNameGroupName" package-name="cn.com.rextec.zxdoc">
+        <description>person对应的groupName</description>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PR" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="partyId" entity-alias="P"/>
+        <alias name="openFireJid" entity-alias="P"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="groupId" field="partyId" entity-alias="PG"/>
+        <view-link entity-alias="P" rel-entity-alias="PR" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="casePartyMembers" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="CPIND" entity-name="casePartyIdNameDescription"/>
+        <member-entity entity-alias="TCPM" entity-name="TblCasePartyMember"/>
+        <member-entity entity-alias="EN" entity-name="Enumeration"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="UL" entity-name="UserLogin"/>
+        <alias name="caseId" entity-alias="CPIND"/>
+        <alias name="groupPartyId" field="partyId" entity-alias="CPIND" />
+        <alias name="partyId" field="partyId" entity-alias="TCPM" />
+        <alias name="groupRoleType" field="description" entity-alias="CPIND" />
+        <alias name="groupRoleTypeId" field="roleTypeId" entity-alias="CPIND" />
+        <alias name="groupName" entity-alias="CPIND"/>
+        <alias name="personPartyId" field="partyId" entity-alias="TCPM"/>
+        <alias name="roleTypeId" field="roleTypeId" entity-alias="TCPM"/>
+        <alias name="enumTypeId" entity-alias="EN"/>
+        <alias name="description" entity-alias="EN"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="userLoginId" entity-alias="UL"/>
+        <alias name="enabled" entity-alias="UL"/>
+        <alias name="openFireJid" entity-alias="P"/>
+        <view-link entity-alias="CPIND" rel-entity-alias="TCPM" rel-optional="true">
+            <key-map field-name="caseId" rel-field-name="caseId"/>
+            <key-map field-name="partyId" rel-field-name="groupPartyId"/>
+        </view-link>
+        <view-link entity-alias="TCPM" rel-entity-alias="EN" rel-optional="true">
+            <key-map field-name="roleTypeId" rel-field-name="enumCode"/>
+        </view-link>
+        <view-link entity-alias="TCPM" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TCPM" rel-entity-alias="UL" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="casePartyMemberJid" package-name="cn.com.rextec.zxdoc">
+        <description>关联caseMember的partyId和JID</description>
+        <member-entity entity-alias="TCPM" entity-name="TblCasePartyMember"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <alias name="enabled" entity-alias="ULN"/>
+        <alias name="partyId" entity-alias="P"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="openFireJid" entity-alias="P"/>
+        <alias name="groupPartyId" entity-alias="TCPM"/>
+        <alias name="caseId" entity-alias="TCPM"/>
+        <alias name="roleTypeId" entity-alias="TCPM"/>
+        <view-link entity-alias="TCPM" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TCPM" rel-entity-alias="ULN" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="instantMembers" package-name="cn.com.rextec.zxdoc">
+        <description>即时聊天的成员</description>
+        <member-entity entity-alias="PR" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <alias name="partyId" entity-alias="P"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="openFireJid" entity-alias="P"/>
+        <alias name="partyIdFrom" entity-alias="PR"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="enabled" entity-alias="ULN"/>
+        <view-link entity-alias="P" rel-entity-alias="PR" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="ULN" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="progressPartyGroupName" package-name="cn.com.rextec.zxdoc">
+        <description>case进度partyGroupName</description>
+        <member-entity entity-alias="TCP" entity-name="TblCaseProgress"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="TP" entity-name="TblCaseParty"/>
+        <member-entity entity-alias="PO" entity-name="Person"/>
+        <alias-all entity-alias="TCP"/>
+        <alias name="groupName" entity-alias="PG"/>
+        <alias name="personId" entity-alias="TP"/>
+        <alias name="fullName" entity-alias="PO"/>
+        <view-link entity-alias="TCP" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TCP" rel-entity-alias="TP" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+            <key-map field-name="caseId" rel-field-name="caseId"/>
+        </view-link>
+        <view-link entity-alias="TP" rel-entity-alias="PO" rel-optional="true">
+            <key-map field-name="personId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="CaseProgressDataResource" package-name="cn.com.rextec.zxdoc">
+        <description>case进程文件视图</description>
+        <member-entity entity-alias="TCPA" entity-name="TblCaseProgressAtta"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <alias-all entity-alias="TCPA"/>
+        <alias name="dataResourceName" entity-alias="DR"/>
+        <alias name="objectInfo" entity-alias="DR"/>
+        <view-link entity-alias="TCPA" rel-entity-alias="DR" rel-optional="true">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblGroupIdentify" package-name="cn.com.rextec.zxdoc" title="企业机构认证信息">
+        <field name="partyId" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="regNumber" type="name">
+            <description>工商注册号</description>
+        </field>
+        <field name="orgNumber" type="name">
+            <description>组织机构代码</description>
+        </field>
+        <field name="regPhoto" type="id">
+            <description>营业执照扫描件</description>
+        </field>
+        <field name="orgPhoto" type="id">
+            <description>组织机构代码证扫描件</description>
+        </field>
+        <field name="bizScope" type="description">
+            <description>经营范围</description>
+        </field>
+        <prim-key field="partyId"/>
+    </entity>
+
+    <entity entity-name="TblPersonIdentify" package-name="cn.com.rextec.zxdoc" title="机构人员认证信息">
+        <field name="partyId" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="certificateNumber" type="name">
+            <description>职业资格证号</description>
+        </field>
+        <field name="certificationPhoto" type="id">
+            <description>资格证扫描件</description>
+        </field>
+        <field name="idPhoto" type="id">
+            <description>身份证扫描件</description>
+        </field>
+        <prim-key field="partyId"/>
+    </entity>
+
+    <view-entity entity-name="PartyGroupContract"
+                 package-name="cn.com.rextec.zxdoc"
+                  title="根据ID查找签约方">
+        <member-entity entity-alias="TNC" entity-name="TblContract"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <!--<member-entity entity-alias="PG" entity-name="PartyGroup"/>-->
+        <!--<member-entity entity-alias="PG1" entity-name="PartyGroup"/>-->
+        <alias-all entity-alias="TNC"/>
+        <alias entity-alias="P" name="fullName"/>
+        <view-link entity-alias="TNC" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="secondPersonName" rel-field-name="partyId"/>
+        </view-link>
+        <!--<alias field="groupName" entity-alias="PG" name="firstGroupName"/>-->
+        <!--<alias field="groupName" entity-alias="PG1" name="secondGroupName"/>-->
+        <!--<view-link entity-alias="TNC" rel-entity-alias="PG">
+            <key-map field-name="firstPartyName" rel-field-name="partyId"/>
+        </view-link>-->
+        <!--<view-link entity-alias="TNC" rel-entity-alias="PG1">
+            <key-map field-name="secondPartyName" rel-field-name="partyId"/>
+        </view-link>-->
+    </view-entity>
+
+    <view-entity entity-name="BasicGroupInfo"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="企业、机构基本信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PTY" name="partnerType"/>
+        <alias entity-alias="PTY" name="partnerGroupName"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="equals" value="Y"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+            <entity-condition>
+                <condition-expr field-name="parentTypeId" entity-alias="RT" operator="equals" value="CASE_ROLE"/>
+            </entity-condition>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="BasicUnEnabledGroupInfo"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="企业、机构基本信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PTY" name="partnerGroupName"/>
+        <alias entity-alias="PTY" name="partnerType"/>
+        <alias entity-alias="PTY" name="partnerCategory"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+            <entity-condition>
+                <condition-expr field-name="parentTypeId" entity-alias="RT" operator="equals" value="CASE_ROLE"/>
+            </entity-condition>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="PartyGroupAndUserLoginAndContact"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="企业、机构登录信息及联系人">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <member-entity entity-alias="PRS" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="TN" entity-name="TelNumber"/>
+        <member-entity entity-alias="TA" entity-name="TblAuthentication"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="Geo" entity-name="Geo"/>
+        <member-entity entity-alias="VC" entity-name="TblVipCueTime"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PTY" name="partnerGroupName"/>
+        <alias entity-alias="PTY" name="partnerType"/>
+        <alias entity-alias="PTY" name="partnerCategory"/>
+        <alias entity-alias="PTY" name="createdStamp"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="P" name="fullName"/>
+        <alias entity-alias="TN" name="contactNumber"/>
+        <alias entity-alias="TN" name="telId" field="contactMechId"/>
+        <alias entity-alias="PAI" name="address1"/>
+        <alias entity-alias="PAI" name="area"/>
+        <alias entity-alias="VC" name="CueTime"/>
+        <alias name="geoName" entity-alias="Geo" field="geoName"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="VC" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PAI" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="TA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="not-equals" value="S"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId"/>
+            <entity-condition>
+                <condition-expr field-name="parentTypeId" entity-alias="RT" operator="equals" value="CASE_ROLE"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PRS" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdFrom"/>
+            <entity-condition>
+                <condition-expr field-name="partyRelationshipTypeId" entity-alias="PRS" operator="equals" value="ORG_CONTACT"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="TN" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PAI" rel-entity-alias="Geo" rel-optional="true">
+            <key-map field-name="area" rel-field-name="geoCode"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="PartyPersonContact" package-name="cn.com.rextec.zxdoc" title="个人实名认证的信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PR" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PQ" entity-name="TblPersonalAuthentication"/>
+        <alias entity-alias="PT" name="personId" field="partyId"/>
+        <alias entity-alias="PT" name="partyTypeId"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="P" name="fullName"/>
+        <alias entity-alias="P" name="createdStamp"/>
+        <alias entity-alias="PTY" name="groupId" field="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PTY" name="partnerGroupName"/>
+        <alias entity-alias="PTY" name="partnerType"/>
+        <view-link entity-alias="PT" rel-entity-alias="P">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PQ">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PR">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="PTY">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+        <entity-condition>
+            <condition-expr field-name="partyTypeId" operator="equals" value="PERSON" entity-alias="PT"/>
+            <condition-expr field-name="partyRelationshipTypeId" operator="equals" value="ORG_CONTACT" entity-alias="PR"/>
+        </entity-condition>
+    </view-entity>
+
+    <view-entity entity-name="PartyPersonContactInfo" package-name="cn.com.rextec.zxdoc"
+                 title="个人的信息">
+        <member-entity entity-alias="PCM" entity-name="PartyPersonContact"/>
+        <member-entity entity-alias="CM" entity-name="TelNumber"/>
+        <member-entity entity-alias="PG" entity-name="PersonInfoAndContact"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <alias-all entity-alias="PCM"/>
+        <alias-all entity-alias="CM"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias field="roleTypeId" entity-alias="PG" name="roleTypeId"/>
+        <alias entity-alias="PCM" name="partnerType"/>
+        <alias entity-alias="PG" field="statusId" name="status"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <view-link entity-alias="PCM" rel-entity-alias="CM" rel-optional="true">
+            <key-map field-name="personId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PCM" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="groupId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PCM" rel-entity-alias="ULN" rel-optional="true">
+            <key-map field-name="personId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="PartyGroupStatsByRole"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="企业、机构账户按类型统计数量">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType">
+        </member-entity>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PTY" name="partyId" function="count"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="PR" name="roleTypeId" group-by="true"/>
+        <alias entity-alias="RT" name="description" group-by="true"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId"/>
+            <entity-condition>
+                <condition-expr field-name="parentTypeId" entity-alias="RT" operator="equals" value="CASE_ROLE"/>
+            </entity-condition>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="SubAccountSimpleInfo"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="子账户简要信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="Person"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="PRS" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="fullName"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PG" name="groupId" field="partyId"/>
+        <alias entity-alias="PG" name="groupName"/>
+        <alias entity-alias="PG" name="partnerType"/>
+        <alias entity-alias="PG" name="partnerGroupName"/>
+        <view-link entity-alias="PTY" rel-entity-alias="PT">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="not-equals" value="S"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PRS">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+            <entity-condition>
+                <condition-expr field-name="partyRelationshipTypeId" entity-alias="PRS" operator="equals" value="ORG_SUB_ACCOUNT"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="PG">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="SubAccountSimpleInfoWithRole"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="子账户简要信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="Person"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="PRS" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="fullName"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PG" name="groupId" field="partyId"/>
+        <alias entity-alias="PG" name="groupName"/>
+        <alias entity-alias="PG" name="partnerType"/>
+        <alias entity-alias="PG" name="partnerGroupName"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <view-link entity-alias="PTY" rel-entity-alias="PT">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="not-equals" value="S"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PRS">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+            <entity-condition>
+                <condition-expr field-name="partyRelationshipTypeId" entity-alias="PRS" operator="equals" value="ORG_SUB_ACCOUNT"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="PG">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PG" rel-entity-alias="PR">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="SubAccountAndContact"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="子账户信息">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="Person"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="PRS" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="TN" entity-name="TelNumber"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <member-entity entity-alias="VC" entity-name="TblVipCueTime"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="createdStamp"/>
+        <alias entity-alias="PTY" name="fullName"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PRS" name="partyIdFrom"/>
+        <alias entity-alias="TN" name="contactNumber"/>
+        <alias name="partyRelationshipTypeId" entity-alias="PRS"/>
+        <alias entity-alias="TN" name="telId" field="contactMechId"/>
+        <alias entity-alias="PAI" name="address1"/>
+        <alias entity-alias="PAI" name="postalCode" field="area"/>
+        <alias entity-alias="PAI" name="postalId"/>
+        <alias entity-alias="PG" name="groupName"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="VC" name="CueTime"/>
+        <view-link entity-alias="PT" rel-entity-alias="PAI" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="not-equals" value="S"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PRS" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdTo"/>
+            <entity-condition>
+                <condition-expr field-name="partyRelationshipTypeId" entity-alias="PRS" operator="equals" value="ORG_SUB_ACCOUNT"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="TN" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="PR" rel-optional="true">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="VC" rel-optional="true">
+            <key-map field-name="partyIdFrom" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="SubAccountAndInformation" package-name="cn.com.rextec.zxdoc">
+        <description>子账户的详细信息（修改用）</description>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="TN" entity-name="TelNumber"/>
+        <member-entity entity-alias="EAI" entity-name="EmailAddressInfo"/>
+        <member-entity entity-alias="UL" entity-name="UserLogin"/>
+        <alias name="partyId" entity-alias="P"/>
+        <alias name="userLoginId" entity-alias="UL"/>
+        <alias name="fullName" entity-alias="P"/>
+        <alias name="area" entity-alias="PAI"/>
+        <alias name="address1" entity-alias="PAI"/>
+        <alias name="postalId" entity-alias="PAI"/>
+        <alias name="contactNumber" entity-alias="TN"/>
+        <alias name="telId" entity-alias="TN" field="contactMechId"/>
+        <alias name="infoString" entity-alias="EAI"/>
+        <alias name="emailId" entity-alias="EAI"/>
+        <view-link entity-alias="P" rel-entity-alias="UL" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="P" rel-entity-alias="PAI" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="P" rel-entity-alias="TN" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="P" rel-entity-alias="EAI" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblCustomer" package-name="cn.com.rextec.zxdoc" title="tbl_customer"><!--非平台客户-->
+        <field name="id" type="id-ne"/><!--当事人的Id-->
+        <field name="partyId" type="id-ne"/><!--当事人的Id-->
+        <field name="customerLevel" type="id"/><!--客户等级-->
+        <field name="customerStatus" type="id"/><!--客户状态-->
+        <field name="remarks" type="very-varchar"/><!--备注-->
+        <field name="status" type="indicator"/>
+        <field name="userLoginId" type="id-ne"/>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Party" fk-name="FK_TBLCUSTOMER_PARTY">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Enumeration" fk-name="FK_TBLCUSTOMER_LEVEL">
+            <key-map field-name="customerLevel" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="Enumeration" fk-name="FK_TBLCUSTOMER_STATUS">
+            <key-map field-name="customerStatus" rel-field-name="enumId"/>
+        </relation>
+    </entity>
+    <view-entity entity-name="PostalAddressInfo" package-name="cn.com.rextec.zxdoc" title="客户的地址信息表">
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"/>
+        <member-entity entity-alias="CM" entity-name="ContactMech"/>
+        <member-entity entity-alias="PA" entity-name="PostalAddress"/>
+        <alias name="partyId" field="partyId" entity-alias="PCM"/>
+        <alias name="postalId" field="contactMechId" entity-alias="PA"/>
+        <alias name="address1" field="address1" entity-alias="PA"/>
+        <alias name="area" field="postalCode" entity-alias="PA"/>
+        <view-link entity-alias="PCM" rel-entity-alias="CM">
+            <key-map field-name="contactMechId"/>
+            <entity-condition>
+                <condition-expr field-name="contactMechTypeId" entity-alias="CM" operator="equals" value="POSTAL_ADDRESS"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="CM" rel-entity-alias="PA">
+            <key-map field-name="contactMechId" rel-field-name="contactMechId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="TelNumber" package-name="cn.com.rextec.zxdoc" title="联系电话">
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"/>
+        <member-entity entity-alias="CM" entity-name="ContactMech"/>
+        <member-entity entity-alias="TN" entity-name="TelecomNumber"/>
+        <alias name="partyId" field="partyId" entity-alias="PCM"/>
+        <alias name="contactMechId" entity-alias="PCM"/>
+        <alias name="contactNumber" entity-alias="TN"/>
+        <view-link entity-alias="PCM" rel-entity-alias="CM">
+            <key-map field-name="contactMechId"/>
+            <entity-condition>
+                <condition-expr field-name="contactMechTypeId" entity-alias="CM" operator="equals" value="TELECOM_NUMBER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="CM" rel-entity-alias="TN">
+            <key-map field-name="contactMechId" rel-field-name="contactMechId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="WebAddressInfo" package-name="cn.com.rextec.zxdoc" title="客户的网站信息表">
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"/>
+        <member-entity entity-alias="CM" entity-name="ContactMech"/>
+        <alias name="partyId" field="partyId" entity-alias="PCM"/>
+        <alias name="infoString" field="infoString" entity-alias="CM"/>
+        <view-link entity-alias="PCM" rel-entity-alias="CM">
+            <key-map field-name="contactMechId" rel-field-name="contactMechId"/>
+        </view-link>
+        <entity-condition>
+            <condition-expr field-name="contactMechTypeId" operator="equals" value="WEB_ADDRESS" entity-alias="CM"/>
+        </entity-condition>
+    </view-entity>
+
+    <view-entity entity-name="EmailAddressInfo" package-name="cn.com.rextec.zxdoc" title="客户的邮箱信息表">
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"/>
+        <member-entity entity-alias="CM" entity-name="ContactMech"/>
+        <alias name="partyId" field="partyId" entity-alias="PCM"/>
+        <alias name="thruDate" field="thruDate" entity-alias="PCM"/>
+        <alias name="emailId" field="contactMechId" entity-alias="CM"/>
+        <alias name="infoString" field="infoString" entity-alias="CM"/>
+        <view-link entity-alias="PCM" rel-entity-alias="CM">
+            <key-map field-name="contactMechId" rel-field-name="contactMechId"/>
+        </view-link>
+        <entity-condition>
+            <condition-expr field-name="contactMechTypeId" operator="equals" value="EMAIL_ADDRESS" entity-alias="CM"/>
+        </entity-condition>
+    </view-entity>
+
+    <view-entity entity-name="CompanyInfo" package-name="cn.com.rextec.zxdoc" title="客户信息表">
+        <member-entity entity-alias="PU" entity-name="PartyGroupAndUserLoginAndContact"/>
+        <member-entity entity-alias="WA" entity-name="WebAddressInfo"/>
+        <member-entity entity-alias="PA" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="EA" entity-name="EmailAddressInfo"/>
+        <alias-all entity-alias="PU"/>
+        <alias entity-alias="PA" name="address1"/>
+        <alias entity-alias="EA" name="email" field="infoString"/>
+        <alias entity-alias="PA" name="area"/>
+        <alias entity-alias="WA" name="infoString"/>
+        <view-link entity-alias="PU" rel-entity-alias="WA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PU" rel-entity-alias="PA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PU" rel-entity-alias="EA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="UserLoginVipCueTime" package-name="cn.com.rextec.zxdoc" title="账户到期时间">
+        <member-entity entity-alias="P" entity-name="Party"/>
+        <member-entity entity-alias="VC" entity-name="TblVipCueTime"/>
+        <alias entity-alias="P" name="partyId"/>
+        <alias entity-alias="P" name="createdDate"/>
+        <alias entity-alias="P" name="partyTypeId"/>
+        <alias entity-alias="P" name="statusId"/>
+        <alias entity-alias="VC" name="CueTime"/>
+        <alias entity-alias="VC" name="hasInfo"/>
+        <view-link entity-alias="P" rel-entity-alias="VC" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="CustomerLevel" package-name="cn.com.rextec.zxdoc" title="客户的等级表">
+        <member-entity entity-alias="TC" entity-name="TblCustomer"/>
+        <member-entity entity-alias="ENUM" entity-name="Enumeration"/>
+        <alias name="partyId" field="partyId" entity-alias="TC"/>
+        <alias name="customerLevel" field="customerLevel" entity-alias="TC"/>
+        <alias name="descriptionLevel" field="description" entity-alias="ENUM"/>
+        <view-link entity-alias="TC" rel-entity-alias="ENUM" rel-optional="true">
+            <key-map field-name="customerLevel" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="CustomerStatus" package-name="cn.com.rextec.zxdoc" title="客户的状态表">
+        <member-entity entity-alias="TC" entity-name="TblCustomer"/>
+        <member-entity entity-alias="ENUM" entity-name="Enumeration"/>
+        <alias name="partyId" field="partyId" entity-alias="TC"/>
+        <alias name="customerStatus" field="customerStatus" entity-alias="TC"/>
+        <alias name="descriptionStatus" field="description" entity-alias="ENUM"/>
+        <view-link entity-alias="TC" rel-entity-alias="ENUM" rel-optional="true">
+            <key-map field-name="customerStatus" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="PartnerSearchInfo" package-name="cn.com.rextec.zxdoc" title="客户的信息查找">
+        <member-entity entity-alias="TC" entity-name="TblCustomer" />
+        <!--<member-entity entity-alias="PR" entity-name="PartyRelationship"/>-->
+        <member-entity entity-alias="PG" entity-name="PartyGroup"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="WAI" entity-name="WebAddressInfo"/>
+        <!--<member-entity entity-alias="CL" entity-name="CustomerLevel"/>
+        <member-entity entity-alias="CS" entity-name="CustomerStatus"/>-->
+        <member-entity entity-alias="Geo" entity-name="Geo"/>
+        <alias name="id" entity-alias="TC" field="id"/>
+        <alias name="partyId" entity-alias="TC" field="partyId"/>
+        <!--<alias name="partyRelationshipTypeId" entity-alias="PR" field="partyRelationshipTypeId"/>-->
+        <alias name="customerLevel" entity-alias="TC" field="customerLevel"/>
+        <alias name="customerStatus" entity-alias="TC" field="customerStatus"/>
+        <alias name="status" entity-alias="TC" field="status"/>
+        <alias name="userLoginId" entity-alias="TC" field="userLoginId"/>
+        <alias name="remarks" entity-alias="TC" field="remarks"/>
+        <alias name="customerName" entity-alias="PG" field="groupName"/>
+        <alias name="area" entity-alias="PAI" field="area"/>
+        <alias name="address1" entity-alias="PAI" field="address1"/>
+        <alias name="infoString" entity-alias="WAI" field="infoString"/>
+        <!--<alias name="descriptionLevel" entity-alias="CL" field="descriptionLevel"/>
+        <alias name="descriptionStatus" entity-alias="CS" field="descriptionStatus"/>-->
+        <alias name="geoName" entity-alias="Geo" field="geoName"/>
+
+
+        <view-link entity-alias="TC" rel-entity-alias="PG" >
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <!--<view-link entity-alias="TC" rel-entity-alias="PR" >
+            <key-map field-name="partyId" rel-field-name="partyIdFrom"/>
+        </view-link>-->
+        <view-link entity-alias="TC" rel-entity-alias="PAI" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+            <!--<entity-condition>-->
+                <!--<condition-expr field-name="" entity-alias="" operator="" value=""/>-->
+            <!--</entity-condition>-->
+        </view-link>
+        <view-link entity-alias="TC" rel-entity-alias="WAI" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+            <!--<entity-condition>-->
+                <!--<condition-expr field-name="" entity-alias="" operator="" value=""/>-->
+            <!--</entity-condition>-->
+        </view-link>
+        <!--<view-link entity-alias="TC" rel-entity-alias="CL" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TC" rel-entity-alias="CS" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>-->
+        <view-link entity-alias="PAI" rel-entity-alias="Geo" rel-optional="true">
+            <key-map field-name="area" rel-field-name="geoCode"/>
+        </view-link>
+        <entity-condition>
+            <condition-expr entity-alias="TC" field-name="status" operator="equals" value="Y"/>
+        </entity-condition>
+    </view-entity>
+
+    <view-entity entity-name="CustomerContactTelephone" package-name="cn.com.rextec.zxdoc" title="顾客联系人电话">
+        <member-entity entity-alias="TC" entity-name="TblCustomer"/>
+        <member-entity entity-alias="PR" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="TN" entity-name="TelNumber"/>
+        <alias name="partyId" field="partyId" entity-alias="TC"/>
+        <alias name="partyIdTo" entity-alias="PR" field="partyIdTo"/>
+        <alias name="firstName" field="firstName" entity-alias="P"/>
+        <alias name="contactNumber" field="contactNumber" entity-alias="TN"/>
+        <alias name="partyRelationshipTypeId" entity-alias="PR"/>
+        <view-link entity-alias="TC" rel-entity-alias="PR" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdFrom"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="P" rel-entity-alias="TN" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <!--Question-->
+    <entity entity-name="TblQuestion" package-name="cn.com.rextec.zxdoc.TblQuestion">
+        <field name="questionId" type="id-ne"/><!--问题Id-->
+        <field name="questionOverview" type="very-long"/><!--问题概述-->
+        <field name="isAnonymous" type="indicator"/><!--是否匿名-->
+        <field name="targetUser" type="id"/><!--关联咨询-->
+        <field name="questionDetail" type="very-long"/><!--问题细节-->
+        <field name="statusId" type="id-ne"/><!--问题状态-->
+        <field name="isSecret" type="indicator"/><!--是否涉密-->
+        <field name="isMessage" type="indicator"/><!--是否短信通知-->
+        <field name="integral" type="common-int"/><!--悬赏积分-->
+        <field name="userLoginId" type="id-ne"/><!--用户Id-->
+        <field name="rejected" type="very-long"/><!--驳回原因-->
+        <field name="browseNum" type="common-int"/><!--浏览次数-->
+        <prim-key field="questionId"/><!--主键-->
+        <relation type="one" rel-entity-name="UserLogin" fk-name="FK_TBLQUESTION_USERLOGIN">
+            <key-map field-name="userLoginId"/>
+        </relation>
+        <relation type="one" rel-entity-name="UserLogin" fk-name="FK_TBLQUESTION_TARGET_USERLOGIN">
+            <key-map field-name="targetUser" rel-field-name="userLoginId"/>
+        </relation>
+        <relation type="one" rel-entity-name="StatusItem" fk-name="FK_TBLQUESTION_TARGET_STATUSITEM">
+            <key-map field-name="statusId"/>
+        </relation>
+    </entity>
+
+    <!--问题类型-->
+    <entity entity-name="TblQuestionType" package-name="cn.com.rextec.zxdoc.TblQTypeType">
+        <field name="id" type="id-ne"/>
+        <field name="questionId" type="id-ne"/><!--问题Id-->
+        <field name="questionType" type="very-long"/><!--问题类型-->
+        <field name="isStandard" type="indicator"/><!--判断是否在Enum中-->
+        <prim-key field="id"/>
+    </entity>
+
+    <view-entity entity-name="QuestionWithType" package-name="cn.com.rextec.zxdoc" title="问题附带类型">
+        <description>一个问题有多个类型，会出现重复记录</description>
+        <member-entity entity-alias="TQ" entity-name="TblQuestion"/>
+        <member-entity entity-alias="TQT" entity-name="TblQuestionType"/>
+        <member-entity entity-alias="E" entity-name="Enumeration"/>
+        <alias-all entity-alias="TQ"/>
+        <alias name="createdStamp" entity-alias="TQ"/>
+        <alias name="questionType" entity-alias="TQT"/>
+        <alias name="isStandard" entity-alias="TQT"/>
+        <alias name="typeName" field="description" entity-alias="E"/>
+        <view-link entity-alias="TQ" rel-entity-alias="TQT" rel-optional="true">
+            <key-map field-name="questionId"/>
+        </view-link>
+        <view-link entity-alias="TQT" rel-entity-alias="E" rel-optional="true">
+            <key-map field-name="questionType" rel-field-name="enumId"/>
+        </view-link>
+    </view-entity>
+
+    <!--附件-->
+    <entity entity-name="TblQuestionAttachment" package-name="cn.com.rextec.zxdoc.TblQuestionAttachment">
+        <field name="id" type="id-ne"/>
+        <field name="dataResourceId" type="id-ne"/><!--数据资源Id-->
+        <field name="questionId" type="id-ne"/><!--问题Id-->
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="DataResource" fk-name="FK_TBLQUEATTAC_DATARE">
+            <key-map field-name="dataResourceId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblQuestion" fk-name="FK_TBLQUEATTAC_TBLQUE">
+            <key-map field-name="questionId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="QuestionDateResource" package-name="cn.com.rextec.zxdoc.TblQuestionAttachment" title="提问附件视图">
+        <member-entity entity-alias="TA" entity-name="TblQuestionAttachment"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <alias-all entity-alias="TA"/>
+        <alias entity-alias="DR" field="dataResourceName" name="dataResourceName"/>
+        <view-link entity-alias="TA" rel-entity-alias="DR" rel-optional="true">
+            <key-map field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+
+    <!--回复表-->
+    <entity entity-name="TblAnswer" package-name="cn.com.rextec.zxdoc.TblAnswer">
+        <field name="answerId" type="id-ne"/><!--每一条回复的id-->
+        <field name="questionId" type="id-ne"/><!--问题id-->
+        <field name="answerFrom" type="id-ne"/><!--回复人-->
+        <field name="answerTo" type="id"/><!--针对回复的回复-->
+        <field name="answerContent" type="very-long"/><!--回复内容-->
+        <field name="isAdopt" type="indicator"/><!--是否被采纳-->
+        <prim-key field="answerId"/>
+        <relation type="one" rel-entity-name="TblQuestion" fk-name="FK_TBLANS_TBLQUE">
+            <key-map field-name="questionId"/>
+        </relation>
+        <relation type="one" rel-entity-name="UserLogin" fk-name="FK_TBLANS_USER">
+            <key-map field-name="answerFrom" rel-field-name="userLoginId"/>
+        </relation>
+        <relation type="one" rel-entity-name="TblAnswer" fk-name="FK_TBLANS_TBLANS">
+            <key-map field-name="answerTo" rel-field-name="answerId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="TblCalendarEvent" package-name="cn.com.rextec.zxdoc" title="日程事件">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="owner" type="id-ne">
+            <description>日程所属人的partyId</description>
+        </field>
+        <field name="title" type="name">
+            <description>日程标题</description>
+        </field>
+        <field name="content" type="description">
+            <description>日程内容</description>
+        </field>
+        <field name="start" type="date-time">
+            <description>开始时间</description>
+        </field>
+        <field name="end" type="date-time">
+            <description>结束时间</description>
+        </field>
+        <field name="completed" type="indicator">
+            <description>是否已完成</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <!--<view-entity entity-name="TT_TQ" package-name="cn.com.rextec.zxdoc.TT_TQ">-->
+        <!--<member-entity entity-alias="TT" entity-name="TblQuestionType"/>-->
+        <!--<member-entity entity-alias="TQ" entity-name="TblQuestion"/>-->
+        <!--<alias name="statusId" entity-alias="TQ"></alias>-->
+        <!--<alias name="questionOverview" entity-alias="TQ"></alias>-->
+        <!--<alias name="questionType" entity-alias="TT"></alias>-->
+        <!--<view-link entity-alias="TT" rel-entity-alias="TQ" rel-optional="true">-->
+            <!--<key-map field-name="questionId"/>-->
+        <!--</view-link>-->
+    <!--</view-entity>-->
+
+    <!--机构实名认证-->
+    <entity entity-name="TblAuthentication" package-name="cn.com.rextec.zxdoc">
+        <field name="partyId" type="id-ne"/>
+        <field name="regNumber" type="id-ne"/>
+        <field name="bizScope" type="long-varchar"/>
+        <prim-key field="partyId"/>
+    </entity>
+    <!--机构实名认证的附件-->
+    <entity entity-name="TblAuthenticationAttachment" package-name="cn.com.rextec.zxdoc">
+        <field name="id" type="id-ne"/>
+        <field name="partyId" type="id-ne"/>
+        <field name="dataResourceId" type="id-ne"/>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="TblAuthentication" fk-name="FK_TAA_AUTHENTICATION">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one" rel-entity-name="DataResource" fk-name="FK_TAA_DATARESOURCE">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </relation>
+    </entity>
+    <!--机构实名认证的信息-->
+    <view-entity entity-name="QualificationInfo" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="TA" entity-name="TblAuthentication"/>
+        <member-entity entity-alias="TAA" entity-name="TblAuthenticationAttachment"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="WAI" entity-name="WebAddressInfo"/>
+        <alias name="partyId" field="partyId" entity-alias="TA"/>
+        <alias name="regNumber" field="regNumber" entity-alias="TA"/>
+        <alias name="bizScope" field="bizScope" entity-alias="TA"/>
+        <alias name="dataResourceId" field="dataResourceId" entity-alias="TAA"/>
+        <alias name="infoString" field="infoString" entity-alias="WAI"/>
+        <alias name="address1" field="address1" entity-alias="PAI"/>
+        <view-link entity-alias="TA" rel-entity-alias="TAA" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TA" rel-entity-alias="PAI" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="TA" rel-entity-alias="WAI" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+    <!--子帐号实名认证-->
+    <entity entity-name="TblPersonalAuthentication" package-name="cn.com.rextec.zxdoc">
+        <field name="partyId" type="id-ne"/>
+        <field name="idCard" type="id-ne"/>
+        <field name="qualifiNum" type="id-ne"/>
+        <prim-key field="partyId"/>
+    </entity>
+    <!--子帐号附件信息-->
+    <entity entity-name="TblPersonalAuthenticationAtta" package-name="cn.com.rextec.zxdoc">
+        <field name="partyId" type="id-ne"/>
+        <field name="dataResourceId" type="id-ne"/>
+        <prim-key field="partyId"/>
+        <relation type="one" rel-entity-name="TblPersonalAuthentication" fk-name="FK_PQA_PERSONQUALIFICATION">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </relation>
+    </entity>
+    <!--子帐号实名认证信息-->
+    <view-entity entity-name="PersonQualificationInfo" package-name="cn.com.rextec.zxdoc">
+        <member-entity entity-alias="PQ" entity-name="TblPersonalAuthentication"/>
+        <member-entity entity-alias="PQA" entity-name="TblPersonalAuthenticationAtta"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <alias entity-alias="PQ" name="partyId"/>
+        <alias entity-alias="PQ" name="idCard"/>
+        <alias entity-alias="PQ" name="qualifiNum"/>
+        <alias entity-alias="PQA" name="dataResourceId"/>
+        <alias entity-alias="P" name="fullName"/>
+        <view-link entity-alias="PQ" rel-entity-alias="PQA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PQ" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <!--账户信息-->
+    <view-entity entity-name="UserLoginAndPartyDetails"
+                 package-name="org.ofbiz.party.party"
+                 title="UserLogin, Party, Person and PartyGroup">
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="PTY" entity-name="Party"/>
+        <member-entity entity-alias="PER" entity-name="Person"/>
+        <member-entity entity-alias="PTYGRP" entity-name="PartyGroup"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="partyTypeId"/>
+        <alias entity-alias="PTY" name="createdDate"/>
+        <alias entity-alias="PTY" name="statusId"/>
+        <alias entity-alias="PTYGRP" name="groupName"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PER" name="fullName"/>
+        <view-link entity-alias="ULN" rel-entity-alias="PTY" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="ULN" rel-entity-alias="PER" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="ULN" rel-entity-alias="PTYGRP" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <relation type="one-nofk" rel-entity-name="Party">
+            <key-map field-name="partyId"/>
+        </relation>
+        <relation type="one-nofk" rel-entity-name="UserLogin">
+            <key-map field-name="userLoginId"/>
+        </relation>
+    </view-entity>
+
+    <entity entity-name="TblPolicyFiles" package-name="cn.com.rextec.zxdoc" title="首页政策文件">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="category" type="id-ne">
+            <description>类型</description>
+        </field>
+        <field name="file" type="id-ne">
+            <description>DataResource外键</description>
+        </field>
+        <field name="publishDate" type="date">
+            <description>发布日期</description>
+        </field>
+        <prim-key field="id"/>
+        <relation type="one" rel-entity-name="Enumeration">
+            <key-map field-name="category" rel-field-name="enumId"/>
+        </relation>
+        <relation type="one" rel-entity-name="DataResource">
+            <key-map field-name="file" rel-field-name="dataResourceId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="PolicyFileList"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="首页政策文件信息">
+        <member-entity entity-alias="TF" entity-name="TblPolicyFiles"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <member-entity entity-alias="EUE" entity-name="Enumeration"/>
+        <member-entity entity-alias="ET" entity-name="EnumerationType"/>
+        <alias entity-alias="TF" name="id" field="id"/>
+        <alias entity-alias="TF" name="category" field="category"/>
+        <alias entity-alias="TF" name="publishDate"/>
+        <alias entity-alias="DR" name="dataResourceName" field="dataResourceName"/>
+        <alias entity-alias="DR" name="createdDate" field="createdDate"/>
+        <alias entity-alias="EUE" name="enumTypeId" field="enumTypeId"/>
+        <alias entity-alias="EUE" name="policyTypeTwo" field="description"/>
+        <alias entity-alias="ET" name="policyTypeOne" field="description"/>
+        <view-link entity-alias="TF" rel-entity-alias="DR" rel-optional="true">
+                <key-map field-name="file" rel-field-name="dataResourceId"/>
+        </view-link>
+        <view-link entity-alias="TF" rel-entity-alias="EUE" rel-optional="true">
+            <key-map field-name="category" rel-field-name="enumId"/>
+        </view-link>
+        <view-link entity-alias="EUE" rel-entity-alias="ET" rel-optional="true">
+            <key-map field-name="enumTypeId" rel-field-name="enumTypeId"/>
+        </view-link>
+    </view-entity>
+
+    <!--<entity entity-name="TblPartnerType" package-name="cn.com.rextec.zxdoc" title="合伙人类型">
+        <field name="partyId" type="id-ne">
+            <description>合伙人主键</description>
+        </field>
+        <field name="partnerType" type="long-varchar">
+            <description>合伙人类型</description>
+        </field>
+        <prim-key field="partyId"/>
+    </entity>
+-->
+    <view-entity entity-name="PartyPartnerType" package-name="cn.com.rextec.zxdoc" title="合伙人类型">
+        <member-entity entity-name="PartyRole" entity-alias="PR"/>
+        <member-entity entity-name="PartyGroup" entity-alias="PT"/>
+        <alias-all entity-alias="PR"/>
+        <alias entity-alias="PT" name="partnerType"/>
+        <view-link entity-alias="PR" rel-entity-alias="PT" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="BasicPartnerInfo"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="下拉框数据-合伙人公司">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="PTY" name="partnerType"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId" rel-field-name="roleTypeId"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblPhoneCode" package-name="cn.com.rextec.zxdoc" title="手机验证码">
+        <field name="id" type="id-ne">
+            <description>主键</description>
+        </field>
+        <field name="phoneNum" type="id-ne">
+            <description>手机号码</description>
+        </field>
+        <field name="code" type="id-ne">
+            <description>验证码</description>
+        </field>
+        <field name="createCodeDate" type="date-time">
+            <description>创建时间</description>
+        </field>
+        <prim-key field="id"/>
+    </entity>
+
+    <view-entity entity-name="loginHistoryJosn" package-name="cn.com.rextec.zxdoc" title="登陆历史">
+        <member-entity entity-name="UserLoginHistory" entity-alias="UH"/>
+        <member-entity entity-name="UserLogin" entity-alias="ULN"/>
+        <member-entity entity-name="Person" entity-alias="P"/>
+        <member-entity entity-name="Visit" entity-alias="V"/>
+        <alias-all entity-alias="UH"/>
+        <alias entity-alias="P" name="fullName"/>
+        <alias entity-alias="ULN" name="partyId"/>
+        <alias entity-alias="V" name="clientIpAddress"/>
+        <view-link entity-alias="UH" rel-entity-alias="ULN" rel-optional="true">
+            <key-map field-name="userLoginId" rel-field-name="userLoginId"/>
+        </view-link>
+        <view-link entity-alias="UH" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="UH" rel-entity-alias="V" rel-optional="true">
+            <key-map field-name="visitId" rel-field-name="visitId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="groupIsExist" package-name="cn.com.rextec.zxdoc" title="检查挂靠机构是否存在">
+        <member-entity entity-name="Party" entity-alias="P"/>
+        <member-entity entity-name="PartyGroup" entity-alias="PG"/>
+        <member-entity entity-name="PartyRole" entity-alias="PR"/>
+        <alias entity-alias="P" name="partyId"/>
+        <alias entity-alias="PG" name="groupName"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <view-link entity-alias="P" rel-entity-alias="PG" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="P" rel-entity-alias="PR" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyId"/>
+        </view-link>
+    </view-entity>
+
+    <view-entity entity-name="PersonInfoAndContact"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="人">
+        <member-entity entity-alias="PT" entity-name="Party"/>
+        <member-entity entity-alias="PTY" entity-name="PartyGroup"/>
+        <member-entity entity-alias="ULN" entity-name="UserLogin"/>
+        <member-entity entity-alias="RT" entity-name="RoleType">
+        </member-entity>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <member-entity entity-alias="PRS" entity-name="PartyRelationship"/>
+        <member-entity entity-alias="P" entity-name="Person"/>
+        <member-entity entity-alias="TN" entity-name="TelNumber"/>
+        <member-entity entity-alias="TA" entity-name="TblAuthentication"/>
+        <member-entity entity-alias="PAI" entity-name="PostalAddressInfo"/>
+        <member-entity entity-alias="Geo" entity-name="Geo"/>
+        <member-entity entity-alias="VC" entity-name="TblVipCueTime"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="groupName"/>
+        <alias entity-alias="PTY" name="createdStamp"/>
+        <alias entity-alias="PT" name="statusId"/>
+        <alias entity-alias="ULN" name="userLoginId"/>
+        <alias entity-alias="ULN" name="enabled"/>
+        <alias entity-alias="PR" name="roleTypeId"/>
+        <alias entity-alias="RT" name="description"/>
+        <alias entity-alias="P" name="fullName"/>
+        <alias entity-alias="TN" name="contactNumber"/>
+        <alias entity-alias="PAI" name="address1"/>
+        <alias entity-alias="PAI" name="area"/>
+        <alias entity-alias="VC" name="CueTime"/>
+        <alias name="geoName" entity-alias="Geo" field="geoName"/>
+        <view-link entity-alias="PT" rel-entity-alias="PTY">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="VC" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PAI">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="TA" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="ULN">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="ULN" field-name="enabled" operator="not-equals" value="S"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PR">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="RT">
+            <key-map field-name="roleTypeId"/>
+            <entity-condition>
+                <condition-expr field-name="parentTypeId" entity-alias="RT" operator="equals" value="CASE_ROLE"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PT" rel-entity-alias="PRS" rel-optional="true">
+            <key-map field-name="partyId" rel-field-name="partyIdFrom"/>
+            <entity-condition>
+                <condition-expr field-name="partyRelationshipTypeId" entity-alias="PRS" operator="equals" value="ORG_CONTACT"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="P" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PRS" rel-entity-alias="TN" rel-optional="true">
+            <key-map field-name="partyIdTo" rel-field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PAI" rel-entity-alias="Geo" rel-optional="true">
+            <key-map field-name="area" rel-field-name="geoCode"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="TblScoreFileHistory" package-name="cn.com.rextec.zxdoc" title="资料库下载列表">
+        <field name="partyId" type="id-ne">
+            <description>用户Id</description>
+        </field>
+        <field name="fileId" type="id-ne">
+            <description>文件Id</description>
+        </field>
+        <field name="createTime" type="date-time">
+            <description>创建时间</description>
+        </field>
+        <prim-key field="partyId"/>
+        <prim-key field="fileId"/>
+        <relation type="one" fk-name="PK_LIB_DATARESOURCE" rel-entity-name="DataResource">
+            <key-map field-name="dataResourceId" rel-field-name="dataResourceId"/>
+        </relation>
+    </entity>
+    <view-entity entity-name="PartyNameInfo"
+                 package-name="cn.com.rextec.zxdoc"
+                 title="Party 的名称信息">
+        <member-entity entity-alias="PTY" entity-name="Party"/>
+        <member-entity entity-alias="PER" entity-name="Person"/>
+        <member-entity entity-alias="PTYGRP" entity-name="PartyGroup"/>
+        <alias entity-alias="PTY" name="partyId"/>
+        <alias entity-alias="PTY" name="partyTypeId"/>
+        <alias entity-alias="PER" name="fullName"/>
+        <alias entity-alias="PTYGRP" name="groupName"/>
+        <alias entity-alias="PTYGRP" name="partnerGroupName"/>
+        <view-link entity-alias="PTY" rel-entity-alias="PER" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PTY" rel-entity-alias="PTYGRP" rel-optional="true">
+            <key-map field-name="partyId"/>
+        </view-link>
+    </view-entity>
+</entitymodel>

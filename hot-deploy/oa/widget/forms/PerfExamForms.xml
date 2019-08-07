@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="PerfExamFindOptions" type="single" target="PerfExamMain"
+        header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="name" title="姓名">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="department" title="部门">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="post" title="岗位">
+            <lookup target-form-name="LookupOccupation"/>
+        </field>
+        <field name="evaluateYear" title="考评年份" action="javascript:$.perfExam.changeEvaluateMonth(this)" event="onChange">
+            <drop-down allow-empty="true" >
+                <list-options list-name="years" key-name="value" description="${label}" />
+            </drop-down>
+        </field>
+        <field name="evaluateMonth" title="考评月份">
+            <drop-down allow-empty="true" >
+                <list-options list-name="months" key-name="value" description="${label}" />
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.perfExam.searchPerfExam();">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="PerfExamList" type="list" list-name="perfExamList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="staff" title="员工姓名">
+            <display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/>
+        </field>
+        <field name="department" title="部门"><display/></field>
+        <field name="post" title="岗位"><display/></field>
+        <field name="period" title="月份"><display description="${evaluateYear}年${evaluateMonth + 1}月"/></field>
+        <field name="perfExamType" title="考评类别"><display-entity entity-name="TblPerfExamItemType" description="${description}" key-field-name="typeId"/></field>
+        <field name="score1" title="初评分数"><display/></field>
+        <field name="addScore" title="考评加分"><display/></field>
+        <field name="score2" title="终审分数"><display/></field>
+        <field name="result" title="考评结果"><display/></field>
+        <field name="examEvaluatorDate" title="考评人&lt;br/&gt;考评日期" encode-output="false"><display description="${groovy: evaluator == null ? '' : evaluator + &quot;\n&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(evaluateDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examReviewerDate" title="初审人&lt;br/&gt;初审日期" encode-output="false"><display description="${groovy: reviewer == null ? '' : reviewer + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(reviewDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examApproverDate" title="终审人&lt;br/&gt;终审日期" encode-output="false"><display description="${groovy: approver == null ? '' : approver + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(approveDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="examFinalizerDate" title="归档人&lt;br/&gt;归档日期" encode-output="false"><display description="${groovy: finalizer == null ? '' : finalizer + &quot;&lt;br/&gt;&quot; + org.ofbiz.base.util.UtilDateTime.toDateString(finalizeDate,&quot;yyyy-MM-dd&quot;)}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="glyphicon glyphicon-screenshot"  title="审核" event="onClick" action="javascript:$.perfExam.editPerfExam('${examId}');">
+            <hyperlink target="#nowhere" title="审核" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="PerfExamList" area-target="PerfExamMain"/>
+        <on-event-update-area event-type="sort-column" area-id="PerfExamList" area-target="PerfExamMain"/>
+    </form>
+    <form name="PerfExamItemsList" type="list" list-name="perfExamItemsList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/perfExam/FindPerfExamItems.groovy"></script>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column" ><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="parentType" title="项目类型">
+            <display-entity entity-name="TblPerfExamItemType" description="${description}" key-field-name="typeId">
+            </display-entity>
+        </field>
+        <field name="typeId" title="子类型">
+            <display-entity entity-name="TblPerfExamItemType" description="${description}" key-field-name="typeId">
+            </display-entity>
+        </field>
+        <field name="title" title="名称"><display/></field>
+        <field name="score" title="分数"><display/></field>
+        <field name="department" title="所属部门">
+            <display-entity entity-name="PartyGroup" description="${groupName}" key-field-name="partyId">
+            </display-entity>
+        </field>
+        <field name="remark" title="备注"><display/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="修改" event="onClick" action="javascript:$.perfExam.editPerfExamItem('${itemId}');">
+            <hyperlink target="#nowhere" title="修改" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="作废" event="onClick" action="javascript:$.perfExam.deletePerfExamItem('${itemId}')">
+            <hyperlink target="#nowhere" title="作废" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="PerfExamItemsList" area-target="GetExamItems"/>
+        <on-event-update-area event-type="sort-column" area-id="PerfExamItemsList" area-target="GetExamItems"/>
+    </form>
+    <form name="EditPerfExamItem" type="single" target="GetExamItems" default-map-name="perfExamItem"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="itemId">
+            <hidden/>
+        </field>
+        <field name="department" position="1" title="所属部门">
+            <lookup target-form-name="LookupDepartment" position="center" width="700"/>
+        </field>
+        <field name="score" position="2" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}该项总分" widget-style="validate[required,custom[onlyNumberSp]]">
+            <text size="25"/>
+        </field>
+        <field name="parentType" position="1" title="考评类别" required-field="true">
+            <drop-down allow-empty="true">
+                <list-options list-name="perfExamTypes" key-name="id" description="${name}"/>
+            </drop-down>
+        </field>
+        <field name="type" position="2" title="子类别" required-field="true">
+            <drop-down allow-empty="true">
+                <list-options list-name="perfExamSubTypes" key-name="id" description="${name}"/>
+            </drop-down>
+        </field>
+        <field name="title" position="1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}标题" widget-style="validate[required]">
+            <text size="25"/>
+        </field>
+        <field name="sortOrder" position="2" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}顺序" tooltip="相同类别显示顺序，数字越小越靠前" widget-style="validate[required,custom[onlyNumberSp]]">
+            <text size="5"/>
+        </field>
+        <field name="score1" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}优" widget-style="validate[required]">
+            <text size="80"/>
+        </field>
+        <field name="score2" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}良" widget-style="validate[required]">
+            <text size="80"/>
+        </field>
+        <field name="score3" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}中" widget-style="validate[required]">
+            <text size="80"/>
+        </field>
+        <field name="score4" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}差" widget-style="validate[required]">
+            <text size="80"/>
+        </field>
+        <field name="remark" title="备注">
+            <textarea cols="50"/>
+        </field>
+
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.perfExam.savePerfExamItem('${perfExamItem.itemId}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <sort-order>
+            <sort-field name="department"/>
+            <sort-field name="score"/>
+            <sort-field name="group"/>
+            <sort-field name="parentType"/>
+            <sort-field name="type"/>
+            <sort-field name="title"/>
+            <sort-field name="sortOrder"/>
+            <field-group title="结果说明" collapsible="true" initially-collapsed="false">
+                <sort-field name="score1"/>
+                <sort-field name="score2"/>
+                <sort-field name="score3"/>
+                <sort-field name="score4"/>
+            </field-group>
+            <sort-field name="remark"/>
+            <sort-field name="saveLink"/>
+        </sort-order>
+    </form>
+
+    <form name="PerfExamPersonsList" type="list" list-name="perfExamPersonsList" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/perfExam/FindPerfExamPersons.groovy"></script>
+            <entity-one entity-name="TblStaff" value-field="staff" auto-field-map="false">
+                <field-map field-name="partyId" from-field="staff"/>
+            </entity-one>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="department" title="部门">
+            <display />
+        </field>
+        <field name="staff" title="姓名">
+            <display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/>
+        </field>
+        <field name="post" title="岗位"><display/></field>
+        <field name="evaluator" title="评分人"><display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/></field>
+        <field name="reviewer" title="初审人"><display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/></field>
+        <field name="approver" title="终审人"><display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/></field>
+        <field name="finalizer" title="归档人"><display-entity entity-name="Person" description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}" key-field-name="partyId"/></field>
+        <field name="perfExamType" title="考核类别">
+            <display-entity entity-name="TblPerfExamItemType" key-field-name="typeId" description="${description}"/>
+        </field>
+        <field name="perfExamCycle" title="周期"><display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="修改" event="onClick" action="javascript:$.perfExam.editPerfExamPerson('${planId}');">
+            <hyperlink target="#nowhere" title="修改" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.perfExam.deletePerfExamPerson('${planId}')">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="PerfExamPersonsList" area-target="GetExamPersons"/>
+        <on-event-update-area event-type="sort-column" area-id="PerfExamPersonsList" area-target="GetExamPersons"/>
+    </form>
+    <form name="EditPerfExamPerson" type="single" target="GetExamPersons" default-map-name="perfExamPerson"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/perfExam/GetPerfExamPerson.groovy"></script>
+        </actions>
+        <field name="planId"><hidden/></field>
+        <field name="staff" position="1" title="员工姓名" event="onchange" action="javascript:$.perfExam.changeDPL(this)">
+            <!--event="onClick" action=");"-->
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <field name="department" position="2" title="部门">
+            <display/>
+        </field>
+        <field name="position" position="1" title="职位">
+            <display/>
+        </field>
+        <field name="level" position="2" title="职级">
+            <display/>
+        </field>
+        <!--<field name="parentType" position="1" use-when="${groovy: org.apache.commons.lang.StringUtils.isBlank(parameters.parentType)}" title="考评类别">-->
+        <field name="perfExamType" position="1" title="考评类别">
+            <drop-down>
+                <entity-options entity-name="TblPerfExamItemType" description="${description}" key-field-name="typeId">
+                    <entity-constraint name="parentTypeId" value="1"/>
+                    <entity-order-by field-name="orderStr"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="reviewer" position="1" title="初审">
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <field name="approver" position="2" title="终审">
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <!--<field name="period" position="1" title="周期">
+            <radio>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="OA_PERIOD"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </radio>
+        </field>-->
+        <field name="startDate" position="1" title="开始时间">
+            <date-time/>
+        </field>
+        <field name="saveLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:$.perfExam.savePerfExamPerson('${planId}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>
+

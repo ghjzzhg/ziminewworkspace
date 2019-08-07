@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entity-engine-xml>
+    <PortalPortlet portalPortletId="OA_email" portletName="电子邮件" description="电子邮件桌面控件"
+        screenName="EmailNotice" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"
+        screenshot="/images/ofbiz_logo.gif"/>
+
+    <PortalPortlet portalPortletId="OA_perfExam" portletName="绩效考核" description="绩效考核桌面控件"
+        screenName="PerfExam" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"
+        screenshot="/images/opentravelsystem_logo.jpg"/>
+
+    <PortalPortlet portalPortletId="OA_checkingin" portletName="考勤" description="考勤桌面控件"
+        screenName="CheckingIn" screenLocation="component://oa/widget/PortletScreens.xml"
+       editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"
+        />
+
+    <PortalPortlet portalPortletId="OA_bumphNotice" portletName="公文通知" description="显示近期公文通知"
+        screenName="BumphNotice" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"/>
+
+    <PortalPortlet portalPortletId="OA_workflow" portletName="工作流" description="显示待处理流程"
+        screenName="Workflow" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"/>
+
+    <PortalPortlet portalPortletId="OA_workplan" portletName="工作计划" description="显示安排的工作计划"
+        screenName="Workplan" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"/>
+
+    <PortalPortlet portalPortletId="OA_meetingNotice" portletName="会议" description="显示待参加的会议通知"
+        screenName="MeetingNotice" screenLocation="component://oa/widget/PortletScreens.xml"
+        editFormName="BumphNoticeEdit" editFormLocation="component://oa/widget/forms/PortletEditForms.xml"/>
+
+    <PortalPortlet portalPortletId="OA_commonRes" portletName="常用工具" description="常用工具"
+        screenName="CommonRes" screenLocation="component://oa/widget/PortletScreens.xml"/>
+
+    <PortletCategory portletCategoryId="OA" description="OA 桌面控件"/>
+    <PortletPortletCategory portalPortletId="OA_email" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_perfExam" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_checkingin" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_bumphNotice" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_workflow" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_workplan" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_meetingNotice" portletCategoryId="OA"/>
+    <PortletPortletCategory portalPortletId="OA_commonRes" portletCategoryId="OA"/>
+</entity-engine-xml>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--工作计划一览-->
+    <request-map uri="WorkPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkPlan"/>
+        <response name="success" type="view" value="WorkPlan"/>
+    </request-map>
+    <request-map uri="addJobs">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="addJobs"/>
+    </request-map>
+    <request-map uri="saveJobs">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveWorkPlanJobs"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--创建工作计划页面-->
+    <request-map uri="WorkPlanCreate">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkPlanCreate"/>
+    </request-map>
+    <request-map uri="editWorkPlan">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkPlanCreate"/>
+    </request-map>
+    <request-map uri="copyWorkPlan">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="copyWorkPlan"/>
+    </request-map>
+    <!--保存工作计划-->
+    <request-map uri="saveWorkPlanCreate">
+        <security https="false" auth="true"/>
+        <!--<event type="service" invoke="saveWorkPlanCreate"/>-->
+        <event type="java" invoke="addWorkPlan" path="org.ofbiz.oa.WorkPlanEvents"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteWorkPlan">
+        <description>删除工作计划</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteWorkPlanAndMilestone"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--搜索工作计划-->
+    <request-map uri="searchWorkPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkPlan"/>
+        <response name="success" type="view" value="WorkPlanTableList"/>
+    </request-map>
+    <!--添加子计划页面-->
+    <request-map uri="addChildWorkPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findOneById"/>
+        <response name="success" type="view" value="addChildWorkPlan"/>
+    </request-map>
+    <!--保存子计划-->
+    <request-map uri="saveChildPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveChildPlan"/>
+        <response name="success" type="view" value="childWorkPlanList"/>
+    </request-map>
+    <request-map uri="updateChildPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveChildPlan"/>
+        <response name="success" type="view" value="updateChildWorkPlanList"/>
+    </request-map>
+    <request-map uri="deleteChildPlan">
+        <description>删除子计划</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteChildPlan"/>
+        <response name="success" type="view" value="childWorkPlanList"/>
+    </request-map>
+    <!--反馈页面-->
+    <request-map uri="feedbackWorkPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="feedbackWorkPlan"/>
+        <response name="success" type="view" value="feedbackWorkPlan"/>
+    </request-map>
+    <request-map uri="editPerformance">
+        <description>绩效评分执行人列表</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PerformanceList"/>
+    </request-map>
+    <request-map uri="toGrade">
+        <description>绩效评分页面</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="feedbackWorkPlan"/>
+        <response name="success" type="view" value="GradeView"/>
+    </request-map>
+    <request-map uri="saveGrade">
+        <description>保存绩效评分</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveGrade"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteMilestone">
+        <description>刪除里程碑</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteMilestone"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--查找工作计划反馈-->
+    <request-map uri="findFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findFeedback"/>
+        <response name="success" type="view" value="FeedbackList"/>
+    </request-map>
+    <request-map uri="saveFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveFeedback"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="deleteFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteFeedback"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="WorkReportManager">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkReportList"/>
+        <response name="success" type="view" value="WorkReportManager"/>
+    </request-map>
+
+    <request-map uri="searchWorkReportList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkReportList"/>
+        <response name="success" type="view" value="workReportList"/>
+    </request-map>
+
+    <request-map uri="addWorkReport">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkReportById"/>
+        <response name="success" type="view" value="addWorkReport"/>
+    </request-map>
+
+    <request-map uri="WorkPerformance">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkPerformance"/>
+    </request-map>
+
+    <request-map uri="commitReport">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkReportById"/>
+        <response name="success" type="view" value="commitReport"/>
+    </request-map>
+
+    <request-map uri="browseReport">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchWorkReportById"/>
+        <response name="success" type="view" value="browseReport"/>
+    </request-map>
+    
+    <request-map uri="editWorkReport">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="editWorkReport"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="addReportFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addReportFeedback"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="delWorkReport">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="delWorkReport"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="individualFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFeedbackList"/>
+        <response name="success" type="view" value="editworkFeedback"/>
+    </request-map>
+
+    <request-map uri="searchFeedbackList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFeedbackList"/>
+        <response name="success" type="view" value="editReportFeedback"/>
+    </request-map>
+
+    <request-map uri="editworkFeedback">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFeedbackList"/>
+        <response name="success" type="view" value="editReportFeedback"/>
+    </request-map>
+
+    <!--<request-map uri="testCalendar">
+        <description>test</description>
+        <response name="success" type="view" value="testCalendar"/>
+    </request-map>
+    -->
+
+
+    <view-map name="WorkPlan" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#WorkPlan"/>
+    <view-map name="addChildWorkPlan" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#addChildWorkPlan"/>
+    <view-map name="feedbackWorkPlan" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#feedbackWorkPlan"/>
+    <view-map name="WorkReportManager" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#WorkReportManager"/>
+    <view-map name="addWorkReport" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#addWorkReport"/>
+    <view-map name="WorkPlanCreate" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#WorkPlanCreate"/>
+    <view-map name="WorkPerformance" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#WorkPerformance"/>
+    <view-map name="commitReport" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#commitReport"/>
+    <view-map name="browseReport" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#browseReport"/>
+    <view-map name="WorkPlanTableList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#WorkPlanTableList"/>
+    <view-map name="FeedbackList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#FeedbackList"/>
+    <view-map name="PerformanceList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#PerformanceList"/>
+    <view-map name="workReportList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#workReportList"/>
+    <view-map name="GradeView" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#GradeView"/>
+    <view-map name="editReportFeedback" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#editReportFeedback"/>
+    <view-map name="editworkFeedback" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#editworkFeedback"/>
+    <view-map name="copyWorkPlan" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#copyWorkPlan"/>
+    <view-map name="addJobs" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#addJobs"/>
+    <view-map name="childWorkPlanList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#childWorkPlanList"/>
+    <view-map name="updateChildWorkPlanList" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#updateChildWorkPlanList"/>
+   <!-- <view-map name="testCalendar" type="screen" page="component://oa/widget/osManager/WorkPlanScreens.xml#testCalendar"/>
+    -->
+
+</site-conf>

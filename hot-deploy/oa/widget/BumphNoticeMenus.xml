@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="BumphNoticeBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <!--<menu-item name="a" title="发布公文通知" tooltip="增加事务">
+            <link target="" url-mode="plain" />
+        </menu-item>-->
+
+        <menu-item name="b" title="浏览公文通知" tooltip="周期性事务跟踪">
+            <link target="BumphNoticeBrowse" url-mode="plain" />
+        </menu-item>
+
+        <menu-item name="c" title="签收记录管理" tooltip="事务类别名称维护">
+            <link target="BumphNoticeSignIn" url-mode="plain" />
+        </menu-item>
+
+    </menu>
+
+    <menu name="BumphNoticeMenu" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.bumphNotice.addBumphNotice()" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="BumphNoticePortletMenu" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="More" title="更多" tooltip="更多">
+            <link target="javascript:showSubMenuAjax('BumphNoticeBrowse')" url-mode="plain"/>
+        </menu-item>
+    </menu>
+
+</menus>

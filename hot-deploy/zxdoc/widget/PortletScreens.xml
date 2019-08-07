@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="LatestTicket">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/LatestTicket.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="最近发布消息" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="LatestTicketPortletMenu">
+                            <include-menu name="LatestTicketPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <container id="RelatedTickets">
+                                <include-screen name="RelatedTickets" location="component://zxdoc/widget/ZxdocScreens.xml"/>
+                            </container>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ConfirmTicket">
+        <section>
+            <actions>
+                <set field="maxRows" value="5" type="Integer"/>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/ticket/ConfirmTickets.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="最新发布信息" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="ConfirmTicketPortletMenu">
+                            <include-menu name="ConfirmTicketPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/ticket/confirmTicketList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="MyCase">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/MyCase.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="我的CASE" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="MyCasePortletMenu">
+                            <include-menu name="MyCasePortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/myCaseList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="MyProvider">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/MyProvider.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="我的服务提供商" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="MyProviderPortletMenu">
+                            <include-menu name="MyProviderPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/myProviderList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="MyCustomer">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/MyCustomer.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="我的客户" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="MyCustomerPortletMenu">
+                            <include-menu name="MyCustomerPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/caseManage/myCustomerList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Calendar">
+        <section>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="日程安排" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="CalendarPortletMenu">
+                            <include-menu name="CalendarPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/common/calendar.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EventNotice">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/common/EventNotice.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="文档通知" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="EventNoticePortletMenu">
+                            <include-menu name="EventNoticePortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/common/eventNoticeList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Wenda">
+        <section>
+            <actions>
+                <script location="component://zxdoc/webapp/zxdoc/WEB-INF/actions/wenda/Wenda.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="远程咨询" titleStyle="glyphicon glyphicon-volume-up" navigation-menu-name="WendaPortletMenu">
+                            <include-menu name="WendaPortletMenu"
+                                          location="component://zxdoc/widget/ZxdocContextMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://zxdoc/webapp/zxdoc/zxdoc/wenda/listQuestions.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonRes">
+        <section>
+            <widgets>
+                <section>
+                    <widgets>
+                        <screenlet title="常用工具" titleStyle="glyphicon glyphicon-certificate">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                        location="component://oa/webapp/oa/humanres/CommonResPortlet.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+</screens>

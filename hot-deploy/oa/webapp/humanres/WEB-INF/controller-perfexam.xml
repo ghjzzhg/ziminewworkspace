@@ -1,0 +1,159 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+
+    <request-map uri="PerfExamMain">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPerfExam"/>
+        <response name="success" type="view" value="PerfExamMain"/>
+    </request-map>
+
+    <request-map uri="showPerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showPerfExam"></event>
+        <response name="success" type="view" value="showPerfExam"/>
+    </request-map>
+
+    <request-map uri="searchPerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchPerfExam"></event>
+        <response name="success" type="view" value="perfExamStats"/>
+    </request-map>
+
+    <request-map uri="CreatePerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="findPerfExam"></event>
+        <response name="success" type="view" value="CreatePerfExam"/>
+    </request-map>
+
+    <request-map uri="changeEvaluateMonth">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeEvaluateMonth"></event>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="PerfExamItems">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PerfExamItems"/>
+    </request-map>
+    <request-map uri="GetPerfExamItems">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="GetPerfExamItems"/>
+    </request-map>
+    <request-map uri="EditPerfExamItem">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditPerfExamItem"/>
+    </request-map>
+
+    <request-map uri="GetExamItems">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="GetExamItems"/>
+    </request-map>
+
+    <request-map uri="getPerfExamItemTypes">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/humanres/WEB-INF/actions/perfExam/GetPerfExamItemTypes.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="getPerfExamItemSubTypes">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/humanres/WEB-INF/actions/perfExam/GetPerfExamItemTypes.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="createPerfExamItemType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createPerfExamItemType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updatePerfExamItemType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updatePerfExamItemType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deletePerfExamItemType">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePerfExamItemType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="createPerfExamItem">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePerfExamItem"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updatePerfExamItem">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePerfExamItem"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deletePerfExamItem">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePerfExamItem"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="PerfExamPersons">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PerfExamPersons"/>
+    </request-map>
+    <request-map uri="EditPerfExamPerson">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="EditPerfExamPerson"/>
+    </request-map>
+
+    <request-map uri="createPerfExamPerson">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="createPerfExamPerson"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updatePerfExamPerson">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="updatePerfExamPerson"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deletePerfExamPerson">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePerfExamPerson"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="changeDPL">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeDPL"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="createPerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePerfExams"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updatePerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePerfExams"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deletePerfExam">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deletePerfExam"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="GetExamPersons">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="GetExamPersons"/>
+    </request-map>
+    <view-map name="PerfExamMain" type="screen" page="component://oa/widget/PerfExamScreens.xml#PerfExamMain"/>
+    <view-map name="perfExamStats" type="screen" page="component://oa/widget/PerfExamScreens.xml#perfExamStats"/>
+    <view-map name="CreatePerfExam" type="screen" page="component://oa/widget/PerfExamScreens.xml#CreatePerfExam"/>
+    <view-map name="showPerfExam" type="screen" page="component://oa/widget/PerfExamScreens.xml#showPerfExam"/>
+    <view-map name="PerfExamItems" type="screen" page="component://oa/widget/PerfExamScreens.xml#PerfExamItems"/>
+    <view-map name="GetPerfExamItems" type="screen" page="component://oa/widget/PerfExamScreens.xml#GetPerfExamItems"/>
+    <view-map name="GetExamItems" type="screen" page="component://oa/widget/PerfExamScreens.xml#GetExamItems"/>
+    <view-map name="EditPerfExamItem" type="screen" page="component://oa/widget/PerfExamScreens.xml#EditPerfExamItem"/>
+    <view-map name="PerfExamPersons" type="screen" page="component://oa/widget/PerfExamScreens.xml#PerfExamPersons"/>
+    <view-map name="EditPerfExamPerson" type="screen" page="component://oa/widget/PerfExamScreens.xml#EditPerfExamPerson"/>
+    <view-map name="GetExamPersons" type="screen" page="component://oa/widget/PerfExamScreens.xml#GetExamPersons"/>
+</site-conf>

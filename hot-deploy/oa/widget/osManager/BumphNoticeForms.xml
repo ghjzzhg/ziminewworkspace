@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <!--查询条件-->
+    <form name="BumphNoticeSearchForm" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="title" title="文档标题" position="1">
+            <text/>
+        </field>
+        <field name="department" title="发布部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="noticeType" title="文档类型" position="3">
+            <drop-down>
+                <list-options list-name="noticeTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="releaseTimeStart" title="发布日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="releaseTimeEnd" title="至" position="2">
+            <date-time type="date" />
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.bumphNotice.searchNotice()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="新增" event="onClick" action="$.bumphNotice.addBumphNotice(null,'发布通知')">
+            <hyperlink target="#nowhere" description="新增" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+    <!--查询结果-->
+    <form name="BumphNoticeList" type="list" list-name="bumphNoticeList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="title" title="公文/通知标题" event="onClick" action="$.bumphNotice.showBumphNoticeInfo(${noticeId})">
+            <hyperlink target="#nowhere" description="${title}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="noticeType" title="文档类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="noticeNumber" title="文档编号">
+            <display/>
+        </field>
+        <field name="groupName" title="发布部门">
+            <display/>
+        </field>
+        <field name="releaseTime" title="发布日期">
+            <display/>
+        </field>
+        <field name="useTemplate" title="应用模板">
+            <display-entity entity-name="TblNoticeTemplate" key-field-name="noticeTemplateId" description="${noticeTemplateName}"></display-entity>
+        </field>
+        <field name="releasePersonName" title="发布人">
+            <display/>
+        </field>
+        <field name="lastEditPersonAndDate" title="最后编辑人签收日期">
+            <display />
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick" action="$.bumphNotice.addBumphNotice('${noticeId}','修改通知')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.bumphNotice.deleteNotice('${noticeId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+
+<!--公文签收查询-->
+    <form name="BumphNoticeSignInSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <field name="department" title="发布部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="releaseTimeStart" title="发布时间" position="2">
+            <date-time/>
+        </field>
+        <field name="releaseTimeEnd" title="至" position="3">
+            <date-time/>
+        </field>
+        <field name="title" title="文档标题" position="4">
+            <text/>
+        </field>
+        <field name="noticeType" title="文档类型" position="1">
+            <drop-down>
+                <list-options list-name="noticeTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="feedbackDepartment" title="需反馈部门" position="2">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="hasSignIn" title="签收否" position="3">
+            <drop-down>
+                <list-options list-name="hasSignInList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="status" title="进度" position="4">
+            <drop-down>
+                <list-options list-name="statusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="查询" event="onClick" action="$.bumphNotice.searchSignInRecord()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--查询结果-->
+    <form name="BumphNoticeSignInList" type="list" list-name="bumphNoticeSignInList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="releaseTime" title="发布日期">
+            <display/>
+        </field>
+        <field name="groupName" title="发布部门">
+            <display/>
+        </field>
+        <field name="noticeNumber" title="文档编号">
+            <display/>
+        </field>
+        <field name="noticeType" title="类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="title" title="公文/通知标题" event="onClick" action="$.bumphNotice.showBumphNoticeInfo('${noticeId}')">
+            <hyperlink target="#nowhere" description="${title}" target-type="plain" url-mode="plain"/>
+        </field>
+        <!--<field name="title" title="公文/通知标题">-->
+            <!--<display/>-->
+        <!--</field>-->
+        <field name="departmentName" title="签收人部门">
+            <display/>
+        </field>
+        <field name="fullName" title="签收人">
+            <display/>
+        </field>
+        <field name="positionDesc" title="岗位">
+            <display/>
+        </field>
+        <field name="signInTime" title="签收日期">
+            <display type="date-time"/>
+        </field>
+        <field name="hasSignInDesc" title="签收状态">
+            <display/>
+        </field>
+        <field name="stautsDesc" title="当前进度">
+            <display/>
+        </field>
+        <field name="" title-style="hide" widget-style="smallSubmit"
+               title="签收否" event="onClick" action="$.bumphNotice.BumphNoticeSignIn('${noticeId}')">
+            <hyperlink target="#nowhere" description="查看" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--公文模板列表-->
+    <form name="TemplateManagementListForm" type="list" list-name="TemplateManagementList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="noticeTemplateName" title="模板类型" event="onClick" action="$.bumphNotice.showTemplateInfo('${noticeTemplateId}','${noticeId}')">
+            <hyperlink target="#nowhere" description="${noticeTemplateName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createTime" title="创建时间">
+            <display type="date-time"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick" action="$.bumphNotice.showTemplateInfo('${noticeTemplateId}','${noticeId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.bumphNotice.deleteNoticeTemplate('${noticeTemplateId}','${noticeId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>

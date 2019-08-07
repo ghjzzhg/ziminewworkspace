@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="SearchOsManager" type="single" target="updateOfficeSuppliesManagement"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="OsManager">
+        <alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>
+        <field name="suppliesName" title="物品名称" position="1">
+            <text />
+        </field>
+        <field name="productTypeId" title="货品类别" position="2">
+            <drop-down>
+                <list-options list-name="productTypeList" key-name="productTypeId" description="${typeName}"/>
+            </drop-down>
+        </field>
+        <field name="warning" title="库存预警" position="3">
+            <radio>
+                <option key="LESS_THAN" description="低于下限"></option>
+                <option key="GREATER_THAN" description="高于上限"></option>
+            </radio>
+        </field>
+        <field name="editLink" title="查询" position="1" title-area-style="hidden" widget-style="smallSubmit" event="onClick" action="$.osManager.searchOsManager()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createLink" title="添加" position="2" title-area-style="hidden" widget-style="smallSubmit" event="onClick" action="$.osManager.showCreateForm()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="EditOsManager" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="OfficeSuppliesManagement">
+        <field name="osManagementId"><hidden/></field>
+        <field name="suppliesName" title="物品名称"><text /></field>
+        <field name="amount" title="计量单位">
+            <text/>
+        </field>
+        <field name="suppliesName" title="物品名称">
+            <text/>
+        </field>
+        <field name="repertoryAmount" title="库存总数">
+            <text/>
+        </field>
+        <field name="category" title="所属分类">
+            <text />
+        </field>
+        <field name="repertoryWarning" title="是否启用库存警示">
+            <text/>
+        </field>
+        <field name="standard" title="规格">
+            <text/>
+        </field>
+        <field name="remark" title="备注">
+            <text/>
+        </field>
+
+        <!--<field name="createLink" title="添加" event="onClick" action="$.osManager.createOsManager()">-->
+        <field name="createLink" title="添加" event="onClick" action="$.osManager.createOsManager()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <form name="ListOsManager" type="list" list-name="listosManagers" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="osManagementId"><hidden/></field>
+        <field name="amount" title="计量单位">
+            <display/>
+        </field>
+        <field name="suppliesName" title="物品名称">
+            <display/>
+        </field>
+        <field name="repertoryAmount" title="库存总数">
+            <display/>
+        </field>
+        <field name="category" title="所属分类">
+            <display/>
+        </field>
+        <field name="repertoryWarning" title="是否启用库存警示">
+            <display/>
+        </field>
+        <field name="standard" title="规格">
+            <display/>
+        </field>
+        <field name="standard" title="备注">
+            <display/>
+        </field>
+        <field name="deletLink" title="${uiLabelMap.CommonUpdate}" event="onClick"
+               action="$.osManager.deleteOsManager('${osManagementId}')">
+            <hyperlink target="#nowhere" description="刪除" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.osManager.showUpdateForm('${osManagementId}');">
+            <hyperlink target="#nowhere" description="更新" target-type="plain" url-mode="plain"/>
+        </field>
+        <!--<field name="groupName"><display/></field>
+
+        <field name="submitButton" title="${uiLabelMap.CommonDelete}" widget-style="smallSubmit"><submit button-type="button"/></field>
+        <on-event-update-area event-type="submit" area-id="ListSubOrgs" area-target="ListSubOrgs">
+            <parameter param-name="partyId" from-field="partyIdFrom"/>
+        </on-event-update-area>-->
+    </form>
+<!-- 仓库信息查询-->
+    <form name ="SearchInventoryInfo" type="single"
+            header-row-style="header-row" default-table-style="basic">
+        <field name="warehouseName" title="仓库名称" position="1">
+            <text/>
+        </field>
+        <field name="linkman" title="联系人" position="2">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="searchLink1" title="查询" title-area-style="hidden" widget-style="smallSubmit" position="1"
+               event="onClick" action="$.inventory.searchWarehouseInfo()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="searchLink" title="添加" title-area-style="hidden" widget-style="smallSubmit" position="2"
+               event="onClick" action="$.inventory.createWarehouseInfo()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--仓库信息列表-->
+    <form name="InventoryInfoList" type="list" list-name="inventoryInfoList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="InventoryInfoId"><hidden/></field>
+        <field name="warehouseCode" title="仓库编号">
+            <display/>
+        </field>
+        <field name="warehouseName" title="仓库名称">
+            <display/>
+        </field>
+        <field name="warehouseAddress" title="仓库地址">
+            <display/>
+        </field>
+        <field name="linkman" title="联系人">
+            <display/>
+        </field>
+        <field name="phone" title="电话">
+            <display/>
+        </field>
+        <field name="inputPerson" title="录入人">
+            <display/>
+        </field>
+        <field name="inputTime" title="录入时间">
+            <display/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.osManager.showInventoryInfoForm('${InventoryInfoId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column"
+               widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="deleteInventoryInfo('${inventoryInfoId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+<!--仓库信息编辑-->
+    <form name="EditInventoryInfo" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="inventoryInfoMap">
+        <field name="lnventoryInfoId" position="1"><hidden/></field>
+        <field name="warehouseCode" title="仓库编号" position="1">
+            <text/>
+        </field>
+        <field name="warehouseName" title="仓库名称" position="2">
+            <text/>
+        </field>
+        <field name="warehouseAddress" title="仓库地址" position="1">
+            <text/>
+        </field>
+        <field name="linkman" title="联系人" position="2">
+            <text/>
+        </field>
+        <field name="phone" title="电话" position="1">
+            <text/>
+        </field>
+        <field name="inputPerson" title="录入人" position="2">
+            <text/>
+        </field>
+        <field name="inputTime" title="录入时间">
+            <text/>
+        </field>
+
+        <field name="createLink" title="修改" title-style="hidden" widget-style="smallSubmit" event="onClick" action="$.osManager.createOsManager()">
+            <hyperlink target="#nowhere" description="修改" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--客户信息查询form-->
+    <form name="SearchCustomerInfo" type="single" target=""
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="customerType" title="客户类型" position="1">
+            <drop-down current="selected">
+                <option key="UPSTREAM" description="上游客户"></option>
+                <option key="DOWNSTREAM" description="下游客户"></option>
+                <option key="HYBRID" description="混合客户"></option>
+            </drop-down>
+        </field>
+        <field name="customerName" title="客户名称" position="2"><text /></field>
+        
+        <field name="searchLink" title="" title-area-style="hidden" widget-style="smallSubmit" position="1"
+               event="onClick" action="$.customer.searchCustomerInfo()">
+            <hyperlink target="#nowhere" description="搜索" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title="添加" title-area-style="hidden" widget-style="smallSubmit" position="2"
+               event="onClick" action="$.customer.showCustomerInfoForm('')">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--客户信息查询列表-->
+    <form name="ListCustomerInfo" type="list" list-name="customerInfoList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="customerInfoId"><hidden/></field>
+        <field name="customerType" title="类型">
+            <display/>
+        </field>
+        <field name="customerName" title="客户名称" event="onClick" action="showCustomerInfoForm('${customerInfoId}')">
+            <hyperlink target="#nowhere" description="${customerName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="customerSource" title="来源">
+            <display/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="showCustomerInfoForm('${customerInfoId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--维护客户信息-->
+    <form name="EditCustomerInfo" type="single" default-map-name="customerInfoMap" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="customerInfoId"><hidden/></field>
+        <field name="customerName" title="客户名称" position="1">
+            <text/>
+        </field>
+        <field name="customerType" title="客户类型" position="2">
+            <radio>
+                <option key="UPSTREAM" description="上游客户"></option>
+                <option key="DOWNSTREAM" description="下游客户"></option>
+                <option key="HYBRID" description="混合客户"></option>
+            </radio>
+        </field>
+        <field name="linkman" title="联系人" position="1">
+            <text />
+        </field>
+        <field name="address" title="所在地址" position="2">
+            <text />
+        </field>
+        <field name="telephone" title="联系电话" position="1">
+            <text />
+        </field>
+        <field name="linkFax" title="联系传真" position="2">
+            <text />
+        </field>
+        <field name="phone" title="联系手机" position="1">
+            <text />
+        </field>
+        <field name="showHidden" title="显示隐藏" position="2">
+            <radio>
+                <option key="1" description="显示"></option>
+                <option key="2" description="隐藏"></option>
+            </radio>
+        </field>
+        <field name="sort" title="排序" position="1">
+            <text />
+        </field>
+        <field name="note" title="备注信息" position="1">
+            <textarea/>
+        </field>
+        <field name="edit" title="保存" event="onClick" title-style="hide"
+               widget-style="smallSubmit" action="showCustomerInfoForm('${customerInfoId}')" position="1">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <!--<field name="delete" title="删除" event="onClick" title-style="hide"
+               widget-style="smallSubmit" action="showCustomerInfoForm('${customerInfoId}')" position="2">
+            <hyperlink target="#" description="删除" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <field name="create" title="新增" title-area-style="hidden" event="onClick" title-style="hide" position="3"
+               widget-style="smallSubmit"  action="showCustomerInfoForm('${customerInfoId}')">
+            <hyperlink target="#" description="新增" target-type="plain" url-mode="plain"/>
+        </field>-->
+    </form>
+
+
+    <!--<form name="ProductTypeAdd" type="single" default-map-name="customerInfoMap" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        &lt;!&ndash;<field name="create" title="增加" event="onClick" title-style="hide" widget-style="smallSubmit"  action="showProductTypeForm('')">&ndash;&gt;
+        <field name="create" title="增加" event="onClick" title-style="hide" widget-style="smallSubmit"  action="">
+            <hyperlink target="#nowhere" description="新增" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>-->
+
+    <form name ="SearchProductTypeInfo" type="single"
+          header-row-style="header-row" default-table-style="basic">
+        <field name="typeName" title="类别名称" position="1">
+            <text/>
+        </field>
+        <field name="inputPerson" title="录入人" position="2">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="standard" title="规格" position="1">
+            <drop-down>
+                <list-options list-name="data.standardList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="warehouseId" title="所属仓库" position="2">
+            <drop-down>
+                <list-options list-name="data.warehouseList" key-name="warehouseId" description="${warehouseName}"/>
+            </drop-down>
+        </field>
+        <field name="searchLink1" title="查询" title-area-style="hidden" widget-style="smallSubmit" position="1"
+               event="onClick" action="$.inventory.searchProductTypeInfo()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="searchLink" title="添加" title-area-style="hidden" widget-style="smallSubmit" position="2"
+               event="onClick" action="$.inventory.createProductType()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <form name="ProductType" type="list" list-name="productTypeList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="productCode" title="类别编码"><display/></field>
+        <field name="typeName" title="类别名称">
+            <display/>
+        </field>
+        <field name="warehouseName" title="所属仓库">
+            <display/>
+        </field>
+        <field name="inputPerson" title="录入人">
+            <display/>
+        </field>
+        <field name="inputTime" title="录入时间">
+            <display/>
+        </field>
+        <field name="note" title="备注">
+            <display/>
+        </field>
+
+        <!--<field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="showProductTypeForm('${productCode}')">-->
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+
+    <form name="EditProductType" type="single" default-map-name="editProductTypeMap" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="productCode" title="类别编码" position="1">
+            <text/>
+        </field>
+        <field name="warehouseName" title="所属仓库" position="2">
+            <drop-down>
+                <option key="1" description="办公用品仓库"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="typeName" title="类别名称">
+            <text />
+        </field>
+        <field name="note" title="备注">
+            <textarea/>
+        </field>
+
+        <field name="update" title="修改" title-area-style="hidden" widget-style="smallSubmit" event="onClick"
+               action="showProductTypeForm('${productCode}')">
+            <hyperlink target="#nowhere" description="修改" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--货品基础信息录入-->
+    <form name="createProductType" type="single" default-map-name="editProductTypeMap" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="warehouseName" title="所属仓库" position="1">
+            <drop-down>
+                <option key="1" description="仓库1"></option>
+                <option key="2" description="仓库2"></option>
+            </drop-down>
+        </field>
+        <field name="productType" title="所属类别" position="2">
+            <drop-down>
+                <option key="1" description="类别1"></option>
+                <option key="2" description="类别2"></option>
+            </drop-down>
+        </field>
+        <field name="storeAddress" title="存储地点" position="3">
+            <text />
+        </field>
+        <field name="productCode" title="货品编码" position="1">
+            <text />
+        </field>
+        <field name="productName" title="货品名称" position="2">
+            <text />
+        </field>
+        <field name="standard" title="规格" position="3">
+            <drop-down>
+                <option key="1" description="规格1"></option>
+                <option key="2" description="规格2"></option>
+            </drop-down>
+        </field>
+        <field name="maxNum" title="最大安全量" position="1">
+            <text />
+        </field>
+        <field name="minNum" title="最小安全量" position="2">
+            <text />
+        </field>
+        <field name="unit" title="单位" position="3">
+            <drop-down>
+                <option key="1" description="单位1"></option>
+                <option key="2" description="单位2"></option>
+            </drop-down>
+        </field>
+        <field name="pricePerUnit" title="基本单价" position="1">
+            <text />
+        </field>
+        <field name="inputPerson" title="录入人" position="2">
+            <text />
+        </field>
+        <field name="inputTime" title="录入时间" position="3">
+            <date-time/>
+        </field>
+        <field name="note" title="备注">
+            <textarea/>
+        </field>
+
+        <field name="update" title="提交" title-area-style="hidden" event="onClick" action="showProductTypeForm('${productCode}')" title-style="col-xs-1">
+            <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--库存条件查询-->
+    <form name="SearchInventory" type="single" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="suppliesName" title="易耗品名称" position="1">
+            <text/>
+        </field>
+        <field name="productTypeId" title="货品类别" position="2">
+            <drop-down>
+                <list-options list-name="data.productTypeList" key-name="productTypeId" description="${typeName}"/>
+            </drop-down>
+        </field>
+        <field name="warehouseId" title="仓库" position="3">
+            <drop-down>
+                <list-options list-name="data.warehouseList" key-name="warehouseId" description="${warehouseName}"/>
+            </drop-down>
+        </field>
+        <!--<field name="update" title="查询" title-area-style="hidden" widget-style="smallSubmit" event="onClick" action="showProductTypeForm('${productCode}')">-->
+        <field name="update" title="查询" title-area-style="hidden" widget-style="smallSubmit" event="onClick" action="$.InventoryManagement.searchInventoryList()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--库存列表-->
+    <form name="ListInventory" type="list" list-name="inventoryList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="warehouseName" title="仓库名称"><display/></field>
+        <field name="typeName" title="货品类别">
+            <display/>
+        </field>
+        <field name="productCode" title="货品编码">
+            <display/>
+        </field>
+        <field name="productName" title="货品名称">
+            <display/>
+        </field>
+        <field name="standard" title="货品规格">
+            <display/>
+        </field>
+        <field name="unit" title="单位">
+            <display/>
+        </field>
+        <field name="inventoryNum" title="库存数量">
+            <display/>
+        </field>
+        <field name="billingNotGetNum" title="开单未领数量">
+            <display/>
+        </field>
+        <field name="enabledNum" title="可用数量">
+            <display/>
+        </field>
+        <field name="productAllocation" title="货位">
+            <display/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-style="smallSubmit" title="" event="onClick"
+               action="showInputOrOutInventoryForm('${productCode}','EditInputInventory')">
+            <hyperlink target="#nowhere" description="入库" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide"  widget-style="smallSubmit" title="" event="onClick"
+               action="showInputOrOutInventoryForm('${productCode}','EditOutInventory')">
+            <hyperlink target="#nowhere" description="出库" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--入库-->
+    <form name="EditInputInventory" type="single" default-map-name="editProductTypeMap" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="warehouseName" title="所属仓库" position="1">
+            <display type="text"/>
+        </field>
+        <field name="productType" title="所属类别" position="2">
+            <display/>
+        </field>
+        <field name="storeAddress" title="存储地点" position="1">
+            <display/>
+        </field>
+        <field name="productCode" title="货品编码" position="2">
+            <display/>
+        </field>
+        <field name="productName" title="货品名称" position="1">
+            <display/>
+        </field>
+        <field name="standard" title="规格" position="2">
+            <display/>
+        </field>
+        <field name="maxNum" title="最大安全量" position="1">
+            <display/>
+        </field>
+        <field name="minNum" title="最小安全量" position="2">
+            <display/>
+        </field>
+        <field name="unit" title="单位" position="1">
+            <display/>
+        </field>
+        <field name="pricePerUnit" title="基本单价" position="2">
+            <display/>
+        </field>
+        <field name="lastTimePrice" title="上次入库单价" position="1">
+            <display/>
+        </field>
+        <field name="totalNum" title="原库存数量" position="2">
+            <display/>
+        </field>
+        <field name="type" title="本次入库类型" position="1">
+            <drop-down>
+                <option key="1" description="采购入库"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="nowInputNum" title="本次入库数量" position="2">
+            <text/>
+        </field>
+        <field name="nowInputPrice" title="本次入库单价" position="1">
+            <text/>
+        </field>
+        <field name="inputInventoryDes" title="入库说明">
+            <textarea/>
+        </field>
+        <field name="update" title="提交" title-style="hide" event="onClick" widget-style="smallSubmit"
+               action="showProductTypeForm('${productCode}')">
+            <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--出库-->
+    <form name="EditOutInventory" type="single" default-map-name="" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="warehouseName" title="所属仓库" position="1">
+            <text/>
+        </field>
+        <field name="productType" title="所属类别" position="2">
+            <text/>
+        </field>
+        <field name="storeAddress" title="存储地点" position="1">
+            <text />
+        </field>
+        <field name="productCode" title="货品编码" position="2">
+            <text />
+        </field>
+        <field name="productName" title="货品名称" position="1">
+            <text />
+        </field>
+        <field name="standard" title="规格" position="2">
+            <text/>
+        </field>
+        <field name="maxNum" title="最大安全量" position="1">
+            <text />
+        </field>
+        <field name="minNum" title="最小安全量" position="2">
+            <text />
+        </field>
+        <field name="unit" title="单位" position="1">
+            <text/>
+        </field>
+        <field name="pricePerUnit" title="基本单价" position="2">
+            <text />
+        </field>
+        <field name="lastTimePrice" title="上次入库单价" position="1">
+            <text />
+        </field>
+        <field name="totalNum" title="库存数量" position="2">
+            <text/>
+        </field>
+        <field name="type" title="出库库类型" position="1">
+            <drop-down>
+                <option key="1" description="采购入库"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="nowInputNum" title="收货部门" position="2">
+            <drop-down>
+                <option key="1" description="销售部"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="nowInputNum" title="收货人" position="1">
+            <drop-down>
+                <option key="1" description="张三"></option>
+                <option key="2" description="李四"></option>
+            </drop-down>
+        </field>
+        <field name="nowInputNum" title="出库数量" position="2">
+            <text/>
+        </field>
+        <field name="nowInputPrice" title="出库货品单价" position="1">
+            <text/>
+        </field>
+        <field name="nowInputPrice" title="出库日期" position="2">
+            <date-time/>
+        </field>
+        <field name="inputInventoryDes" title="出库说明">
+            <textarea/>
+        </field>
+        <field name="update" title="提交" title-style="hide" widget-style="smallSubmit" event="onClick"
+               action="showProductTypeForm('${productCode}')">
+            <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+    <!--一次多个货品的出库-->
+    <form name="EditOutInventoryMany" type="single" default-map-name="" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="warehouseName" title="仓库" position="1">
+            <text/>
+        </field>
+        <field name="type" title="出库库类型" position="2">
+            <drop-down>
+                <option key="1" description="采购入库"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="receiveDate" title="预计领用日期" position="1">
+            <date-time/>
+        </field>
+        <field name="receiveDepartment" title="领用部门" position="2">
+            <drop-down>
+                <option key="1" description="销售部"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="receivePerson" title="领用人" position="1">
+            <drop-down>
+                <option key="1" description="张三"></option>
+                <option key="2" description="李四"></option>
+            </drop-down>
+        </field>
+        <field name="makeInfoPerson" title="制单人" position="2">
+            <text/>
+        </field>
+        <field name="check" title="是否需要审核" position="1">
+            <check>
+                <option key="1" description="需要审核"></option>
+            </check>
+        </field>
+
+        <field name="checkJob" title="审核岗位" position="2">
+            <text />
+        </field>
+        <field name="makeInfoTime" title="制单时间" >
+            <text />
+        </field>
+        <field name="description" title="领用说明">
+            <textarea/>
+        </field>
+        <field name="add" title="提交" title-area-style="hidden" event="onClick" widget-style="smallSubmit"
+               action="" title-style="col-xs-1">
+        <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--一次多个货品的出库-->
+    <form name="OutInventoryManyList" type="list" list-name="outInventoryManyList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="productCode" title="货品编码">
+            <text/>
+        </field>
+        <field name="productName" title="货品名称">
+            <text/>
+        </field>
+        <field name="standard" title="规格">
+            <text/>
+        </field>
+        <field name="type" title="类别">
+            <text/>
+        </field>
+        <field name="unit" title="单位">
+            <display/>
+        </field>
+        <field name="inventoryNum" title="库存数量">
+            <display/>
+        </field>
+        <field name="enabledReceiveNum" title="可领用数量">
+            <display/>
+        </field>
+        <field name="receiveNum" title="本次领用数量">
+            <text/>
+        </field>
+
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--领用单查询form-->
+    <form name="ReceiveForm" type="single" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="warehouseId" title="仓库名称" position="1">
+            <drop-down>
+                <list-options list-name="data.warehouseList" key-name="warehouseId" description="${warehouseName}"/>
+            </drop-down>
+        </field>
+        <field name="productTypeId" title="领用类型" position="2">
+            <drop-down>
+                <list-options list-name="data.productTypeList" key-name="productTypeId" description="${typeName}"/>
+            </drop-down>
+        </field>
+        <field name="receiveDepartment" title="领用部门" position="3">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="status" title="状态" position="1">
+            <drop-down>
+                <option key="1" description="状态1"/>
+                <option key="2" description="状态2"/>
+            </drop-down>
+        </field>
+        <field name="showSelect" title="显示选项" position="2">
+            <drop-down>
+                <option key="1" description="全部"></option>
+                <option key="2" description="其他"></option>
+            </drop-down>
+        </field>
+        <field name="receivePerson" title="领用人" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="update" title="查询" title-area-style="hidden" event="onClick" widget-style="smallSubmit" position="1"
+               action="" title-style="col-xs-1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="add" title="添加新的领用单" title-area-style="hidden" event="onClick" widget-style="smallSubmit" position="2"
+                       action="$.InventoryManagement.addReceiveForm()" title-style="col-xs-1">
+        <hyperlink target="#nowhere" description="添加新的领用单" target-type="plain" url-mode="plain"/>
+    </field>
+
+    </form>
+
+<!--领用单列表-->
+    <form name="ReceiveList" type="list" list-name="receiveList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="receiveNum" title="领用单编号" event="onClick"
+               action="showReceiveInfo('${receiveNum}')">
+            <hyperlink target="#nowhere" description="${receiveNum}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="warehouseName" title="仓库名称">
+            <display/>
+        </field>
+        <field name="receiveType" title="领用类型">
+            <display/>
+        </field>
+        <field name="receiveDate" title="预计领用日期">
+            <display/>
+        </field>
+        <field name="receiveDepartment" title="领用部门">
+            <display/>
+        </field>
+        <field name="receivePerson" title="领用人">
+            <display/>
+        </field>
+        <field name="makeInfoPerson" title="制单人">
+            <display/>
+        </field>
+        <field name="makeInfoTime" title="制单时间">
+            <display/>
+        </field>
+        <field name="checkResult" title="审核结果">
+            <display/>
+        </field>
+        <field name="nowStatus" title="当前状态">
+            <display/>
+        </field>
+    </form>
+
+<!--已通过领用单-->
+    <form name="ApproveReceiveList" type="list" list-name="approveReceiveList" separate-columns="true" extends="ReceiveList"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="deleteLink" title-style="hide"  widget-style="smallSubmit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="sendOut()">
+            <hyperlink target="#nowhere" description="发货" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ApproveReceiveSubmit" type="single" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="deleteLink" title-style="hide"  widget-style="smallSubmit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description="发货" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="ReceiveInfoForm" type="single" separate-columns="true" default-map-name="receiveInfoFormMap"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="receiveNum" title="领用单编号" position="1">
+           <text/>
+        </field>
+        <field name="warehouseName" title="仓库名称" position="2">
+            <text/>
+        </field>
+        <field name="receiveType" title="出库类型" position="1">
+            <text/>
+        </field>
+        <field name="receiveDepartment" title="领用部门" position="2">
+            <text/>
+        </field>
+        <field name="receivePerson" title="领用人" position="1">
+            <text/>
+        </field>
+        <field name="receiveDate" title="预领日期" position="2">
+            <text/>
+        </field>
+        <field name="checkResult" title="是否审核" position="1">
+            <text/>
+        </field>
+
+        <field name="checkPerson" title="审核人" position="2">
+            <text/>
+        </field>
+        <field name="makeInfoPerson" title="制单人" position="1">
+            <text/>
+        </field>
+        <field name="description" title="说明" position="2">
+            <text/>
+        </field>
+        <field name="makeInfoTime" title="制单时间" position="1">
+            <text/>
+        </field>
+        <field name="nowStatus" title="状态" position="2">
+            <text/>
+        </field>
+    </form>
+
+    <form name="ReceiveInfoList" type="list" list-name="receiveInfoList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="productCode" title="货品编码">
+            <display/>
+        </field>
+        <field name="productName" title="货品名称">
+            <display/>
+        </field>
+        <field name="standard" title="规格">
+            <display/>
+        </field>
+        <field name="type" title="类别">
+            <display/>
+        </field>
+        <field name="unit" title="单位">
+            <display/>
+        </field>
+        <field name="inventoryNum" title="库存数量">
+            <display/>
+        </field>
+        <field name="enabledReceiveNum" title="可领用数量">
+            <display/>
+        </field>
+        <field name="receiveNum" title="本次领用数量">
+            <display/>
+        </field>
+        <field name="num" title="已发货数量">
+            <display/>
+        </field>
+    </form>
+
+    <form name="checkHistory" type="list" list-name="checkHistoryList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="checkTime" title="审核时间">
+            <display/>
+        </field>
+
+        <field name="checkJob" title="审核岗位">
+            <display/>
+        </field>
+        <field name="checkPerson" title="审核人">
+            <display/>
+        </field>
+        <field name="checkOpinion" title="审核意见">
+            <display/>
+        </field>
+        <field name="checkExplain" title="审核说明">
+            <display/>
+        </field>
+    </form>
+</forms>
+

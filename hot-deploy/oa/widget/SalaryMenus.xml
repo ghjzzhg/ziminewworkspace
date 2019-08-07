@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="SalarySubMenus" extends-resource="component://common/widget/CommonMenus.xml"
+        default-menu-item-name="SalaryPayOff" type="simple" menu-container-style="button-bar tab-bar"
+        default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="SalaryPayOff" title="" tooltip="薪资发放">
+            <link target="SalaryPayOff" text="薪资发放"/>
+        </menu-item>
+        <menu-item name="SalaryItems" title="" tooltip="薪资条目维护">
+            <link target="SalaryItems" text="薪资条目维护"/>
+        </menu-item>
+        <menu-item name="SalaryNotice" title="" tooltip="工资条模板">
+            <link target="SalaryNotice" text="工资条模板"/>
+        </menu-item>
+        <menu-item name="SalaryOnAttendance" title="" tooltip="考勤规则维护">
+            <link target="SalaryOnAttendance" text="考勤规则维护"/>
+        </menu-item>
+    </menu>
+    <menu name="createSalaryTemplate">
+        <menu-item name="createSalaryTemplate" title="新增" >
+            <link target="javascript:$.salary.addTemplateManagement();" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+</menus>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <DataResource dataResourceId="P-10001" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商推荐业务规定（试行）.pdf" objectInfo="f56038af-496e-45d1-a98f-991b27681f4c.pdf" mimeTypeId="application/pdf" resourceSize="203654"/>
+    <DataResource dataResourceId="P-10002" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统业务规则（试行）.pdf" objectInfo="b4858235-3eab-4dba-a907-01ad4f79d3c6.pdf" mimeTypeId="application/pdf" resourceSize="702382"/>
+    <DataResource dataResourceId="P-10003" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商管理细则（试行）.pdf" objectInfo="7b33b687-a0d3-4360-b9ad-7c759c841f50.pdf" mimeTypeId="application/pdf" resourceSize="319501"/>
+    <DataResource dataResourceId="P-10004" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司信息披露细则（试行）.pdf" objectInfo="5b95d272-4418-45ac-8ee1-e70f065e82c2.pdf" mimeTypeId="application/pdf" resourceSize="236557"/>
+    <DataResource dataResourceId="P-10005" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统股票.pdf" objectInfo="9d7aca58-03b4-4ec1-b52d-6a6a9821cf15.pdf" mimeTypeId="application/pdf" resourceSize="483908"/>
+    <DataResource dataResourceId="P-10006" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="公司债券发行与交易管理办法.pdf" objectInfo="39d3957e-7c2f-4c04-90ef-755c3227f88a.pdf" mimeTypeId="application/pdf" resourceSize="182856"/>
+    <DataResource dataResourceId="P-10007" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管问答 -定向发行（一）.pdf" objectInfo="6df8413f-f538-4599-aed7-918a35125e44.pdf" mimeTypeId="application/pdf" resourceSize="136823"/>
+    <DataResource dataResourceId="P-10008" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监督管理办法.pdf" objectInfo="f0dee222-5751-4da6-b742-e89107fb88f8.pdf" mimeTypeId="application/pdf" resourceSize="383712"/>
+    <DataResource dataResourceId="P-10009" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="推荐挂牌并持续督导协议书.doc" objectInfo="96cc2155-8875-475d-9455-d00d934cf9b3.doc" mimeTypeId="application/msword" resourceSize="48640"/>
+    <DataResource dataResourceId="P-10010" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="上市公司收购管理办法.docx" objectInfo="53ea8010-c56b-449e-9fd9-2bb07f3c466f.docx" mimeTypeId="application/msword" resourceSize="45071"/>
+    <DataResource dataResourceId="P-10011" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管问答——定向发行（二）.pdf" objectInfo="e86ecb0c-31de-407f-8171-0d2e515e8de4.pdf" mimeTypeId="application/pdf" resourceSize="101402"/>
+    <DataResource dataResourceId="P-10012" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于《非上市公众公司监管问答——定向发行（二）》适用有关问题的通知.pdf" objectInfo="f54e6ddc-b768-44d8-bdec-f28e707cedee.pdf" mimeTypeId="application/pdf" resourceSize="476952"/>
+    <DataResource dataResourceId="P-10013" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于上市公司股息红利差别化个人所得税政策有关问题的通知.docx" objectInfo="06ea4596-fb42-44bc-bc33-f1da590770ab.docx" mimeTypeId="application/msword" resourceSize="13562"/>
+    <DataResource dataResourceId="P-10014" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于加强非上市公众公司监管工作的指导意见.pdf" objectInfo="c8f537bd-972f-4c54-9926-a8ee0c01162c.pdf" mimeTypeId="application/pdf" resourceSize="126863"/>
+    <DataResource dataResourceId="P-10015" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则.doc" objectInfo="1042c397-0e02-43b9-a8ac-05e3c54cde11.doc" mimeTypeId="application/msword" resourceSize="499774"/>
+    <DataResource dataResourceId="P-10016" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于在全国中小企业股份转让系统转让股票有关证券（股票）交易印花税政策的通知.docx" objectInfo="70c08b78-2248-46bc-8c76-db414803765a.docx" mimeTypeId="application/msword" resourceSize="13073"/>
+    <DataResource dataResourceId="P-10017" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于实施全国中小企业股份转让系统挂牌公司股息红利差别化个人所得税政策有关问题的通知.docx" objectInfo="924c00b6-d4ff-4c69-8f74-f3681ed968b7.docx" mimeTypeId="application/msword" resourceSize="15502"/>
+    <DataResource dataResourceId="P-10018" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第8号——定向发行优先股申请文件.docx" objectInfo="9e8b9963-caed-4266-bb3e-46be9f04f4df.docx" mimeTypeId="application/msword" resourceSize="14991"/>
+    <DataResource dataResourceId="P-10019" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第7号——定向发行优先股说明书和发行情况报告书.docx" objectInfo="d0470645-cae7-44da-b7af-b9ea4bb0799a.docx" mimeTypeId="application/msword" resourceSize="20095"/>
+    <DataResource dataResourceId="P-10020" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="优先股试点管理办法.doc" objectInfo="6f54812c-8f41-4c65-b067-6f1b1985a8b3.doc" mimeTypeId="application/msword" resourceSize="454751"/>
+    <DataResource dataResourceId="P-10021" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司重大资产重组管理办法.docx" objectInfo="5601fa0a-8342-4ddd-b0d8-89898c2476d7.docx" mimeTypeId="application/msword" resourceSize="20838"/>
+    <DataResource dataResourceId="P-10022" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统有限责任公司管理暂行办法.doc" objectInfo="9360a91c-4330-4f14-902d-d684674ff657.doc" mimeTypeId="application/msword" resourceSize="28160"/>
+    <DataResource dataResourceId="P-10023" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管指引第1号——信息披露.doc" objectInfo="7c0f45d9-94bf-45b3-9f0a-da92458ef78d.doc" mimeTypeId="application/msword" resourceSize="20162"/>
+    <DataResource dataResourceId="P-10024" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管指引第2号——申请文件.docx" objectInfo="9f865e36-7b88-404b-9ed2-6682e34f9d46.docx" mimeTypeId="application/msword" resourceSize="13958"/>
+    <DataResource dataResourceId="P-10025" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管指引第3号——章程必备条款.docx" objectInfo="7eccd14e-2ec8-4a68-adf4-97bcafa09cce.docx" mimeTypeId="application/msword" resourceSize="14324"/>
+    <DataResource dataResourceId="P-10026" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管指引第4号——股东人数超过200人的未上市股份有限公司申请行政许可有关问题的审 核指引.docx" objectInfo="66ee5986-6fdd-46ac-9193-eb01930e1267.docx" mimeTypeId="application/msword" resourceSize="16286"/>
+    <DataResource dataResourceId="P-10027" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第1号——公开转让说明书.docx" objectInfo="01a480f8-a79b-4051-bdaa-6291c361615e.docx" mimeTypeId="application/msword" resourceSize="19068"/>
+    <DataResource dataResourceId="P-10028" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第2号——公开转让股票申请文件.docx" objectInfo="4beb3dd1-398e-407f-ade9-c9fc8245c590.docx" mimeTypeId="application/msword" resourceSize="14815"/>
+    <DataResource dataResourceId="P-10029" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第3号——定向发行说明书和发行情况报告书.docx" objectInfo="203e1d0f-86a4-4d2e-a852-86311cfa91c8.docx" mimeTypeId="application/msword" resourceSize="17884"/>
+    <DataResource dataResourceId="P-10030" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第4号——定向发行申请文件.docx" objectInfo="42f4cc9a-b3b2-4354-bb92-95fe8537474f.docx" mimeTypeId="application/msword" resourceSize="14392"/>
+    <DataResource dataResourceId="P-10031" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="中国证券监督管理委员会公告〔2013〕49号.docx" objectInfo="cd6cc600-86ae-4caa-ad5b-82a6a03b276e.docx" mimeTypeId="application/msword" resourceSize="13650"/>
+    <DataResource dataResourceId="P-10032" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司监管问答——定向发行（一） .docx" objectInfo="5a007b01-21ea-4ec1-985b-ffa8430554a0.docx" mimeTypeId="application/msword" resourceSize="13095"/>
+    <DataResource dataResourceId="P-10033" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于加强非上市公众公司监管工作的指导意见.docx" objectInfo="571c5a8b-b383-44cb-a4e2-2100728d994b.docx" mimeTypeId="application/msword" resourceSize="17578"/>
+    <DataResource dataResourceId="P-10034" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于转让优先股有关证券（股票） .docx" objectInfo="42263eba-d6fd-4fdd-88c3-530eea52d373.docx" mimeTypeId="application/msword" resourceSize="12966"/>
+    <DataResource dataResourceId="P-10035" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第6号——重大资产重组报告书.docx" objectInfo="d0cc265f-aa89-419e-9fc8-fe239066f51a.docx" mimeTypeId="application/msword" resourceSize="22519"/>
+    <DataResource dataResourceId="P-10036" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司信息披露内容与格式准则第5号——权益变动报告书、收购报告书、要约收购报告书.docx" objectInfo="8f89e3a7-8ef5-436d-b729-ca81ba015896.docx" mimeTypeId="application/msword" resourceSize="20366"/>
+    <DataResource dataResourceId="P-10037" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="非上市公众公司收购管理办法.doc" objectInfo="ee775708-c7bc-4a52-9526-6c5d530ea9cd.doc" mimeTypeId="application/msword" resourceSize="509726"/>
+
+    <DataResource dataResourceId="P-10038" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="中华人民共和国公司法.pdf" objectInfo="4bef1478-7544-4b64-b20a-e74170b816b7.pdf" mimeTypeId="application/pdf" resourceSize="235798"/>
+    <DataResource dataResourceId="P-10039" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="中华人民共和国证券法.pdf" objectInfo="7be486d0-576d-4df6-92d5-2cf77f8fc490.pdf" mimeTypeId="application/pdf" resourceSize="227685"/>
+    <DataResource dataResourceId="P-10040" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="国务院关于全国中小企业股份转让系统有关问题的决定.docx" objectInfo="62b8c627-253c-4c68-84da-784ff49d88e1.docx" mimeTypeId="application/msword" resourceSize="14859"/>
+    <DataResource dataResourceId="P-10041" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="国务院关于优先股试点的指导意见.docx" objectInfo="d3726990-2945-4c94-b12e-6fd38a1d00db.docx" mimeTypeId="application/msword" resourceSize="16389"/>
+    <DataResource dataResourceId="P-10042" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="最高人民法院关于修改关于适用《中华人民共和国公司法》若干问题的规定的决定.docx" objectInfo="114fae75-69b2-4ba8-8f6b-9a9e7e7d4609.docx" mimeTypeId="application/msword" resourceSize="13630"/>
+    <DataResource dataResourceId="P-10043" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（一）(2014修正).docx" objectInfo="35d518f0-1de4-4f8e-8316-3264529d7394.docx" mimeTypeId="application/msword" resourceSize="13284"/>
+    <DataResource dataResourceId="P-10044" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（二）(2014修正).docx" objectInfo="4ea1105e-b685-484d-91c9-58b6099d034e.docx" mimeTypeId="application/msword" resourceSize="17086"/>
+    <DataResource dataResourceId="P-10045" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（三）(2014修正).docx" objectInfo="825fcd2c-3598-4a10-9c66-5894dda4c7f1.docx" mimeTypeId="application/msword" resourceSize="17444"/>
+    <DataResource dataResourceId="P-10046" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="证券投资基金法(2015修正).doc" objectInfo="d3bfa2c1-beb5-422e-a27e-3828a8b13eff.doc" mimeTypeId="application/msword" resourceSize="82944"/>
+
+    <DataResource dataResourceId="P-10047" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行常见问题解答（三）——募集资金管理、认购协议中特殊条款、特殊类型挂牌公司融资》.docx.docx" objectInfo="d47fe278-31c0-4856-a6a3-5e5de21eade8.docx" mimeTypeId="application/msword" resourceSize="33292"/>
+    <DataResource dataResourceId="P-10048" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司并购重组业务问答（二）.docx" objectInfo="e8ff7a54-5295-4fb3-b81c-4d5a1b35b200.docx" mimeTypeId="application/msword" resourceSize="18898"/>
+    <DataResource dataResourceId="P-10049" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="XXX股份有限公司关于撤回股票发行备案文件的申请.docx" objectInfo="ea8b7254-2d05-45df-9b0f-a12057ce1cec.docx" mimeTypeId="application/msword" resourceSize="18004"/>
+    <DataResource dataResourceId="P-10050" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="XXX证券公司关于XXX股份有限公司撤回发行备案文件的审查意见.docx" objectInfo="ee3cfe6a-3e88-4467-89de-ccd0e4e69041.docx" mimeTypeId="application/msword" resourceSize="17850"/>
+    <DataResource dataResourceId="P-10051" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司并购重组业务问答（一）.docx" objectInfo="75891f37-57ec-402d-b5ce-7cf25fbd4aa8.docx" mimeTypeId="application/msword" resourceSize="27900"/>
+    <DataResource dataResourceId="P-10052" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司年度报告内容与格式模板.docx" objectInfo="64c4ebb9-eb88-4ce3-b5bc-52cd09ddff50.docx" mimeTypeId="application/msword" resourceSize="196909"/>
+    <DataResource dataResourceId="P-10053" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司信息披露及会计业务问答（二）发行费用的核算.pdf" objectInfo="f3370bba-3925-4d62-aa82-7dddc86d8285.pdf" mimeTypeId="application/pdf" resourceSize="312001"/>
+    <DataResource dataResourceId="P-10054" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司信息披露及会计业务问答（一）——利润分配与公积金转增股本.pdf" objectInfo="782e0490-8ba9-411e-abbe-31fb9c42db0c.pdf" mimeTypeId="application/pdf" resourceSize="471166"/>
+    <DataResource dataResourceId="P-10055" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司暂停与恢复转让业务指南(试行).doc" objectInfo="c77e287e-0033-46e6-bad1-49a5e5bde0fd.doc" mimeTypeId="application/msword" resourceSize="99840"/>
+    <DataResource dataResourceId="P-10056" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行常见问题解答（二）——连续发行.docx" objectInfo="52c2bffd-ff6e-4d23-aa38-96c61eb3f677.docx" mimeTypeId="application/msword" resourceSize="18593"/>
+    <DataResource dataResourceId="P-10057" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统优先股业务指南第1号—发行备案和申请办理挂牌的文件和程序.docx" objectInfo="defeedfe-0662-4e19-ba64-8cc967743465.docx" mimeTypeId="application/msword" resourceSize="43779"/>
+    <DataResource dataResourceId="P-10058" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统优先股业务指南第2号—主办券商推荐工作报告的内容与格式.docx" objectInfo="3ac0da2b-581c-4bac-b49e-af99060e70a9.docx" mimeTypeId="application/msword" resourceSize="34788"/>
+    <DataResource dataResourceId="P-10059" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统优先股业务指南第3号—法律意见书的内容与格式.docx" objectInfo="5edf8f15-0e53-4323-ac29-32bfb694d4ca.docx" mimeTypeId="application/msword" resourceSize="32615"/>
+    <DataResource dataResourceId="P-10060" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行审查要点.xlsx" objectInfo="0aed2956-ec2c-4035-a1f7-97bce39425b2.xlsx" mimeTypeId="application/vnd.ms-excel" resourceSize="31624"/>
+    <DataResource dataResourceId="P-10061" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行文件模板.docx" objectInfo="5a4bddf3-98e3-4290-a12c-37fb1fcb32f6.docx" mimeTypeId="application/msword" resourceSize="86516"/>
+    <DataResource dataResourceId="P-10062" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行常见问题解答——股份支付.docx" objectInfo="ca87fc1e-c380-4b1a-a704-889f54261d73.docx" mimeTypeId="application/msword" resourceSize="21552"/>
+    <DataResource dataResourceId="P-10063" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="挂牌公司股票发行备案材料审查进度表.xlsx" objectInfo="7fdb3678-8c74-4697-99e4-e9fdfef953b1.xlsx" mimeTypeId="application/vnd.ms-excel" resourceSize="50125"/>
+    <DataResource dataResourceId="P-10064" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司持续信息披露业务指南（试行）.doc" objectInfo="620127ae-2fa6-4192-a671-6738dd6238b3.doc" mimeTypeId="application/msword" resourceSize="46592"/>
+    <DataResource dataResourceId="P-10065" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统重大资产重组业务指南第1号：非上市公众公司重大资产重组内幕信息知情人.docx" objectInfo="22db9ac9-47c2-4111-ab98-7d8d0f2273fd.docx" mimeTypeId="application/msword" resourceSize="20577"/>
+    <DataResource dataResourceId="P-10066" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统重大资产重组业务指南第2号：非上市公众公司发行股份购买资产构成重大资.docx" objectInfo="0ef1988b-4404-4c31-b19f-3f3cf0d29917.docx" mimeTypeId="application/msword" resourceSize="33518"/>
+    <DataResource dataResourceId="P-10067" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统临时公告格式模板》.txt" objectInfo="989067f4-9de1-4a95-b7a6-538e66575e92.txt" mimeTypeId="text/plain" resourceSize="0"/>
+    <DataResource dataResourceId="P-10068" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司证券简称或公司全称变更业务指南(试行).doc" objectInfo="f3c1446b-fdaa-419a-8af0-f9fb66e8cdfe.doc" mimeTypeId="application/msword" resourceSize="41984"/>
+    <DataResource dataResourceId="P-10069" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司权益分派业务指南（试行）.doc" objectInfo="6512fb01-0ab3-4ef2-bfd2-f7c0b52f1911.doc" mimeTypeId="application/msword" resourceSize="33792"/>
+    <DataResource dataResourceId="P-10070" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务指南》.pdf" objectInfo="9f62f727-8d21-4728-8067-f7a2721a72f3.pdf" mimeTypeId="application/pdf" resourceSize="664140"/>
+
+
+    <TblPolicyFiles id="P-10001" category="POLICY_CATEGORY_BMGZ" file="P-10001" />
+    <TblPolicyFiles id="P-10002" category="POLICY_CATEGORY_BMGZ" file="P-10002" />
+    <TblPolicyFiles id="P-10003" category="POLICY_CATEGORY_BMGZ" file="P-10003" />
+    <TblPolicyFiles id="P-10004" category="POLICY_CATEGORY_BMGZ" file="P-10004" />
+    <TblPolicyFiles id="P-10005" category="POLICY_CATEGORY_BMGZ" file="P-10005" />
+    <TblPolicyFiles id="P-10006" category="POLICY_CATEGORY_BMGZ" file="P-10006"   publishDate="2015-01-15"/>
+    <TblPolicyFiles id="P-10007" category="POLICY_CATEGORY_BMGZ" file="P-10007" />
+    <TblPolicyFiles id="P-10008" category="POLICY_CATEGORY_BMGZ" file="P-10008" />
+    <TblPolicyFiles id="P-10009" category="POLICY_CATEGORY_BMGZ" file="P-10009" />
+    <TblPolicyFiles id="P-10010" category="POLICY_CATEGORY_BMGZ" file="P-10010" />
+    <TblPolicyFiles id="P-10011" category="POLICY_CATEGORY_BMGZ" file="P-10011" />
+    <TblPolicyFiles id="P-10012" category="POLICY_CATEGORY_BMGZ" file="P-10012"   publishDate="2015-12-17"/>
+    <TblPolicyFiles id="P-10013" category="POLICY_CATEGORY_BMGZ" file="P-10013"   publishDate="2015-09-07"/>
+    <TblPolicyFiles id="P-10014" category="POLICY_CATEGORY_BMGZ" file="P-10014" />
+    <TblPolicyFiles id="P-10015" category="POLICY_CATEGORY_BMGZ" file="P-10015" />
+    <TblPolicyFiles id="P-10016" category="POLICY_CATEGORY_BMGZ" file="P-10016"   publishDate="2014-05-27"/>
+    <TblPolicyFiles id="P-10017" category="POLICY_CATEGORY_BMGZ" file="P-10017"   publishDate="2014-06-27"/>
+    <TblPolicyFiles id="P-10018" category="POLICY_CATEGORY_BMGZ" file="P-10018"   publishDate="2014-09-19"/>
+    <TblPolicyFiles id="P-10019" category="POLICY_CATEGORY_BMGZ" file="P-10019"   publishDate="2014-09-19"/>
+    <TblPolicyFiles id="P-10020" category="POLICY_CATEGORY_BMGZ" file="P-10020"   publishDate="2014-03-21"/>
+    <TblPolicyFiles id="P-10021" category="POLICY_CATEGORY_BMGZ" file="P-10021"   publishDate="2014-06-23"/>
+    <TblPolicyFiles id="P-10022" category="POLICY_CATEGORY_BMGZ" file="P-10022"   publishDate="2013-01-31"/>
+    <TblPolicyFiles id="P-10023" category="POLICY_CATEGORY_BMGZ" file="P-10023"   publishDate="2013-01-04"/>
+    <TblPolicyFiles id="P-10024" category="POLICY_CATEGORY_BMGZ" file="P-10024"   publishDate="2013-01-04" />
+    <TblPolicyFiles id="P-10025" category="POLICY_CATEGORY_BMGZ" file="P-10025"   publishDate="2013-01-04" />
+    <TblPolicyFiles id="P-10026" category="POLICY_CATEGORY_BMGZ" file="P-10026"   publishDate="2014-12-26" />
+    <TblPolicyFiles id="P-10027" category="POLICY_CATEGORY_BMGZ" file="P-10027"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10028" category="POLICY_CATEGORY_BMGZ" file="P-10028"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10029" category="POLICY_CATEGORY_BMGZ" file="P-10029"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10030" category="POLICY_CATEGORY_BMGZ" file="P-10030"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10031" category="POLICY_CATEGORY_BMGZ" file="P-10031"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10032" category="POLICY_CATEGORY_BMGZ" file="P-10032"   publishDate="2013-12-26"/>
+    <TblPolicyFiles id="P-10033" category="POLICY_CATEGORY_BMGZ" file="P-10033" />
+    <TblPolicyFiles id="P-10034" category="POLICY_CATEGORY_BMGZ" file="P-10034"   publishDate="2014-07-23"/>
+    <TblPolicyFiles id="P-10035" category="POLICY_CATEGORY_BMGZ" file="P-10035" />
+    <TblPolicyFiles id="P-10036" category="POLICY_CATEGORY_BMGZ" file="P-10036"   publishDate="2014-06-23"/>
+    <TblPolicyFiles id="P-10037" category="POLICY_CATEGORY_BMGZ" file="P-10037" />
+
+    <TblPolicyFiles id="P-10038" category="POLICY_CATEGORY_FLFG" file="P-10038" publishDate="2013-12-28"/>
+    <TblPolicyFiles id="P-10039" category="POLICY_CATEGORY_FLFG" file="P-10039" publishDate="2013-06-29" />
+    <TblPolicyFiles id="P-10040" category="POLICY_CATEGORY_FLFG" file="P-10040"/>
+    <TblPolicyFiles id="P-10041" category="POLICY_CATEGORY_FLFG" file="P-10041" />
+    <TblPolicyFiles id="P-10042" category="POLICY_CATEGORY_FLFG" file="P-10042"  publishDate="2014-02-17"/>
+    <TblPolicyFiles id="P-10043" category="POLICY_CATEGORY_FLFG" file="P-10043"  publishDate="2014-02-17" />
+    <TblPolicyFiles id="P-10044" category="POLICY_CATEGORY_FLFG" file="P-10044"  publishDate="2014-02-17" />
+    <TblPolicyFiles id="P-10045" category="POLICY_CATEGORY_FLFG" file="P-10045"  publishDate="2014-02-17" />
+    <TblPolicyFiles id="P-10046" category="POLICY_CATEGORY_FLFG" file="P-10046" />
+
+    <TblPolicyFiles id="P-10047" category="POLICY_CATEGORY_FWZN_01" file="P-10047" />
+    <TblPolicyFiles id="P-10048" category="POLICY_CATEGORY_FWZN_01" file="P-10048" />
+    <TblPolicyFiles id="P-10049" category="POLICY_CATEGORY_FWZN_01" file="P-10049" />
+    <TblPolicyFiles id="P-10050" category="POLICY_CATEGORY_FWZN_01" file="P-10050" />
+    <TblPolicyFiles id="P-10051" category="POLICY_CATEGORY_FWZN_01" file="P-10051" />
+    <TblPolicyFiles id="P-10052" category="POLICY_CATEGORY_FWZN_01" file="P-10052" />
+    <TblPolicyFiles id="P-10053" category="POLICY_CATEGORY_FWZN_01" file="P-10053" />
+    <TblPolicyFiles id="P-10054" category="POLICY_CATEGORY_FWZN_01" file="P-10054" />
+    <TblPolicyFiles id="P-10055" category="POLICY_CATEGORY_FWZN_01" file="P-10055" />
+    <TblPolicyFiles id="P-10056" category="POLICY_CATEGORY_FWZN_01" file="P-10056" />
+    <TblPolicyFiles id="P-10057" category="POLICY_CATEGORY_FWZN_01" file="P-10057" />
+    <TblPolicyFiles id="P-10058" category="POLICY_CATEGORY_FWZN_01" file="P-10058" />
+    <TblPolicyFiles id="P-10059" category="POLICY_CATEGORY_FWZN_01" file="P-10059" />
+    <TblPolicyFiles id="P-10060" category="POLICY_CATEGORY_FWZN_01" file="P-10060" />
+    <TblPolicyFiles id="P-10061" category="POLICY_CATEGORY_FWZN_01" file="P-10061" />
+    <TblPolicyFiles id="P-10062" category="POLICY_CATEGORY_FWZN_01" file="P-10062" />
+    <TblPolicyFiles id="P-10063" category="POLICY_CATEGORY_FWZN_01" file="P-10063" />
+    <TblPolicyFiles id="P-10064" category="POLICY_CATEGORY_FWZN_01" file="P-10064" />
+    <TblPolicyFiles id="P-10065" category="POLICY_CATEGORY_FWZN_01" file="P-10065" />
+    <TblPolicyFiles id="P-10066" category="POLICY_CATEGORY_FWZN_01" file="P-10066" />
+    <TblPolicyFiles id="P-10067" category="POLICY_CATEGORY_FWZN_01" file="P-10067" />
+    <TblPolicyFiles id="P-10068" category="POLICY_CATEGORY_FWZN_01" file="P-10068" />
+    <TblPolicyFiles id="P-10069" category="POLICY_CATEGORY_FWZN_01" file="P-10069" />
+    <TblPolicyFiles id="P-10070" category="POLICY_CATEGORY_FWZN_01" file="P-10070" />
+
+    <DataResource dataResourceId="P-10071" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="XX股份有限公司关于股票在全国中小企业股份转让系统公开转让的申请报告.doc" objectInfo="a8df2077-72bc-4c09-ba4b-1566d6e57e80.doc" mimeTypeId="application/msword" resourceSize="48640"/>
+    <TblPolicyFiles id="P-10071" category="POLICY_CATEGORY_FWZN_02" file="P-10071" />
+    <DataResource dataResourceId="P-10072" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="XX股份有限公司关于股票在全国中小企业股份转让系统挂牌的申请报告.doc" objectInfo="f538134a-5add-407e-8703-defdc1a83733.doc" mimeTypeId="application/msword" resourceSize="48640"/>
+    <TblPolicyFiles id="P-10072" category="POLICY_CATEGORY_FWZN_02" file="P-10072" />
+    <DataResource dataResourceId="P-10073" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="XX证券公司关于XX股份有限公司股票在全国中小企业股份转让系统公开转让的推荐意见（适用于已挂牌公司）.doc" objectInfo="fb93bfca-ce5d-4e41-a408-640b0c2484c5.doc" mimeTypeId="application/msword" resourceSize="25088"/>
+    <TblPolicyFiles id="P-10073" category="POLICY_CATEGORY_FWZN_02" file="P-10073" />
+    <DataResource dataResourceId="P-10074" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统挂牌协议》.doc" objectInfo="316f300e-445c-4cc7-91c6-62b43ce15c40.doc" mimeTypeId="application/msword" resourceSize="44032"/>
+    <TblPolicyFiles id="P-10074" category="POLICY_CATEGORY_FWZN_02" file="P-10074" />
+    <DataResource dataResourceId="P-10075" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《推荐挂牌并持续督导协议书》.doc" objectInfo="9297f5dc-f0fb-465d-8ae1-c8644bd575c0.doc" mimeTypeId="application/msword" resourceSize="48640"/>
+    <TblPolicyFiles id="P-10075" category="POLICY_CATEGORY_FWZN_02" file="P-10075" />
+    <DataResource dataResourceId="P-10076" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《董事（监事、高级管理人员）声明及承诺书》.doc" objectInfo="78ba72f8-c688-46ce-ae6e-f5fe931cb212.doc" mimeTypeId="application/msword" resourceSize="51712"/>
+    <TblPolicyFiles id="P-10076" category="POLICY_CATEGORY_FWZN_02" file="P-10076" />
+    <DataResource dataResourceId="P-10077" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统股票挂牌业务操作指南（试行）.docx" objectInfo="fee6b6e9-f0e8-449d-9862-a32aeef6b766.docx" mimeTypeId="application/msword" resourceSize="55421"/>
+    <TblPolicyFiles id="P-10077" category="POLICY_CATEGORY_FWZN_02" file="P-10077" />
+    <DataResource dataResourceId="P-10078" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于发布《挂牌审查一般问题内核参考要点（试行）》的通知.pdf" objectInfo="b9a49da8-46f6-4d9c-b476-31fdaa4db963.pdf" mimeTypeId="application/pdf" resourceSize="420341"/>
+    <TblPolicyFiles id="P-10078" category="POLICY_CATEGORY_FWZN_02" file="P-10078" />
+    <DataResource dataResourceId="P-10079" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="申请挂牌公司基本信息和联系方式表.doc" objectInfo="a626302e-843c-421f-b4e8-084c812e5e13.doc" mimeTypeId="application/msword" resourceSize="72192"/>
+    <TblPolicyFiles id="P-10079" category="POLICY_CATEGORY_FWZN_02" file="P-10079" />
+
+    <DataResource dataResourceId="P-10080" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统做市业务备案申请文件内容与格式指南》.docx" objectInfo="39dec0f8-cd32-4e2f-9185-c5e18cc873be.docx" mimeTypeId="application/msword" resourceSize="23625"/>
+    <TblPolicyFiles id="P-10080" category="POLICY_CATEGORY_FWZN_03" file="P-10080" />
+    <DataResource dataResourceId="P-10081" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《证券公司从事推荐业务自律承诺书》.doc" objectInfo="fb2a72b5-a484-41c3-95ef-020432d8ec8d.doc" mimeTypeId="application/msword" resourceSize="34304"/>
+    <TblPolicyFiles id="P-10081" category="POLICY_CATEGORY_FWZN_03" file="P-10081" />
+    <DataResource dataResourceId="P-10082" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《证券公司从事经纪业务自律承诺书》.doc" objectInfo="b50f81fa-6d8c-45ff-a0ee-3a667451993c.doc" mimeTypeId="application/msword" resourceSize="35328"/>
+    <TblPolicyFiles id="P-10082" category="POLICY_CATEGORY_FWZN_03" file="P-10082" />
+    <DataResource dataResourceId="P-10083" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《证券公司参与全国中小企业股份转让系统业务协议书》.doc" objectInfo="ce174760-a3f4-47b4-98ad-dad385fb59c0.doc" mimeTypeId="application/msword" resourceSize="64512"/>
+    <TblPolicyFiles id="P-10083" category="POLICY_CATEGORY_FWZN_03" file="P-10083" />
+    <DataResource dataResourceId="P-10084" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《证券公司基本情况申报表》.doc" objectInfo="de526933-92af-4e97-b282-a20b2ff8d713.doc" mimeTypeId="application/msword" resourceSize="182784"/>
+    <TblPolicyFiles id="P-10084" category="POLICY_CATEGORY_FWZN_03" file="P-10084" />
+    <DataResource dataResourceId="P-10085" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商和挂牌公司协商一致解除持续督导协议操作指南.docx" objectInfo="9d2bf769-7ac2-4365-b495-31fe1de4835b.docx" mimeTypeId="application/msword" resourceSize="22770"/>
+    <TblPolicyFiles id="P-10085" category="POLICY_CATEGORY_FWZN_03" file="P-10085" />
+    <DataResource dataResourceId="P-10086" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统投资者适当性管理证券账户信息报送业务指南.docx" objectInfo="53250352-9929-4640-8584-28bab0f68e21.docx" mimeTypeId="application/msword" resourceSize="20017"/>
+    <TblPolicyFiles id="P-10086" category="POLICY_CATEGORY_FWZN_03" file="P-10086" />
+    <DataResource dataResourceId="P-10087" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="机构业务问答（一）——关于资产管理计划、契约型私募基金投资拟挂牌公司股权有关问题.docx" objectInfo="a774d38b-4bad-4ecb-9f65-0521327d0b76.docx" mimeTypeId="application/msword" resourceSize="21139"/>
+    <TblPolicyFiles id="P-10087" category="POLICY_CATEGORY_FWZN_03" file="P-10087" />
+
+    <DataResource dataResourceId="P-10088" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统交易单元业务办理指南（试行）.docx" objectInfo="1de42afe-5467-4e7a-bb0f-34e16b109537.docx" mimeTypeId="application/msword" resourceSize="164057"/>
+    <TblPolicyFiles id="P-10088" category="POLICY_CATEGORY_FWZN_04" file="P-10088" />
+
+    <DataResource dataResourceId="P-10089" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《两网公司及退市公司股票转让委托协议书》参考文本.doc" objectInfo="ac037d68-62d0-41a6-8dbc-63a4526fbae8.doc" mimeTypeId="application/msword" resourceSize="41472"/>
+    <TblPolicyFiles id="P-10089" category="POLICY_CATEGORY_FWZN_05" file="P-10089" />
+    <DataResource dataResourceId="P-10090" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《两网公司及退市公司股票转让风险揭示书》参考文本.doc" objectInfo="a03f8a03-02fc-4238-8be1-22fbb3ff20b5.doc" mimeTypeId="application/msword" resourceSize="31232"/>
+    <TblPolicyFiles id="P-10090" category="POLICY_CATEGORY_FWZN_05" file="P-10090" />
+    <DataResource dataResourceId="P-10091" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统两网公司及退市公司股票分类转让变更业务指南(试行).doc" objectInfo="5d8babec-aaa2-47a4-b968-7d13fc322024.doc" mimeTypeId="application/msword" resourceSize="40448"/>
+    <TblPolicyFiles id="P-10091" category="POLICY_CATEGORY_FWZN_05" file="P-10091" />
+    <DataResource dataResourceId="P-10092" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统退市公司股票挂牌业务指南(试行).docx" objectInfo="09918296-0596-4147-b374-9d7e87dd61df.docx" mimeTypeId="application/msword" resourceSize="75116"/>
+    <TblPolicyFiles id="P-10092" category="POLICY_CATEGORY_FWZN_05" file="P-10092" />
+
+    <DataResource dataResourceId="P-10093" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《买卖挂牌公司股票委托代理协议》.doc" objectInfo="037c929e-a33d-4cd8-924e-ed61fdec75cd.doc" mimeTypeId="application/msword" resourceSize="40960"/>
+    <TblPolicyFiles id="P-10093" category="POLICY_CATEGORY_FWZN_06" file="P-10093" />
+    <DataResource dataResourceId="P-10094" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统挂牌公司股票公开转让特别风险揭示书》必备条款.doc" objectInfo="5062a26d-2d38-4d27-a7c9-027bf6e4fbe2.doc" mimeTypeId="application/msword" resourceSize="31744"/>
+    <TblPolicyFiles id="P-10094" category="POLICY_CATEGORY_FWZN_06" file="P-10094" />
+
+    <DataResource dataResourceId="P-10095" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统申请材料接收须知》.pdf" objectInfo="0bf981a6-06f0-4a05-96f1-53725f08e39b.pdf" mimeTypeId="application/pdf" resourceSize="220522"/>
+    <TblPolicyFiles id="P-10095" category="POLICY_CATEGORY_FWZN_07" file="P-10095" />
+    <DataResource dataResourceId="P-10096" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《关于收取挂牌公司挂牌年费的通知》.docx" objectInfo="a8a68e70-65c3-4cd8-a903-849a6a7d390f.docx" mimeTypeId="application/msword" resourceSize="15926"/>
+    <TblPolicyFiles id="P-10096" category="POLICY_CATEGORY_FWZN_07" file="P-10096" />
+    <DataResource dataResourceId="P-10097" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《持续督导协议书》.doc" objectInfo="36e48e43-6a08-4fc9-bbdf-c87e9d23ed5e.doc" mimeTypeId="application/msword" resourceSize="49664"/>
+    <TblPolicyFiles id="P-10097" category="POLICY_CATEGORY_FWZN_07" file="P-10097" />
+    <DataResource dataResourceId="P-10098" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《股份公司申请在全国中小企业股份转让系统公开转让、定向发行股票的审查工作流程》.pdf" objectInfo="95769d60-3f91-49cc-803d-03704dd6a6b6.pdf" mimeTypeId="application/pdf" resourceSize="473145"/>
+    <TblPolicyFiles id="P-10098" category="POLICY_CATEGORY_FWZN_07" file="P-10098" />
+    <DataResource dataResourceId="P-10099" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于做好申请材料接收工作有关注意事项的通知.docx" objectInfo="529e981c-17c8-426e-9e96-759bd34edecf.docx" mimeTypeId="application/msword" resourceSize="14871"/>
+    <TblPolicyFiles id="P-10099" category="POLICY_CATEGORY_FWZN_07" file="P-10099" />
+
+    <DataResource dataResourceId="P-10100" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="中国结算北京分公司 协助执法业务指南.pdf" objectInfo="0bdef5e4-6ef4-47f9-97c8-c2fdc7bbad2d.pdf" mimeTypeId="application/pdf" resourceSize="619763"/>
+    <TblPolicyFiles id="P-10100" category="POLICY_CATEGORY_YWGZ_01" file="P-10100" />
+    <DataResource dataResourceId="P-10101" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="中国结算北京分公司主办券商 协助冻结流通证券业务指引 .pdf" objectInfo="14d2c8e9-fbc3-4f31-b8b6-7581fead9382.pdf" mimeTypeId="application/pdf" resourceSize="320376"/>
+    <TblPolicyFiles id="P-10101" category="POLICY_CATEGORY_YWGZ_01" file="P-10101" />
+
+    <DataResource dataResourceId="P-10102" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统挂牌公司信息披露细则（试行）》.pdf" objectInfo="942be196-9992-4245-92f6-60d37019c5e9.pdf" mimeTypeId="application/pdf" resourceSize="236557"/>
+    <TblPolicyFiles id="P-10102" category="POLICY_CATEGORY_YWGZ_02" file="P-10102" />
+    <DataResource dataResourceId="P-10103" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统挂牌公司半年度报告内容与格式指引（试行）》.doc" objectInfo="618d834a-be76-454a-b8f2-e96910bba29b.doc" mimeTypeId="application/msword" resourceSize="437760"/>
+    <TblPolicyFiles id="P-10103" category="POLICY_CATEGORY_YWGZ_02" file="P-10103" />
+    <DataResource dataResourceId="P-10104" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统挂牌公司年度报告内容与格式指引（试行）》.pdf" objectInfo="83e203b8-31de-485d-9eb1-bb4e56447f04.pdf" mimeTypeId="application/pdf" resourceSize="298773"/>
+    <TblPolicyFiles id="P-10104" category="POLICY_CATEGORY_YWGZ_02" file="P-10104" />
+    <DataResource dataResourceId="P-10105" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务指引第1号——备案文件的内容与格式（试行）》.pdf" objectInfo="20f4f056-568f-4b77-861d-996711dc9768.pdf" mimeTypeId="application/pdf" resourceSize="483908"/>
+    <TblPolicyFiles id="P-10105" category="POLICY_CATEGORY_YWGZ_02" file="P-10105" />
+    <DataResource dataResourceId="P-10106" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务指引第2号——股票发行方案及发行情况报告书的内 容与格式.pdf" objectInfo="de575d90-9407-46d7-a0a9-c89d2a9922b1.pdf" mimeTypeId="application/pdf" resourceSize="543786"/>
+    <TblPolicyFiles id="P-10106" category="POLICY_CATEGORY_YWGZ_02" file="P-10106" />
+    <DataResource dataResourceId="P-10107" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务指引第3号——主办券商关于股票发行合法合规性意 见的内容.pdf" objectInfo="c8c33d6e-103d-406b-9a07-41005dbf4cca.pdf" mimeTypeId="application/pdf" resourceSize="393776"/>
+    <TblPolicyFiles id="P-10107" category="POLICY_CATEGORY_YWGZ_02" file="P-10107" />
+    <DataResource dataResourceId="P-10108" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务指引第4号——法律意见书的内容与格式（试行）》.pdf" objectInfo="1f01de45-d1a3-46f1-b602-978c14f393c3.pdf" mimeTypeId="application/pdf" resourceSize="433231"/>
+    <TblPolicyFiles id="P-10108" category="POLICY_CATEGORY_YWGZ_02" file="P-10108" />
+    <DataResource dataResourceId="P-10109" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票发行业务细则（试行）》.pdf" objectInfo="358e6986-0ab6-4e48-9fff-836d1c51d11a.pdf" mimeTypeId="application/pdf" resourceSize="483908"/>
+    <TblPolicyFiles id="P-10109" category="POLICY_CATEGORY_YWGZ_02" file="P-10109" />
+    <DataResource dataResourceId="P-10110" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业优先股业务指引.docx" objectInfo="d4df70cf-a701-46f9-8bc9-1a94622ebc2c.docx" mimeTypeId="application/msword" resourceSize="38900"/>
+    <TblPolicyFiles id="P-10110" category="POLICY_CATEGORY_YWGZ_02" file="P-10110" />
+    <DataResource dataResourceId="P-10111" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司分层管理办法.docx" objectInfo="1ed49f2c-4457-45ca-9e19-3b27d20ea587.docx" mimeTypeId="application/msword" resourceSize="17595"/>
+    <TblPolicyFiles id="P-10111" category="POLICY_CATEGORY_YWGZ_02" file="P-10111" />
+    <DataResource dataResourceId="P-10112" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统非上市公众公司重大资产重组业务指引（试行）.docx" objectInfo="1f084c4b-b545-4d77-8fa8-c45545774723.docx" mimeTypeId="application/msword" resourceSize="23891"/>
+    <TblPolicyFiles id="P-10112" category="POLICY_CATEGORY_YWGZ_02" file="P-10112" />
+
+    <DataResource dataResourceId="P-10113" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商尽职调查.pdf" objectInfo="927bf0e3-96ff-45a1-bebe-74e7eb74b3b3.pdf" mimeTypeId="application/pdf" resourceSize="390119"/>
+    <TblPolicyFiles id="P-10113" category="POLICY_CATEGORY_YWGZ_03" file="P-10113" />
+    <DataResource dataResourceId="P-10114" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商推荐业务规定.pdf" objectInfo="c99904ee-f995-4cca-a4cb-f11753412d6b.pdf" mimeTypeId="application/pdf" resourceSize="203654"/>
+    <TblPolicyFiles id="P-10114" category="POLICY_CATEGORY_YWGZ_03" file="P-10114" />
+    <DataResource dataResourceId="P-10115" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌申请文件内容与格式指引（试行）.pdf" objectInfo="911b19d8-8f8c-400b-b83f-e724e4bd2f13.pdf" mimeTypeId="application/pdf" resourceSize="516612"/>
+    <TblPolicyFiles id="P-10115" category="POLICY_CATEGORY_YWGZ_03" file="P-10115" />
+    <DataResource dataResourceId="P-10116" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统股票挂牌条件适用基本标准指引（试行）.doc" objectInfo="18ee744e-cf62-4bd4-ad76-e2354a666143.doc" mimeTypeId="application/msword" resourceSize="46592"/>
+    <TblPolicyFiles id="P-10116" category="POLICY_CATEGORY_YWGZ_03" file="P-10116" />
+    <DataResource dataResourceId="P-10117" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让说明书内容与格式指引.pdf" objectInfo="31f3cc0e-3980-4fb8-82a8-7b96a2c14a05.pdf" mimeTypeId="application/pdf" resourceSize="694757"/>
+    <TblPolicyFiles id="P-10117" category="POLICY_CATEGORY_YWGZ_03" file="P-10117" />
+    <DataResource dataResourceId="P-10118" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="新三板挂牌业务问答—挂牌条件适用.pdf" objectInfo="44341af1-4fc3-4296-ab95-fccaa27a1cb2.pdf" mimeTypeId="application/pdf" resourceSize="957277"/>
+    <TblPolicyFiles id="P-10118" category="POLICY_CATEGORY_YWGZ_03" file="P-10118" />
+
+    <DataResource dataResourceId="P-10119" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统两网公司及退市公司信息披露暂行办法》.pdf" objectInfo="3196752e-028a-4bdb-ad3a-1bf30e83b893.pdf" mimeTypeId="application/pdf" resourceSize="361896"/>
+    <TblPolicyFiles id="P-10119" category="POLICY_CATEGORY_YWGZ_04" file="P-10119" />
+    <DataResource dataResourceId="P-10120" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统主办券商持续督导工作指引（试行）》.doc" objectInfo="43a50c6e-07a7-4722-994b-a3ac143a8c5b.doc" mimeTypeId="application/msword" resourceSize="54784"/>
+    <TblPolicyFiles id="P-10120" category="POLICY_CATEGORY_YWGZ_04" file="P-10120" />
+    <DataResource dataResourceId="P-10121" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统主办券商管理细则（试行）》.pdf" objectInfo="1e209cc1-c348-46ff-9f37-ba5df4d1a66c.pdf" mimeTypeId="application/pdf" resourceSize="319501"/>
+    <TblPolicyFiles id="P-10121" category="POLICY_CATEGORY_YWGZ_04" file="P-10121" />
+    <DataResource dataResourceId="P-10122" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统做市商做市业务管理规定（试行）》.docx" objectInfo="593010e1-68db-4970-97d5-a7d79cb995f7.docx" mimeTypeId="application/msword" resourceSize="22751"/>
+    <TblPolicyFiles id="P-10122" category="POLICY_CATEGORY_YWGZ_04" file="P-10122" />
+    <DataResource dataResourceId="P-10123" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统投资者适当性管理细则（试行）》.pdf" objectInfo="7aaf36ac-47d3-4d04-9648-553180a5c2a4.pdf" mimeTypeId="application/pdf" resourceSize="516576"/>
+    <TblPolicyFiles id="P-10123" category="POLICY_CATEGORY_YWGZ_04" file="P-10123" />
+    <DataResource dataResourceId="P-10124" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统主办券商.docx" objectInfo="5a8956bc-e7ba-454f-a551-f66c552fd8d0.docx" mimeTypeId="application/msword" resourceSize="41606"/>
+    <TblPolicyFiles id="P-10124" category="POLICY_CATEGORY_YWGZ_04" file="P-10124" />
+
+    <DataResource dataResourceId="P-10125" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统股票转让细则（试行）》.pdf" objectInfo="8e4dd5be-394f-4e4e-942f-a4b7ba83e036.pdf" mimeTypeId="application/pdf" resourceSize="726305"/>
+    <TblPolicyFiles id="P-10125" category="POLICY_CATEGORY_YWGZ_05" file="P-10125" />
+    <DataResource dataResourceId="P-10126" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统证券代码、证券简称编制管理暂行办法》.pdf" objectInfo="d88ae535-519b-4f99-adf7-ad0ededabeaf.pdf" mimeTypeId="application/pdf" resourceSize="448090"/>
+    <TblPolicyFiles id="P-10126" category="POLICY_CATEGORY_YWGZ_05" file="P-10126" />
+    <DataResource dataResourceId="P-10127" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统交易单元管理办法（试行）.docx" objectInfo="c7f94b15-421d-4a7c-b754-438ffbbf8781.docx" mimeTypeId="application/msword" resourceSize="23042"/>
+    <TblPolicyFiles id="P-10127" category="POLICY_CATEGORY_YWGZ_05" file="P-10127" />
+    <DataResource dataResourceId="P-10128" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统股票异常转让实时监控指引.doc" objectInfo="f30447e4-a6e1-488b-b8cd-b9d5035eb332.doc" mimeTypeId="application/msword" resourceSize="43520"/>
+    <TblPolicyFiles id="P-10128" category="POLICY_CATEGORY_YWGZ_05" file="P-10128" />
+    <DataResource dataResourceId="P-10129" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统股票转让方式确定及变更指引（试行）.docx" objectInfo="7dec235e-925b-4df7-ae45-659c1dfb05fc.docx" mimeTypeId="application/msword" resourceSize="38040"/>
+    <TblPolicyFiles id="P-10129" category="POLICY_CATEGORY_YWGZ_05" file="P-10129" />
+    <DataResource dataResourceId="P-10130" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统转让异常情况处理办法（试行）.docx" objectInfo="67a33098-5709-41db-b4e4-8d76fcef0dcf.docx" mimeTypeId="application/msword" resourceSize="19064"/>
+    <TblPolicyFiles id="P-10130" category="POLICY_CATEGORY_YWGZ_05" file="P-10130" />
+    <DataResource dataResourceId="P-10131" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统转让意向平台管理规定（试行）.docx" objectInfo="b2d00a98-68c9-4baa-9eda-8de081dc022a.docx" mimeTypeId="application/msword" resourceSize="27304"/>
+    <TblPolicyFiles id="P-10131" category="POLICY_CATEGORY_YWGZ_05" file="P-10131" />
+
+    <DataResource dataResourceId="P-10132" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统两网公司及退市公司信息披露暂行办法》.pdf" objectInfo="0793fff0-f7c1-4881-bfc8-d3abb29133e8.pdf" mimeTypeId="application/pdf" resourceSize="361896"/>
+    <TblPolicyFiles id="P-10132" category="POLICY_CATEGORY_YWGZ_06" file="P-10132" />
+    <DataResource dataResourceId="P-10133" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于两网公司及退市公司股票除权除息、缩股相关事项的通知.docx" objectInfo="6b5f80db-af62-4ee3-8831-3024330098e7.docx" mimeTypeId="application/msword" resourceSize="16899"/>
+    <TblPolicyFiles id="P-10133" category="POLICY_CATEGORY_YWGZ_06" file="P-10133" />
+
+    <DataResource dataResourceId="P-10134" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统投资者适当性管理细则（试行）》.pdf" objectInfo="7f827312-b6c0-408f-b45b-487f1fb2a278.pdf" mimeTypeId="application/pdf" resourceSize="516576"/>
+    <TblPolicyFiles id="P-10134" category="POLICY_CATEGORY_YWGZ_07" file="P-10134" />
+
+    <DataResource dataResourceId="P-10135" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统业务规则（试行）》.pdf" objectInfo="d58fa6c6-1317-454a-b826-a9b88dd77994.pdf" mimeTypeId="application/pdf" resourceSize="516612"/>
+    <TblPolicyFiles id="P-10135" category="POLICY_CATEGORY_YWGZ_08" file="P-10135" />
+    <DataResource dataResourceId="P-10136" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="《全国中小企业股份转让系统自律监管措施和纪律处分实施办法（试行）》.pdf" objectInfo="e913d292-a231-4b78-a7e5-78ff1cf458b1.pdf" mimeTypeId="application/pdf" resourceSize="2448300"/>
+    <TblPolicyFiles id="P-10136" category="POLICY_CATEGORY_YWGZ_08" file="P-10136" />
+    <DataResource dataResourceId="P-10137" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统两网公司及退市公司股票转让服务收费（及代收税项）明细表.pdf.pdf" objectInfo="7f184b2b-5f70-4627-837f-8add5aa7efd7.pdf" mimeTypeId="application/pdf" resourceSize="113068"/>
+    <TblPolicyFiles id="P-10137" category="POLICY_CATEGORY_YWGZ_08" file="P-10137" />
+    <DataResource dataResourceId="P-10138" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="全国中小企业股份转让系统挂牌公司股票转让服务收费明细表.pdf" objectInfo="b449bcdc-e8f2-4f55-ae69-cf5b80e48138.pdf" mimeTypeId="application/pdf" resourceSize="74516"/>
+    <TblPolicyFiles id="P-10138" category="POLICY_CATEGORY_YWGZ_08" file="P-10138" />
+    <DataResource dataResourceId="P-10139" dataResourceTypeId="ZXDOC_FILE" dataTemplateTypeId="NONE" statusId="CTNT_IN_PROGRESS" dataResourceName="关于发布实施《全国中小企业股份转让系统业务规则（试行）》有关事项的通知.pdf" objectInfo="7291b7ca-0150-4e05-b99d-373f584a4b6a.pdf" mimeTypeId="application/pdf" resourceSize="702382"/>
+    <TblPolicyFiles id="P-10139" category="POLICY_CATEGORY_YWGZ_08" file="P-10139" />
+</entity-engine-xml>

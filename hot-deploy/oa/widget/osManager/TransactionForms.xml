@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <!--增加事务-->
+    <form name="TransactionAddForm" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="事务编号" position="1">
+            <display description="${groovy: 'GTST'+((viewIndex * viewSize) + (itemIndex + 1))+'123'}"/>
+        </field>
+        <field name="b" title="事务类别" position="2">
+            <drop-down>
+                <option key="1" description="每月待办事宜"></option>
+                <option key="2" description="每天待办事宜"></option>
+                <option key="3" description="每年待办事宜"></option>
+            </drop-down>
+        </field>
+        <field name="c" title="开始日期" position="1">
+            <date-time/>
+        </field>
+        <field name="d" title="事务状况" position="2">
+            <drop-down>
+                <option key="1" description="运作中"></option>
+                <option key="2" description="已完成"></option>
+                <option key="3" description="废弃"></option>
+            </drop-down>
+        </field>
+        <field name="e" title="跟进人" position="1">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="f" title="事务名称" position="2">
+            <text/>
+        </field>
+        <field name="g" title="结束日期" position="1">
+            <date-time/>
+        </field>
+        <field name="h" title="绑定设备" position="2">
+           <text/>
+        </field>
+        <field name="i" title="项目主管" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="j" title="简要要求" position="2">
+            <text/>
+        </field>
+        <field name="k" title="提前提醒" position="1" tooltip="天前提醒">
+            <drop-down>
+                <option key="1" description="1"></option>
+                <option key="2" description="2"></option>
+                <option key="3" description="3"></option>
+            </drop-down>
+        </field>
+        <field name="l" title="新反馈通知" position="2" tooltip="通知发入Email">
+            <radio>
+                <option key="1" description="录入人"/>
+                <option key="2" description="项目主管"/>
+            </radio>
+        </field>
+        <field name="template" title="内容">
+            <textarea/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+    <!--事务查询条件-->
+    <form name="TransactionTrackingSearchForm" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="事务编号" position="1">
+            <text/>
+        </field>
+        <field name="b" title="事务名称" position="2">
+           <text/>
+        </field>
+        <field name="c" title="开始日期" position="3">
+            <date-time/>
+        </field>
+        <field name="d" title="事务总状况" position="4">
+            <drop-down>
+                <option key="1" description="运作中"></option>
+                <option key="2" description="已完成"></option>
+                <option key="3" description="废弃"></option>
+            </drop-down>
+        </field>
+        <field name="e" title="跟进人" position="1">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="f" title="事务类别" position="2">
+            <drop-down>
+                <option key="1" description="每月待办事宜"/>
+                <option key="2" description="每天待办事宜"/>
+                <option key="3" description="每年待办事宜"/>
+            </drop-down>
+        </field>
+        <field name="g" title="本周期进度" position="3">
+            <drop-down>
+                <option key="1" description="0/3(未完成)"/>
+                <option key="2" description="1/3(未开始)"/>
+                <option key="3" description="2/3(执行中)"/>
+                <option key="4" description="3/3(完成)"/>
+            </drop-down>
+        </field>
+        <field name="h" title="项目主管" position="4">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="i" title="时间范围" position="1">
+            <date-time/>
+        </field>
+        <field name="j" title="至" position="2">
+            <date-time/>
+        </field>
+        <field name="k" title="绑定设备" position="3">
+            <text/>
+        </field>
+        <field name="l" title="录入人" position="4">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+
+        <field name="searchLink" title-style="hide" position="1"
+               title="查询" event="onClick" action="" encode-output="false">
+            <display description="&lt;a class='smallSubmit'&gt;查询&lt;/a&gt;   &lt;a href='#nowhere' class='smallSubmit' onclick='$.transaction.addTransaction()' class='smallSubmit'&gt;增加&lt;/a&gt;"/>
+            <!--<hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>-->
+        </field>
+        <field name="spanHolder" title="spanHolder" title-area-style="hide" widget-area-style="hide" position="4">
+            <display description=""/>
+        </field>
+        <!--<field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="增加" event="onClick" action="$.transaction.addTransaction()">
+            <hyperlink target="#nowhere" description="增加" target-type="plain" url-mode="plain"/>
+        </field>-->
+
+    </form>
+<!--考勤信息搜索结果-->
+    <form name="TransactionTrackingList" type="list" list-name="transactionTrackingList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="序号" widget-area-style="sn-column" sort-field="true">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}" />
+
+        </field>
+        <field name="w" title="编号">
+            <display/>
+        </field>
+        <field name="e" title="事务类别">
+            <display/>
+        </field>
+        <field name="r" title="事务名称" event="onClick" action="$.transaction.transactionInfo()">
+            <hyperlink target="#nowhere" description="${r}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="t" title="简要要求">
+            <display/>
+        </field>
+        <field name="y" title="录入人">
+            <display/>
+        </field>
+        <field name="u" title="项目主管">
+            <display/>
+        </field>
+        <field name="i" title="跟进人">
+            <display/>
+        </field>
+        <field name="o" title="事务状况">
+            <display/>
+        </field>
+        <field name="p" title="绑定设备">
+            <display/>
+        </field>
+        <field name="a" title="发生频率">
+            <display/>
+        </field>
+        <field name="s" title="有效期">
+            <display/>
+        </field>
+        <field name="d" title="当前进度">
+            <display/>
+        </field>
+        <field name="f" title="最后反馈人/时间">
+            <display/>
+        </field>
+        <field name="g" title="最后反馈内容(点击更新)" event="onClick" action="$.transaction.transactionInfo()">
+            <hyperlink target="#nowhere" description="${g}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.transaction.addTransaction('edit')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--事务类别增加-->
+    <form name="TransactionTypeForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionTypeMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="范围" position="1">
+            <drop-down>
+                <option key="1" description="公用"></option>
+                <option key="2" description="私用"></option>
+            </drop-down>
+        </field>
+        <field name="b" title="类别名称" position="2">
+            <text/>
+        </field>
+        <field name="c" title="发生周期" position="1">
+            <drop-down>
+                <option key="1" description="一次性"></option>
+                <option key="2" description="按年重复"></option>
+                <option key="3" description="按季重复"></option>
+                <option key="4" description="按月重复"></option>
+                <option key="5" description="按天重复"></option>
+            </drop-down>
+        </field>
+        <field name="d" title="排序" position="2">
+            <text/>
+        </field>
+        <field name="e" title="使用部门" position="1">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="TransactionTypeList" type="list" list-name="transactionTypeList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="a" title="范围" >
+           <display/>
+        </field>
+        <field name="b" title="内码"  >
+            <display/>
+        </field>
+        <field name="c" title="事务类别名称"  >
+            <display/>
+        </field>
+        <field name="d" title="发生周期">
+            <display/>
+        </field>
+        <field name="e" title="排序">
+            <display/>
+        </field>
+        <field name="f" title="使用部门" >
+            <display/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.transaction.addTransactionType('edit')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--事务进度增加-->
+    <form name="TransactionProgressFrom" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionProgressMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="所属事务类别" position="1">
+            <drop-down>
+                <option key="1" description="公用"></option>
+                <option key="2" description="私用"></option>
+            </drop-down>
+        </field>
+        <field name="b" title="事务进度名称" position="2">
+            <text/>
+        </field>
+        <field name="c" title="排序" position="1">
+            <text/>
+        </field>
+
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="TransactionProgressSearch" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionTypeMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="选择所属事务类别" position="1">
+            <drop-down>
+                <option key="" description="--请选择--"></option>
+                <option key="1" description="一次性"></option>
+                <option key="2" description="按季度重复"></option>
+            </drop-down>
+        </field>
+    </form>
+    <form name="TransactionProgressList" type="list" list-name="transactionProgressList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="a" title="内码" >
+            <display/>
+        </field>
+        <field name="b" title="所属类别"  >
+            <display/>
+        </field>
+        <field name="c" title="事务进度名称"  >
+            <display/>
+        </field>
+        <field name="d" title="排序">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.transaction.addTransactionProgress('edit')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--浏览日志-->
+    <form name="visitLogList" type="list" list-name="visitLogList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="序号" widget-area-style="sn-column" sort-field="true">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}" />
+
+        </field>
+        <field name="w" title="浏览时间">
+            <display/>
+        </field>
+        <field name="e" title="所在部门">
+            <display/>
+        </field>
+        <field name="r" title="姓名">
+            <display/>
+        </field>
+        <field name="t" title="职级">
+            <display/>
+        </field>
+        <field name="y" title="访问IP">
+            <display/>
+        </field>
+    </form>
+</forms>
+

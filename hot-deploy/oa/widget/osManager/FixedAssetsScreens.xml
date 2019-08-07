@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="headerItem" from-field="headerItem" default-value="FixedAssetsManager"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <!--<include-menu name="FixedAssetsBar" location="component://oa/widget/HumanresMenus.xml"></include-menu>-->
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+<!--固定资产增加-->
+    <screen name="AddFixedAssets">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/GetFixedAssets.groovy"/>
+                <!--<set field="fixedAssetsMap" value="${parameters.fixedAssets}"/>-->
+                <entity-condition entity-name="Enumeration" list="assetStatusList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_STATUS"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="assetTypeList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_TYPE"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="assetReserveList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_RESERVE_STATUS"/>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/fixedAssets/FixedAssetsForCreate.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="FixedAssetsForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+
+<!--固定资产管理-->
+    <screen name="FixedAssetsManager">
+        <section>
+            <actions>
+                <set field="headerItem" value="FixedAssetsManager"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <!--<set field="fixedAssetsTypeList" value="${parameters.fixedAssetsTypeList}"/>-->
+                <entity-condition entity-name="Enumeration" list="assetStatusList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_STATUS"/>
+                </entity-condition>
+                <entity-and entity-name="Enumeration" list="fixedAssetsTypeList">
+                    <field-map field-name="enumTypeId" value="FIXED_ASSETS_TYPE"/>
+                </entity-and>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/fixedAssets/FixedAssetsForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="searchFixedAssetsForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <container id="ListFixedAssetsOrg">
+                            <include-screen name="ListFixedAssets"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+<!--资产管理查询结果-->
+    <screen name="ListFixedAssets">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <!--<container id="searche_osManagers">-->
+                    <!--<decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">-->
+                        <!--<decorator-section name="body">-->
+                            <!--<include-form name="FixedAssetsList" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                        <!--</decorator-section>-->
+                    <!--</decorator-screen>-->
+                <!--</container>-->
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询结果">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/fixedAssets/fixedAssetsList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditOsManager">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindOsManagerById.groovy"/>
+            </actions>
+
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-form name="EditOsManager" location="component://oa/widget/osManager/OsManagerForms.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+    <!--固定资产详细信息-->
+    <screen name="FixedAssetsInfoForm">
+        <section>
+            <actions>
+                <set field="fixedAssets" value="${parameters.fixedAssets}"/>
+                <set field="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                <set field="fixedAssetsCode" value="${fixedAssets.fixedAssetsCode}"/>
+            </actions>
+
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="固定资产管理">
+                            <include-form name="FixedAssetsInfoForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                        </screenlet>
+                        <screenlet title="固定资产明细组合及相关配件" navigation-menu-name="AddAssets" name="myComms">
+                            <include-menu name="AddAssets" location="component://oa/widget/FixedAssetsMenus.xml"/>
+                            <container id="AssetsPartys">
+                                <include-screen name="AssetsPartys"/>
+                            </container>
+                        </screenlet>
+                        <screenlet title="固定资产使用记录" navigation-menu-name="AddUserInfo" name="myComms">
+                            <include-menu name="AddUserInfo" location="component://oa/widget/FixedAssetsMenus.xml"/>
+                            <container id="AassetsUse">
+                                <include-screen name="AassetsUse"/>
+                            </container>
+                        </screenlet>
+                        <screenlet title="固定资产检修记录" navigation-menu-name="AddRepair" name="myComms">
+                            <include-menu name="AddRepair" location="component://oa/widget/FixedAssetsMenus.xml"/>
+                            <container id="AssetsRepair">
+                                <include-screen name="AssetsRepair"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AssetsPartys">
+        <section>
+            <actions>
+                <set field="fixedAssetsCode" value="${fixedAssets.fixedAssetsCode}"/>
+                <set field="assetsUserInfo" value="${fixedAssets.assetsUserInfo}"/>
+
+                <entity-and entity-name="TblFixedAssetsParts" list="FixedAssetsPartsList">
+                    <field-map field-name="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <!--<label text="${assetsUserInfo}"/>-->
+                <include-form name="FixedAssetsPartsList" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AassetsUse">
+        <section>
+            <actions>
+                <entity-and entity-name="AssetsUseInfoView" list="assetsUseInfoList">
+                    <field-map field-name="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <include-form name="UseFixedAssets" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AssetsRepair">
+        <section>
+            <actions>
+                <entity-and entity-name="AssetsRepairView" list="assetsRepairList">
+                    <field-map field-name="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <include-form name="ReconditionFixedAssets" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="addAssetPartys">
+        <section>
+            <actions>
+                <set field="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                <set field="assetsPartsMap" value="${parameters.assetsParts}"/>
+                <entity-and entity-name="Enumeration" list="assetsStatusList">
+                    <field-map field-name="enumTypeId" value="FIXED_ASSETS_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="AssetPartysForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="addUserInfo">
+        <section>
+            <actions>
+                <set field="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                <set field="fixedAssetsCode" value="${parameters.fixedAssetsCode}"/>
+                <set field="assetsUserInfo" value="${parameters.assetsUserInfo}"/>
+                <entity-and entity-name="Enumeration" list="assetsStatusList">
+                    <field-map field-name="enumTypeId" value="FIXED_ASSETS_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/oa/humanres/fixedAssets/editFixedAssetsUseInfo.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="AssetsUseInfoForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="addRepair">
+        <section>
+            <actions>
+                <set field="fixedAssetsId" value="${parameters.fixedAssetsId}"/>
+                <set field="fixedAssetsCode" value="${parameters.fixedAssetsCode}"/>
+                <set field="assetsRepair" value="${parameters.assetsRepair}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/oa/humanres/fixedAssets/editFixedAssetsRepairInfo.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="AssetsRepairForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--资产借用管理-->
+    <screen name="FixedAssetsBorrow">
+        <section>
+            <actions>
+                <set field="headerItem" value="FixedAssetsBorrow"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+                <entity-condition entity-name="Enumeration" list="assetStatusList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_STATUS"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="assetLendStatusList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_LEND_STATUS"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="assetTypeList">
+                    <condition-expr field-name="enumTypeId" value="FIXED_ASSETS_TYPE"/>
+                </entity-condition>
+            </actions>
+
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/fixedAssets/FixedAssetsBorrowForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="searchFixedAssetsBorrow" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <container id="ListFixedAssetsBorrow">
+                            <include-screen name="ListFixedAssetsBorrow"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListFixedAssetsBorrow">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="partyId" value="${parameters.userLogin.partyId}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindFixedAssetsBorrow.groovy"></script>-->
+            </actions>
+            <widgets>
+                 <!--<label text="${parameters.canLendFixedAssetsList}"/>-->
+                <!--<container id="searche_osManagers">-->
+                    <!--<decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">-->
+                        <!--<decorator-section name="body">-->
+                            <!--<include-form name="FixedAssetsBorrowList" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>-->
+                        <!--</decorator-section>-->
+                    <!--</decorator-screen>-->
+                <!--</container>-->
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询结果">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/oa/humanres/fixedAssets/fixedAssetsBorrowList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="borrowRegister">
+        <section>
+            <actions>
+                <set field="fixedAssets" value="${parameters.fixedAssets}"/>
+                <!--<set field="applyPerson" value="${userLogin.partyId}"/>-->
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="borrowRegister" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="borrowRegisterConfirm">
+        <section>
+            <actions>
+                <set field="fixedAssets" value="${parameters.fixedAssets}"/>
+                <set field="pageFlag" value="borrowRegisterConfirm"/>
+                <set field="submitFormId" value="borrowRegisterConfirm"/>
+                <entity-and entity-name="Enumeration" list="assetLendOutStatusList">
+                    <field-map field-name="enumTypeId" value="FIXED_ASSETS_LEND_OUT_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <!-- <label text="${listosManagers}"/>-->
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/fixedAssets/fixedAssetsActivitiClickFunction.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <include-form name="borrowRegisterConfirm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://activiti/webapp/activiti/activiti/showAllActivitiContent.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ReturnAssetsForm">
+        <section>
+            <actions>
+                <set field="fixedAssets" value="${parameters.fixedAssets}"/>
+                <set field="pageFlag" value="ReturnAssetsForm"/>
+                <set field="submitFormId" value="ReturnAssetsForm"/>
+                <entity-and entity-name="Enumeration" list="assetLendOutStatusList">
+                    <field-map field-name="enumTypeId" value="FIXED_ASSETS_RETURN_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <!-- <label text="${listosManagers}"/>-->
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/fixedAssets/fixedAssetsActivitiClickFunction.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <include-form name="ReturnAssetsForm" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://activiti/webapp/activiti/activiti/showAllActivitiContent.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="borrowInfo">
+        <section>
+            <actions>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindFixedAssetsBorrow.groovy"></script>-->
+                <set field="fixedAssets" value="${parameters.fixedAssets}"/>
+            </actions>
+            <widgets>
+                <!-- <label text="${listosManagers}"/>-->
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="borrowInfo" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+<!--折旧搜索-->
+    <screen name="Depreciation">
+        <section>
+            <actions>
+                <set field="headerItem" value="Depreciation"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <!--<script location="component://oa/webapp/oa/WEB-INF/actions/organization/ViewOrganization.groovy"></script>-->
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/osManagerJs.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+
+                            <widgets>
+                                <screenlet title="查询条件">
+                                    <!--<include-form name="EditOrganization" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                    <include-form name="SearchDepreciation" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="查询结果" >
+                            <container id="ListSubOrgs">
+                                <include-screen name="DepreciationList"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="DepreciationList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/organization/FindDepreciation.groovy"/>
+            </actions>
+            <widgets>
+                <!-- <label text="${listosManagers}"/>-->
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="DepreciationList" location="component://oa/widget/osManager/FixedAssetsForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+</screens>
+
+

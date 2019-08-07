@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <!--新增会议纪要-->
+    <form name="MeetingNoticeList" type="list" list-name="meetingNoticeList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="meetingTime" title="会议时间">
+            <display description="${meetingStartTime}~${meetingEndTime}"/>
+        </field>
+        <field name="releaseDepartment" title="发布部门">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="meetingName" title="会议名称" event="onClick" action="$.meetingNotice.showMeetingNoticeInfo('${meetingNoticeId}')">
+            <hyperlink target="#nowhere" description="${meetingName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="meetingTheme" title="会议主题" event="onClick" action="$.meetingNotice.showMeetingNoticeInfo('${meetingNoticeId}')">
+            <hyperlink target="#nowhere" description="${meetingTheme}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="releaseTime" title="通知日期">
+            <display/>
+        </field>
+        <field name="releaseSummary" title="发布纪要" widget-style="smallSubmit" event="onClick" action="$.meetingNotice.summaryRelease(${meetingNoticeId},'create')">
+            <hyperlink target="#nowhere" description="发布纪要" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="MeetingNoticeSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="meetingName" title="会议名称" position="1">
+            <text/>
+        </field>
+        <field name="meetingTheme" title="会议主题" position="2">
+            <text/>
+        </field>
+
+        <field name="startTime" title="会议日期" position="3">
+            <date-time/>
+        </field>
+        <field name="endTime" title="至" position="4">
+            <date-time/>
+        </field>
+        <field name="releaseDepartment" title="发布部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.meetingNotice.searchMeetingNotice()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="发布会议通知" event="onClick" action="$.meetingNotice.addMeetingNotice()">
+            <hyperlink target="#nowhere" description="发布会议通知" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="MeetingSummaryList" type="list" list-name="meetingSummaryList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="meetingTime" title="会议时间">
+            <display description="${meetingStartTime}~${meetingEndTime}"/>
+        </field>
+        <field name="releaseDepartment" title="发布部门">
+            <display description="${groupName}"/>
+        </field>
+        <field name="meetingName" title="会议名称" event="onClick" use-when="summaryId==null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},null)">
+            <hyperlink target="#nowhere" description="${meetingName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="meetingName" title="会议名称" event="onClick" use-when="summaryId!=null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},${summaryId})">
+            <hyperlink target="#nowhere" description="${meetingName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="meetingTheme" title="会议主题" event="onClick" use-when="summaryId==null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},null)">
+            <hyperlink target="#nowhere" description="${meetingTheme}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="meetingTheme" title="会议主题" event="onClick" use-when="summaryId!=null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},${summaryId})">
+            <hyperlink target="#nowhere" description="${meetingTheme}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="seeContent" title="查看内容" event="onClick" use-when="summaryId==null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},null)">
+            <hyperlink target="#nowhere" description="${hasMeetingStart}(${hasReleaseSummary})" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="seeContent" title="查看内容" event="onClick" use-when="summaryId!=null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},${summaryId})">
+            <hyperlink target="#nowhere" description="${hasMeetingStart}(${hasReleaseSummary})" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="releaseTime" title="发布日期">
+            <display type="date-time"/>
+        </field>
+        <field name="lastFeedback" title="最后反馈人(反馈日期)" event="onClick" use-when="summaryId==null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},null)">
+            <hyperlink target="#nowhere" description="${lastFeedbackPerson}${groovy:lastFeedbackTime != null ? (lastFeedbackTime) : ''}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="lastFeedback" title="最后反馈人(反馈日期)" event="onClick" use-when="summaryId!=null" action="$.meetingNotice.showMeetingInfo(${meetingNoticeId},${summaryId})">
+            <hyperlink target="#nowhere" description="${lastFeedbackPerson}${groovy:lastFeedbackTime != null ? (lastFeedbackTime) : ''}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="releasePersonName" title="纪要发布人">
+            <display/>
+        </field>
+        <field name="lastEditPerson" title="纪要最后编辑人(编辑日期)">
+            <display description="${lastEditPersonName}${groovy:lastEditTime!=null ?  '(' + lastEditTime + ')' : ''}"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title=" " event="onClick" use-when="summaryId==null" action="$.meetingNotice.addMeetingNotice(${meetingNoticeId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title=" " event="onClick" use-when="summaryId!=null" action="$.meetingNotice.summaryRelease(${summaryId},'edit')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title=" " event="onClick" use-when="summaryId==null" action="$.meetingNotice.deleteMeetingNotice(${meetingNoticeId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title=" " event="onClick" use-when="summaryId!=null" action="$.meetingNotice.deleteSummary(${summaryId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+
+
+    <form name="MeetingSummarySearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="meetingName" title="会议名称" position="1">
+            <text/>
+        </field>
+        <field name="meetingTheme" title="会议主题" position="2">
+            <text/>
+        </field>
+
+        <field name="startTime" title="会议日期" position="3">
+           <date-time/>
+        </field>
+        <field name="endTime" title="至" position="4">
+            <date-time/>
+        </field>
+        <field name="releaseDepartment" title="发布部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.meetingNotice.searchMeetingSummary()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2" use-when="${meetingType=='notice'}"
+               title="发布会议通知" event="onClick" action="$.meetingNotice.addMeetingNotice()">
+            <hyperlink target="#nowhere" description="发布会议通知" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+</forms>
+

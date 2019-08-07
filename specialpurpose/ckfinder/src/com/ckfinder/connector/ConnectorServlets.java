@@ -1,0 +1,434 @@
+/*
+ * CKFinder
+ * ========
+ * http://cksource.com/ckfinder
+ * Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
+ *
+ * The software, this file and its contents are subject to the CKFinder
+ * License. Please read the license.txt file before using, installing, copying,
+ * modifying or distribute this file or part of its contents. The contents of
+ * this file is part of the Source Code of CKFinder.
+ */
+package com.ckfinder.connector;
+
+import com.ckfinder.connector.configuration.Configuration;
+import com.ckfinder.connector.configuration.ConfigurationFactory;
+import com.ckfinder.connector.configuration.Constants;
+import com.ckfinder.connector.configuration.IConfiguration;
+import com.ckfinder.connector.data.BeforeExecuteCommandEventArgs;
+import com.ckfinder.connector.errors.ConnectorException;
+import com.ckfinder.connector.handlers.commands.*;
+import com.ckfinder.connector.utils.AccessControlUtil;
+import org.ofbiz.entity.GenericEntityException;
+import org.ofbiz.webapp.control.ControlServlet;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashSet;
+
+/**
+ * Main connector servlet for handling CKFinder requests.
+ */
+public class ConnectorServlets extends ControlServlet {
+
+	/**
+	 * holds excetption if any occures during CKFinder start.
+	 */
+	private Exception startException;
+	/**
+	 */
+	private static final long serialVersionUID = 2960665641425153638L;
+
+	/**
+	 * Handling get requests.
+	 *
+	 * @param request request
+	 * @param response response
+	 * @throws IOException .
+	 * @throws ServletException .
+	 */
+	@Override
+	public void doGet(final HttpServletRequest request,
+			final HttpServletResponse response) throws ServletException,
+			IOException {
+		request.setCharacterEncoding("UTF-8");
+		boolean ckfinderRequest = request.getRequestURI().contains("/control/action");
+		super.doGet(request, response);
+		if(ckfinderRequest){
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			getResponse(request, response, false);
+		}
+	}
+
+	/**
+	 * Handling post requests.
+	 *
+	 * @param request request
+	 * @param response response
+	 * @throws IOException .
+	 * @throws ServletException .
+	 */
+	@Override
+	public void doPost(final HttpServletRequest request,
+			final HttpServletResponse response) throws ServletException,
+			IOException {
+		request.setCharacterEncoding("UTF-8");
+		boolean ckfinderRequest = request.getRequestURI().contains("/control/action");
+		super.doPost(request, response);
+//		if(ckfinderRequest){
+//			request.setCharacterEncoding("UTF-8");
+//			response.setCharacterEncoding("UTF-8");
+//			getResponse(request, response, true);
+//		}
+	}
+
+	/**
+	 * Creating reponse for every command in request param.
+	 *
+	 * @param request request
+	 * @param response response
+	 * @param post if it's post command.
+	 * @throws ServletException when error occurs.
+	 */
+	private void getResponse(final HttpServletRequest request,
+			final HttpServletResponse response, final boolean post)
+			throws ServletException {
+		if (startException != null
+				&& Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
+			throw new ServletException(startException);
+		}		
+		boolean isNativeCommand = false;
+		String command = request.getParameter("command");
+		try {
+
+			if (command == null || command.equals("")) {
+				throw new ConnectorException(
+						Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
+			}
+			
+			if( CommandHandlerEnum.contains(command.toUpperCase()) ) {
+				CommandHandlerEnum cmd = null;
+				isNativeCommand = true;
+				cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
+				// checks if command should go via POST request or it's a post request
+				// and it's not upload command
+				if ((cmd.getCommand() instanceof IPostCommand || post)
+						&& !CommandHandlerEnum.FILEUPLOAD.equals(cmd)) {
+					checkPostRequest(request);
+				}
+			} else {
+				isNativeCommand = false;
+			}			
+
+			BeforeExecuteCommandEventArgs args = new BeforeExecuteCommandEventArgs();
+			args.setCommand(command);
+			args.setRequest(request);
+			args.setResponse(response);
+			executeNativeCommand( command, request, response, isNativeCommand );
+		} catch (IllegalArgumentException e) {
+			if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
+				e.printStackTrace();
+				response.reset();
+				throw new ServletException(e);
+			} else {
+				handleError(
+						new ConnectorException(
+						Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false),
+						request, response, command);
+			}
+		} catch (ConnectorException e) {
+			if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))
+					&& e.getException() != null) {
+				e.getException().printStackTrace();
+				response.reset();
+				throw new ServletException(e.getException());
+			} else {
+				handleError(e,  request, response, command);
+			}
+		} catch (Exception e) {
+			if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
+				e.printStackTrace();
+				response.reset();
+				throw new ServletException(e);
+			} else {
+				handleError(new ConnectorException(e), request, response, command);
+			}
+		}
+	}
+	
+	/**
+	 * Executes one of connector's predefined commands specified as parameter.
+	 *
+	 * @param command string representing command name
+	 * @param request current request object
+	 * @param response current response object
+	 * @param isNativeCommand flag indicating whether command is available in enumeration object
+	 *  
+	 * @throws ConnectorException when command isn't native
+	 * @throws IllegalArgumentException when provided command is not found in enumeration object
+	 */
+	private void executeNativeCommand ( String command, final HttpServletRequest request, 
+			final HttpServletResponse response,
+			boolean isNativeCommand ) throws IllegalArgumentException, ConnectorException, GenericEntityException {
+		if( isNativeCommand ) {
+			CommandHandlerEnum cmd = CommandHandlerEnum.valueOf(command.toUpperCase());
+			cmd.execute(
+					request, response, getServletContext());
+		} else {
+			throw new ConnectorException(
+					Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND, false);
+		}
+	}
+
+	/**
+	 * checks post request if it's ckfinder command.
+	 *
+	 * @param request request
+	 * @throws ConnectorException when param isn't set or has wrong value.
+	 */
+	private void checkPostRequest(final HttpServletRequest request)
+			throws ConnectorException {
+		if (request.getParameter("CKFinderCommand") == null
+				|| !(request.getParameter("CKFinderCommand").equals("true"))) {
+			throw new ConnectorException(
+					Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST, true);
+		}
+
+	}
+
+	/**
+	 * handles error from execute command.
+	 *
+	 * @param e exception
+	 * @param request request
+	 * @param response response
+	 * @param currentCommand current command
+	 * @throws ServletException when error handling fails.
+	 */
+	private void handleError(final ConnectorException e,
+			final HttpServletRequest request, final HttpServletResponse response,
+			final String currentCommand)
+			throws ServletException {
+		try {
+			if (currentCommand != null && !currentCommand.equals("")) {
+				Command command = CommandHandlerEnum.valueOf(
+						currentCommand.toUpperCase()).getCommand();
+				if (command instanceof XMLCommand) {
+					CommandHandlerEnum.XMLERROR.execute(request, response,getServletContext(), e);
+				} else {
+					CommandHandlerEnum.ERROR.execute(request, response, getServletContext(), e);
+				}
+			} else {
+				CommandHandlerEnum.XMLERROR.execute(request, response, getServletContext(), e);
+			}
+
+
+
+		} catch (Exception e1) {
+			throw new ServletException(e1);
+		}
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+
+		ServletContextFactory.setServletContext(getServletContext());
+		IConfiguration configuration = null;
+		try {
+			String className = getServletConfig().getInitParameter(
+					"configuration");
+			if (className != null) {
+				Class<?> clazz = Class.forName(className);
+
+				if (clazz.getConstructor(ServletConfig.class) != null) {
+					configuration = (IConfiguration) clazz.getConstructor(
+							ServletConfig.class).newInstance(getServletConfig());
+
+				} else {
+					configuration = (IConfiguration) clazz.newInstance();
+				}
+			} else {
+				configuration = new Configuration(getServletConfig());
+			}
+		} catch (Exception e) {
+			configuration = new Configuration(getServletConfig());
+		}
+		try {
+			configuration.init();
+			AccessControlUtil.getInstance(configuration).loadACLConfig();
+		} catch (Exception e) {
+			if (Boolean.valueOf(getServletConfig().getInitParameter("debug"))) {
+				e.printStackTrace();
+			}
+			this.startException = e;
+			configuration = null;
+		}
+		ConfigurationFactory.getInstace().setConfiguration(configuration);
+	}
+
+	/**
+	 * Enum with all command handles by servlet.
+	 *
+	 */
+	private enum CommandHandlerEnum {
+
+		/**
+		 * init command.
+		 */
+		INIT(new InitCommand()),
+		/**
+		 * get subfolders for seleted location command.
+		 */
+		GETFOLDERS(new GetFoldersCommand()),
+
+		GETFOLDERATTR(new GetFolderAttrCommand()),
+		/**
+		 * get files from current folder command.
+		 */
+		GETFILES(new GetFilesCommand()),
+		/**
+		 * sends cookies from the server.
+		 */
+//		LOADCOOKIES(new LoadCookiesCommand()),
+		/**
+		 * get thumbnail for file command.
+		 */
+//		THUMBNAIL(new ThumbnailCommand()),
+		/**
+		 * download file command.
+		 */
+		DOWNLOADFILE(new DownloadFileCommand()),
+		/**
+		 * download file command.
+		 */
+//		DOWNLOADZXDOCFILE(new DownloadZxdocFileCommand()),
+		/**
+		 * create subfolder.
+		 */
+		CREATEFOLDER(new CreateFolderCommand()),
+		/**
+		 * rename file.
+		 */
+		RENAMEFILE(new RenameFileCommand()),
+		/**
+		 * rename folder.
+		 */
+		RENAMEFOLDER(new RenameFolderCommand()),
+		/**
+		 * delete folder.
+		 */
+		DELETEFOLDER(new DeleteFolderCommand()),
+		/**
+		 * copy files.
+		 */
+		COPYFILES(new CopyFilesCommand()),
+		/**
+		 * move files.
+		 */
+		MOVEFILES(new MoveFilesCommand()),
+		/**
+		 * delete files.
+		 */
+		DELETEFILES(new DeleteFilesCommand()),
+		/**
+		 * file upload.
+		 */
+		FILEUPLOAD(new FileUploadCommand()),
+		/**
+		 * quick file upload.
+		 */
+//		QUICKUPLOAD(new QuickUploadCommand()),
+		/**
+		 * XML error command.
+		 */
+		XMLERROR(new XMLErrorCommand()),
+		/**
+		 * error command.
+		 */
+		ERROR(new ErrorCommand());
+		/**
+		 * command class for enum field.
+		 */
+		private Command command;
+		/**
+		 * {@code Set} holding enumeration values,
+		 */
+		private static HashSet<String> enumValues = new HashSet<String>();
+
+		/**
+		 * Enum contructor to set command.
+		 *
+		 * @param command1 command name
+		 */
+		private CommandHandlerEnum(final Command command1) {
+			this.command = command1;
+		}
+		
+		/**
+		 *	Fills in {@code Set} holding enumeration values for this {@code Enum}.
+		 */
+		private static void setEnums() {
+		  for (CommandHandlerEnum enumValue : CommandHandlerEnum.values()) {
+			  enumValues.add(enumValue.name());
+		  }
+		}
+		
+		/**
+		 *	Checks whether enumeration object contains command name specified as parameter.
+		 *
+		 * 	@param enumValue string representing command name to check
+		 *
+		 *  @return {@code true} is command exists, {@code false} otherwise
+		 */
+		public static boolean contains(String enumValue) {
+			if(enumValues.isEmpty())
+				setEnums();
+			for (String value : enumValues) {
+				if(value.equals(enumValue))
+					return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Executes command.
+		 *
+		 * @param request request
+		 * @param response response
+		 * @param sc servletContext
+		 * @param params params for command.
+		 * @throws ConnectorException when error occurs
+		 */
+		private void execute(final HttpServletRequest request,
+				final HttpServletResponse response, final ServletContext sc, final Object... params)
+				throws ConnectorException, GenericEntityException {
+			Command com = null;
+			try {
+				com = command.getClass().newInstance();
+			} catch (IllegalAccessException | InstantiationException e1) {
+				throw new ConnectorException(
+						Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
+			}
+			if (com == null) {
+				throw new ConnectorException(
+						Constants.Errors.CKFINDER_CONNECTOR_ERROR_INVALID_COMMAND);
+			}
+			com.runCommand(request, response, params);
+		}
+
+		/**
+		 * gets command.
+		 *
+		 * @return command
+		 */
+		public Command getCommand() {
+			return this.command;
+		}
+	}
+}

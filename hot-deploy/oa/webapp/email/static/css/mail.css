@@ -1,0 +1,24 @@
+.mail-icon{
+    background: url("/email/static/img/mail.png") no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+}
+
+.mail-unread{
+    background-position: -48px 0;
+}
+.mail-read{
+    background-position: -48px -16px;
+}
+.mail-attachment{
+    background-position: -65px 0;
+}
+
+.mail-title-unread, .mail-title-unread a{
+    font-weight: bold;
+}
+
+.mail-title-read, .mail-title-read a{
+    font-weight: normal;
+}

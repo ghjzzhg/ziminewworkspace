@@ -1,0 +1,32 @@
+.file-container .page-sidebar .page-sidebar-menu .sub-menu li>a{
+    padding-left: 10px;
+}
+
+.file-container .file-right{
+    padding: 0;
+}
+
+.file-container{
+    background-color: #e9ecf3;
+}
+
+.folder-level{
+    float:left;
+    padding:10px;
+    margin-bottom: 0;
+}
+
+
+.folder-level li{
+    display: inline;
+    float: left;
+    color: #666;
+}
+
+.file-right table.dataTable{
+    margin-bottom: 0!important;
+}
+
+.file-container .page-sidebar .page-sidebar-menu .sub-menu li.nav-item>a>i{
+    margin-right:4px;
+}

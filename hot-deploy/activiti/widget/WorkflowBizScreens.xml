@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="Screen1">
+        <section>
+            <condition>
+                <if-compare field="embed-mode" operator="equals" value="false"/>
+            </condition>
+            <widgets><!--不是嵌入在业务表单时-->
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="Form1" location="component://activiti/widget/forms/WorkflowBizForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+            <fail-widgets><!--嵌入在业务表单时显示内容-->
+                <container style="embed-mode-content">
+
+                </container>
+            </fail-widgets>
+        </section>
+    </screen>
+    <screen name="Screen2">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="Form2" location="component://activiti/widget/forms/WorkflowBizForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Screen3">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="Form3" location="component://activiti/widget/forms/WorkflowBizForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

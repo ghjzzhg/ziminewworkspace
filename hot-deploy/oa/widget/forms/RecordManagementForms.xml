@@ -1,0 +1,1908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="ListRecord" type="list" title="" separate-columns="true" default-entity-name="" list-name="recordList"
+          paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <entity-and entity-name="UserLogin" list="userLogins">
+                <field-map field-name="partyId" from-field="partyId"/>
+            </entity-and>
+        </row-actions>
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="工号">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名">
+            <display description="${groovy: org.ofbiz.base.util.UtilValidate.isEmpty(fullName) ? lastName + firstName : fullName}"/>
+        </field>
+        <field name="gender" title="性别">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="department" title="部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="diploma" title="学历">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="degree" title="学位">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <!--<field name="cardId" title="身份证号码">-->
+            <!--<display/>-->
+        <!--</field>-->
+        <field name="birthDay" title="出生日期">
+            <display/>
+        </field>
+         <field name="workDate" title="入职日期">
+             <display/>
+         </field>
+        <field name="jobState" title="在职状态">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="userLogin" title="登录账户" encode-output="false" use-when="${oaAdminPermission}">
+            <display
+                description="${groovy: org.ofbiz.oa.OAUtil.formatUserLoginBtns(userLogins)}"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick" action="javascript:$.recordManagement.editEmployee('${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+         <field use-when="${oaAdminPermission}" name="addLoginLink" title-style="hide" widget-area-style="function-column" widget-style="icon-user"
+                title="添加账户" event="onClick" action="javascript:$.recordManagement.createUserLogin('${partyId}');">
+             <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+         </field>
+        <!--  <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="javascript:$.resourceManagement.editResource(${resourceId});">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>
+          <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>-->
+        <!--<on-event-update-area event-type="paginate" area-id="screenlet_3_col" area-target="ListEmployeeRecord"/>-->
+    </form>
+    <form name="viewEmployeeRecord" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="employeeRecordMap">
+        <field name="workerSn" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="genderName" title="性别" position="3">
+            <display/>
+        </field>
+        <field name="groupName" title="直属部门" position="1">
+            <display/>
+        </field>
+        <field name="cardId" title="身份证号" position="2">
+            <display/>
+        </field>
+        <field name="birthDay" title="出生日期" position="3">
+            <display/>
+        </field>
+        <field name="age" title="年龄" position="1">
+            <display/>
+        </field>
+        <field name="placeOfOrigin" title="籍贯" position="2">
+            <display/>
+        </field>
+        <field name="politicalStatus" title="政治面貌" position="3">
+            <display/>
+        </field>
+        <field name="domicileType" title="户籍类型" position="1">
+            <display/>
+        </field>
+        <field name="ifMarried" title="婚否" position="2">
+            <display/>
+        </field>
+        <field name="graduate" title="毕业院校" position="3">
+            <display/>
+        </field>
+        <field name="diploma" title="学历" position="1">
+            <display/>
+        </field>
+        <field name="degree" title="学位" position="2">
+            <display/>
+        </field>
+        <field name="graduateTime " title="毕业时间" position="3">
+            <display/>
+        </field>
+        <field name="workDate" title="参加工作时间" position="1">
+            <display/>
+        </field>
+        <field name="familyAddress" title="当前住址" position="2">
+            <display/>
+        </field>
+        <field name="phoneNumber" title="手机" position="3">
+            <display/>
+        </field>
+    </form>
+
+    <form name="ListRecordForDepartment" type="list" title="" separate-columns="true" default-entity-name=""
+          list-name="recordList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="工号">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名">
+            <display/>
+        </field>
+        <field name="genderName" title="性别">
+            <display/>
+        </field>
+        <field name="employeeAge" title="年龄">
+            <display/>
+        </field>
+        <field name="groupName" title="部门">
+            <display/>
+        </field>
+        <field name="diploma" title="学历">
+            <display/>
+        </field>
+        <!--  <field name="birthDate" title="出生日期">
+              <display/>
+          </field>-->
+        <field name="workDate" title="入职日期">
+            <display/>
+        </field>
+        <field name="viewLink" title-style="hide" widget-area-style="function-column" widget-style="icon-eye-open"
+               title="查看" event="onClick" action="javascript:$.recordManagement.ViewEmployee('${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <!--  <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+         title="${uiLabelMap.CommonUpdate}" event="onClick" action="javascript:$.resourceManagement.editResource(${resourceId});">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>
+          <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>-->
+        <on-event-update-area event-type="paginate" area-id="screenlet_2_col" area-target="FindRecordForPage"/>
+    </form>
+    <form name="FamilySituationList" type="list" title="" separate-columns="true" default-entity-name=""
+          list-name="familyList" paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="familyId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="relationship" title="与员工关系">
+            <display/>
+        </field>
+        <field name="name" title="姓名">
+            <display/>
+        </field>
+        <field name="birthDate" title="出生日期">
+            <display/>
+        </field>
+        <field name="workCompany" title="工作单位">
+            <display/>
+        </field>
+        <field name="phone" title="联系电话">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editFamilySituation('${familyId}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeFamilySituation('${familyId}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="FamilySituationList"/>
+    </form>
+
+    <form name="EducationExperienceList" type="list" title="" separate-columns="true"
+          default-entity-name="TblEducational"
+          list-name="educationList" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="educationId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="startDate" title="开始时间">
+            <display/>
+        </field>
+        <field name="endDate" title="结束时间">
+            <display/>
+        </field>
+        <field name="schoolName" title="学校名称">
+            <display/>
+        </field>
+        <field name="major" title="所学专业">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editEducationSituation('${partyId}','${educationId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeEducation('${educationId}','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col"
+                              area-target="EducationExperienceList"/>
+    </form>
+    <form name="CreateTransferButton" type="single" target="FindFixedAssets" header-row-style="header-row">
+        <field name="createButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.transactionRecordCreate();">
+            <hyperlink target="#nowhere" description="创建岗位调动" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateDepartureButton" type="single" target="FindFixedAssets" header-row-style="header-row">
+        <field name="editDepartureButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.editDeparture()">
+            <hyperlink target="#nowhere" description="创建员工离职记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateContractButton" type="single" target="FindFixedAssets" header-row-style="header-row">
+        <field name="ContractRecordCreateButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.ContractRecordCreate();">
+            <hyperlink target="#nowhere" description="创建员工合同" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateRewardAndPunishmentButton" type="single" target="FindFixedAssets" header-row-style="header-row">
+        <field name="RewardsAndPunishmentRecordCreateButton" title=" " widget-style="smallSubmit" position="1"
+               event="onClick"
+               action="javascript:$.recordManagement.RewardsAndPunishmentRecordCreate();">
+            <hyperlink target="#nowhere" description="创建员工奖惩" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateTrainButton" type="single" target="FindFixedAssets" header-row-style="header-row">
+        <field name="TrainManagementCreateButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.TrainManagementCreate();">
+            <hyperlink target="#nowhere" description="创建员工培训记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="WorkExperienceList" type="list" title="" separate-columns="true" list-name="workList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="workId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="startDate" title="开始时间">
+            <display/>
+        </field>
+        <field name="endDate" title="结束时间">
+            <display/>
+        </field>
+        <field name="companyName" title="工作单位">
+            <display/>
+        </field>
+        <field name="companyProperty" title="单位性质">
+            <display/>
+        </field>
+        <field name="post" title="职务">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editWorkExperience('${partyId}','${workId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeWorkExperience('${partyId}','${workId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="WorkExperienceList"/>
+    </form>
+    <form name="TransactionRecordList" type="list" title="" separate-columns="true" list-name="postList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="postId">
+            <hidden/>
+        </field>
+        <field name="url">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="groupName" title="原部门">
+            <display/>
+        </field>
+        <field name="description" title="原岗位">
+            <display/>
+        </field>
+        <field name="rank" title="原职级">
+            <display/>
+            <!--<display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>-->
+        </field>
+        <field name="groupName1" title="新部门">
+            <display/>
+        </field>
+        <field name="description1" title="新岗位">
+            <display/>
+        </field>
+        <field name="rank1" title="新职级">
+            <display/>
+            <!--<display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>-->
+        </field>
+        <field name="changeType" title="调动类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="changeDate" title="调动时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editPostChange('${partyId}','${postId}','TransactionRecordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removePostChange('${partyId}','${postId}','TransactionRecordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="TransactionRecordList"/>
+    </form>
+    <form name="postChangeList" type="list" title="" separate-columns="true" list-name="postList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="postId">
+            <hidden/>
+        </field>
+        <field name="url">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" use-when="${ifShow!=null}" title="工号">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${ifShow!=null}" title="姓名">
+            <display/>
+        </field>
+        <field name="groupName" title="原部门">
+            <display/>
+        </field>
+        <field name="description" title="原岗位">
+            <display/>
+        </field>
+        <field name="groupName1" title="新部门">
+            <display/>
+        </field>
+        <field name="description1" title="新岗位">
+            <display/>
+        </field>
+        <field name="changeType" title="调动类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="changeDate" title="调动时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editPostChange('','${postId}','postChangeList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removePostChange('','${postId}','postChangeList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="postChangeList"/>
+    </form>
+    <form name="TransactionRecordCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId"  use-when="${resultMap.partyId!=null}">
+            <hidden/>
+        </field>
+        <field name="postId">
+            <hidden/>
+        </field>
+        <field name="url">
+            <hidden/>
+        </field>
+        <field name="workerSn" use-when="${resultMap.partyId!=null}" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${resultMap.partyId!=null}" title="姓名" position="2">
+            <display/>
+        </field>
+
+        <field name="partyId" use-when="${resultMap.partyId==null}" widget-style="validate[required]" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}姓名：" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="lastGroup" title="原部门：" position="1">
+            <container/>
+        </field>
+        <field name="newGroup" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}新部门：" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="lastPost" title="原岗位：" position="1">
+            <container/>
+        </field>
+        <field name="newPost" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}新岗位：" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupOccupation"/>
+        </field>
+        <field name="lastPosition" title="原职级：" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POSITION_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="newPosition" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}新职级：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POSITION_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="changeType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}调动类型：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="TRANSFER"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="changeDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}调动时间：" position="2" widget-style="validate[required]">
+            <date-time type="date" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="changeReason" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}调动原因" position="1" widget-style="validate[required,maxSize[20]]">
+            <textarea/>
+        </field>
+        <field name="remarks" title="备注：" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.savePostChange('${resultMap.url}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ContractRecordList" type="list" title="" separate-columns="true" list-name="contractList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="contractId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="contractName" title="合同名称">
+            <display/>
+        </field>
+        <field name="contractType" title="合同类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="startDate" title="生效时间">
+            <display/>
+        </field>
+        <field name="endDate" title="失效时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editContract('${contractId}','ContractRecordList','2');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="作废" event="onClick"
+               action="javascript:$.recordManagement.removeContract('${contractId}','${partyId}','ContractRecordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="ContractRecordList"/>
+    </form>
+    <form name="contractList" type="list" title="" separate-columns="true" list-name="contractList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="contractId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工编号">
+            <display/>
+        </field>
+        <field name="fullName" title="员工名称">
+            <display/>
+        </field>
+        <field name="contractNumber" title="合同编号">
+            <display/>
+        </field>
+        <field name="contractName" title="合同名称">
+            <display/>
+        </field>
+        <field name="contractTypeName" title="合同类型">
+            <display/>
+        </field>
+        <field name="signDate" title="签约时间">
+            <display/>
+        </field>
+        <field name="endDate" title="失效时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editContract('${contractId}','${partyId}','contractList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeContract('${contractId}','','contractList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="contractList"/>
+    </form>
+    <form name="ContractRecordCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="contractId">
+            <hidden/>
+        </field>
+        <field name="workerSn" use-when="${resultMap.partyId!=null}" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${resultMap.partyId!=null}" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" use-when="${resultMap.partyId!=null}" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" use-when="${resultMap.partyId!=null}" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="partyId" use-when="${resultMap.partyId==null}" title="员工" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="contractNumber" title="合同编号" position="1">
+            <text/>
+        </field>
+        <field name="contractName" title="合同名称" position="2">
+            <text/>
+        </field>
+        <field name="contractType" title="合同类型" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="CONTRACT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="startDate" title="有效期" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" title="至" position="3">
+            <date-time type="date"/>
+        </field>
+        <field name="salary" use-when="${contractType.partyId==null}" title="合同工资" position="1">
+            <text/>
+        </field>
+        <field name="signDate" title="签约时间" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="content" title="合同内容">
+            <textarea/>
+        </field>
+        <field name="remarks" title="备注">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveContract('${resultMap.url}','2');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="ContractForEmployeeForSearch1" type="single" header-row-style="header-row"
+          default-table-style="basic-table"
+          default-map-name="recordMapForFamily">
+        <field name="contractNumber" title="合同编号" position="1">
+            <text/>
+        </field>
+        <field name="contractName" title="合同名称" position="2">
+            <text/>
+        </field>
+        <field name="contractType" title="合同类型" position="3">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="CONTRACT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="startDate" title="签约时间" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" title="至" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="partyIdForSearch" title="员工" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="state" id-name="stateType" title="状态" position="1">
+            <drop-down>
+                <option key="1" description="全部"/>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="CONTRACT_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchContract();" position="2">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.ContractRecordCreate('','contractList','1');" position="3">
+            <hyperlink target="#nowhere" description="创建员工合同" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="RewardsAndPunishmentRecordList" type="list" title="" separate-columns="true"
+          list-name="rewordList" view-size="5" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="rewordId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="fullName" title="员工姓名">
+            <display/>
+        </field>
+        <field name="name" title="奖惩名称">
+            <display/>
+        </field>
+        <field name="type" title="奖惩类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="level" title="奖惩等级">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="money " title="奖惩金额">
+            <display/>
+        </field>
+        <field name="date" title="奖惩时间">
+            <display/>
+        </field>
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.recordManagement.editReword('${rewordId}','${partyId}','RewardsAndPunishmentRecordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeReword('${rewordId}','${partyId}','RewardsAndPunishmentRecordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col"
+                              area-target="RewardsAndPunishmentRecordList"/>
+    </form>
+    <form name="rewordList" type="list" title="" separate-columns="true"
+          list-name="rewordList" view-size="5"
+          paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="rewordId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工工号">
+            <display/>
+        </field>
+        <field name="fullName" title="员工姓名">
+            <display/>
+        </field>
+        <field name="number" title="奖惩编号">
+            <display/>
+        </field>
+        <field name="name" title="奖惩名称">
+            <display/>
+        </field>
+        <field name="type" title="奖惩类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId"  description="${description}"></display-entity>
+        </field>
+        <field name="level" title="奖惩等级">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="money " title="奖惩金额">
+            <display/>
+        </field>
+        <field name="date" title="奖惩时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editReword('${rewordId}','${partyId}','rewordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeReword('${rewordId}','','rewordList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="rewordList"/>
+    </form>
+    <form name="RewardsAndPunishmentRecordCreate" type="single" header-row-style="header-row"
+          default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="rewordId">
+            <hidden/>
+        </field>
+        <field name="workerSn" use-when="${resultMap.partyId!=null}" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${resultMap.partyId!=null}" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" use-when="${resultMap.partyId!=null}" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" use-when="${resultMap.partyId!=null}" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="partyId" use-when="${resultMap.partyId==null}" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工：" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="number" title="奖惩编号：" position="1" widget-style="validate[maxSize[20]]">
+            <display/>
+        </field>
+        <field name="name" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}奖惩名称：" position="2" widget-style="validate[required,custom[onlyLetterChinese],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="type" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}奖惩类型：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="REWARD_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="level" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}奖惩等级：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="REWARD_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="money" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}奖惩金额（元）：" position="1" widget-style="validate[required,custom[twoDecimalNumber],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="date" title="奖惩时间：" position="2">
+            <date-time type="date" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveReword('${resultMap.url}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="RewardAndPunishmentForSearch" type="single" header-row-style="header-row"
+          default-table-style="basic-table"
+          default-map-name="recordMapForFamily">
+        <field name="number" title="奖惩编号" position="1">
+            <text/>
+        </field>
+        <field name="name" title="奖惩名称" position="2">
+            <text/>
+        </field>
+        <field name="type" title="奖惩类型" position="3">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="REWARD_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="level" title="奖惩等级" position="1">
+            <drop-down >
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="REWARD_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="startDate" title="奖惩时间" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" title="至" position="3">
+            <date-time type="date"/>
+        </field>
+        <field name="partyIdForSearch" title="员工" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchReword();" position="2">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.createReword('','rewordList');" position="3">
+            <hyperlink target="#nowhere" description="创建奖惩记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="TrainManagementList" type="list" title="" separate-columns="true" list-name="trainList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="trainId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="number" title="培训编号">
+            <display/>
+        </field>
+        <field name="name" title="培训课程名称">
+            <display/>
+        </field>
+        <field name="type" title="培训类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="date" title="培训日期">
+            <display/>
+        </field>
+        <field name="teacher" title="培训讲师">
+            <display/>
+        </field>
+        <field name="address" title="培训地址">
+            <display/>
+        </field>
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.recordManagement.editTrain('${trainId}','${partyId}','TrainManagementList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeTrain('${trainId}','TrainManagementList','${partyId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="TrainManagementList"/>
+    </form>
+    <form name="trainList" type="list" title="" separate-columns="true" list-name="trainList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="trainId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工工号">
+            <display/>
+        </field>
+        <field name="fullName" title="员工名称">
+            <display/>
+        </field>
+        <field name="number" title="培训编号">
+            <display/>
+        </field>
+        <field name="name" title="培训课程名称">
+            <display/>
+        </field>
+        <field name="typeName" title="培训类型">
+            <display/>
+        </field>
+        <field name="date" title="培训日期">
+            <display/>
+        </field>
+        <field name="teacher" title="培训讲师">
+            <display/>
+        </field>
+        <field name="address" title="培训地址">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick"
+               action="javascript:$.recordManagement.editTrain('${trainId}','${partyId}','trainList');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="javascript:$.recordManagement.removeTrain('${trainId}','trainList','');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col" area-target="trainList"/>
+    </form>
+    <form name="TrainManagementCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="trainId">
+            <hidden/>
+        </field>
+        <field name="workerSn" use-when="${resultMap.partyId!=null}" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${resultMap.partyId!=null}" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" use-when="${resultMap.partyId!=null}" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" use-when="${resultMap.partyId!=null}" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="partyId" use-when="${resultMap.partyId==null}" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工：" position="1" widget-style="validate[required]">
+            <!--<lookup target-form-name="LookupPartyName"/>-->
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="number" title="培训编号：" position="1">
+            <display/>
+        </field>
+        <field name="name" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}培训课程名称：" position="2" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="type" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}培训类型：" position="1" widget-style="validate[required]">
+            <drop-down  importability="true" enumTypeId="TRAIN_TYPE" callback="$.recordManagement.changeTrainType">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="TRAIN_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="date" title="培训日期：" position="2">
+            <date-time type="date" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="teacher" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}培训讲师：" position="1" widget-style="validate[required,maxSize[20],cudtom[onlyLetterChinese]]">
+            <text/>
+        </field>
+        <field name="address" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}培训地址：" position="2" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="content" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}培训内容：" position="1" widget-style="validate[required,maxSize[20]]">
+            <textarea/>
+        </field>
+        <field name="remarks" title="备注：" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveTrain('${resultMap.url}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="RewardTrainForSearch" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="recordMapForFamily">
+        <field name="number" title="培训编号" position="1">
+            <text/>
+        </field>
+        <field name="name" title="培训课程名称" position="2">
+            <text/>
+        </field>
+        <field name="type" title="培训类型" position="3">
+            <drop-down current="selected" >
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="TRAIN_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="startDate" title="培训日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" title="至" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="partyIdForSearch" title="员工" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchTrain();" position="1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.createTrain('','trainList');" position="2">
+            <hyperlink target="#nowhere" description="创建员工培训记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="TransferRecordForSearch" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="">
+        <field name="startDate" title="调动日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" title="至" position="2">
+            <date-time type="date"/>
+        </field>
+        <field name="changeType" title="调动类型" position="4">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="TRANSFER"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="partyIdForSearch" title="员工" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchPostChanges();" position="1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.createPostChange('','postChangeList')" position="2">
+            <hyperlink target="#nowhere" description="创建岗位调动记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="DepartureManagementForSearch" type="single" header-row-style="header-row"
+          default-table-style="basic-table"
+          default-map-name="">
+        <field name="startDate" position="2" title="离职日期">
+            <date-time type="date"/>
+        </field>
+        <field name="endDate" position="3" title="至">
+            <date-time type="date"/>
+        </field>
+        <field name="departureType" position="4" title="离职类型">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="DEPARTURE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="partyIdForSearch" position="5" title="员工">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchDeparture();" position="1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.editDeparture('','','1')" position="2">
+            <hyperlink target="#nowhere" description="创建离职记录" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="DepartureManagementList" type="list" title="" separate-columns="true" list-name="departureList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="departureId">
+            <hidden/>
+        </field>
+        <field name="numberItem" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工工号">
+            <display/>
+        </field>
+        <field name="fullName" title="员工姓名">
+            <display/>
+        </field>
+        <!--   <field name="department" title="当前部门">
+               <display/>
+           </field>
+           <field name="post" title="当前岗位">
+               <display/>
+           </field>-->
+        <field name="departureTypeName" title="离职类型">
+            <display/>
+        </field>
+        <field name="departureDate" title="离职日期">
+            <display/>
+        </field>
+        <field name="departureReason" title="离职原因">
+            <display/>
+        </field>
+        <!--<field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.recordManagement.viewDepartureEmployeeInformation('${departureId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>-->
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.recordManagement.editDepartures('${departureId}');">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="staffInformation_col"
+                              area-target="ListDepartureManagement"/>
+    </form>
+    <form name="ViewEmployeeRecordForSearch" type="single" header-row-style="header-row"
+          default-table-style="basic-table">
+
+        <field name="fullName" title="员工姓名" position="1">
+            <text/>
+        </field>
+        <field name="workerSn" title="员工工号" position="2">
+            <text/>
+        </field>
+        <field name="gender" title="员工性别" position="3">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="GENDER"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="startDate" title="入职日期" position="1">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'ViewEmployeeRecordForSearch_endDate\\')}'"/>
+        </field>
+        <field name="endDate" title="至" position="2">
+            <date-time type="dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'ViewEmployeeRecordForSearch_startDate\\')}'"/>
+        </field>
+        <field name="jobState" title="在职状态" position="3">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="JOB_STATE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.searchEmployee();" position="1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <!--<field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.CreateEmployee();" position="2">
+            <hyperlink target="#nowhere" description="新建员工" target-type="plain" url-mode="plain"/>
+        </field>-->
+        <!--<field name="importButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="#" position="3">
+            <hyperlink target="#nowhere" description="导入员工" target-type="plain" url-mode="plain"/>
+        </field>-->
+    </form>
+    <form name="CreateEmployee" type="single" header-row-style="header-row"
+          default-table-style="basic-table" default-map-name="recordMap">
+        <field name="partyId" title="标识">
+            <hidden/>
+        </field>
+        <field name="fullName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工姓名：" position="1" widget-style="validate[required,maxSize[50],custom[onlyLetterChinese]]">
+            <text/>
+        </field>
+        <field name="workerSn" title="员工工号：" position="2">
+            <display/>
+        </field>
+        <field name="birthDay" encode-output="false" title="出生日期：" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="gender" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工性别：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="GENDER"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="ifMarried" encode-output="false" title="婚否：" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="IS_MARRIED"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="age" encode-output="false" title="年龄：" position="2" widget-style="validate[custom[onlyNumberSp],maxSize[2]],minSize[2]">
+            <text/>
+        </field>
+        <field name="salary" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}基本工资：" position="1" widget-style="validate[required,maxSize[20],custom[twoDecimalNumber]]">
+            <text/>
+        </field>
+        <field name="politicalStatus" encode-output="false" title="政治面貌：" position="2" >
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POLITICAL_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="phoneNumber" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}手机号：" position="1" widget-style="validate[required,custom[isMobile]]">
+            <text/>
+        </field>
+        <field name="familyAddress" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}家庭住址：" position="2" widget-style="validate[required,maxSize[125]">
+            <text/>
+        </field>
+        <field name="domicileType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}户籍类型：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="DOMICILE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="placeOfOrigin" encode-output="false" title="籍贯：" position="2" widget-style="validate[maxSize[20]]">
+            <text/>
+        </field>
+        <field name="cardId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}身份证号：" position="1" widget-style="validate[required,custom[isIdCardNo]]">
+            <text/>
+        </field>
+        <field name="department" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}直属部门：" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="post" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}岗位：" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupOccupation"/>
+        </field>
+        <field name="workDate" title="入职日期：" position="2">
+            <date-time type="date" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="position" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}职级：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POSITION_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="laborType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}用工类型：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="LABOR_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="degree" title="所获学位：" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="EDUCATION_DEGREE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="diploma" title="所获学历：" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="EDUCATION_DIPLOMA"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveEmployee();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="CreateEmployees" type="single" header-row-style="header-row"
+          default-table-style="basic-table" default-map-name="recordMap">
+        <field name="partyId" title="标识">
+            <hidden/>
+        </field>
+        <field name="fullName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工姓名" position="1" widget-style="validate[required]">
+            <text/>
+        </field>
+        <field name="workerSn" title="员工工号" position="2">
+            <display/>
+        </field>
+        <field name="birthDay" title="出生日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="gender" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}员工性别" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="GENDER"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="ifMarried" title="婚否" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="IS_MARRIED"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="age" title="年龄" position="2" widget-style="validate[custom[onlyNumberSp],maxSize[2]],minSize[2]">
+            <text/>
+        </field>
+        <field name="salary" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}基本工资" position="1" widget-style="validate[required,custom[twoDecimalNumber]]">
+            <text/>
+        </field>
+        <field name="politicalStatus" title="政治面貌" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POLITICAL_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="phoneNumber" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}手机号" position="1" widget-style="validate[required,custom[isMobile]]">
+            <text/>
+        </field>
+        <field name="familyAddress" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}家庭住址" position="2" widget-style="validate[required,maxSize[30]">
+            <text/>
+        </field>
+        <field name="domicileType" title="户籍类型" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="DOMICILE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="placeOfOrigin" title="籍贯" position="2" widget-style="validate[maxSize[10]]">
+            <text/>
+        </field>
+        <field name="cardId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}身份证号" position="1" widget-style="validate[required,custom[isIdCardNo]">
+            <text/>
+        </field>
+        <field name="department" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}直属部门" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="post" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}岗位" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupOccupation"/>
+        </field>
+        <field name="workDate" title="入职日期" position="2">
+            <date-time type="date" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="position" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}职级" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="POSITION_LEVEL"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="laborType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}用工类型" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="LABOR_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="degree" title="所获学位" position="1">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="EDUCATION_DEGREE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="diploma" title="所获学历" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="EDUCATION_DIPLOMA"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveEmployees();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="SalaryManagementInfo" type="single" header-row-style="htader-row" default-table-style="basic-table" default-map-name="salaryInfo">
+        <field name="partyId" id-name="partyId">
+            <hidden/>
+        </field>
+        <field name="workerSn" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" title="岗位" position="2">
+            <display/>
+        </field>
+    </form>
+    <form name="DepartureManagement" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="departureList">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="departureId">
+            <hidden/>
+        </field>
+        <field name="departureDate" title="离职日期" position="1">
+            <display/>
+        </field>
+        <field name="departureType" title="离职类型" position="2">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"></display-entity>
+        </field>
+        <field name="departureReason" title="离职原因" position="1">
+            <display/>
+        </field>
+        <field name="transferContent" title="工作交接内容" position="1">
+            <display/>
+        </field>
+        <field name="remarks" title="备注" position="1">
+            <display/>
+        </field>
+        <!--<field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.resourceManagement.saveFixedAssets();">
+            <hyperlink target="#" description="保存" target-type="plain" url-mode="plain"/>
+        </field>-->
+    </form>
+    <form name="editDeparture" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="departureId">
+            <hidden/>
+        </field>
+        <field name="workerSn" use-when="${resultMap.partyId!=null}" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" use-when="${resultMap.partyId!=null}" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" use-when="${resultMap.partyId!=null}" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" use-when="${resultMap.partyId!=null}" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="partyId" use-when="${resultMap.partyId==null}" title="员工" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="departureDate" title="离职日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="departureType" title="离职类型" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="DEPARTURE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="departureReason" title="离职原因" position="1">
+            <textarea/>
+        </field>
+        <field name="transferContent" title="工作交接内容" position="1">
+            <textarea/>
+        </field>
+        <field name="remarks" title="备注" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveDeparture('${resultMap.url}');">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="EducationSituationCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="educationId">
+            <hidden/>
+        </field>
+        <field name="workerSn" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="开始时间" position="1" widget-style="validate[required,past[endDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\\'EducationSituationCreate_endDate\\')}'" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="endDate" title="结束时间" position="2" widget-style="validate[required,future[startDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\\'EducationSituationCreate_startDate\\')}'" default-value="${nowTimestamp}"/>
+        </field>
+        <field name="schoolName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}学校名称" position="1" widget-style="validate[required,maxSize[20]]">
+            <text/>
+        </field>
+        <field name="schoolAddress" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}学校地址" position="2" widget-style="validate[required,maxSize[30]]">
+            <text/>
+        </field>
+        <field name="major" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}所学专业" position="1" widget-style="validate[required,maxSize[20]">
+            <text/>
+        </field>
+        <field name="degree" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}学历" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="EDUCATION_DIPLOMA"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="certificate" title="所获证书" position="1">
+            <text/>
+        </field>
+        <field name="remarks" title="备注" position="2">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveEducational();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateFamilyButton" type="single" target="Family" header-row-style="header-row">
+        <field name="createButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.createFamilySituation();">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateEducationButton" type="single" target="Family" header-row-style="header-row">
+        <field name="createButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.createEducationSituation();">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="TrainManagementCreateButton" type="single" target="Family" header-row-style="header-row">
+        <field name="TrainManagementCreateButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.TrainManagementCreate('10000');">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="SalaryManagementCreateButton" type="single" target="Family" header-row-style="header-row">
+        <field name="SalaryManagementCreateButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.SalaryManagementCreate();">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateWorkButton" type="single" target="Family" header-row-style="header-row">
+        <field name="createButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.createWorkSituation();">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="CreateReacsactionButton" type="single" target="Family" header-row-style="header-row">
+        <field name="createButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.transactionRecordCreate('10000');">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="RewardsAndPunishmentRecordCreateButton" type="single" target="Family" header-row-style="header-row">
+        <field name="RewardsAndPunishmentRecordCreateButton" title=" " widget-style="smallSubmit" position="1"
+               event="onClick"
+               action="javascript:$.recordManagement.RewardsAndPunishmentRecordCreate('10000');">
+            <hyperlink target="#nowhere" description="创建" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="editDepartureButton" type="single" target="Family" header-row-style="header-row">
+
+        <field name="editDepartureButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.editDeparture('10000');">
+
+            <hyperlink target="#nowhere" description="修改" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ContractRecordCreateButton" type="single" target="Family" header-row-style="header-row">
+        <field name="ContractRecordCreateButton" title=" " widget-style="smallSubmit" position="1" event="onClick"
+               action="javascript:$.recordManagement.ContractRecordCreate('10000');">
+            <hyperlink target="#nowhere" description="修改" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="FamilySituationCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="familyId">
+            <hidden/>
+        </field>
+        <field name="workerSn" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="relationship" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}与员工关系" position="1" widget-style="validate[required]">
+            <drop-down  current="selected" no-current-selected-key="default value">
+                <option key="父亲" description="父亲"/>
+                <option key="母亲" description="母亲"/>
+                <option key="兄长" description="兄长"/>
+            </drop-down>
+        </field>
+        <field name="name" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}姓名" position="2" widget-style="validate[required]">
+            <text/>
+        </field>
+        <field name="birthDate" title="出生日期" position="1">
+            <date-time type=""/>
+        </field>
+        <field name="workCompany" title="工作单位" position="2" widget-style="validate[maxSize[20]]">
+            <text/>
+        </field>
+        <field name="address" title="家庭住址" position="1" >
+            <text/>
+        </field>
+        <field name="phone" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}电话" position="2" widget-style="validate[required,custom[isMobile]]">
+            <text/>
+        </field>
+        <field name="remarks" title="备注" position="1">
+            <textarea/>
+        </field>
+        <field name="saveButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveFamilySituation();">
+            <hyperlink target="#" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!-- <form name="FamilySituationCreate1" type="single" header-row-style="header-row" default-table-style="basic-table"
+           default-map-name="recordMapForFamily">
+         <field name="partyId">
+             <hidden/>
+         </field>
+         <field name="employeeJobNumber" title="工号" position="1">
+             <display/>
+         </field>
+         <field name="employeeName" title="姓名" position="2">
+             <display/>
+         </field>
+         <field name="department" title="部门" position="1">
+             <display/>
+         </field>
+         <field name="post" title="岗位" position="2">
+             <display/>
+         </field>
+         <field name="relationship" title="与员工关系" position="1">
+             <text/>
+         </field>
+         <field name="name" title="姓名" position="2">
+             <text/>
+         </field>
+         <field name="birthday" title="出生日期" position="1">
+             <date-time type="date"/>
+         </field>
+         <field name="wokeCompany" title="工作单位" position="2">
+             <text/>
+         </field>
+         <field name="address" title="家庭住址" position="1">
+             <text/>
+         </field>
+         <field name="phoneNumber" title="电话" position="2">
+             <text/>
+         </field>
+         <field name="remarks" title="备注" position="1">
+             <textarea/>
+         </field>
+         <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+                action="javascript:$.resourceManagement.saveFixedAssets();">
+             <hyperlink target="#" description="保存" target-type="plain" url-mode="plain"/>
+         </field>
+     </form>-->
+    <form name="WorkSituationCreate" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="resultMap">
+        <field name="partyId">
+            <hidden/>
+        </field>
+        <field name="workId">
+            <hidden/>
+        </field>
+        <field name="workerSn" title="工号" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="姓名" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="部门" position="1">
+            <display/>
+        </field>
+        <field name="occupationName" title="岗位" position="2">
+            <display/>
+        </field>
+        <field name="startDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}开始时间" position="1"  widget-style="validate[required,past[endDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\\'WorkSituationCreate_endDate\\')}'"  default-value="${nowTimestamp}"/>
+        </field>
+        <field name="endDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}结束时间" position="2"  widget-style="validate[required,future[startDate:yyyy-MM-dd]]">
+            <date-time type="dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\\'WorkSituationCreate_startDate\\')}'"  default-value="${nowTimestamp}"/>
+        </field>
+        <field name="companyName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}单位名称" position="1"  widget-style="validate[required,maxSize[20]]">
+            <text/>
+        </field>
+        <field name="companyProperty" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}单位性质" position="2"  widget-style="validate[required,maxSize[20]]">
+            <text/>
+        </field>
+        <field name="address" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}单位地址" position="1"  widget-style="validate[required,maxSize[30]]">
+            <text/>
+        </field>
+        <field name="post" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}职务" position="2"  widget-style="validate[required,maxSize[20]]">
+            <text/>
+        </field>
+        <field name="workContent" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}工作内容" position="1"  widget-style="validate[required,maxSize[20]]">
+            <text/>
+        </field>
+        <field name="phoneNumber" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}电话" position="2"  widget-style="validate[required,custom[isMobile]]">
+            <text/>
+        </field>
+        <field name="remarks" title="备注" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.recordManagement.saveWorkExperience();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="orderResource" type="single" header-row-style="header-row" default-table-style="basic-table">
+        <field name="resourceId">
+            <hidden/>
+        </field>
+        <field name="orderResource" title="${uiLabelMap.orderResource}" position="1">
+            <drop-down>
+                <entity-options
+                        description="${description}"
+                        entity-name="AgreementType"
+                        key-field-name="agreementTypeId"/>
+            </drop-down>
+        </field>
+        <field name="bespeakParty" title="${uiLabelMap.bespeakParty}" position="2">
+            <drop-down>
+                <entity-options
+                        description="${description}"
+                        entity-name="AgreementType"
+                        key-field-name="agreementTypeId"/>
+            </drop-down>
+        </field>
+        <field name="bespeakPerson" title="${uiLabelMap.bespeakPerson}" position="1">
+            <drop-down>
+                <entity-options
+                        description="${description}"
+                        entity-name="AgreementType"
+                        key-field-name="agreementTypeId"/>
+            </drop-down>
+        </field>
+        <field name="arrangedTime" title="${uiLabelMap.arrangedTime}" position="2">
+            <text/>
+        </field>
+        <field name="useStartDate" title="${uiLabelMap.useStartDate}" position="1">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="useEndDate" title="${uiLabelMap.useEndDate}" position="2">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <text/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2">
+            <text/>
+        </field>
+        <field name="remarks" title="${uiLabelMap.remarks}" position="1">
+            <text/>
+        </field>
+        <!--   <field name="ifOpen" title="${uiLabelMap.ifOpen}" position="1"><radio>可以公开</radio></field>-->
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.resourceManagement.saveFixedAssets();">
+            <hyperlink target="#nowhere" description="预约资源" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="orderResourceView" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="orderResourceView">
+        <field name="resourceId">
+            <hidden/>
+        </field>
+        <field name="orderResource" title="${uiLabelMap.orderResource}" position="1">
+            <display/>
+        </field>
+        <field name="bespeakParty" title="${uiLabelMap.bespeakParty}" position="2">
+            <display/>
+        </field>
+        <field name="bespeakPerson" title="${uiLabelMap.bespeakPerson}" position="1">
+            <display/>
+        </field>
+        <field name="arrangedTime" title="${uiLabelMap.arrangedTime}" position="2">
+            <display/>
+        </field>
+        <field name="useStartDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="useEndDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2">
+            <display/>
+        </field>
+        <field name="remarks" title="${uiLabelMap.remarks}" position="1">
+            <display/>
+        </field>
+        <field name="auditOpinion" title="${uiLabelMap.auditOpinion}" position="1">
+            <display/>
+        </field>
+        <field name="auditPerson" title="${uiLabelMap.auditPerson}" position="2">
+            <display/>
+        </field>
+        <field name="auditTime" title="${uiLabelMap.auditTime}" position="1">
+            <display/>
+        </field>
+        <field name="leadOpinion" title="${uiLabelMap.leadOpinion}" position="2">
+            <display/>
+        </field>
+        <field name="arrangeConfirmation" title="${uiLabelMap.arrangeConfirmation}" position="1">
+            <display/>
+        </field>
+        <field name="confirmationPerson" title="${uiLabelMap.confirmationPerson}" position="2">
+            <display/>
+        </field>
+        <field name="confirmationTime" title="${uiLabelMap.confirmationPerson}" position="1">
+            <display/>
+        </field>
+        <field name="confirmationOpinion" title="${uiLabelMap.confirmationOpinion}" position="2">
+            <display/>
+        </field>
+        <!--  &lt;!&ndash;   <field name="ifOpen" title="${uiLabelMap.ifOpen}" position="1"><radio>可以公开</radio></field>&ndash;&gt;
+          <field name="createButton" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.resourceManagement.saveFixedAssets();">
+              <hyperlink target="#" description="预约资源" target-type="plain" url-mode="plain"/>
+          </field>-->
+    </form>
+</forms>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+    <request-map uri="FixedAssetsManager">
+        <description>固定资产管理</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFixedAssets"/>
+        <response name="success" type="view" value="FixedAssetsManager"/>
+    </request-map>
+    <request-map uri="searchFixedAssets">
+        <description>固定资产查询</description>
+        <security https="true" auth="false"/>
+        <event type="service" invoke="searchFixedAssets"/>
+        <response name="success" type="view" value="ListFixedAssets"/>
+    </request-map>
+
+    <request-map uri="AddFixedAssets">
+        <description>固定资产增加</description>
+        <security https="true" auth="false"/>
+        <response name="success" type="view" value="AddFixedAssets"/>
+    </request-map>
+    <request-map uri="saveFixedAssets">
+        <description>save固定资产</description>
+        <security https="true" auth="false"/>
+        <event type="service" invoke="saveFixedAssets"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="lookupUserDepartment">
+        <description>当选择使用人后自动回显使用部门</description>
+        <security https="true" auth="false"/>
+        <event type="service"  invoke="lookupUserDepartment"/>
+        <response name="success" type="request" value="json"/>
+        <!--<response name="success" type="view" value="LookupDepartment"/>-->
+    </request-map>
+    <request-map uri="deleteFixedsAssets">
+        <description>delete固定资产</description>
+        <security https="true" auth="false"/>
+        <event type="service" invoke="deleteFixedAssets"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="FixedAssetsBorrow">
+        <description>资产借用管理</description>
+        <security https="true" auth="false"/>
+        <event type="service" invoke="findAssetsBorrow"/>
+        <response name="success" type="view" value="FixedAssetsBorrow"/>
+    </request-map>
+    <request-map uri="searchAssetsBorrow">
+        <description>搜索资产借用</description>
+        <security https="true" auth="false"/>
+        <event type="service" invoke="findAssetsBorrow"/>
+        <!--<event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/CanLendFixedAssetsList.groovy" invoke="findAssetsBorrow"/>-->
+        <response name="success" type="view" value="ListFixedAssetsBorrow"/>
+    </request-map>
+
+    <request-map uri="borrowRegister">
+        <description>资产借用登记</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="borrowRegister"/>
+        <response name="success" type="view" value="borrowRegister"/>
+    </request-map>
+    <request-map uri="borrowRegisterConfirm">
+        <description>资产借用登记确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveBorrowRegister"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="borrowAssetsConfirm">
+        <description>借用确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="borrowAssetsConfirm"/>
+        <response name="success" type="view" value="borrowRegisterConfirm"/>
+    </request-map>
+    <request-map uri="saveBorrowAssetsConfirm">
+        <description>save借用确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveBorrowAssetsConfirm"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="rejectBorrowAssetsConfirm">
+        <description>save借用确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="rejectBorrowAssetsConfirm"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="returnAssets">
+        <description>归还确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="borrowAssetsConfirm"/>
+        <response name="success" type="view" value="ReturnAssetsForm"/>
+    </request-map>
+    <request-map uri="saveReturnAssets">
+        <description>save归还确认</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveReturnAssets"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="borrowInfo">
+        <description>资产借用单详情</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="borrowAssetsConfirm"/>
+        <response name="success" type="view" value="borrowInfo"/>
+    </request-map>
+    <request-map uri="addAssetPartys">
+        <description>增加固定资产明细</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/FixedAssets.groovy" invoke="findAssetPartys"/>
+        <response name="success" type="view" value="addAssetPartys"/>
+    </request-map>
+    <request-map uri="saveAssetsPartys">
+        <description>save固定资产明细</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveAssetsPartys"/>
+        <response name="success" type="view" value="AssetsPartys"/>
+    </request-map>
+    <request-map uri="deleteParts">
+        <description>save固定资产明细</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="deleteParts"/>
+        <response name="success" type="view" value="AssetsPartys"/>
+    </request-map>
+
+    <request-map uri="addUseInfo">
+        <description>增加使用记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="findUseInfo"/>
+        <response name="success" type="view" value="addUserInfo"/>
+    </request-map>
+    <request-map uri="saveUseInfo">
+        <description>save使用记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveUseInfo"/>
+        <response name="success" type="view" value="AassetsUse"/>
+    </request-map>
+    <request-map uri="deleteUseInfo">
+        <description>delete使用记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="deleteUseInfo"/>
+        <response name="success" type="view" value="AassetsUse"/>
+    </request-map>
+    <request-map uri="addRepair">
+        <description>增加检修记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="findRepair"/>
+        <response name="success" type="view" value="addRepair"/>
+    </request-map>
+    <request-map uri="saveAssetsRepair">
+        <description>save检修记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="saveAssetsRepair"/>
+        <response name="success" type="view" value="AssetsRepair"/>
+    </request-map>
+    <request-map uri="deleteRepair">
+        <description>delete检修记录</description>
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="deleteRepair"/>
+        <response name="success" type="view" value="AssetsRepair"/>
+    </request-map>
+    <!--固定资产详细信息-->
+    <request-map uri="FixedAssetsInfoForm">
+        <security https="true" auth="false"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/BorrowRegister.groovy" invoke="assetsInfo"/>
+        <response name="success" type="view" value="FixedAssetsInfoForm"/>
+    </request-map>
+
+    <!---->
+
+    <!--折旧信息-->
+    <request-map uri="Depreciation">
+        <security https="true" auth="false"/>
+        <response name="success" type="view" value="Depreciation"/>
+    </request-map>
+
+    <view-map name="FixedAssetsInfoForm" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#FixedAssetsInfoForm"/>
+    <view-map name="FixedAssetsBorrow" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#FixedAssetsBorrow"/>
+    <view-map name="borrowRegister" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#borrowRegister"/>
+    <view-map name="borrowRegisterConfirm" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#borrowRegisterConfirm"/>
+    <view-map name="borrowInfo" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#borrowInfo"/>
+    <view-map name="Depreciation" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#Depreciation"/>
+    <view-map name="AddFixedAssets" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#AddFixedAssets"/>
+    <view-map name="FixedAssetsManager" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#FixedAssetsManager"/>
+    <view-map name="ListFixedAssetsBorrow" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#ListFixedAssetsBorrow"/>
+    <view-map name="ReturnAssetsForm" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#ReturnAssetsForm"/>
+    <view-map name="addAssetPartys" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#addAssetPartys"/>
+    <view-map name="addUserInfo" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#addUserInfo"/>
+    <view-map name="addRepair" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#addRepair"/>
+    <view-map name="AssetsPartys" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#AssetsPartys"/>
+    <view-map name="AassetsUse" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#AassetsUse"/>
+    <view-map name="AssetsRepair" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#AssetsRepair"/>
+    <view-map name="ListFixedAssets" type="screen" page="component://oa/widget/osManager/FixedAssetsScreens.xml#ListFixedAssets"/>
+</site-conf>

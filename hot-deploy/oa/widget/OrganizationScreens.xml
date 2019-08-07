@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="EditOrganization">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/ViewOrganization.groovy"></script>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"></script>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="col-xs-6">
+                                    <screenlet title="修改组织信息">
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://oa/webapp/humanres/humanres/category/EditOrganization.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                        <!--<include-form name="EditOrganization" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                    </screenlet>
+                                </container>
+                                <container style="col-xs-6">
+                                    <screenlet title="维护下级组织" navigation-menu-name="ListSubOrgsBar">
+                                        <include-menu name="ListSubOrgsBar" location="component://oa/widget/HumanresMenus.xml"/>
+                                        <container id="ListSubOrgs">
+                                            <include-screen name="ListSubOrgs"/>
+                                        </container>
+                                    </screenlet>
+                                </container>
+                                <container style="col-xs-12">
+                                    <screenlet title="组织直属成员" navigation-menu-name="OrgMemeberListBar">
+                                        <include-menu name="OrgMemeberListBar" location="component://oa/widget/HumanresMenus.xml"/>
+                                        <container id="PersonList">
+                                            <include-screen name="DepartmentMembers"/>
+                                            <!--<include-form name="ListRecord" location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                                        </container>
+                                    </screenlet>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateSubOrganization">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="saveFun" value="$.organization.saveSubOrganization($.organization.refreshSubOrgs)"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="组织信息">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/category/EditSubOrganization.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="EditSubOrganization" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DepartmentMembers">
+        <section>
+            <actions>
+                <service service-name="getDepartmentMembers" auto-field-map="parameters"/>
+                <set field="recordList" from-field="data"/>
+                <set field="partyId" from-field="parameters.partyId"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                            location="component://oa/webapp/humanres/humanres/category/DepartmentMembers.ftl"/>
+                                    </html>
+                                </platform-specific>
+
+                                <!--<include-form name="OccupationMemberList" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                <!--<include-form name="ListRecord" location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AjaxEditOrganization">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="saveFun" value="$.organization.saveOrganization($.organization.refreshSubOrgs)"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/ViewOrganization.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="基本信息">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/category/EditOrganizationForEdit.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="EditOrganization1" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListSubOrgs">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindSubOrgs.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ListSubOrgs" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditTitles">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindTitles.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container id="EditTitlesWrapper">
+                            <screenlet title="现有职级 (职级涉及权限，不要随意改动)">
+                                <include-form name="ListTitles" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                            </screenlet>
+                            <screenlet title="添加职级">
+                                <include-form name="AddTitle" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                            </screenlet>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

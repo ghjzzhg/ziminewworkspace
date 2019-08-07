@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <!--查询条件-->
+    <form name="" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" id-name="num" title="报告编号" position="1">
+            <text />
+        </field>
+        <field name="b" id-name="name" title="报告名称" position="2">
+            <text default-value="" />
+        </field>
+        <field name="party" title="录入人" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="d" id-name="status" title="报告总状况" position="4">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORK_REPORT_STATUS"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="leader" title="项目主管" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+
+        <field name="f" id-name="type" title="报告类别" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORK_REPORT_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="executor" title="执行人" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="h" title="本周期进度" id-name="process" position="4">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" operator="equals" value="WORK_REPORT_PLAN"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.workPlan.searchWorkReportList()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="新增" event="onClick" action="$.workPlan.addWorkReport('新增报告任务',null)">
+            <hyperlink target="#nowhere" description="新增" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--查询结果-->
+    <form name="workReportList" id="workReportList" type="list"  paginate="true" list-name="workReportList" separate-columns="true" target="updateOsManager" paginate-target="" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="序号" widget-area-style="sn-column" sort-field="true">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}" />
+        </field>
+        <field name="reportNumber" title="编号">
+            <display/>
+        </field>
+        <field name="typeName" title="报告类别" >
+            <display/>
+        </field>
+        <field name="reportTitle" title="报告名称" event="onClick" action="$.workPlan.browseReport(${workReportId})">
+            <hyperlink target="#nowhere" description="${reportTitle}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="request" title="简要要求">
+            <display/>
+        </field>
+        <field name="fullName" title="录入人">
+            <display/>
+        </field>
+        <field name="allName" title="执行人范围">
+            <display/>
+        </field>
+        <field name="workTime" title="有效期">
+            <display/>
+        </field>
+        <field name="frequencyName" title="发生频率">
+            <display/>
+        </field>
+        <field name="statusName" title="报告状况">
+            <display/>
+        </field>
+        <field name="planName" title="当前进度">
+            <display/>
+        </field>
+        <field name="feedbackInfo" title="最后反馈人/时间">
+            <display/>
+        </field>
+       <!-- <field name="d" title="提交报告" event="onClick" action="" title-style="smallSubmit">
+            <hyperlink target="#" description="${d}" target-type="plain" url-mode="plain"/>
+        </field>-->
+        <field name="d" widget-area-style="function-column" widget-style="smallSubmit" use-when="${flag!='0'}"
+               title="提交报告" event="onClick" action="$.workPlan.commitReport(${workReportId})">
+            <hyperlink target="#nowhere" description="提交报告" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.workPlan.addWorkReport('修改报告',${workReportId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.workPlan.delWorkReport(${workReportId})">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="workReportList" area-target="WorkReportManager"/>
+        <on-event-update-area event-type="sort-column" area-id="workReportList" area-target="WorkReportManager"/>
+    </form>
+
+
+    <form name="WorkPerformanceList" type="list" list-name="workPerformanceList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="performanceList_index" title="序号" widget-area-style="sn-column">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}" />
+        </field>
+        <field name="department" title="部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+            <!--<lookup target-form-name="LookupDepartment"/>-->
+        </field>
+        <field name="fullName" title="姓名" event="onClick" action="$.workPlan.toGrade(${workPlanId},${partyId})">
+            <hyperlink target="#nowhere" description="${fullName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="personWorkStatus" title="状态">
+            <display description="${groovy: (personWorkStatus == 100 ? '已完成' : '执行中')}"/>
+        </field>
+        <field name="actualCompleteTime" title="完成日期">
+            <display/>
+        </field>
+        <field name="performanceScore" title="得分">
+            <display/>
+        </field>
+        <field name="performanceRemark" title="评语">
+            <display/>
+        </field>
+    </form>
+
+</forms>
+

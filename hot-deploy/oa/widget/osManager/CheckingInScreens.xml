@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <!--考勤-->
+    <screen name="CheckingInInfo">
+        <section>
+            <actions>
+                <entity-and entity-name="Enumeration" list="checkingInTypeList">
+                    <field-map field-name="enumTypeId" value="CHECKING_IN_OUT"/>
+                </entity-and>
+
+                <entity-and entity-name="Enumeration" list="checkingInStatusList">
+                    <field-map field-name="enumTypeId" value="CHECKING_IN_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="考勤信息搜索">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/checkingin/CheckingInForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="SearchCheckingInInfoForm"-->
+                                                  <!--location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果">
+                            <container id="ListCheckingInSubOrgs">
+                                <include-screen name="ListCheckingInInfo"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+
+            </widgets>
+        </section>
+    </screen>
+    <!--搜索结果-->
+    <screen name="ListCheckingInInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindCheckingIn.groovy"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/checkingin/CheckingInList.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <!--<include-form name="CheckingInInfoList"-->
+                                          <!--location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--新增考勤-->
+    <screen name="AddCheckingIn">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/AddCheckingIn.groovy"/>
+                <set field="staff" value="${userLogin.partyId}"/>
+                <entity-and entity-name="Enumeration" list="checkingInType">
+                    <field-map field-name="enumTypeId" value="CHECKING_IN_OUT"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <container id="CheckingInAdd">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/checkingin/AddCheckingIn.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <include-form name="AddCheckingInForm"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                            <!--<platform-specific>-->
+                                <!--<html>-->
+                                    <!--<html-template-->
+                                            <!--location="component://oa/webapp/humanres/humanres/checkingin/addChekingInSetParam.ftl"/>-->
+                                <!--</html>-->
+                            <!--</platform-specific>-->
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--考勤统计-->
+    <screen name="CheckingStatistics">
+        <section>
+            <actions>
+                <set field="partyId" value="Company"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="col-xs-4">
+                                        <include-screen name="OrgTree"/>
+                                </container>
+                                <container style="right-content col-xs-8">
+                                    <screenlet title="统计结果图">
+                                        <container id="CheckingInStatisticsResult"></container>
+                                    </screenlet>
+                                </container>
+                                <container style="right-content col-xs-8">
+                                    <container id="WorkerCheckingInTag">
+                                        <include-screen name="WorkerCheckingIn"></include-screen>
+                                    </container>
+                                </container>
+                            </widgets>
+                        </section>
+                        <container style="clear"></container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--加班统计-->
+    <screen name="OvertimeStatistics">
+        <section>
+            <actions>
+                <set field="partyId" value="Company"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="搜索条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/checkingin/OvertimeInfoForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="OvertimeStatisticsForm" location="component://oa/widget/osManager/CheckingInForms.xml"></include-form>-->
+                                </screenlet>
+                                <screenlet title="搜索结果">
+                                    <include-screen name="OvertimeList"></include-screen>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--新增加班-->
+    <screen name="AddOvertime">
+        <section>
+            <actions>
+                <entity-and entity-name="Enumeration" list="overtimeTypeList">
+                    <field-map field-name="enumTypeId" value="OVERTIME_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/overtimeForm.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OrgTree">
+        <section>
+            <actions>
+                <set field="partyId" value="Company"/>
+                <set field="userLoginId" value="${parameters.userLogin.partyId}"></set>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"></script>
+            </actions>
+            <widgets>
+                <screenlet title="${uiLabelMap.OrgStructure}">
+                    <section>
+                        <widgets>
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/humanres/humanres/checkingin/departmentTree.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </widgets>
+                    </section>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CheckingInStatisticsResult">
+        <section>
+            <actions>
+                <set field="partyId" value="Company"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/CheckingInStatistics.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/attendanceStatistics.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--加班列表-->
+    <screen name="OvertimeList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/checkingin/OvertimeStatistics.groovy"></script>
+                <entity-and entity-name="Enumeration" list="overtimeTypeList">
+                    <field-map field-name="enumTypeId" value="OVERTIME_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/overtimeList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--审核页面-->
+    <screen name="auditorOvertime">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/checkingin/audiotOvertime.groovy"></script>
+                <entity-and entity-name="Enumeration" list="overtimeTypeList">
+                    <field-map field-name="enumTypeId" value="OVERTIME_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/auditorOvertimeInfo.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OvertimeStatisticsList">
+        <section>
+            <actions>
+                <set field="partyId" value="Company"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-form name="OvertimeStatisticsForm" location="component://oa/widget/osManager/CheckingInForms.xml"></include-form>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--员工考勤情况-->
+    <screen name="WorkerCheckingIn">
+        <section>
+            <actions>
+                <set field="includeFormName" value="${parameters.type}" default-value="WorkerCheckingB"/>
+                <set field="screenletTitle" value="${parameters.title}" default-value="考勤异常"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/GetStaffCheckingInfo.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container style="col-xs-12 button-bar">
+                            <link target="javascript:$.checkingIn.staffChekingInCalendar()" url-mode="plain" text="签到日历" style="buttontext create"/>
+                        </container>
+                        <screenlet title="${screenletTitle}">
+                            <include-form name="${includeFormName}"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                        </screenlet>
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="staffChekingInCalendar">
+        <section>
+            <actions>
+                <set field="partyId" value="${parameters.userLogin.partyId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${screenletTitle}">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/checkingin/staffCheckingInCalendar.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--日历-->
+    <screen name="LookCheckingStatistics">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/SetCalendar.groovy"/>
+                <set field="staffId" value="${parameters.staffId}"/>
+                <set field="date" value="${parameters.date}"/>
+                <set field="dataValue" value="${parameters.personalWorkScheduleId}"/>
+            </actions>
+            <widgets>
+                <!--<label text="${parameters.date}"/>-->
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/personalWorkSchedule.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <!--假期设定-->
+    <screen name="HolidaySet">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/getDepartment.groovy"/>
+                <set field="departmentList" value="${completedTree[0].child}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="假期记录搜索">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/checkingin/HolidayInfoForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="HolidayInfoForm"-->
+                                                  <!--location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果">
+                            <container id="ListHolidayInfo">
+                                <include-screen name="ListHolidayInfo"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListHolidayInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/HolidayInfo.groovy"/>
+                <entity-and entity-name="Enumeration" list="holidayTypeList">
+                    <field-map field-name="enumTypeId" value="HOLIDAY_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/HolidayInfoList.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="HolidayInfoList"-->
+                                      <!--location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--新增假期信息-->
+    <screen name="AddHolidayInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/getDepartment.groovy"/>
+                <entity-and entity-name="Enumeration" list="holidayTypeList">
+                    <field-map field-name="enumTypeId" value="HOLIDAY_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <!--<include-form name="AddHolidayInfoForm" location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/checkingin/holidayForm.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </decorator-section>
+
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <!--查看假期信息-->
+    <screen name="LookHolidayInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/LookHolidayInfo.groovy"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="LookHolidayInfoForm"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <!--班次定义-->
+    <screen name="ListOfWork">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="班次记录搜索">
+                                    <include-form name="SearchListOfWorkForm"
+                                                  location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果">
+                            <container id="ListOfWorkList">
+                                <include-screen name="ListOfWorkList"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListOfWorkList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindWorkNum.groovy"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <include-form name="ListOfWorkList"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="WorkNumAjax">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindWorkNum.groovy"/>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <section>
+                                <widgets>
+                                    <include-form name="WorkNumAjax"
+                                                  location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                                </widgets>
+                            </section>
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <!--增加班次-->
+    <screen name="EditListOfWork">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/EditListOfWork.groovy"/>
+                <entity-and entity-name="Enumeration" list="listOfWorkTypeMap">
+                    <field-map field-name="enumTypeId" value="LIST_OF_WORK_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <container id="searche_osManagers">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/checkingin/EditListOfWork.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <screenlet title="班次信息">
+
+                                <include-form name="ListOfWorkAddForm"
+                                              location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                            </screenlet>
+
+                            <!-- <screenlet title="刷卡有效期范围">
+                                 <include-form name="SwipingCardValidList" location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                             </screenlet>
+                             <include-form name="WorkNumAddFormButton" location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                        </decorator-section>
+                    </decorator-screen>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--班制定义-->
+    <screen name="ListOfWorkByWeek">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="班制记录搜索">
+                                    <include-form name="searchLisOfWorkByWeekForm"
+                                                  location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果">
+                            <container id="ListOfWorkByWeekList">
+                                <include-screen name="ListOfWorkByWeekList"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListOfWorkByWeekList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindWorkRegime.groovy"/>
+                <set field="listOfWorkByWeekList" value="${parameters.returnValue}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ListOfWorkByWeekList"
+                                      location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--班制添加-->
+    <screen name="EditListOfWorkByWeek">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindWorkRegime.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/listOfWorkByWeek.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="WorkRegimeShow">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindWorkRegime.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+
+                        <screenlet title="基本信息">
+                            <include-form name="WorkRegimeFormShow"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                        </screenlet>
+                        <screenlet title="班次设定">
+                            <include-form name="WorkNumSetFormShow"
+                                          location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--排班管理-->
+    <screen name="WorkSchedule">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/getDepartment.groovy"/>
+                <entity-and entity-name="Enumeration" list="workScheduleTypeList">
+                    <order-by field-name="sequenceId"/>
+                    <field-map field-name="enumTypeId" value="SCHEDULE_OF_WORK_TYPE"/>
+                </entity-and>
+                <set field="departmentList" value="${completedTree[0].child}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/humanres/humanres/checkingin/defaultOption.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <screenlet title="班制记录搜索">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/checkingin/WorkScheduleForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="SearchScheduleOfWorkForm"-->
+                                                  <!--location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <screenlet title="搜索结果">
+                            <container id="WorkScheduleListSubOrgs">
+                                <include-screen name="WorkScheduleList"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="WorkScheduleList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindScheduleOfWork.groovy"/>
+                <set field="type" value="${parameters.returnValue.type}"/>
+                <set field="workScheduleList" value="${parameters.returnValue.workScheduleList}"/>
+                <set field="formName"
+                     value="${groovy:if(type == 'WORK_SCHEDULE_AUTO') 'AutoWorkScheduleList'; else if(type == 'WORK_SCHEDULE_WEEK') 'WorkCycleScheduleList'; else if(type == 'WORK_SCHEDULE_PERSONAL') 'PersonalWorkScheduleList';}"/>
+            </actions>
+            <widgets>
+                <!--<label text="${parameters.returnValue.workScheduleList}"/>-->
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="${formName}"
+                                      location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--新增排班信息-->
+    <screen name="EditWorkSchedule">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/getDepartment.groovy"/>
+                <set field="workCycleScheduleId" value="${parameters.workCycleScheduleId}"/>
+                <set field="type" value="${parameters.type}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="排班信息">
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/humanres/humanres/checkingin/workScheduleForm.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--新增自动排班-->
+    <screen name="AutoScheduling">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/getDepartment.groovy"/>
+                <set field="departmentIds" value="${parameters.departmentIds}"/>
+                <set field="listOfWorkIds" value="${parameters.listOfWorkIds}"/>
+                <set field="autoWorkScheduleId" value="${parameters.autoWorkScheduleId}" default-value=" "/>
+                <set field="startDate" value="${parameters.startDate}" default-value=""/>
+                <set field="endDate" value="${parameters.endDate}" default-value=""/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/autoWorkSchedule.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="AutoWorkScheduleGroup">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/AutoWorkScheduleGroup.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/humanres/humanres/checkingin/autoWorkScheduleGroup.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showAutoSchedule">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/SetParamAutoWorkSchedule.groovy"/>
+                <set field="autoWorkScheduleId" value="${parameters.autoWorkScheduleId}" default-value=""/>
+                <set field="workGroups" value="${parameters.groupValues}" default-value=""/>
+                <set field="workOrders" value="${parameters.orderValues}" default-value=""/>
+                <set field="startDate" value="${parameters.startDate}" default-value=""/>
+                <set field="endDate" value="${parameters.endDate}" default-value=""/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/autoWorkScheduleCalendar.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DepartmentScheduleCalendar">
+        <section>
+            <actions>
+                <set field="groupId" value="${parameters.groupId}"/>
+                <set field="groupOrder" value="${parameters.groupOrder}"/>
+                <set field="workOrders" value="${parameters.workOrders}"/>
+                <set field="startDate" value="${parameters.startDate}"/>
+                <set field="endDate" value="${parameters.endDate}"/>
+                <set field="groupValues" value="${parameters.groupValues}"/>
+                <set field="orderValues" value="${parameters.orderValues}"/>
+                <set field="autoWorkScheduleId" value="${parameters.autoWorkScheduleId}"/>
+                <set field="workGroupSize" value="${parameters.workGroupSize}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/scheduleCalendar.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ShowPerson">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindPerson.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/checkingIn.js" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="StaffList" location="component://oa/widget/osManager/CheckingInForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ShowStaff">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindPerson.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/checkingIn.js" global="true"/>
+                <set field="action" value="$.checkingIn.selectedStaffChange"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <!--<include-form name="StaffListTwo" location="component://oa/widget/osManager/CheckingInForms.xml"/>-->
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/LookUpStaff.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ShowStaff">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindPerson.groovy"></script>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/checkingIn.js" global="true"/>
+                <set field="action" value="$.checkingIn.selectedStaffChange"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/checkingin/LookUpStaff.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--测试-->
+    <screen name="Test">
+        <section>
+            <actions>
+                <!-- <service service-name="findOsManager" result-map="test"/>
+                 <entity-one entity-name="OfficeSuppliesManagement" value-field="osManager">
+                     <field-map field-name="osManagementId" from-field="3"/>
+                     <select-field field-name="osManagementId" />
+                     <select-field field-name="suppliesName" />
+                 </entity-one>-->
+
+                <!--<entity-and entity-name="OfficeSuppliesManagement" list="osManagerList">
+                    <field-map field-name="suppliesName" value="www"/>
+                    <select-field field-name="suppliesName"/>
+                    <select-field field-name="osManagementId"/>
+                    &lt;!&ndash;<limit-range start="0" size="2"/>&ndash;&gt;
+                    &lt;!&ndash;<limit-view view-index="0" view-size="3"/>&ndash;&gt;
+                    &lt;!&ndash;<order-by field-name="osManagementId" />
+                    <limit-view view-index="0" view-size="3"/>&ndash;&gt;
+                    &lt;!&ndash;<use-iterator></use-iterator>&ndash;&gt;
+                </entity-and>-->
+                <set field="osManagementId" from-field="parameters.osManagementId"></set>
+                <entity-condition entity-name="OfficeSuppliesManagement" list="osManagerList">
+                    <condition-expr field-name="osManagementId" from-field="osManagementId"></condition-expr>
+                </entity-condition>
+                <get-related value-field="osManager" relation-name="TestPerson" list="personList"></get-related>
+
+                <!-- <set field="parameters.osManagementId" from-field="osManager.osManagementId"/>-->
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindTest.groovy"></script>-->
+            </actions>
+            <widgets>
+
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://common/webcommon/includes/uiWidgets/multiselect.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://oa/webapp/oa/humanres/osManager/test.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
+

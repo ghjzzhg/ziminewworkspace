@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="saveWorkContactList">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="saveWorkContactList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--添加联络单类型管理-->
+    <request-map uri="AddTypeManagement">
+        <security auth="true" https="true"/>
+        <event type="service" invoke="AddTypeManagement"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--个人备忘录List-->
+    <request-map uri="BrowseLiaison">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="BrowseLiaison"/>
+    </request-map>
+    <!--发送联络单-->
+    <request-map uri="SendLiaison">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="SendLiaison"/>
+    </request-map>
+
+    <request-map uri="approvedLiaison">
+        <description>审核</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="checkLiaison"/>
+        <response name="success" type="view" value="auditInformationScreens"/>
+    </request-map>
+
+    <request-map uri="signedLiaison">
+        <description>联络单签收</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="signedLiaison"/>
+        <response name="success" type="view" value="signForScreens"/>
+    </request-map>
+
+    <request-map uri="replyInformationLiaison">
+        <description>联络单回复</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="replyInformationLiaison"/>
+        <response name="success" type="view" value="replyInformationScreens"/>
+    </request-map>
+    <request-map uri="findWorkSheetReplyInformation">
+        <description>find回复信息</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="findWorkSheetReplyInformation"/>
+        <response name="success" type="view" value="replyInformationScreens"/>
+    </request-map>
+    <!--审核-->
+    <request-map uri="CheckLiaison">
+        <description>初始化查询工作联络单</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="searchLiaison"/>
+        <response name="success" type="view" value="CheckLiaison"/>
+    </request-map>
+
+    <request-map uri="searchLiaison">
+        <description>搜索联络单</description>
+        <security https="true" auth="true"/>
+        <event type="service" invoke="searchLiaison"/>
+        <response name="success" type="view" value="LiaisonCheckList"/>
+    </request-map>
+
+    <request-map uri="deleteLiaison">
+        <description>删除联络单</description>
+        <security https="true" auth="true"/>
+        <!--<event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/liaison/DeleteLiaison.groovy"></event>-->
+        <event type="service" invoke="deleteLiaison"></event>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="getLiaisonStatusList">
+        <description></description>
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/liaison/FindLiaisonStatus.groovy"></event>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="showLiaisonInfo">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showLiaisonInfo"/>
+    </request-map>
+    <request-map uri="showLiaisonInfos">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showLiaisonInfos"/>
+    </request-map>
+
+    <request-map uri="LiaisonManager">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="LiaisonManager"/>
+    </request-map>
+
+    <request-map uri="showLiaison">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showLiaison"/>
+    </request-map>
+    <!--类型管理-->
+    <request-map uri="TypeManagement">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="TypeManagement"/>
+    </request-map>
+    <!--发送联络单-->
+    <request-map uri="showSendContactList">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="showSendContactList"/>
+    </request-map>
+
+    <!--更改联络单状态-->
+    <request-map uri="changeLiaisonStatus">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="changeLiaisonStatus"></event>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <view-map name="BrowseLiaison" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#BrowseLiaison"/>
+    <view-map name="SendLiaison" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#SendLiaison"/>
+    <view-map name="CheckLiaison" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#CheckLiaison"/>
+    <view-map name="showLiaisonInfo" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#showLiaisonInfo"/>
+    <view-map name="showLiaisonInfos" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#showLiaisonInfos"/>
+    <view-map name="showLiaison" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#showLiaison"/>
+    <view-map name="LiaisonManager" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#LiaisonManager"/>
+    <view-map name="TypeManagement" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#TypeManagement"/>
+    <view-map name="showSendContactList" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#SendLiaison"/>
+    <view-map name="LiaisonCheckList" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#LiaisonCheckList"/>
+    <view-map name="auditInformationScreens" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#auditInformationScreens"/>
+    <view-map name="signForScreens" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#signForScreens"/>
+    <view-map name="replyInformationScreens" type="screen" page="component://oa/widget/osManager/LiaisonScreens.xml#replyInformationScreens"/>
+</site-conf>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="Folders" type="list" list-name="foldersList" paginate="false" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="name" title="文件夹">
+            <display/>
+        </field>
+        <field name="total" title="邮件总数"><display/></field>
+        <field name="unread" title="未读邮件数"><display/></field>
+        <field name="usedSpace" title="已用空间"><display/></field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="glyphicon glyphicon-screenshot"  title="修改" event="onClick" action="javascript:showInfo('改名');">
+            <hyperlink target="#nowhere" title="修改" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="AddFolder" type="single" target="PerfExamMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="name" title="名称" position="1"><text size="25"/></field>
+        <field name="searchLink" position="2" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:showInfo('添加...')">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="Inbox" type="multi" group-columns="false" list-name="inboxList" paginate="true" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <alt-row-style use-when="&quot;read&quot;.equals(status)" style="mail-title-read"/>
+        <field name="_rowSubmit" title="选择" widget-area-style="function-column">
+            <check/>
+        </field>
+        <field name="status" title="状态" widget-area-style="function-column" title-area-style="function-column" encode-output="false">
+            <display description="${statusIcon}"/>
+        </field>
+        <field name="sender" title="发件人" widget-area-style="col-xs-4" title-area-style="col-xs-4" event="onClick" action="javascript:$.email.viewEmail('')">
+            <hyperlink target="#nowhere" title="${sender}" style="mail-title-read" description="${sender}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="title" title="主题" widget-area-style="col-xs-8" title-area-style="col-xs-8" event="onClick" action="javascript:$.email.viewEmail('')">
+            <hyperlink target="#nowhere" title="${title}" description="${title}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="time" title="时间" widget-area-style="datetime-column">
+            <hyperlink target="#nowhere" title="${time}" description="${time}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="attachment" title="附件" widget-area-style="function-column" title-area-style="function-column" encode-output="false">
+             <display/>
+        </field>
+    </form>
+    <form name="Sent" type="multi" group-columns="false" list-name="inboxList" paginate="true" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <alt-row-style use-when="&quot;read&quot;.equals(status)" style="mail-title-read"/>
+        <field name="_rowSubmit" title="选择" widget-area-style="function-column">
+            <check/>
+        </field>
+        <field name="status" title="状态" widget-area-style="function-column" title-area-style="function-column" encode-output="false">
+            <display description="${statusIcon}"/>
+        </field>
+        <field name="sender" title="发件人" widget-area-style="col-xs-4" title-area-style="col-xs-4" event="onClick" action="javascript:$.email.viewEmail('')">
+            <hyperlink target="#nowhere" title="${sender}" style="mail-title-read" description="${sender}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="title" title="主题" widget-area-style="col-xs-8" title-area-style="col-xs-8" event="onClick" action="javascript:$.email.viewEmail('')">
+            <hyperlink target="#nowhere" title="${title}" description="${title}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="time" title="时间" widget-area-style="datetime-column">
+            <hyperlink target="#nowhere" title="${time}" description="${time}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="attachment" title="附件" widget-area-style="function-column" title-area-style="function-column" encode-output="false">
+             <display/>
+        </field>
+    </form>
+    <form name="AddGroup" type="single" target="PerfExamMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="name" title="分组名称" position="1"><text size="25"/></field>
+    </form>
+    <form name="InternalContactSearchOptions" type="single" target="PerfExamMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="department" title="部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="name" title="姓名" position="1">
+            <text size="25"/>
+        </field>
+        <field name="email" title="email" position="1">
+            <text size="25"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:showInfo('添加...')">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="InternalContactList" type="list" list-name="contactList" paginate="false" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="name" title="姓名">
+            <display/>
+        </field>
+        <field name="department" title="部门"><display/></field>
+        <field name="occupation" title="岗位"><display/></field>
+        <field name="level" title="职级"><display/></field>
+        <field name="telephone" title="单位电话"><display/></field>
+        <field name="cellphone" title="手机号码"><display/></field>
+        <field name="email" title="Email" event="onClick" action="javascript:$.email.writeEmail()">
+            <hyperlink target="#nowhere" description="${email}" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ExternalContactSearchOptions" type="single" target="PerfExamMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="group" title="群组">
+            <drop-down>
+                <option key="1" description="技术支持"/>
+                <option key="2" description="客户"/>
+                <option key="3" description="潜在客户"/>
+            </drop-down>
+        </field>
+        <field name="company" title="单位" position="1">
+            <text size="25"/>
+        </field>
+        <field name="name" title="姓名" position="1">
+            <text size="25"/>
+        </field>
+        <field name="email" title="email" position="1">
+            <text size="25"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:showInfo('添加...')">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="ExternalContactList" type="list" list-name="contactList" paginate="false" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="name" title="姓名">
+            <display/>
+        </field>
+        <field name="group" title="群组"><display/></field>
+        <field name="company" title="单位名称"><display/></field>
+        <field name="position" title="职位"><display/></field>
+        <field name="telephone" title="单位电话"><display/></field>
+        <field name="cellphone" title="手机号码"><display/></field>
+        <field name="email" title="Email" event="onClick" action="javascript:$.email.writeEmail()">
+            <hyperlink target="#nowhere" description="${email}" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="RejectList" type="list" list-name="rejectList" paginate="false" separate-columns="true" target="confirmPerfExam" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="parameters.sortField"
+                 from-field="parameters.sortField" default-value="-sn"/>
+        </actions>
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="fieldName" title="目标">
+            <drop-down>
+                <option key="1" description="发件人"/>
+                <option key="2" description="收件人"/>
+                <option key="3" description="抄送人"/>
+                <option key="4" description="主题"/>
+                <option key="5" description="正文"/>
+                <option key="6" description="大小"/>
+            </drop-down>
+        </field>
+        <field name="fieldRule" title="规则">
+            <drop-down>
+                <option key="1" description="包含"/>
+                <option key="2" description="不包含"/>
+                <option key="3" description="等于"/>
+                <option key="4" description="不等于"/>
+                <option key="5" description="大于"/>
+                <option key="6" description="小于"/>
+                <option key="7" description="通配符等于"/>
+            </drop-down>
+        </field>
+        <field name="fieldValue" title="值">
+            <text size="20"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="glyphicon glyphicon-screenshot"  title="修改" event="onClick" action="javascript:showInfo('改名');">
+            <hyperlink target="#nowhere" title="修改" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="javascript:$.organization.removeSubOrg('${partyIdFrom}','${partyId}');">
+            <hyperlink target="#nowhere" title="删除" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>
+

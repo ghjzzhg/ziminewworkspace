@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="ZxdocAppBar" default-menu-item-name="${parameters.defaultMenuId}" selected-menuitem-context-field-name="headerItem" id="app-navigation" default-selected-style="active" menu-container-style="left-bar" title="${uiLabelMap.Dispatch}">
+        <!--<menu-item name="portalPage" parent-portal-page-value="DD">
+            <condition><not><if-empty field="userLogin"/></not></condition>
+            <link target="showPortalPage" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-th-large"/>
+            </link>
+        </menu-item>-->
+        <actions>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="adminRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_ADMIN"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="companyRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_COMPANY"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="companyPersonRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_COMPANY_PERSON"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="companyPartnerRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_COMPANY_PARTNER"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="providerRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_PROVIDER"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="providerPersonRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_PROVIDER_PERSON"/>
+                </condition-list>
+            </entity-condition>
+            <entity-condition entity-name="UserLoginSecurityGroup" list="providerPartnerRole">
+                <condition-list>
+                    <condition-expr field-name="userLoginId" from-field="userLogin.userLoginId"/>
+                    <condition-expr field-name="groupId" value="ZXDOC_PROVIDER_PARTNER"/>
+                </condition-list>
+            </entity-condition>
+            <entity-one entity-name="Party" value-field="party">
+                <field-map field-name="partyId" from-field="userLogin.partyId"/>
+            </entity-one>
+        </actions>
+
+        <menu-item name="portalPage" title="工作台">
+            <condition>
+                <and>
+                    <not>
+                        <if-empty field="userLogin"/>
+                    </not>
+                    <or>
+                        <not>
+                            <if-empty field="companyPersonRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="providerPersonRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="companyPartnerRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="providerPartnerRole"/>
+                        </not>
+                    </or>
+                </and>
+            </condition>
+            <link target="javascript:displayInside('showPortalPage?portalPageId=${parameters.portalPageId}&amp;parentPortalPageId=${parameters.parentPortalPageId}')" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-th-large"/>
+            </link>
+        </menu-item>
+        <!--<menu-item name="main" title="工作台">
+            <link target="javascript:displayInside('Workspace')" url-mode="plain" />
+        </menu-item>-->
+        <menu-item name="UserCenter" title="个人中心">
+            <condition>
+                    <if-empty field="adminRole"/>
+            </condition>
+            <!--<condition>
+                <or>
+                    <if-empty field="staff.position"/>
+                    <if-compare field="staff.position" operator="not-equals" value="POSITION_LEVEL_4"/>
+                </or>
+            </condition>-->
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-user"/>
+            </link>
+            <menu-item name="MyCases" title="我的CASE">
+                <!--<condition>
+                    <or>
+                        <not>
+                            <if-empty field="companyPersonRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="providerPersonRole"/>
+                        </not>
+                    </or>
+                </condition>-->
+                <condition>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                </condition>
+                <link target="javascript:displayInside('ProviderCases')" url-mode="plain">
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="DocManage" title="文档管理">
+                <condition>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                    <!--<or>
+                        <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                        <not>
+                            <if-empty field="companyPersonRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="providerPersonRole"/>
+                        </not>
+                    </or>-->
+                </condition>
+                <link target="javascript:displayInside('/ckfinder/control/main?externalLoginKey=${externalLoginKey}')" url-mode="plain">
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="SubAccounts" title="子账号管理">
+                <condition>
+                    <and>
+                        <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                        <or>
+                            <not>
+                                <if-empty field="companyRole"/>
+                            </not>
+                            <not>
+                                <if-empty field="providerRole"/>
+                            </not>
+                        </or>
+                    </and>
+                </condition>
+                <link target="javascript:displayInside('SubAccounts')" url-mode="plain">
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="MyScore" title="我的积分">
+                <condition>
+                    <and>
+                        <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                        <or>
+                            <not>
+                                <if-empty field="companyPersonRole"/>
+                            </not>
+                            <not>
+                                <if-empty field="providerPersonRole"/>
+                            </not>
+                            <not>
+                                <if-empty field="providerPartnerRole"/>
+                            </not>
+                        </or>
+                    </and>
+                </condition>
+                <link target="javascript:displayInside('UserScoreHistory')" url-mode="plain">
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <!--<menu-item name="Qualification" title="实名认证">-->
+                <!--<link target="javascript:displayInside('Qualification')" url-mode="plain">-->
+                    <!--<image style="font-green fa fa-angle-right"/>-->
+                <!--</link>-->
+            <!--</menu-item>-->
+        </menu-item>
+        <menu-item name="BackendManage" title="后台管理">
+            <condition>
+                <not>
+                    <if-empty field="adminRole"/>
+                </not>
+            </condition>
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-university"/>
+            </link>
+            <menu-item name="AccountManage" title="账户管理">
+                <link target="#" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+                <!--<menu-item name="ApproveUser" title="账户审核">-->
+                    <!--<link target="javascript:displayInside('PendingAccounts')" url-mode="plain">-->
+                        <!--<image style="font-green fa fa-angle-right"/>-->
+                    <!--</link>-->
+                <!--</menu-item>-->
+                <!--<menu-item name="QualifyUser" title="机构实名认证">-->
+                    <!--<link target="javascript:displayInside('QualifyAccounts')" url-mode="plain">-->
+                        <!--<image style="font-green fa fa-angle-right"/>-->
+                    <!--</link>-->
+                <!--</menu-item>-->
+                <!--<menu-item name="QualifyPerson" title="个人实名认证">-->
+                    <!--<link target="javascript:displayInside('QualifyPersonAccounts')" url-mode="plain">-->
+                        <!--<image style="font-green fa fa-angle-right"/>-->
+                    <!--</link>-->
+                <!--</menu-item>-->
+                <menu-item name="ManageAccount" title="账户管理">
+                    <link target="javascript:displayInside('ManageAccounts')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="LoginHistory" title="登录历史">
+                    <link target="javascript:displayInside('LoginHistory')" url-mode="plain">
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+            </menu-item>
+            <menu-item name="CaseTemplates" title="CASE模板">
+                <link target="javascript:displayInside('CaseTemplates')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="SystemSetting" title="系统设置">
+                <link target="javascript:displayInside('SystemSetting')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="ScoreManage" title="积分管理">
+                <link target="#" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+                <menu-item name="ScoreRule" title="积分策略">
+                    <link target="javascript:displayInside('ScoreRules')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="UserScore" title="用户积分">
+                    <link target="javascript:displayInside('UserScores')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="ScoreLog" title="积分日志">
+                    <link target="javascript:displayInside('ScoreHistory')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <!--<menu-item name="ScoreStats" title="积分统计">
+                    <link target="#" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>-->
+            </menu-item>
+            <menu-item name="AdManage" title="广告设置">
+                <link target="javascript:displayInside('AdSettings')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <!--<menu-item name="WendaApprove" title="咨询审核">-->
+                <!--<link target="javascript:displayInside('ApproveQuestions')" url-mode="plain" >-->
+                    <!--<image style="font-green fa fa-angle-right"/>-->
+                <!--</link>-->
+            <!--</menu-item>-->
+            <menu-item name="LibraryApprove" title="资料库审核">
+                <link target="javascript:displayInside('ApproveFileUploads')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="EmailInfoManage" title="邮件管理">
+                <link target="javascript:displayInside('EmailInfoManage')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="policyFile" title="政策文件管理">
+                <link target="javascript:displayInside('policyFile')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <!--<menu-item name="FolderMaintain" title="文件目录维护">-->
+                <!--<link target="javascript:displayInside('FolderMaintain')" url-mode="plain" >-->
+                    <!--<image style="font-green fa fa-angle-right"/>-->
+                <!--</link>-->
+            <!--</menu-item>-->
+        </menu-item>
+        <menu-item name="CustomerManage" title="客户管理">
+            <condition>
+                <and>
+                    <if-empty field="adminRole"/>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                </and>
+            </condition>
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-weixin"/>
+            </link>
+            <menu-item name="NewPartner" title="新建客户">
+                <link target="javascript:displayInside('NewPartner')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="MyCustomer" title="我的客户">
+                <link target="javascript:displayInside('ListPartners')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="CustomerStats" title="客户统计">
+                <link target="javascript:displayInside('ChartPartners')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+        </menu-item>
+        <menu-item name="CaseManage" title="信息发布">
+            <condition>
+                <and>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                    <or>
+                        <not>
+                            <if-empty field="companyRole"/>
+                        </not>
+                        <!--<not>-->
+                            <!--<if-empty field="companyPartnerRole"/>-->
+                        <!--</not>-->
+                        <!--<not>-->
+                            <!--<if-empty field="providerRole"/>-->
+                        <!--</not>-->
+                    </or>
+                </and>
+            </condition>
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-file"/>
+            </link>
+            <menu-item name="NewCase" title="发布新信息">
+                <link target="javascript:displayInside('NewTicket')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="CaseList" title="发布历史">
+                <link target="javascript:displayInside('ListTickets')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <!--<menu-item name="RelatedTickets" title="可竞选">
+                <link target="javascript:displayInside('RelatedTickets')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>-->
+            <!--<menu-item name="CaseStats" title="发布统计">
+                <link target="javascript:displayInside('ListTasks')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>-->
+        </menu-item>
+        <menu-item name="Library" title="资料库">
+            <link target="javascript:displayInside('LibraryHome')" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-database"/>
+            </link>
+            <menu-item name="NewFileUpload" title="发布资料">
+                <condition>
+                    <and>
+                        <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                        <or>
+                            <not>
+                                <if-empty field="companyPersonRole"/>
+                            </not>
+                            <not>
+                                <if-empty field="providerPersonRole"/>
+                            </not>
+                        </or>
+                    </and>
+                </condition>
+                <link target="javascript:displayInside('NewFileUpload')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+        </menu-item>
+        <menu-item name="Contract" title="在线签约">
+            <condition>
+                <and>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                    <or>
+                        <not>
+                            <if-empty field="companyRole"/>
+                        </not>
+                        <not>
+                            <if-empty field="providerRole"/>
+                        </not>
+                    </or>
+                </and>
+            </condition>
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-briefcase"/>
+            </link>
+            <menu-item name="NewContract" title="新合同">
+                <link target="javascript:displayInside('NewContract')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="ContractList" title="合同浏览">
+                <link target="javascript:displayInside('ListContracts')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+        </menu-item>
+        <menu-item name="Wenda" title="远程咨询">
+            <condition>
+                <or>
+                    <not>
+                        <if-empty field="companyPersonRole"/>
+                    </not>
+                    <not>
+                        <if-empty field="providerPersonRole"/>
+                    </not>
+                    <not>
+                        <if-empty field="companyPartnerRole"/>
+                    </not>
+                    <not>
+                        <if-empty field="providerPartnerRole"/>
+                    </not>
+                </or>
+            </condition>
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-street-view"/>
+            </link>
+            <menu-item name="NewQuestion" title="提问">
+                <link target="javascript:displayInside('NewQuestion')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="ListQuestions" title="所有问题">
+                <condition>
+                    <if-compare field="party.statusId" operator="equals" value="PARTY_IDENTIFIED"/>
+                </condition>
+                <link target="javascript:displayInside('ListQuestions?isPage=Y')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="WendaHistory" title="我的提问">
+                <link target="javascript:displayInside('WendaHistory')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="InvitedQuestions" title="受邀咨询">
+                <link target="javascript:displayInside('InvitedQuestions')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+        </menu-item>
+        <menu-item name="help" title="帮助">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="font-green fa fa-cog"/>
+            </link>
+            <menu-item name="help1" title="用户注册、登录">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,2,4..7')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help2" title="账户功能简介">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,8..10')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help3" title="CASE管理">
+                <link target="#" url-mode="plain" style="waves-effect waves-light">
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+                <menu-item name="help31" title="创建CASE">
+                    <link target="javascript:displayInside('systemHelp?fileIds=1,11..13')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="help32" title="创建CASE系统模板">
+                    <condition>
+                        <if-empty field="adminRole"/>
+                    </condition>
+                    <link target="javascript:displayInside('systemHelp?fileIds=1,11..13')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="help33" title="自建CASE模板">
+                    <link target="javascript:displayInside('systemHelp?fileIds=1,23..30')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="help34" title="新建无模板CASE">
+                    <link target="javascript:displayInside('systemHelp?fileIds=1,17..22')" url-mode="plain" >
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                </menu-item>
+                <menu-item name="help35" title="CASE流程">
+                    <link target="#" url-mode="plain" style="waves-effect waves-light">
+                        <image style="font-green fa fa-angle-right"/>
+                    </link>
+                    <menu-item name="help351" title="CASE概要">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31..33')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help352" title="CASE成员">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,35')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help353" title="CASE文件">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,36')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help354" title="CASE合同">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,37')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help355" title="CASE任务">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,38..41')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help356" title="CASE协作">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,42..52')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                    <menu-item name="help357" title="CASE备忘录">
+                        <link target="javascript:displayInside('systemHelp?fileIds=1,31,53')" url-mode="plain" >
+                            <image style="font-green fa fa-angle-right"/>
+                        </link>
+                    </menu-item>
+                </menu-item>
+            </menu-item>
+            <menu-item name="help4" title="文档管理">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,54..55')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help5" title="账户积分">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,56..57')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help6" title="工作台">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,58..60')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help7" title="客户管理">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,61..68')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help8" title="在线签约">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,69..73')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help9" title="资料库">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,74..81')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help10" title="远程咨询">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,82..90')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+            <menu-item name="help11" title="信息发布">
+                <link target="javascript:displayInside('systemHelp?fileIds=1,91..95')" url-mode="plain" >
+                    <image style="font-green fa fa-angle-right"/>
+                </link>
+            </menu-item>
+        </menu-item>
+    </menu>
+</menus>

@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="ListPendingAuditVehicle" type="list" title="" separate-columns="true" default-entity-name=""
+          list-name="listPendingAuditVehicle" paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="orderId"><hidden/></field>
+        <field name="vehicleName" title="${uiLabelMap.vehicleName}" event="onClick" action="javascript:$.vehicleManagement.vehicleOrderView('${orderId}');" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${vehicleName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}">
+            <display/>
+        </field>
+        <field name="reviewPersonName" title="审核人">
+            <display/>
+        </field>
+        <field name="review" widget-style="smallSubmit" use-when="&quot;${reviewPerson}&quot; == &quot;${userLogin.partyId}&quot;"
+               title="审核" event="onClick" action="javascript:$.vehicleManagement.auditVehicleOrder(${orderId});">
+            <hyperlink target="#nowhere" description="审核" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="review" use-when="&quot;${reviewPerson}&quot; != &quot;${userLogin.partyId}&quot;" title="审核">
+            <display description="待审核"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="screenlet_2_col" area-target="pendingAuditForVehicle"/>
+    </form>
+    <form name="ListPendingArrangedVehicle" type="list" title="" separate-columns="true" default-entity-name=""
+          list-name="listPendingArrangedVehicle" paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="vehicleId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="${uiLabelMap.vehicleName}" event="onClick" action="javascript:$.vehicleManagement.vehicleOrderView('${orderId}');" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${vehicleName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}">
+            <display/>
+        </field>
+        <field name="arrangePersonName" title="${uiLabelMap.arrangedPerson}">
+            <display/>
+        </field>
+        <field name="arrange" widget-style="smallSubmit" use-when="&quot;${arrangePerson}&quot; == &quot;${userLogin.partyId}&quot;"
+               title="安排" event="onClick" action="javascript:$.vehicleManagement.arrangeVehicleOrder(${orderId});">
+            <hyperlink target="#nowhere" description="安排" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="arrange" use-when="&quot;${arrangePerson}&quot; != &quot;${userLogin.partyId}&quot;" title="安排">
+            <display description="待安排"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="screenlet_3_col" area-target="pendingArrangeForVehicle"/>
+    </form>
+    <form name="ListTodayUseVehicle" type="list" title="" separate-columns="true" default-entity-name=""
+          list-name="listTodayUseVehicle" paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="orderId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="${uiLabelMap.vehicleName}">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}">
+            <display/>
+        </field>
+        <field name="reviewPersonName" title="审核人">
+            <display/>
+        </field>
+        <field name="arrangePersonName" title="${uiLabelMap.arrangedPerson}">
+            <display/>
+        </field>
+        <field name="mileage" title="${uiLabelMap.mileage}">
+            <display/>
+        </field>
+        <field name="reviewState" use-when="${max &gt;= 29}" title="${uiLabelMap.state}">
+            <display/>
+        </field>
+        <field name="detailButton" widget-area-style="function-column" widget-style="hyperLinkStyle"
+               title="预约详情" event="onClick"
+               action="javascript:$.vehicleManagement.vehicleOrderView('${orderId}');">
+            <hyperlink target="#nowhere" description="详情" target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="screenlet_4_col" area-target="todayUseSituationForVehicle"/>
+    </form>
+    <form name="ListVehicle" type="list" title="" separate-columns="true" default-entity-name="" list-name="vehicleList"
+          paginate-target="" paginate="true" view-size="5"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="vehicleId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="车辆名称">
+            <display/>
+        </field>
+        <field name="vehicleType" title="车辆类型">
+            <display/>
+        </field>
+        <field name="vehicleBrand" title="车辆品牌">
+            <display/>
+        </field>
+        <field name="fullName" title="车辆管理员">
+            <display/>
+        </field>
+        <field name="readyState" title="可用状态">
+            <display/>
+        </field>
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"
+               title="修改" event="onClick"
+               action="javascript:$.vehicleManagement.editVehicle(${vehicleId});">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick"
+               action="javascript:$.vehicleManagement.deleteVehicle(${vehicleId});">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="listVehicleTab" area-target="ListVehicle"/>
+    </form>
+
+    <form name="createVehicleForm" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="vehicleMap">
+        <field name="vehicleName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车辆名称：" position="1" widget-style="validate[required,maxSize[20],custom[onlyLetterNumberChinese]]">
+            <text/>
+        </field>
+        <field name="vehicleType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.vehicleType}：" position="2" widget-style="validate[required,maxSize[20]]">
+            <!--<drop-down>-->
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="VEHICLE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="vehicleBrand" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.vehicleBrand}：" position="1" widget-style="validate[required]">
+            <drop-down  importability="true" enumTypeId="VEHICLE_BRAND">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="VEHICLE_BRAND"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="busload" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}入载客量：" position="2" widget-style="validate[required,maxSize[3],custom[onlyNumberSp]]">
+            <text/>
+        </field>
+        <field name="buyInsuranceDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.buyInsuranceTime}：" position="1" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="InsuranceDueDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}保险到期时间：" position="2" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="buyDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.buyTime}：" position="1" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="annualDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.limitedTime}：" position="2" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="plateNumber" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车牌号：" position="1" widget-style="validate[required,maxSize[7],custom[onlyLetterNumberChinese]]">
+            <text/>
+        </field>
+        <field name="vehicleManager" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车辆管理员：" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="readyState" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}可用状态：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="VEHICLE_UP_STATE"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="remarks" title="${uiLabelMap.remarks}" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.saveVehicle();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="editVehicleForm" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="vehicleMap">
+        <field name="vehicleId">
+            <hidden value="${vehicleMap.vehicleId}"/>
+        </field>
+        <field name="vehicleName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车辆名称：" position="1" widget-style="validate[required,maxSize[20],custom[onlyLetterNumberChinese]]">
+            <text/>
+        </field>
+        <field name="vehicleType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.vehicleType}：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="VEHICLE_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="vehicleBrand" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.vehicleBrand}：" position="1" widget-style="validate[required]">
+            <text/>
+        </field>
+        <field name="busload" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}入载客量：" position="2" widget-style="validate[required,maxSize[3],custom[onlyNumberSp]]">
+            <text/>
+        </field>
+        <field name="buyInsuranceDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.buyInsuranceTime}：" position="1" widget-style="validate[required,past[InsuranceDueDate:yyyy-MM-dd]]">
+            <date-time type="date"/>
+        </field>
+        <field name="InsuranceDueDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}保险到期时间：" position="2" widget-style="validate[required,future[buyInsuranceDate:yyyy-MM-dd]]">
+            <date-time type="date"/>
+        </field>
+        <field name="buyDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.buyTime}：" position="1" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="annualDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.limitedTime}：" position="2" widget-style="validate[required]">
+            <date-time type="date"/>
+        </field>
+        <field name="plateNumber" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车牌号：" position="1" widget-style="validate[required,maxSize[7],maxSize[7],custom[onlyLetterNumberChinese]]">
+            <text/>
+        </field>
+        <field name="vehicleManager" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}车辆管理员：" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="readyState" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}可用状态：" position="1" widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="VEHICLE_UP_STATE"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="remarks" title="${uiLabelMap.remarks}：" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.editVehicleFor();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="orderVehicleForm" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="orderVehicleMap">
+        <field name="orderId">
+            <hidden/>
+        </field>
+        <field name="vehicleId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.orderVehicle}" position="1" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="vehicleShow" key-name="vehicleId" description="${vehicleName}"/>
+            </drop-down>
+        </field>
+        <field name="driver" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.driver}" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="orderDepartment" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.bespeakParty}" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="orderPerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.bespeakPerson}" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="reviewPerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}审核人" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="arrangePerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.arrangedPerson}" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="register" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.arrangedTime}" position="1" widget-style="validate[required]">
+            <date-time type="date" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="destination" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.destination}" position="2" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]" >
+            <text/>
+        </field>
+        <field name="startDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.useStartDate}" position="1">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="endDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.useEndDate}" position="2">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="peers" title="${uiLabelMap.colleague}" position="2" widget-style="validate[custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="contactInformation" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.contactInformation}" position="1" widget-style="validate[required,custom[isMobile],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2" widget-style="validate[custom[onlyLetterNumberChinese],maxSize[20]]">
+            <text/>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.saveOrderVehicle();">
+            <hyperlink target="#nowhere" description="预约车辆" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="VehicleOrderView" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="orderVehicleDetailMap">
+        <field name="orderId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="${uiLabelMap.orderVehicle}" position="1">
+            <display/>
+        </field>
+        <field name="driver" title="${uiLabelMap.driver}" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="2">
+            <display/>
+        </field>
+        <field name="reviewPersonName" title="审核人" position="1">
+            <display/>
+        </field>
+        <field name="arrangePersonName" title="${uiLabelMap.arrangedPerson}" position="2">
+            <display/>
+        </field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="1">
+            <display/>
+        </field>
+        <field name="destination" title="${uiLabelMap.destination}" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="peers" title="${uiLabelMap.colleague}" position="2">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="1">
+            <display/>
+        </field>
+      <!--  <field name="reviewPerson"><hidden/></field>
+        <field name="reviewPersonName" title="审核人" position="1">
+            <display/>
+        </field>
+        <field name="reviewResult" title="审核结果" position="2">
+            <radio>
+                <option key="yes" description="同意"/>
+                <option key="no" description="不同意"/>
+            </radio>
+        </field>
+        <field name="reviewSituation" title="审核意见说明" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.saveOrderVehicleForReview();">
+            <hyperlink target="#nowhere" description="确认审核" target-type="plain" url-mode="plain"/>
+        </field>-->
+    </form>
+
+    <!--审核车辆管理-->
+    <form name="AuditVehicleOrder" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="orderVehicleDetailMap" extends="">
+        <field name="orderId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="${uiLabelMap.orderVehicle}" position="1">
+            <display/>
+        </field>
+        <field name="driver" title="${uiLabelMap.driver}" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="2">
+            <display/>
+        </field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="1">
+            <display/>
+        </field>
+        <field name="arrangePersonName" title="${uiLabelMap.arrangedPerson}" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="destination" title="${uiLabelMap.destination}" position="1">
+            <display/>
+        </field>
+        <field name="peers" title="${uiLabelMap.colleague}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="1">
+            <display/>
+        </field>
+        <field name="reviewDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.auditTime}" position="1" widget-style="validate[required]">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="reviewRemarks" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.auditOpinion}" position="1" widget-style="validate[required]">
+            <textarea/>
+        </field>
+        <field name="1" title-style="hide" widget-style="smallSubmit"
+               title="通过审核" event="onClick" action="javascript:$.vehicleManagement.saveAuditVehicleOrder('PERSON_TWO');" position="1">
+            <hyperlink target="#nowhere" description="通过审核" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="2" title-style="hide" widget-style="smallSubmit"
+               title="驳回审核" event="onClick" action="javascript:$.vehicleManagement.saveAuditVehicleOrder('PERSON_THREE');" position="2">
+            <hyperlink target="#nowhere" description="驳回审核" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--车辆安排-->
+    <form name="ArrangeVehicleOrder" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="orderVehicleDetailMap">
+        <field name="orderId">
+            <hidden/>
+        </field>
+        <field name="vehicleName" title="${uiLabelMap.orderVehicle}" position="1">
+            <display/>
+        </field>
+        <field name="driver" title="${uiLabelMap.driver}" position="2">
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="2">
+            <display/>
+        </field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="1">
+            <display/>
+        </field>
+        <field name="arrangePersonName" title="${uiLabelMap.arrangedPerson}" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="destination" title="${uiLabelMap.destination}" position="1">
+            <display/>
+        </field>
+        <field name="peers" title="${uiLabelMap.colleague}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="1">
+            <display/>
+        </field>
+        <field name="reviewPersonName" title="审核人" position="1">
+            <display/>
+        </field>
+        <field name="reviewDate" title="${uiLabelMap.auditTime}" position="2">
+            <display/>
+        </field>
+        <field name="reviewRemarks" title="${uiLabelMap.auditOpinion}" position="1">
+            <display/>
+        </field>
+        <field name="arrangeDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.confirmationTime}" position="1" widget-style="validate[required]">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="arrangeRemarks" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.confirmationOpinion}" position="1"  widget-style="validate[required]">
+            <textarea/>
+        </field>
+        <field name="" title-style="hide" widget-style="smallSubmit"
+               title="确认安排" event="onClick" action="javascript:$.vehicleManagement.saveArrangeVehicleOrder('PERSON_FOUR');">
+            <hyperlink target="#nowhere" description="确认安排" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="createVehicleForCost" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="vehicleMap">
+        <field name="costId">
+            <hidden/>
+        </field>
+        <field name="vehicleId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.vehicleName}" position="1"  widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="TblVehicleManagement" description="${vehicleName}" key-field-name="vehicleId">
+                    <entity-constraint name="logicDelete" operator="equals" value="N"/>
+                    <entity-order-by field-name="vehicleId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="happenDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.costTime}" position="2" widget-style="validate[required]">
+            <date-time type="date" default-value="${groovy:new Date()}" />
+        </field>
+        <field name="costType" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.costType}" position="1"  widget-style="validate[required]">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="COST_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="cost" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.cost}" position="2"  widget-style="validate[required,custom[twoDecimalNumber],maxSize[8]]">
+            <text/>
+        </field>
+        <field name="remarks" title="${uiLabelMap.remarks}" position="1">
+            <textarea/>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.saveVehicleCost();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--当月当前车辆费用详情里面的搜索界面-->
+    <form name="searchShowVehicle" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="vehicleMap">
+        <field name="year" title="年份" position="1" >
+            <drop-down allow-empty="true">
+                <list-options list-name="yearList" key-name="year" description="${year}"/>
+            </drop-down>
+        </field>
+        <field name="month" title="月份" position="2" >
+            <drop-down allow-empty="true">
+                <list-options list-name="monthList" key-name="month" description="${month}"/>
+            </drop-down>
+        </field>
+        <field name="vehicleId" title="车辆名称" position="1" >
+            <hidden/>
+        </field>
+        <field name="costType" title="费用类型" position="2">
+            <drop-down>
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="COST_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick"
+               action="javascript:$.vehicleManagement.searchVehicleByCostType()" position="3">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>

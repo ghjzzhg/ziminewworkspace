@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+
+    <RoleType roleTypeId="CASE_ROLE" hasTable="N" description="CASE中的参与方角色" lastUpdatedStamp="2015-06-12 12:49:26.0" lastUpdatedTxStamp="2015-06-12 12:49:26.0" createdStamp="2015-06-12 12:49:26.0" createdTxStamp="2015-06-12 12:49:26.0"/>
+    <RoleType roleTypeId="CASE_ROLE_OWNER" parentTypeId="CASE_ROLE" description="企业" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType roleTypeId="CASE_ROLE_ACCOUNTING" parentTypeId="CASE_ROLE" description="会所" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType roleTypeId="CASE_ROLE_LAW" parentTypeId="CASE_ROLE" description="律所" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType roleTypeId="CASE_ROLE_STOCK" parentTypeId="CASE_ROLE" description="券商" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType roleTypeId="CASE_ROLE_INVESTOR" parentTypeId="CASE_ROLE" description="其他机构" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <!--<RoleType roleTypeId="CASE_ROLE_PARTNER" parentTypeId="CASE_ROLE" description="合伙人" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>-->
+
+    <!--<RoleType roleTypeId="CASE_PERSON_ROLE" hasTable="N" description="CASE中的人员角色" lastUpdatedStamp="2015-06-12 12:49:26.0" lastUpdatedTxStamp="2015-06-12 12:49:26.0" createdStamp="2015-06-12 12:49:26.0" createdTxStamp="2015-06-12 12:49:26.0"/>
+    <RoleType parentTypeId="CASE_PERSON_ROLE" roleTypeId="CASE_PERSON_ROLE_MANAGER" description="项目经理" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType parentTypeId="CASE_PERSON_ROLE" roleTypeId="CASE_PERSON_ROLE_STAFF" description="组员" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+-->
+    <StatusType description="CASE状态" hasTable="N" parentTypeId="" statusTypeId="CASE_STATUS"/>
+    <StatusItem statusTypeId="CASE_STATUS" sequenceId="01" statusId="CASE_STATUS_ACTIVE" statusCode="ACTIVE" description="进行中"/>
+    <StatusItem statusTypeId="CASE_STATUS" sequenceId="02" statusId="CASE_STATUS_ARCHIVED" statusCode="ARCHIVED" description="已归档"/>
+    <StatusItem statusTypeId="CASE_STATUS" sequenceId="03" statusId="CASE_STATUS_FINISH" statusCode="FINISH" description="已完成"/>
+
+    <!--机构、人员认证-->
+    <StatusItem description="驳回" sequenceId="04" statusCode="REJECT" statusId="PARTY_REJECT" statusTypeId="PARTY_STATUS"/>
+    <StatusItem description="未认证" sequenceId="02" statusCode="UNIDENTIFIED" statusId="PARTY_UNIDENTIFIED" statusTypeId="PARTY_STATUS"/>
+    <StatusItem description="已认证" sequenceId="03" statusCode="IDENTIFIED" statusId="PARTY_IDENTIFIED" statusTypeId="PARTY_STATUS"/>
+    <StatusValidChange statusId="PARTY_DISABLED" statusIdTo="PARTY_UNIDENTIFIED" transitionName="Register"/>
+    <StatusValidChange statusId="PARTY_ENABLED" statusIdTo="PARTY_UNIDENTIFIED" transitionName="Register"/>
+    <StatusValidChange statusId="PARTY_UNIDENTIFIED" statusIdTo="PARTY_IDENTIFIED" transitionName="Identify"/>
+
+    <PartyIdentificationType partyIdentificationTypeId="ZX_GROUP_IDENTIFY" description="企业/机构认证表Tbl_Group_Identify" hasTable="Y"/>
+    <PartyIdentificationType partyIdentificationTypeId="ZX_PERSON_IDENTIFY" description="人员认证表Tbl_Person_Identify" hasTable="Y"/>
+
+    <EnumerationType description="CASE模板分类" enumTypeId="CASE_CATEGORY_GROUP" hasTable="N" parentTypeId=""/>
+    <Enumeration enumTypeId="CASE_CATEGORY_GROUP" sequenceId="01" description="定期报告" enumCode="DQ" enumId="CASE_CATEGORY_GROUP_DQ"/>
+    <Enumeration enumTypeId="CASE_CATEGORY_GROUP" sequenceId="02" description="管理层变动" enumCode="BD" enumId="CASE_CATEGORY_GROUP_BD"/>
+    <Enumeration enumTypeId="CASE_CATEGORY_GROUP" sequenceId="03" description="关联交易" enumCode="JY" enumId="CASE_CATEGORY_GROUP_JY"/>
+
+    <EnumerationType description="CASE类型" enumTypeId="CASE_CATEGORY" hasTable="N" parentTypeId=""/>
+    <!-- CASE类型 -->
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="01" description="三版挂牌" enumCode="SBGP" enumId="CASE_CATEGORY_SBGP"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="02" description="半年报" enumCode="BNB" enumId="CASE_CATEGORY_BNB"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="03" description="年报" enumCode="NB" enumId="CASE_CATEGORY_NB"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="04" description="变更会计估计" enumCode="04" enumId="CASE_CATEGORY_04"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="05" description="变更会计政策" enumCode="05" enumId="CASE_CATEGORY_05"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="06" description="会计师事务所变更公告" enumCode="06" enumId="CASE_CATEGORY_06"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="07" description="关联方占用资金" enumCode="07" enumId="CASE_CATEGORY_07"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="08" description="减资、合并、清算、申请破产" enumCode="08" enumId="CASE_CATEGORY_08"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="09" description="半年报&amp;年报" enumCode="09" enumId="CASE_CATEGORY_09"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="10" description="委托理财" enumCode="10" enumId="CASE_CATEGORY_10"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="11" description="对外担保" enumCode="11" enumId="CASE_CATEGORY_11"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="12" description="控股股东、实际控制人变动" enumCode="12" enumId="CASE_CATEGORY_12"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="13" description="收购、出售重大资产" enumCode="13" enumId="CASE_CATEGORY_13"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="14" description="核心员工认定" enumCode="14" enumId="CASE_CATEGORY_14"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="15" description="澄清公告" enumCode="15" enumId="CASE_CATEGORY_15"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="16" description="股东人数超过200" enumCode="16" enumId="CASE_CATEGORY_16"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="17" description="股权激励计划" enumCode="17" enumId="CASE_CATEGORY_17"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="18" description="股票交易异常波动" enumCode="18" enumId="CASE_CATEGORY_18"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="19" description="股票解除限售" enumCode="19" enumId="CASE_CATEGORY_19"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="20" description="诉讼、仲裁" enumCode="20" enumId="CASE_CATEGORY_20"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="21" description="重大权益变动" enumCode="21" enumId="CASE_CATEGORY_21"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="22" description="利润分配" enumCode="22" enumId="CASE_CATEGORY_22"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="23" description="协议转做市" enumCode="23" enumId="CASE_CATEGORY_23"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="24" description="变更主办券商" enumCode="24" enumId="CASE_CATEGORY_24"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="25" description="定增" enumCode="25" enumId="CASE_CATEGORY_25"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="26" description="对外投资" enumCode="26" enumId="CASE_CATEGORY_26"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="27" description="资本公积转增股本" enumCode="27" enumId="CASE_CATEGORY_27"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="28" description="超出本年预计的日常性关联交易" enumCode="28" enumId="CASE_CATEGORY_28"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="29" description="年初预估日常性关联交易" enumCode="29" enumId="CASE_CATEGORY_29"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="30" description="偶发性关联交易" enumCode="30" enumId="CASE_CATEGORY_30"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="31" description="董事变动" enumCode="31" enumId="CASE_CATEGORY_31"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="32" description="非职工监事变动" enumCode="32" enumId="CASE_CATEGORY_32"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="33" description="高级管理人员变动" enumCode="33" enumId="CASE_CATEGORY_33"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="34" description="职工监事变动" enumCode="34" enumId="CASE_CATEGORY_34"/>
+
+    <EnumerationType description="问题类型" hasTable="N" parentTypeId="" enumTypeId="QUESTIONTYPE_STATUS"/>
+    <Enumeration description="财务" sequenceId="01" enumCode="MONEY" enumId="QUESTIONTYPE_STATUS_MONEY" enumTypeId="QUESTIONTYPE_STATUS"/>
+    <Enumeration description="法律" sequenceId="02" enumCode="LAW" enumId="QUESTIONTYPE_STATUS_WAIT_LAW" enumTypeId="QUESTIONTYPE_STATUS"/>
+
+    <EnumerationType description="政策文件分类" hasTable="N" parentTypeId="" enumTypeId="POLICY_CATEGORY"/>
+    <Enumeration description="业务规则" sequenceId="01" enumCode="YWGZ" enumId="POLICY_CATEGORY_YWGZ" enumTypeId="POLICY_CATEGORY"/>
+    <Enumeration description="部门规章" sequenceId="02" enumCode="BMGZ" enumId="POLICY_CATEGORY_BMGZ" enumTypeId="POLICY_CATEGORY"/>
+    <Enumeration description="法律法规" sequenceId="03" enumCode="FLFG" enumId="POLICY_CATEGORY_FLFG" enumTypeId="POLICY_CATEGORY"/>
+    <Enumeration description="服务指南" sequenceId="04" enumCode="FWZN" enumId="POLICY_CATEGORY_FWZN" enumTypeId="POLICY_CATEGORY"/>
+
+    <EnumerationType description="服务指南" hasTable="N" parentTypeId="" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="公司业务类" sequenceId="01" enumCode="01" enumId="POLICY_CATEGORY_FWZN_01" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="挂牌业务类" sequenceId="02" enumCode="02" enumId="POLICY_CATEGORY_FWZN_02" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="机构业务类" sequenceId="03" enumCode="03" enumId="POLICY_CATEGORY_FWZN_03" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="交易监察类" sequenceId="04" enumCode="04" enumId="POLICY_CATEGORY_FWZN_04" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="两网及退市公司类" sequenceId="05" enumCode="05" enumId="POLICY_CATEGORY_FWZN_05" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="投资者服务类" sequenceId="06" enumCode="06" enumId="POLICY_CATEGORY_FWZN_06" enumTypeId="POLICY_CATEGORY_FWZN"/>
+    <Enumeration description="综合类" sequenceId="07" enumCode="07" enumId="POLICY_CATEGORY_FWZN_07" enumTypeId="POLICY_CATEGORY_FWZN"/>
+
+    <EnumerationType description="业务规则" hasTable="N" parentTypeId="" enumTypeId="POLICY_CATEGORY_YWGZ"/>
+    <Enumeration sequenceId="01" enumCode="01" enumId="POLICY_CATEGORY_YWGZ_01" enumTypeId="POLICY_CATEGORY_YWGZ" description="登记结算类"/>
+    <Enumeration sequenceId="02" enumCode="02" enumId="POLICY_CATEGORY_YWGZ_02" enumTypeId="POLICY_CATEGORY_YWGZ" description="公司类业务"/>
+    <Enumeration sequenceId="03" enumCode="03" enumId="POLICY_CATEGORY_YWGZ_03" enumTypeId="POLICY_CATEGORY_YWGZ" description="挂牌业务类"/>
+    <Enumeration sequenceId="04" enumCode="04" enumId="POLICY_CATEGORY_YWGZ_04" enumTypeId="POLICY_CATEGORY_YWGZ" description="机构业务类"/>
+    <Enumeration sequenceId="05" enumCode="05" enumId="POLICY_CATEGORY_YWGZ_05" enumTypeId="POLICY_CATEGORY_YWGZ" description="交易监察类"/>
+    <Enumeration sequenceId="06" enumCode="06" enumId="POLICY_CATEGORY_YWGZ_06" enumTypeId="POLICY_CATEGORY_YWGZ" description="两网及退市公司类"/>
+    <Enumeration sequenceId="07" enumCode="07" enumId="POLICY_CATEGORY_YWGZ_07" enumTypeId="POLICY_CATEGORY_YWGZ" description="投资者服务类"/>
+    <Enumeration sequenceId="08" enumCode="08" enumId="POLICY_CATEGORY_YWGZ_08" enumTypeId="POLICY_CATEGORY_YWGZ" description="综合类"/>
+
+    <StatusType description="问题状态" hasTable="N" parentTypeId="" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="全部" sequenceId="01" statusCode="ALL" statusId="QUESTION_STATUS_ALL" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="待审核" sequenceId="02" statusCode="WAIT_AUDIT" statusId="QUESTION_STATUS_WAIT_AUDIT" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="未解决" sequenceId="03" statusCode="WAIT_ANSWER" statusId="QUESTION_STATUS_WAIT_ANSWER" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="已解决" sequenceId="04" statusCode="COMPLETE" statusId="QUESTION_STATUS_COMPLETE" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="已删除" sequenceId="05" statusCode="DELETE" statusId="QUESTION_STATUS_DELETE" statusTypeId="QUESTION_STATUS"/>
+    <StatusItem description="已驳回" sequenceId="05" statusCode="REJECTED" statusId="QUESTION_STATUS_REJECTED" statusTypeId="QUESTION_STATUS"/>
+
+
+
+    <EnumerationType description="客户等级" enumTypeId="CUSTOMER_LEVEL" hasTable="N" parentTypeId=""/>
+    <Enumeration description="战略客户" enumCode="CUSTOMER_LEVEL_ONE" enumId="CUSTOMER_LEVEL_ONE" sequenceId="01"
+                 enumTypeId="CUSTOMER_LEVEL"/>
+    <Enumeration description="重点客户" enumCode="CUSTOMER_LEVEL_TWO" enumId="CUSTOMER_LEVEL_TWO" sequenceId="02"
+                 enumTypeId="CUSTOMER_LEVEL"/>
+    <Enumeration description="普通客户" enumCode="CUSTOMER_LEVEL_THREE" enumId="CUSTOMER_LEVEL_THREE" sequenceId="03"
+                 enumTypeId="CUSTOMER_LEVEL"/>
+
+    <EnumerationType description="客户状态" enumTypeId="CUSTOMER_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="新建客户" enumCode="CUSTOMER_STATUS_ONE" enumId="CUSTOMER_STATUS_ONE" sequenceId="01"
+                 enumTypeId="CUSTOMER_STATUS"/>
+    <Enumeration description="潜在商机客户" enumCode="CUSTOMER_STATUS_TWO" enumId="CUSTOMER_STATUS_TWO" sequenceId="02"
+                 enumTypeId="CUSTOMER_STATUS"/>
+    <Enumeration description="成交客户" enumCode="CUSTOMER_STATUS_THREE" enumId="CUSTOMER_STATUS_THREE" sequenceId="03"
+                 enumTypeId="CUSTOMER_STATUS"/>
+    <Enumeration description="流失客户" enumCode="CUSTOMER_STATUS_FOUR" enumId="CUSTOMER_STATUS_FOUR" sequenceId="04"
+                 enumTypeId="CUSTOMER_STATUS"/>
+    <Enumeration description="长期客户" enumCode="CUSTOMER_STATUS_FIVE" enumId="CUSTOMER_STATUS_FIVE" sequenceId="05"
+                 enumTypeId="CUSTOMER_STATUS"/>
+
+    <EnumerationType description="CASE类型" enumTypeId="CASE_CATEGORY" hasTable="N" parentTypeId=""/>
+    <!-- CASE类型 -->
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="01" description="定向增发" enumCode="DZ" enumId="CASE_CATEGORY_DZ"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="02" description="半年报" enumCode="BNB" enumId="CASE_CATEGORY_BNB"/>
+    <Enumeration enumTypeId="CASE_CATEGORY" sequenceId="03" description="年报" enumCode="NB" enumId="CASE_CATEGORY_NB"/>
+
+
+    <EnumerationType description="积分周期" enumTypeId="SCORE_PERIOD" hasTable="N" parentTypeId=""/>
+    <Enumeration description="一次" enumCode="SCORE_PERIOD_ONE" enumId="SCORE_PERIOD_ONE" sequenceId="01" enumTypeId="SCORE_PERIOD"/>
+    <Enumeration description="每天" enumCode="SCORE_PERIOD_TWO" enumId="SCORE_PERIOD_TWO" sequenceId="02" enumTypeId="SCORE_PERIOD"/>
+    <Enumeration description="整点" enumCode="SCORE_PERIOD_THREE" enumId="SCORE_PERIOD_THREE" sequenceId="03" enumTypeId="SCORE_PERIOD"/>
+    <Enumeration description="间隔分钟" enumCode="SCORE_PERIOD_FOUR" enumId="SCORE_PERIOD_FOUR" sequenceId="04" enumTypeId="SCORE_PERIOD"/>
+    <Enumeration description="不限" enumCode="SCORE_PERIOD_FIVE" enumId="SCORE_PERIOD_FIVE" sequenceId="05" enumTypeId="SCORE_PERIOD"/>
+
+    <EnumerationType description="积分规则" enumTypeId="SCORE_RULE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="登录系统" enumCode="SCORE_RULE_1" enumId="SCORE_RULE_1" sequenceId="01" enumTypeId="SCORE_RULE"/>
+    <Enumeration description="回复咨询" enumCode="SCORE_RULE_2" enumId="SCORE_RULE_2" sequenceId="02" enumTypeId="SCORE_RULE"/>
+    <Enumeration description="上传文档" enumCode="SCORE_RULE_3" enumId="SCORE_RULE_3" sequenceId="03" enumTypeId="SCORE_RULE"/>
+    <Enumeration description="注册" enumCode="SCORE_RULE_REWARD" enumId="SCORE_RULE_REWARD" sequenceId="04" enumTypeId="SCORE_RULE"/>
+
+    <EnumerationType description="资料库的分类" enumTypeId="LIBRARY_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="财务" enumCode="LIBRARY_TYPE_ONE" enumId="LIBRARY_TYPE_ONE" sequenceId="01" enumTypeId="LIBRARY_TYPE"/>
+    <Enumeration description="法律" enumCode="LIBRARY_TYPE_TWO" enumId="LIBRARY_TYPE_TWO" sequenceId="02" enumTypeId="LIBRARY_TYPE"/>
+    <Enumeration description="投资" enumCode="LIBRARY_TYPE_THREE" enumId="LIBRARY_TYPE_THREE" sequenceId="03" enumTypeId="LIBRARY_TYPE"/>
+    <Enumeration description="其他" enumCode="LIBRARY_TYPE_FOUR" enumId="LIBRARY_TYPE_FOUR" sequenceId="04" enumTypeId="LIBRARY_TYPE"/>
+
+    <EnumerationType description="case成员角色" enumTypeId="CASE_PERSON_ROLE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="项目经理" enumCode="CASE_PERSON_ROLE_MANAGER" enumId="CASE_PERSON_ROLE_MANAGER" sequenceId="01" enumTypeId="CASE_PERSON_ROLE"/>
+    <Enumeration description="组员" enumCode="CASE_PERSON_ROLE_STAFF" enumId="CASE_PERSON_ROLE_STAFF" sequenceId="02" enumTypeId="CASE_PERSON_ROLE"/>
+
+    <EnumerationType description="企业case成员角色" enumTypeId="CASE_ROLE_OWNER" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="会所case成员角色" enumTypeId="CASE_ROLE_ACCOUNTING" hasTable="N" parentTypeId=""/>
+    <Enumeration description="风控复核经理" enumCode="CASE_PERSON_ROLE_ACCOUNTING_01" enumId="CASE_PERSON_ROLE_ACCOUNTING_01" sequenceId="01" enumTypeId="CASE_ROLE_ACCOUNTING"/>
+    <Enumeration description="风控复核" enumCode="CASE_PERSON_ROLE_ACCOUNTING_02" enumId="CASE_PERSON_ROLE_ACCOUNTING_02" sequenceId="02" enumTypeId="CASE_ROLE_ACCOUNTING"/>
+
+    <EnumerationType description="其他机构case成员角色" enumTypeId="CASE_ROLE_INVESTOR" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="律所case成员角色" enumTypeId="CASE_ROLE_LAW" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="劵商case成员角色" enumTypeId="CASE_ROLE_STOCK" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="任务状态" enumTypeId="CASE_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="已分配" enumCode="CASE_STATUS_ALLOCATED" enumId="CASE_STATUS_ALLOCATED" sequenceId="01" enumTypeId="CASE_STATUS"/>
+    <Enumeration description="待完成" enumCode="CASE_STATUS_BACKLOG" enumId="CASE_STATUS_BACKLOG" sequenceId="02" enumTypeId="CASE_STATUS"/>
+    <Enumeration description="已完成" enumCode="CASE_STATUS_FINISH" enumId="CASE_STATUS_FINISH" sequenceId="03" enumTypeId="CASE_STATUS"/>
+    <Enumeration description="归档" enumCode="CASE_STATUS_FILED" enumId="CASE_STATUS_FILED" sequenceId="04" enumTypeId="CASE_STATUS"/>
+
+    <PartyRelationshipType description="机构联系人" hasTable="N" parentTypeId="" partyRelationshipName="机构联系人" partyRelationshipTypeId="ORG_CONTACT" roleTypeIdValidFrom="" roleTypeIdValidTo=""/>
+
+    <PartyRelationshipType description="子账户" hasTable="N" parentTypeId="" partyRelationshipName="子账户" partyRelationshipTypeId="ORG_SUB_ACCOUNT" roleTypeIdValidFrom="" roleTypeIdValidTo=""/>
+    <PartyRelationshipType description="关联机构联系人" hasTable="N" parentTypeId="" partyRelationshipName="关联机构联系人" partyRelationshipTypeId="ORG_LINK_CONTACT" roleTypeIdValidFrom="" roleTypeIdValidTo=""/>
+
+    <!--系统邮件发送账户-->
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_CASE_NODE_BEGIN" description="CASE某个步骤可以开始进行时发送的邮件模板" fromAddress="zimiwang@aliyun.com" subject="${caseName}任务通知"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplateCaseNodeStart"/>
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_PASS_REGISTRATION" description="注册通过审核发送邮件通知" fromAddress="zimiwang@aliyun.com" subject="资协网账户审核通过"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplatePassRegistration"/>
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_PASS_QUALIFICATION" description="通过实名认证发送邮件通知" fromAddress="zimiwang@aliyun.com" subject="资协网账户实名认证成功"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplatePassQualification"/>
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_TIME_APPROACHING" description="临期账户发送邮件通知" fromAddress="zimiwang@aliyun.com" subject="资协网账户还有七天到期！"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplateApproaching"/>
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_HAD_CURTIME" description="到期账户发送邮件通知" fromAddress="zimiwang@aliyun.com" subject="资协网账户已经到期！"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplateCueTime"/>
+    <EmailTemplateSetting emailTemplateSettingId="ZXDOC_PASS_RESETPASSWORD" description="密码重置发送邮件通知" fromAddress="zimiwang@aliyun.com" subject="资协网账户密码已经重置！"
+                          bodyScreenLocation="component://zxdoc/widget/ZxdocScreens.xml#EmailTemplateResetPassword"/>
+
+</entity-engine-xml>

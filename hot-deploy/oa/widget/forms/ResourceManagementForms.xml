@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="ListPendingAuditResource" type="list" title="" separate-columns="true" list-name="data" paginate-target="" paginate="true"
+        odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" view-size="5">
+        <field name="orderId"><hidden/></field>
+        <field name="resourceId" title="${uiLabelMap.resourceName}" event="onClick" action="javascript:$.resourceManagement.resourceOrderView(${orderId});" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${resourceId}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="startDate"  title="${uiLabelMap.useStartDate}"><display/></field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}"><display/></field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}"><display/></field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}"><display/></field>
+        <field name="auditPerson" title="审核人"><display/></field>
+        <field name="audit" widget-style="smallSubmit" use-when="&quot;${auditPersonType}&quot; == &quot;${userLogin.partyId}&quot;"
+               title="审核" event="onClick" action="javascript:$.resourceManagement.auditResourceOrder(${orderId});">
+            <hyperlink target="#nowhere" description="审核" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="audit" use-when="&quot;${auditPersonType}&quot; != &quot;${userLogin.partyId}&quot;" title="审核">
+            <display description="待审核"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="pendingAudit_col" area-target="pendingAudit"/>
+    </form>
+    <form name="ListPendingArrangedResource" type="list" title="" separate-columns="true" default-entity-name="" list-name="data2" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" view-size="5">
+        <field name="orderId"><hidden/></field>
+        <field name="resourceId" title="${uiLabelMap.resourceName}" event="onClick" action="javascript:$.resourceManagement.resourceOrderView(${orderId});" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${resourceId}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}"><display/></field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}"><display/></field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}"><display/></field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}"><display/></field>
+        <field name="arrangePerson" title="${uiLabelMap.arrangedPerson}"><display/></field>
+        <field name="arrange" widget-style="smallSubmit" use-when="&quot;${arrangePersonType}&quot; == &quot;${userLogin.partyId}&quot;"
+               title="安排" event="onClick" action="javascript:$.resourceManagement.arrangeResourceOrder(${orderId});">
+            <hyperlink target="#nowhere" description="安排" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="arrange" use-when="&quot;${arrangePersonType}&quot; != &quot;${userLogin.partyId}&quot;" title="安排">
+            <display description="待安排"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="pendingArranged_col" area-target="pendingArrange"/>
+    </form>
+    <form name="ListTodayUseResource" type="list" title="" separate-columns="true" default-entity-name="" list-name="data3" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" view-size="5">
+        <field name="orderId"><hidden/></field>
+        <field name="resourceId" title="${uiLabelMap.resourceName}"><display/></field>
+        <field name="useReason" title="${uiLabelMap.useReason}"><display/></field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}"><display/></field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}"><display/></field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}"><display/></field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}"><display/></field>
+        <field name="auditPerson" title="审核人"><display/></field>
+        <field name="arrangePerson" title="${uiLabelMap.arrangedPerson}"><display/></field>
+        <field name="deleteLink" widget-area-style="function-column" widget-style="hyperLinkStyle"  title="预约详情" event="onClick" action="javascript:$.resourceManagement.resourceOrderView(${orderId});">
+            <hyperlink target="#nowhere" description="详情" target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="todayUseSituation_col" area-target="todayUseSituation"/>
+    </form>
+    <form name="ListResource" type="list" title="" separate-columns="true" default-entity-name="" list-name="resourceList" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="resourceId"><hidden/></field>
+        <field name="resourceName" title="${uiLabelMap.resourceName}"><display/></field>
+        <!--<field name="resourceExplain" title="${uiLabelMap.resourceExplain}"><display type="text"/></field>-->
+        <field name="resourceUseStateFor" title="${uiLabelMap.resourceUseState}"><display/></field>
+        <field name="editLink" widget-area-style="function-column" widget-style="icon-edit"  title="修改" event="onClick" action="javascript:$.resourceManagement.editResource(${resourceId});">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="listResourceTab" area-target="ListResource"/>
+    </form>
+    <form name="createResourceForm" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="resourceMap">
+        <field name="resourceId"><hidden/></field>
+        <field name="resourceName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.resourceName}"
+               position="1" widget-style="validate[required,maxSize[20],custom[onlyLetterNumberChinese]]" >
+            <text/>
+        </field>
+        <field name="resourceExplain" title="${uiLabelMap.resourceExplain}" position="1"><textarea/></field>
+        <field name="resourceUseState"   title="${uiLabelMap.resourceUseState}" position="1">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="USE_STATE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.resourceManagement.saveResource();">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+       </form>
+    <form name="orderResourceForm" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="defaultMap">
+        <field name="orderId"><hidden/></field>
+        <field name="resourceId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.orderResource}" position="1" widget-style="validate[required]">
+          <drop-down>
+              <list-options list-name="data1.resource" key-name="resourceId" description="${resourceName}"/>
+          </drop-down>
+        </field>
+        <field name="orderDepartment" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.bespeakParty}" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="orderPerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.bespeakPerson}" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="register" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.arrangedTime}" position="2" widget-style="validate[required]">
+            <date-time type="date" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="auditPerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.auditPerson}" position="1" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="arrangePerson" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}安排人" position="2" widget-style="validate[required]">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="startDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.useStartDate}" position="1">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="endDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.useEndDate}" position="2">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="contactInformation" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.contactInformation}" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[20]]">
+           <text/>
+        </field>
+        <field name="useReason" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.useReason}" position="2" widget-style="validate[required,custom[onlyLetterNumberChinese],maxSize[20]]"><text/></field>
+        <field name="reviewRemarks" title="${uiLabelMap.remarks}" position="1" widget-style="validate[maxSize[125]]"><textarea/></field>
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.resourceManagement.saveOrderResource();">
+            <hyperlink target="#nowhere" description="预约资源" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="orderResourceView" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="data">
+        <field name="resourceId"><hidden/></field>
+        <field name="source" title="${uiLabelMap.orderResource}" position="1"><!--资源名称--><display/></field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="2"><display/></field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="1"><display/></field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="2">   <display/></field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">   <display/></field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2"><display/></field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1"><display/></field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2"><display/></field>
+        <field name="reviewRemarks" title="${uiLabelMap.remarks}" position="1"><display/></field>
+        <field name="auditPerson" title="${uiLabelMap.auditPerson}" position="1"><display/></field>
+        <field name="auditDate" title="${uiLabelMap.auditTime}" position="2"><display/></field>
+        <field name="auditRemarks" title="${uiLabelMap.auditOpinion}" position="1"><display/></field>
+        <!--<field name="leadOpinion" title="${uiLabelMap.leadOpinion}" position="2"><display/></field>-->
+        <!--<field name="arrangeConfirmation" title="${uiLabelMap.arrangeConfirmation}" position="1"><display/></field>-->
+        <field name="arrangePerson" title="${uiLabelMap.confirmationPerson}" position="1"><display/></field>
+        <field name="arrangeDate" title="${uiLabelMap.confirmationTime}" position="2"><display/></field>
+        <field name="arrangeRemarks" title="${uiLabelMap.confirmationOpinion}" position="1"><display/></field>
+      <!--  &lt;!&ndash;   <field name="ifOpen" title="${uiLabelMap.ifOpen}" position="1"><radio>可以公开</radio></field>&ndash;&gt;
+        <field name="createButton" title=" " widget-style="smallSubmit" event="onClick" action="javascript:$.resourceManagement.saveFixedAssets();">
+            <hyperlink target="#" description="预约资源" target-type="plain" url-mode="plain"/>
+        </field>-->
+    </form>
+
+    <!--审核资源预约-->
+    <form name="AuditResourceOrder" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="data">
+        <field name="resourceId"><hidden/></field>
+        <field name="orderId"><hidden/></field>
+        <field name="source" title="${uiLabelMap.orderResource}" position="1"><!--资源名称-->
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="2">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="1">
+            <display/>
+        </field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2">
+            <display/>
+        </field>
+        <field name="reviewRemarks" title="${uiLabelMap.remarks}" position="1">
+            <display/>
+        </field>
+        <!--<field name="auditPerson" title="${uiLabelMap.auditPerson}" position="1">-->
+        <!--<text/>-->
+        <!--</field>-->
+        <field name="auditDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.auditTime}" position="1" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd hh:mm:ss'" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="auditRemarks" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.auditOpinion}" position="1" widget-style="validate[required]">
+            <textarea/>
+        </field>
+        <field name="1" title-style="hide" widget-style="smallSubmit"
+               title="通过审核" event="onClick" action="javascript:$.resourceManagement.saveAuditResourceOrder('PERSON_TWO');" position="1">
+            <hyperlink target="#nowhere" description="通过审核" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="2" title-style="hide" widget-style="smallSubmit"
+               title="驳回审核" event="onClick" action="javascript:$.resourceManagement.saveAuditResourceOrder('PERSON_THREE');" position="2">
+            <hyperlink target="#nowhere" description="驳回审核" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--安排资源-->
+    <form name="ArrangeResourceOrder" type="single" header-row-style="header-row" default-table-style="basic-table" default-map-name="data">
+        <field name="resourceId"><hidden/></field>
+        <field name="orderId"><hidden/></field>
+        <field name="source" title="${uiLabelMap.orderResource}" position="1"><!--资源名称-->
+            <display/>
+        </field>
+        <field name="groupName" title="${uiLabelMap.bespeakParty}" position="2">
+            <display/>
+        </field>
+        <field name="fullName" title="${uiLabelMap.bespeakPerson}" position="1">
+            <display/>
+        </field>
+        <field name="register" title="${uiLabelMap.arrangedTime}" position="2">
+            <display/>
+        </field>
+        <field name="startDate" title="${uiLabelMap.useStartDate}" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="${uiLabelMap.useEndDate}" position="2">
+            <display/>
+        </field>
+        <field name="contactInformation" title="${uiLabelMap.contactInformation}" position="1">
+            <display/>
+        </field>
+        <field name="useReason" title="${uiLabelMap.useReason}" position="2">
+            <display/>
+        </field>
+        <field name="reviewRemarks" title="${uiLabelMap.remarks}" position="1">
+            <display/>
+        </field>
+        <field name="auditPerson" title="${uiLabelMap.auditPerson}" position="1">
+            <display/>
+        </field>
+        <field name="auditDate" title="${uiLabelMap.auditTime}" position="2">
+            <display/>
+        </field>
+        <field name="auditRemarks" title="${uiLabelMap.auditOpinion}" position="1">
+            <display/>
+        </field>
+        <!--<field name="arrangePerson" title="${uiLabelMap.confirmationPerson}" position="1">-->
+        <!--<text/>-->
+        <!--</field>-->
+        <field name="arrangeDate" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.confirmationTime}" position="1" widget-style="validate[required]">
+            <date-time type="timestamp" default-value="${groovy:new Date()}"/>
+        </field>
+        <field name="arrangeRemarks" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}${uiLabelMap.confirmationOpinion}" position="1"  widget-style="validate[required]">
+            <textarea/>
+        </field>
+        <field name="" title-style="hide" widget-style="smallSubmit"
+               title="确认安排" event="onClick" action="javascript:$.resourceManagement.saveArrangeResourceOrder('PERSON_FOUR');">
+            <hyperlink target="#nowhere" description="确认安排" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>

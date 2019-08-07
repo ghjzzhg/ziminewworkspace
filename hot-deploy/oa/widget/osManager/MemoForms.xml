@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <!--新增会议纪要-->
+    <form name="MemoList" type="list" list-name="memoList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="类别">
+            <display/>
+        </field>
+        <field name="w" title="类型">
+            <display/>
+        </field>
+        <field name="e" title="备忘录标题" event="onClick" action="$.memo.showMemoInfo()">
+            <hyperlink target="#nowhere" description="${e}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="r" title="拟办日期" event="onClick" action="$.meetingNotice.showMeetingInfo()">
+            <display/>
+        </field>
+        <field name="t" title="发布时间">
+            <display/>
+        </field>
+        <field name="y" title="最后编辑时间">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.memo.addMemo('修改个人日记＆备忘录')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deletLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+
+
+
+    <form name="MemoSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="a" title="文档类别" position="1">
+            <drop-down>
+                <option key="1" description="全部"></option>
+                <option key="2" description="备忘"></option>
+                <option key="3" description="日记"></option>
+            </drop-down>
+        </field>
+        <field name="b" title="类型" position="2">
+            <drop-down>
+                <option key="1" description="全部"></option>
+                <option key="2" description="个人日记"></option>
+                <option key="3" description="工作提醒"></option>
+            </drop-down>
+        </field>
+        <field name="c" title="拟办日期" position="3">
+            <date-time/>
+        </field>
+        <field name="d" title="至" position="4">
+            <date-time/>
+        </field>
+        <field name="e" title="标题" position="1">
+            <text/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加备忘录" event="onClick" action="$.memo.addMemo('新增个人日记＆备忘录')">
+            <hyperlink target="#nowhere" description="添加备忘录" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+</forms>
+

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <property key="OrgStructure">
+        <value xml:lang="en">Organization Structure</value>
+        <value xml:lang="zh">组织架构</value>
+    </property>
+    <property key="OAFindFixedAssets">
+        <value xml:lang="en">Organization Structure</value>
+        <value xml:lang="zh">查看资产</value>
+    </property>
+    <property key="HumanResEmplResource  ">
+    <value xml:lang="en">HumanResEmplResourc</value>
+    <value xml:lang="zh">资源管理</value>
+</property>
+    <property key="HumanResEmplAssets">
+        <value xml:lang="en">Assets</value>
+        <value xml:lang="zh">固定资产</value>
+    </property>
+    <property key="HumanResEmplVehicle">
+        <value xml:lang="en">Vehicle Management</value>
+        <value xml:lang="zh">车辆管理</value>
+    </property>
+    <property key="vehicleName">
+    <value xml:lang="en">vehicleName</value>
+    <value xml:lang="zh">车辆名称</value>
+    </property>
+    <property key="useStartDate">
+        <value xml:lang="en">useStartDate</value>
+        <value xml:lang="zh">开始使用时间</value>
+    </property>
+    <property key="useEndDate">
+        <value xml:lang="en">useEndDate</value>
+        <value xml:lang="zh">结束使用时间</value>
+    </property>
+    <property key="bespeakParty">
+        <value xml:lang="en">bespeakParty</value>
+        <value xml:lang="zh">预约部门</value>
+    </property>
+    <property key="bespeakPerson">
+        <value xml:lang="en">bespeakPerson</value>
+        <value xml:lang="zh">预约人</value>
+    </property>
+    <property key="state">
+        <value xml:lang="en">state</value>
+        <value xml:lang="zh">状态</value>
+    </property>
+    <property key="registrationPerson">
+    <value xml:lang="en">registrationPerson</value>
+    <value xml:lang="zh">登记人</value>
+</property>
+    <property key="mileage">
+    <value xml:lang="en">mileage</value>
+    <value xml:lang="zh">行驶里程</value>
+</property>
+    <property key="vehicleType">
+        <value xml:lang="en">vehicleType</value>
+        <value xml:lang="zh">车辆类型</value>
+    </property>
+    <property key="buyInsuranceTime">
+        <value xml:lang="en">buyInsuranceTime</value>
+        <value xml:lang="zh">购买保险时间</value>
+    </property>
+    <property key="limitedTime">
+        <value xml:lang="en">limitedTime</value>
+        <value xml:lang="zh">年审时间</value>
+    </property>
+    <property key="vehicleBrand">
+        <value xml:lang="en">vehicleBrand</value>
+        <value xml:lang="zh">车辆品牌</value>
+    </property>
+    <property key="driver">
+        <value xml:lang="en">driver</value>
+        <value xml:lang="zh">驾驶员</value>
+    </property>
+    <property key="buyTime">
+        <value xml:lang="en">buyTime</value>
+        <value xml:lang="zh">购买时间</value>
+    </property>
+    <property key="state">
+        <value xml:lang="en">state</value>
+        <value xml:lang="zh">当前状态</value>
+    </property>
+    <property key="image">
+        <value xml:lang="en">image</value>
+        <value xml:lang="zh">上传图片</value>
+    </property>
+    <property key="orderVehicle">
+        <value xml:lang="en">orderVehicle</value>
+        <value xml:lang="zh">预约车辆</value>
+    </property>
+    <property key="arrangedTime">
+        <value xml:lang="en">arrangedTime</value>
+        <value xml:lang="zh">登记日期</value>
+    </property>
+    <property key="destination">
+        <value xml:lang="en">destination</value>
+        <value xml:lang="zh">目的地</value>
+    </property>
+    <property key="colleague">
+        <value xml:lang="en">colleague</value>
+        <value xml:lang="zh">同行人员</value>
+    </property>
+    <property key="contactInformation">
+        <value xml:lang="en">contactInformation</value>
+        <value xml:lang="zh">联系信息</value>
+    </property>
+    <property key="mileage">
+        <value xml:lang="en">mileage</value>
+        <value xml:lang="zh">行驶里程</value>
+    </property>
+    <property key="ifOpen">
+        <value xml:lang="en">ifOpen</value>
+        <value xml:lang="zh">是否公开</value>
+    </property>
+
+    <property key="remarks">
+        <value xml:lang="en">remarks</value>
+        <value xml:lang="zh">备注</value>
+    </property>
+    <property key="orderResource">
+        <value xml:lang="en">orderResource</value>
+        <value xml:lang="zh">预约资源</value>
+    </property>
+    <property key="useReason">
+    <value xml:lang="en">useReason</value>
+    <value xml:lang="zh">使用事由</value>
+</property>
+    <property key="arrangedPerson">
+    <value xml:lang="en">arrangedPerson</value>
+    <value xml:lang="zh">安排人</value>
+</property>
+    <property key="vehicleOccupySituation">
+        <value xml:lang="en">vehicleOccupySituation</value>
+        <value xml:lang="zh">车辆占用情况</value>
+    </property>
+    <property key="resourceOccupySituation">
+    <value xml:lang="en">resourceOccupySituation</value>
+    <value xml:lang="zh">资源占用情况</value>
+</property>
+    <property key="Resources">
+    <value xml:lang="en">Resources</value>
+    <value xml:lang="zh">资源管理</value>
+</property>
+    <property key="pendingAudit">
+        <value xml:lang="en">pendingAudit</value>
+        <value xml:lang="zh">待审核车辆</value>
+    </property>
+    <property key="pendingArranged">
+        <value xml:lang="en">pendingArranged</value>
+        <value xml:lang="zh">待安排车辆</value>
+    </property>
+    <property key="todayUseSituation">
+        <value xml:lang="en">todayUseSituation</value>
+        <value xml:lang="zh">今日车辆使用情况</value>
+    </property>
+    <property key="resourcePendingAudit">
+    <value xml:lang="en">resourcePendingAudit</value>
+    <value xml:lang="zh">待审核资源</value>
+</property>
+    <property key="resourcePendingArranged">
+        <value xml:lang="en">resourcePendingArranged</value>
+        <value xml:lang="zh">待安排资源</value>
+    </property>
+    <property key="resourceTodayUseSituation">
+        <value xml:lang="en">resourceTodayUseSituation</value>
+        <value xml:lang="zh">今日资源使用情况</value>
+    </property>
+    <property key="assetsId">
+        <value xml:lang="en">assetsId</value>
+        <value xml:lang="zh">资产标识</value>
+    </property>
+    <property key="assetsName">
+        <value xml:lang="en">assetsName</value>
+        <value xml:lang="zh">资产名称</value>
+    </property>
+    <property key="assetsNumber">
+        <value xml:lang="en">assetsNumber</value>
+        <value xml:lang="zh">资产编号</value>
+    </property>
+    <property key="assetsType">
+        <value xml:lang="en">assetsType</value>
+        <value xml:lang="zh">资产类型</value>
+    </property>
+    <property key="buyDate">
+        <value xml:lang="en">buyDate</value>
+        <value xml:lang="zh">置办日期</value>
+    </property>
+    <property key="partyId">
+        <value xml:lang="en">partyId</value>
+        <value xml:lang="zh">保管人</value>
+    </property>
+    <property key="groupId">
+        <value xml:lang="en">groupId</value>
+        <value xml:lang="zh">所属部门</value>
+    </property>
+    <property key="depreciationType">
+        <value xml:lang="en">depreciationType</value>
+        <value xml:lang="zh">折旧类型</value>
+    </property>
+    <property key="startDepreciationDate">
+        <value xml:lang="en">startDepreciationDate</value>
+        <value xml:lang="zh">开始折旧日期</value>
+    </property>
+    <property key="useNumber">
+        <value xml:lang="en">useNumber</value>
+        <value xml:lang="zh">预计使用总工作量</value>
+    </property>
+    <property key="unit">
+        <value xml:lang="en">unit</value>
+        <value xml:lang="zh">单位</value>
+    </property>
+    <property key="workNumber">
+        <value xml:lang="en">workNumber</value>
+        <value xml:lang="zh">默认工作量</value>
+    </property>
+    <property key="ResidualValue">
+        <value xml:lang="en">ResidualValue</value>
+        <value xml:lang="zh">残值率</value>
+    </property>
+    <property key="assetsValue">
+        <value xml:lang="en">assetsValue</value>
+        <value xml:lang="zh">资产值</value>
+    </property>
+    <property key="assetsNowValue">
+        <value xml:lang="en">assetsNowValue</value>
+        <value xml:lang="zh">资产当前值</value>
+    </property>
+
+
+    <property key="resourceName">
+        <value xml:lang="en">resourceName</value>
+        <value xml:lang="zh">资源名称</value>
+    </property>
+    <property key="resourceExplain">
+        <value xml:lang="en">resourceExplain</value>
+        <value xml:lang="zh">资源说明</value>
+    </property>
+    <property key="resourceUseState">
+        <value xml:lang="en">resourceUseState</value>
+        <value xml:lang="zh">资产使用状态</value>
+    </property>
+    <property key="resourceView">
+        <value xml:lang="en">resourceView</value>
+        <value xml:lang="zh">资产占用图例显示</value>
+    </property>
+    <property key="firstLevel">
+        <value xml:lang="en">firstLevel</value>
+        <value xml:lang="zh">第一级</value>
+    </property>
+    <property key="secondLevel">
+    <value xml:lang="en">secondLevel</value>
+    <value xml:lang="zh">第二级</value>
+    </property>
+    <property key="thirdLevel">
+        <value xml:lang="en">thirdLevel</value>
+        <value xml:lang="zh">第三极</value>
+    </property>
+    <property key="examinePerson">
+    <value xml:lang="en">examinePerson</value>
+    <value xml:lang="zh">审核人</value>
+</property>
+    <property key="examinePost">
+    <value xml:lang="en">examinePost</value>
+    <value xml:lang="zh">审核岗位</value>
+</property>
+    <property key="auditOpinion">
+        <value xml:lang="en">auditOpinion</value>
+        <value xml:lang="zh">审核意见</value>
+    </property>
+    <property key="auditPerson">
+        <value xml:lang="en">auditPerson</value>
+        <value xml:lang="zh">审核人</value>
+    </property>
+    <property key="auditTime">
+        <value xml:lang="en">auditTime</value>
+        <value xml:lang="zh">审核时间</value>
+    </property>
+    <property key="leadOpinion">
+        <value xml:lang="en">leadOpinion</value>
+        <value xml:lang="zh">领导审核意见</value>
+    </property>
+    <property key="arrangeConfirmation">
+        <value xml:lang="en">arrangeConfirmation</value>
+        <value xml:lang="zh">资源安排确认</value>
+    </property>
+    <property key="confirmationPerson">
+        <value xml:lang="en">confirmationPerson</value>
+        <value xml:lang="zh">确认人</value>
+    </property>
+    <property key="Record">
+    <value xml:lang="en">Record</value>
+    <value xml:lang="zh">员工档案</value>
+</property>
+    <property key="confirmationTime">
+        <value xml:lang="en">confirmationTime</value>
+        <value xml:lang="zh">确认时间</value>
+    </property>
+    <property key="confirmationOpinion">
+        <value xml:lang="en">confirmationOpinion</value>
+        <value xml:lang="zh">安排说明</value>
+    </property>
+    <property key="costTime">
+    <value xml:lang="en">costTime</value>
+    <value xml:lang="zh">发生日期</value>
+</property>
+    <property key="costType">
+        <value xml:lang="en">costType</value>
+        <value xml:lang="zh">费用类型</value>
+    </property>
+    <property key="cost">
+        <value xml:lang="en">cost</value>
+        <value xml:lang="zh">金额</value>
+    </property>
+
+    <property key="OsManager">
+        <value xml:lang="en">Consumable Manage</value>
+        <value xml:lang="zh">易耗品管理</value>
+    </property>
+    <property key="CheckingIn">
+        <value xml:lang="en">Checking In</value>
+        <value xml:lang="zh">考勤</value>
+    </property>
+    <property key="FixedAssets">
+        <value xml:lang="en">Fixed Assets</value>
+        <value xml:lang="zh">固定资产</value>
+    </property>
+    <property key="Transaction">
+        <value xml:lang="en">Transaction Manager</value>
+        <value xml:lang="zh">事务跟踪管理</value>
+    </property>
+    <property key="BumphNotice">
+        <value xml:lang="en">Bumph Notice</value>
+        <value xml:lang="zh">公文通知管理</value>
+    </property>
+
+</resource>

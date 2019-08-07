@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>Dispatch Common Services</description>
+    <vendor>RexTec</vendor>
+    <version>1.0</version>
+
+    <service name="showShareInfoList" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="showShareInfoList" auth="true">
+        <description>显示个人分享文件信息列表</description>
+        <attribute name="VIEW_INDEX" type="String" mode="IN" optional="true"/>
+        <attribute name="VIEW_SIZE" type="String" mode="IN" optional="true"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="fileFlag" type="String" mode="IN" optional="true"/>
+        <attribute name="dataResourceMap" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="delDataResourceRole" engine="java"
+             location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="delDataResourceRole" auth="true">
+        <description>删除个人分享信息</description>
+        <attribute name="dataResourceId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="roleTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="fromDate" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="addShare" engine="java" location="com.ckfinder.connector.handlers.commands.FileService"
+             invoke="addShare" auth="true">
+        <description>增加分享信息</description>
+        <attribute name="dataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="permissionStr" type="String" mode="IN" optional="true"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="fileFlag" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="setShareInfo" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="setShareInfo" auth="true">
+        <description>设置文件属性</description>
+        <attribute name="dataScope_dept_only" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_dept_like" type="String" mode="IN" optional="true"/>
+        <attribute name="dataScope_user" type="String" mode="IN" optional="true"/>
+        <attribute name="fileId" type="String" mode="IN" optional="true"/>
+        <attribute name="typeName" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="Map" mode="OUT" optional="false"/>
+    </service>
+
+
+    <service name="shareUserFolder" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="shareUserFolder" auth="true">
+        <description>增加分享信息</description>
+        <attribute name="partyIdFrom" type="String" mode="IN" optional="true"/>
+        <attribute name="partyIdTo" type="String" mode="IN" optional="true"/>
+        <attribute name="folderPath" type="String" mode="IN" optional="true"/>
+        <attribute name="permissionStr" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="addUserFolder" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="addUserFolder" auth="true">
+        <description>增加用户目录</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="folderName" type="String" mode="IN" optional="true"/>
+        <attribute name="parentFolderId" type="String" mode="IN" optional="true"/>
+        <attribute name="permissionStr" type="String" mode="IN" optional="true"/>
+        <attribute name="description" type="String" mode="IN" optional="true"/>
+        <attribute name="folderId" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="delShareUserFolder" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="delShareUserFolder" auth="true">
+        <description>删除分享信息</description>
+        <attribute name="partyIdFrom" type="String" mode="IN" optional="true"/>
+        <attribute name="partyIdTo" type="String" mode="IN" optional="true"/>
+        <attribute name="folderPath" type="String" mode="IN" optional="true"/>
+        <attribute name="msg" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="searchFileListByName" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="searchFileListByName" auth="true">
+        <description>根据文件名称搜索文件</description>
+        <attribute name="fileName" type="String" mode="IN" optional="true"/>
+        <attribute name="folderId" type="String" mode="IN" optional="true"/>
+        <attribute name="rootFolderId" type="String" mode="IN" optional="true"/>
+        <attribute name="data" type="List" mode="OUT" optional="false"/>
+    </service>
+    <service name="renameFolder" engine="java" location="com.ckfinder.connector.handlers.commands.CkfinderServices"
+             invoke="renameFolder" auth="true">
+        <description>根据文件名称搜索文件</description>
+        <attribute name="newfoldeRemark" type="String" mode="IN" optional="true"/>
+        <attribute name="folderId" type="String" mode="IN" optional="false"/>
+        <attribute name="newFolderName" type="String" mode="IN" optional="false"/>
+        <attribute name="data" type="List" mode="OUT" optional="true"/>
+    </service>
+</services>
+

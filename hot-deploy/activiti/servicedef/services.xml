@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>Workflow Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+
+    <service name="noSyntaxError" engine="interface">
+        <description>
+            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
+        </description>
+    </service>
+
+    <service name="uploadProcess" engine="groovy" location="component://activiti/src/com/rextec/workflow/WorkflowServices.groovy" invoke="uploadProcess" auth="true">
+        <description>上传流程部署文件</description>
+        <attribute mode="IN" name="processFile" type="java.nio.ByteBuffer" optional="false" />
+        <attribute mode="IN" name="_processFile_fileName" type="String" optional="false" />
+        <attribute name="data" type="Map" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createActForm" default-entity-name="ActExtForm" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="formType" optional="false"/>
+        <override name="formName" optional="false"/>
+        <override name="formKey" optional="false"/>
+    </service>
+
+    <service name="createActFormExt" default-entity-name="ActExtForm" engine="java" location="activiti.ActivitiProcessUtils" invoke="createActForm" auth="true">
+        <description>Create a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute name="content" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="hiddenList" type="String" mode="IN" optional="true"/>
+        <attribute name="valueList" type="String" mode="IN" optional="true"/>
+        <override name="formType" optional="false"/>
+        <override name="formName" optional="false"/>
+        <override name="formKey" optional="false"/>
+    </service>
+    <service name="updateActForm" default-entity-name="ActExtForm" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute name="content" type="String" mode="IN" optional="true" allow-html="any"/>
+        <override name="formType" optional="false"/>
+        <override name="formName" optional="false"/>
+        <override name="formKey" optional="false"/>
+    </service>
+
+    <service name="updateActFormExt" default-entity-name="ActExtForm" engine="java" location="activiti.ActivitiProcessUtils" invoke="updateActForm" auth="true">
+        <description>Update a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute name="content" type="String" mode="IN" optional="true" allow-html="any"/>
+        <attribute name="hiddenList" type="String" mode="IN" optional="true"/>
+        <attribute name="valueList" type="String" mode="IN" optional="true"/>
+        <override name="formType" optional="false"/>
+        <override name="formName" optional="false"/>
+        <override name="formKey" optional="false"/>
+    </service>
+    <service name="deleteActForm" default-entity-name="ActExtForm" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="deleteActFormExt" default-entity-name="ActExtForm" engine="java" location="activiti.ActivitiProcessUtils" invoke="deleteActForm" auth="true">
+        <description>Delete a ActExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createActTaskExtForm" default-entity-name="ActTaskExtForm" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ActTaskExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="INOUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="formId" optional="false"/>
+    </service>
+    <service name="updateActTaskExtForm" default-entity-name="ActTaskExtForm" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ActTaskExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="formId" optional="false"/>
+    </service>
+    <service name="deleteActTaskExtForm" default-entity-name="ActTaskExtForm" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ActTaskExtForm</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createActTaskExtUser" default-entity-name="ActTaskExtUser" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ActTaskExtUser</description>
+        <permission-service service-name="commonGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="taskId" optional="false"/>
+        <override name="procDefId" optional="false"/>
+        <override name="userType" optional="false"/>
+    </service>
+    <service name="updateActTaskExtUser" default-entity-name="ActTaskExtUser" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ActTaskExtUser</description>
+        <permission-service service-name="commonGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="taskId" optional="false"/>
+        <override name="procDefId" optional="false"/>
+        <override name="userType" optional="false"/>
+    </service>
+    <service name="deleteActTaskExtUser" default-entity-name="ActTaskExtUser" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ActTaskExtUser</description>
+        <permission-service service-name="commonGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="taskAssignedToUser" engine="groovy"  location="component://activiti/src/org/ofbiz/activiti/ActivitiServices.groovy" invoke="taskAssignedToUser" auth="true">
+        <description>check if user is candidate or assignee of the task</description>
+        <attribute name="businessKey" type="String" mode="IN" optional="false"/>
+        <attribute name="workflowKey" type="String" mode="IN" optional="false"/>
+        <attribute name="userLoginId" type="String" mode="IN" optional="true"/>
+        <attribute name="assignedToUser" type="Boolean" mode="OUT" optional="false"/>
+        <attribute name="taskId" type="String" mode="OUT" optional="true"/>
+        <attribute name="taskName" type="String" mode="OUT" optional="true"/>
+        <attribute name="nextViewType" type="String" mode="OUT" optional="true"/>
+        <attribute name="nextView" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="syncActivitiUser" engine="java" location="org.ofbiz.activiti.container.ActivitiSyncUtil" invoke="synToActiviti" auth="true">
+        <description>同步activiti 用户</description>
+    </service>
+
+    <service name="startProcess" engine="java" location="activiti.ActivitiProcessUtils" invoke="startProcess" auth="true">
+        <description>启动流程</description>
+        <attribute name="workflowKey" type="String" mode="IN" optional="false"/>
+        <attribute name="bizKey" type="String" mode="IN" optional="true"/>
+        <attribute name="bizEntityName" type="String" mode="IN" optional="true"><description>对应的业务表的名称</description></attribute>
+        <attribute name="bizEntityKeyField" type="String" mode="IN" optional="true"><description>业务表中对应的主键字段名</description></attribute>
+        <attribute name="bizEntityStatusField" type="String" mode="IN" optional="true"><description>业务表中对应的状态字段名</description></attribute>
+        <attribute name="workflowVersion" type="String" mode="IN" optional="true"/>
+        <attribute name="userTenantId" type="String" mode="IN" optional="true"/>
+        <attribute name="taskId" type="String" mode="OUT" optional="true"/>
+    </service>
+</services>

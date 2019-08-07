@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <SecurityPermission description="整个系统的管理员权限" permissionId="ZXDOC_ADMIN"/>
+    <SecurityPermission description="整个系统的查看权限" permissionId="ZXDOC_VIEW"/>
+    <SecurityPermission description="整个系统的创建权限" permissionId="ZXDOC_CREATE"/>
+    <SecurityPermission description="整个系统的更新权限" permissionId="ZXDOC_UPDATE"/>
+    <SecurityPermission description="整个系统的删除权限" permissionId="ZXDOC_DELETE"/>
+
+    <SecurityPermission description="合同模块的管理员权限" permissionId="ZXDOC_CONTRACT_ADMIN"/>
+    <SecurityPermission description="合同模块的查看权限" permissionId="ZXDOC_CONTRACT_VIEW"/>
+    <SecurityPermission description="合同模块的创建权限" permissionId="ZXDOC_CONTRACT_CREATE"/>
+    <SecurityPermission description="合同模块的更新权限" permissionId="ZXDOC_CONTRACT_UPDATE"/>
+    <SecurityPermission description="合同模块的删除权限" permissionId="ZXDOC_CONTRACT_DELETE"/>
+
+    <!-- Recruitment  permission -->
+    <!--<SecurityPermission description="Approver can update the IJP approval status with this permission." permissionId="HUMANRES_APPROVE"/>-->
+    
+    <!-- add admin to SUPER permission group -->
+    <SecurityGroup description="管理员账户权限" groupId="ZXDOC_ADMIN"/>
+    <SecurityGroup description="未认证企业/机构权限" groupId="ZXDOC_UNIDENTIFIED"/>
+    <SecurityGroup description="企业账户权限" groupId="ZXDOC_COMPANY"/>
+    <SecurityGroup description="企业合伙人权限" groupId="ZXDOC_COMPANY_PARTNER"/>
+    <SecurityGroup description="企业子账户权限" groupId="ZXDOC_COMPANY_PERSON"/>
+    <SecurityGroup description="机构账户权限" groupId="ZXDOC_PROVIDER"/>
+    <SecurityGroup description="机构子账户权限" groupId="ZXDOC_PROVIDER_PERSON"/>
+    <SecurityGroup description="机构合伙人权限" groupId="ZXDOC_PROVIDER_PARTNER"/>
+
+    <UserLoginSecurityGroup userLoginId="admin" groupId="ZXDOC_ADMIN" fromDate="2001-01-01 12:00:48"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="ZXDOC_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="CONTENTMGR_CREATE"/>
+    <SecurityGroupPermission groupId="ZXDOC_ADMIN" permissionId="SECURITY_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_UNIDENTIFIED" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_UNIDENTIFIED" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_UNIDENTIFIED" permissionId="CONTENTMGR_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="ZXDOC_CONTRACT_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="CONTENTMGR_CREATE"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY" permissionId="SECURITY_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="ZXDOC_CONTRACT_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PERSON" permissionId="CONTENTMGR_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="ZXDOC_CONTRACT_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="CONTENTMGR_CREATE"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER" permissionId="SECURITY_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="ZXDOC_CONTRACT_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PERSON" permissionId="CONTENTMGR_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="ZXDOC_CONTRACT_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_COMPANY_PARTNER" permissionId="CONTENTMGR_CREATE"/>
+
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="OFBTOOLS_VIEW"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="COMMON_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="PARTYMGR_ROLE_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="PARTYMGR_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="ZXDOC_CONTRACT_ADMIN"/>
+    <SecurityGroupPermission groupId="ZXDOC_PROVIDER_PARTNER" permissionId="CONTENTMGR_CREATE"/>
+
+</entity-engine-xml>

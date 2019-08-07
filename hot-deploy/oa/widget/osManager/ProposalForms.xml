@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <!--查询条件-->
+    <form name="ProposalSearchForm" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="transactionMap">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="submitDateStart" title="提交时间" position="1">
+            <date-time type="dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\\'ProposalSearchForm_submitDateEnd\\')}'"/>
+        </field>
+        <field name="submitDateEnd" title="至" position="2">
+            <date-time type="dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\\'ProposalSearchForm_submitDateStart\\')}'"/>
+        </field>
+        <field name="proposalType" title="提案类别" position="3">
+            <drop-down>
+               <!-- <option key="" description="全部"></option>
+                <option key="1" description="采购改善"></option>
+                <option key="2" description="财务改善"></option>-->
+                <entity-options entity-name="Enumeration" description="${description}" key-field-name="enumId">
+                    <entity-constraint name="enumTypeId" value="PROPOSAL_TYPE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查询" event="onClick" action="$.proposal.searchProposalList()">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="新增提案" event="onClick" action="$.proposal.proposalEdit('新增提案')">
+            <hyperlink target="#nowhere" description="新增提案" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+    <!--查询结果-->
+    <form name="ProposalList" type="list" list-name="proposalList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="序号" sort-field="true">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}" />
+        </field>
+        <field name="w" title="提案编号(提案类别)" event="onClick" action="$.proposal.proposalFeedbackInfo()">
+            <hyperlink target="#nowhere" description="${w}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="e" title="提案标题" event="onClick" action="$.proposal.proposalFeedbackInfo()">
+            <hyperlink target="#nowhere" description="${w}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="r" title="现状描述">
+            <display/>
+        </field>
+        <field name="t" title="改善建议">
+            <display/>
+        </field>
+        <field name="y" title="预期效果">
+            <display/>
+        </field>
+        <field name="u" title="提交人（提交日期）">
+            <display/>
+        </field>
+        <field name="i" title="回复人（回复日期）">
+            <display/>
+        </field>
+        <field name="o" title="跟进部门(跟进结果)">
+            <display/>
+        </field>
+        <field name="p" title="提案奖金">
+            <display/>
+        </field>
+        <field name="a" title="提案等级">
+            <display/>
+        </field>
+        <field name="s" title="最后回复内容">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.proposal.proposalEdit('修改提案')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>
+

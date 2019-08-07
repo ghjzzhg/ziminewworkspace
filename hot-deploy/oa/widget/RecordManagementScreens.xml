@@ -1,0 +1,1268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <screen name="findRecordManagement">
+        <section>
+            <actions>
+                <set field="headerItem" default-value="FindRecordManagement"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="col-xs-4">
+                                    <include-screen name="OrgTree"/>
+                                </container>
+                                <container style="right-content col-xs-7">
+                                    <include-screen name="FindRecord"/>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrgTree">
+        <section>
+            <actions>
+                <!--  <set field="partyId" from-field="defaultOrganizationPartyId"/>-->
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"></script>
+            </actions>
+            <widgets>
+                <screenlet title="${uiLabelMap.OrgStructure}">
+                    <section>
+                        <widgets>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/record/CategoryTree.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </widgets>
+                    </section>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FindRecord">
+        <section>
+            <actions>
+                <set field="applicationMenuLocation" value="component://oa/widget/EmployeeRecordMenus.xml"
+                     global="true"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="员工列表">
+                            <container id="ListSubOrgs">
+                                <include-screen name="ListRecordForDepartment"/>
+                            </container>
+                        </screenlet>
+                        <section>
+                            <widgets>
+                                <container id="testCalendar">
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FindRecordForPage">
+    <section>
+        <actions>
+            <set field="applicationMenuLocation" value="component://oa/widget/EmployeeRecordMenus.xml"
+                 global="true"/>
+            <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+        </actions>
+        <widgets>
+            <include-screen name="ListRecordForDepartment"/>
+        </widgets>
+    </section>
+</screen>
+    <screen name="BottomContent">
+        <section>
+            <actions>
+                <set field="partyId" value="${partyId}"/>
+            </actions>
+
+        </section>
+    </screen>
+    <screen name="MenuAndInformation">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/Transmission.groovy"></script>
+                <set field="applicationMenuName" value="HumanResAppBar" global="true"/>
+                <set field="applicationMenuLocation" value="component://oa/widget/EmployeeRecordMenus.xml"
+                     global="true"/>
+                <set field="partyId" value="${partyId}"/>
+            </actions>
+            <widgets>
+                <include-menu name="${applicationMenuName}" location="${applicationMenuLocation}"/>
+                <container id="staffInformation_col">
+                    <include-screen name="ViewEmployeeRecord"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FindRecordForDeparture">
+        <section>
+            <actions>
+                <set field="applicationMenuLocation" value="component://oa/widget/EmployeeRecordMenus.xml"
+                     global="true"/>
+                <set field="applicationMenuName" value="HumanResAppBar" global="true"/>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/ViewOrganization.groovy"></script>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <not>
+                            <if-empty field="applicationMenuLocation"/>
+                        </not>
+                    </condition>
+                </section>
+                <section>
+                    <widgets>
+                        <include-menu name="${applicationMenuName}" location="${applicationMenuLocation}"/>
+                        <container id="testCalendar">
+                            <include-screen name="ViewEmployeeRecord"/>
+                        </container>
+                    </widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ViewEmployeeRecord">
+        <section>
+            <actions>
+                <set field="headerItem" value="employeeRecord"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForView.groovy"></script>
+                <set field="partyId" value="${partyId}"/>
+            </actions>
+            <widgets>
+                <screenlet title="基本资料" navigation-menu-name="editRecord" name="myComms">
+                    <include-menu name="editRecord" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <include-form name="viewEmployeeRecord"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="FamilySituationList">
+        <section>
+            <actions>
+                <set field="headerItem" value="familySituation"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForFamily.groovy"></script>
+                <set field="partyId" value="${partyId}"/>
+            </actions>
+            <widgets>
+                <screenlet title="家庭情况" navigation-menu-name="family" name="myComms">
+                    <include-menu name="family" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <!--<include-screen name="createButtonForFamily"/>-->
+                    <include-screen name="Family"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Family">
+        <section>
+            <widgets>
+                <include-form name="FamilySituationList"
+                              location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ContractRecordList">
+        <section>
+            <actions>
+                <set field="headerItem" value="Vehicle"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForContract.groovy"/>
+            </actions>
+            <widgets>
+                <screenlet title="档案合同" navigation-menu-name="contract" name="myComms">
+                    <include-menu name="contract" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <include-form name="ContractRecordList"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="RewardsAndPunishmentRecordList">
+        <section>
+            <actions>
+                <set field="headerItem" value="Resources"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForRewardsPunishment.groovy"></script>
+            </actions>
+            <widgets>
+                <screenlet title="奖惩记录" navigation-menu-name="rewardsAndPunishment" name="myComms">
+                    <include-menu name="rewardsAndPunishment" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <include-form name="RewardsAndPunishmentRecordList"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <!--<screen name="RewardsAndPunishmentRecordList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <lable text="${parameters.data}"/>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <screenlet title="奖惩记录" navigation-menu-name="rewardsAndPunishment" name="myComms">
+                        <include-menu name="rewardsAndPunishment" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/RecordManagement/rewardsAndPunishmentRecordList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </screenlet>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>-->
+    <screen name="createButtonForFamily">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"></script>
+            </actions>
+            <widgets>
+                <include-form name="CreateFamilyButton"
+                              location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="createButtonForEducation">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"></script>
+            </actions>
+            <widgets>
+                <include-form name="CreateEducationButton"
+                              location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="createButtonForWork">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"></script>
+            </actions>
+            <widgets>
+                <include-form name="CreateWorkButton" location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SalaryManagementList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"></set>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="薪资管理" id="SalaryManagementList" navigation-menu-name="salary" name="myComms">
+                            <include-menu name="salary" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/salary/salaryEntryList.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <!--<include-form name="SalaryManagementList"-->
+                                          <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Overview">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"/>
+            </actions>
+            <widgets>
+                <include-screen name="ViewEmployeeRecord"/>
+                <include-screen name="Family"/>
+                <include-screen name="Education"/>
+                <include-screen name="Work"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TrainManagementList">
+        <section>
+            <actions>
+                <set field="headerItem" value="TrainForEmployee"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForTrain.groovy"/>
+            </actions>
+            <widgets>
+                <screenlet title="培训管理" navigation-menu-name="train" name="myComms">
+                    <include-menu name="train" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <include-form name="TrainManagementList"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Education">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="EducationExperienceList"
+                              location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EducationExperienceList">
+        <section>
+            <actions>
+                <set field="headerItem" value="educationExperience"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForEducation.groovy"/>
+
+            </actions>
+            <widgets>
+
+
+                <screenlet title="教育经历" navigation-menu-name="education" name="myComms">
+                    <include-menu name="education" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <!--<include-screen name="createButtonForFamily"/>-->
+                    <include-screen name="Education"/>
+                </screenlet>
+                <!--<include-screen name="createButtonForEducation"/>-->
+
+            </widgets>
+        </section>
+    </screen>
+    <screen name="WorkExperienceList">
+        <section>
+            <actions>
+                <set field="headerItem" value="workExperience"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForWork.groovy"/>
+            </actions>
+            <widgets>
+                <!--    <include-screen name="createButtonForWork"/>-->
+                <screenlet title="工作经历" navigation-menu-name="work" name="myComms">
+                    <include-menu name="work" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <!--<include-screen name="createButtonForFamily"/>-->
+                    <include-screen name="Work"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Work">
+        <section>
+            <widgets>
+                <include-form name="WorkExperienceList"
+                              location="component://oa/widget/forms/RecordManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TransactionRecordList">
+        <section>
+            <actions>
+                <set field="headerItem" value="transactionRecord"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForPost.groovy"/>
+            </actions>
+            <widgets>
+                <!--    <include-form name="CreateReacsactionButton" location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                <screenlet title="岗位调动" id="ListTransferRecord" navigation-menu-name="transaction" name="myComms">
+                    <include-menu name="transaction" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <!--<include-screen name="createButtonForFamily"/>-->
+                    <include-screen name="ListTransferRecord"/>
+                    <!--<include-form name="TransactionRecordList"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DepartureManagement">
+        <section>
+            <actions>
+                <set field="headerItem" value="departureManagement"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForDeparture.groovy"/>
+
+            </actions>
+            <widgets>
+
+                <screenlet title="离职管理" navigation-menu-name="departure" name="myComms">
+                    <include-menu name="departure" location="component://oa/widget/EmployeeRecordMenus.xml"/>
+                    <!--<include-screen name="createButtonForFamily"/>-->
+                    <include-form name="DepartureManagement"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editDeparture">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateDeparture.groovy"/>
+                <set field="type" value="${parameters.type}"/>
+            </actions>
+            <widgets>
+                <!--<label text="${parameters.contractMap}"/>-->
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/DepartureRecordCreateFrom.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editDepartures">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateDepartures.groovy"/>
+                <!--<set field="resultMap" value="${parameters.resultMap}"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/DepartureRecordCreateFrom.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="SalaryManagementCreate">
+        <section>
+            <actions>
+                <set field="salaryInfo" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="基本情况">
+                                    <include-form name="SalaryManagementInfo"
+                                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                                </screenlet>
+                                <screenlet title="薪资情况" navigation-menu-name="saveSalary">
+                                <include-menu name="saveSalary"
+                                              location="component://oa/widget/forms/AddSalaryType.xml"/>
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/salary/setSalaryEntry.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="TrainManagementCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateTrain.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/TrainManagementCreate.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="TrainManagementCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="RewardsAndPunishmentRecordCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateReword.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/RewardsAndPunishmentRecordCreate.ftl"/>
+                            </html>
+                        </platform-specific>
+                       <!-- <include-form name="RewardsAndPunishmentRecordCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListRecord">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ListRecord"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListRecordForDepartment">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                       <!-- <include-form name="ListRecordForDepartment"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/ListRecordForDepartment.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateUserLogin">
+        <section>
+            <actions>
+                <set field="partyId" from-field="parameters.partyId"/>
+                <entity-condition entity-name="SecurityGroup" list="securityGroups">
+                    <condition-list combine="or">
+                        <condition-expr field-name="groupId" operator="like" value="OA_%"/>
+                        <condition-expr field-name="groupId" operator="like" value="DD_%"/>
+                    </condition-list>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                    location="component://oa/webapp/humanres/humanres/record/EditUserLogin.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditUserLogin">
+        <section>
+            <actions>
+                <set field="userLoginId" from-field="parameters.userLoginId"/>
+                <set field="data" from-field="parameters.data"/>
+                <entity-one entity-name="UserLogin" value-field="editUserLogin"/>
+                <entity-condition entity-name="SecurityGroup" list="securityGroups">
+                    <condition-list>
+                        <condition-expr field-name="groupId" operator="like" value="OA_%"/>
+                    </condition-list>
+                </entity-condition>
+                <entity-and entity-name="UserLoginSecurityGroup" list="assignedGroups">
+                    <field-map field-name="userLoginId"/>
+                    <select-field field-name="groupId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                    location="component://oa/webapp/humanres/humanres/record/EditUserPassword.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EducationSituationCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateEducation.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="EducationSituationCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="WorkSituationCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateWorkExperience.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="WorkSituationCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TransactionRecordCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreatePostChange.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                           <!-- <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/record/showLookupInfo.ftl"/>
+                            </html>-->
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/TransactionRecordCreate.ftl"/>
+                            </html>
+                        </platform-specific>
+                       <!-- <include-form name="TransactionRecordCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="createFamilySituation">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateFamilySituation.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="FamilySituationCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editFamilySituation">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateFamilySituation.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="FamilySituationCreate"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateEmployee">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForEdit.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="员工入职信息" id="SalaryManagementList" navigation-menu-name="salary" name="myComms">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/CreateEmployee.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="CreateEmployee"
+                                      location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateEmployees">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForEdit.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="员工入职信息" id="SalaryManagementList" navigation-menu-name="salary" name="myComms">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/recordManagement/CreateEmployees.ftl"/>
+                                </html>
+                            </platform-specific>
+                            <!--<include-form name="CreateEmployees"-->
+                                          <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--<screen name="FindRecordManagement">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-options">
+                                <include-form name="FindFixedAssets" location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="search-results">
+                                <include-screen name="listVehicleForList"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>-->
+    <screen name="findRecordManagement1">
+        <section>
+            <actions>
+                <set field="titleProperty" value="HumanResEmplVehicle"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/category/FixedAssetsForCRUD.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="VehicleManagementDecorator"
+                                          location="component://oa/widget/CommonScreens.xml">
+                            <decorator-section name="menu-bar">
+                                <container style="button-bar">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleManagementButton.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                            </decorator-section>
+                            <decorator-section name="vehicleOccupy-situation">
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleOccupySituation.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </decorator-section>
+                            <decorator-section name="pending-audit">
+                                <include-form name="ListPendingAuditVehicle"
+                                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="pending-arranged">
+                                <include-form name="ListPendingArrangedVehicle"
+                                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="today-useSituation">
+                                <include-form name="ListTodayUseVehicle"
+                                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewEmployeeInformation">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看员工信息"/>
+                <set field="headerItem" value="ViewEmployeeInformation"/>
+                <set field="employeePartyId" from-field="parameters.partyId"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize"
+                                   field="viewSizeDefaultValue"/>
+            </actions>
+            <widgets>
+                <!--<section>-->
+                    <!--<widgets>-->
+                        <!--<platform-specific>-->
+                            <!--<html>-->
+                                <!--<html-template-->
+                                        <!--location="component://oa/webapp/humanres/humanres/category/FixedAssetsForCRUD.ftl"/>-->
+                            <!--</html>-->
+                        <!--</platform-specific>-->
+                    <!--</widgets>-->
+                <!--</section>-->
+                <screenlet title="搜索选项">
+                    <include-form name="ViewEmployeeRecordForSearch"
+                                  location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                </screenlet>
+                <screenlet title="新增员工">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/excelImport.ftl"/>
+                        </html>
+                    </platform-specific>
+                </screenlet>
+                <screenlet title="搜索结果">
+                    <include-screen name="ListEmployeeRecord"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListEmployeeRecord">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecord.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <!--<include-form name="ListRecord" location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/humanres/humanres/record/EmployeeInfoList.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TransferRecord">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看岗位调动记录"/>
+                <set field="headerItem" value="TransferRecord"/>
+                <set field="employeePartyId" from-field="parameters.partyId"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize"
+                                   field="viewSizeDefaultValue"/>
+                <entity-and entity-name="Enumeration" list="changeTypeList">
+                    <field-map field-name="enumTypeId" value="TRANSFER"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <screenlet title="搜索选项">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/TransactionRecordForSearch.ftl"/>
+                        </html>
+                    </platform-specific>
+                    <!--<include-form name="TransferRecordForSearch"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+                <screenlet title="搜索结果" id="ListTransferRecord">
+                    <include-screen name="ListTransferRecord"/>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListTransferRecord">
+        <section>
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="partyId" value="${partyId}"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/FindRecordForPost.groovy"/>
+            </actions>
+            <widgets>
+                <!--<include-form name="postChangeList"-->
+                              <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/recordManagement/TransferRecordList.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DepartureManagementForEmployee">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看离职记录"/>
+                <set field="headerItem" value="DepartureManagementForEmployee"/>
+                <entity-and entity-name="Enumeration" list="departureTypeList">
+                    <field-map field-name="enumTypeId" value="DEPARTURE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <screenlet title="搜索选项">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/DepartureRecordForSearch.ftl"/>
+                        </html>
+                    </platform-specific>
+                    <!--<include-form name="DepartureManagementForSearch"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+                <container id="staffDepartureInformation">
+                    <include-screen name="ListDepartureManagement"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListDepartureManagement">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="查询结果">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/recordManagement/departureList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ContractForEmployee">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看员工合同"/>
+                <set field="headerItem" value="ContractForEmployee"/>
+                <entity-and entity-name="Enumeration" list="contractTypeList">
+                    <field-map field-name="enumTypeId" value="CONTRACT_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="stateTypeList">
+                    <field-map field-name="enumTypeId" value="CONTRACT_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/recordManagement/ValidContract.ftl"/>
+                    </html>
+                </platform-specific>
+                <screenlet title="搜索选项">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/ContractRecordForSearch.ftl"/>
+                        </html>
+                    </platform-specific>
+                    <!--<include-form name="ContractForEmployeeForSearch1"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+                <container  id="staffInformation1" >
+                    <include-screen name="ListContractForEmployee"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListContractForEmployee">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="搜索结果">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/recordManagement/ContractRecordList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ContractRecordCreate">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/recordManagement/CreateContract.groovy"/>
+                <set field="contractMap" value="${parameters.contractMap}"/>
+                <set field="type" value="${parameters.type}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/recordManagement/ContractRecordCreateFrom.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="RewardAndPunishment">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看员工奖惩记录"/>
+                <set field="headerItem" value="RewardAndPunishment"/>
+                <entity-and entity-name="Enumeration" list="typeList">
+                    <field-map field-name="enumTypeId" value="REWARD_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="levelList">
+                    <field-map field-name="enumTypeId" value="REWARD_LEVEL"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <screenlet title="搜索选项">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/RewardsAndPunishmentRecordForSearch.ftl"/>
+                        </html>
+                    </platform-specific>
+                    <!--<include-form name="RewardAndPunishmentForSearch"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+                <container id="staffInformation">
+                    <include-screen name="ListRewardsAndPunishmentForEmployee"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListRewardsAndPunishmentForEmployee">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="查询结果">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/recordManagement/rewordsPunishmentList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TrainForEmployee">
+        <section>
+            <actions>
+                <set field="titleProperty" value="查看员工培训记录"/>
+                <set field="headerItem" value="TrainForEmployee"/>
+                <entity-and entity-name="Enumeration" list="typeList">
+                    <field-map field-name="enumTypeId" value="TRAIN_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <screenlet title="搜索选项">
+                    <platform-specific>
+                        <html>
+                            <html-template
+                                    location="component://oa/webapp/oa/humanres/recordManagement/TrainRecordForSearch.ftl"/>
+                        </html>
+                    </platform-specific>
+                    <!--<include-form name="RewardTrainForSearch"-->
+                                  <!--location="component://oa/widget/forms/RecordManagementForms.xml"/>-->
+                </screenlet>
+                <container id="staffInformation">
+                    <include-screen name="ListTrainForEmployee"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListTrainForEmployee">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="查询结果">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/recordManagement/trainList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="orderVehicle">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/vehicleManagement/FindVehicleForOrder.groovy"></script>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleManagementButtonForSearch.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleOccupySituation.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+                <include-form name="orderVehicle" location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editVehicle">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/vehicleManagement/FindVehicleForList.groovy"></script>
+            </actions>
+            <widgets>
+                <include-form name="createVehicle" location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="vehicleForCost">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/vehicleManagement/VehicleForCost.groovy"></script>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleManagementButtonForSearch.ftl"/>
+                    </html>
+                </platform-specific>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleForCost.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="createVehicleForCost"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="test">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/humanres/humanres/vehicleManagement/vehicleManagementButtonForSearch.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+</screens>

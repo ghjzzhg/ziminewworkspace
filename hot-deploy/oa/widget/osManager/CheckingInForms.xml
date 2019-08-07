@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <!--考勤信息搜索-->
+    <form name="SearchCheckingInInfoForm" type="single"
+        header-row-style="header-row" default-table-style="basic-table" default-map-name="OsManager">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="startDate" title="考勤开始日期" position="1" widget-style="overflow:visible;">
+            <date-time/>
+        </field>
+        <field name="endDate" title="考勤结束日期" position="2">
+            <date-time/>
+        </field>
+        <field name="checkingInType" title="考勤类型" position="3">
+            <drop-down>
+                <list-options list-name="checkingInTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="checkingInStatus" title="考勤状态" position="4">
+            <drop-down>
+                <list-options list-name="checkingInStatusList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="staff" title="考勤员工" position="1">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="weekDay" title="考勤星期" position="2">
+            <drop-down>
+                <option key="7" description="周日"/>
+                <option key="1" description="周一"/>
+                <option key="2" description="周二"/>
+                <option key="3" description="周三"/>
+                <option key="4" description="周四"/>
+                <option key="5" description="周五"/>
+                <option key="6" description="周六"/>
+            </drop-down>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查找" event="onClick" action="$.checkingIn.searchCheckingIn()">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加" event="onClick" action="$.checkingIn.addChekingInTab()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+<!--考勤信息搜索结果-->
+    <form name="CheckingInInfoList" type="list" list-name="checkingInList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="q" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="registerDate" title="登记时间">
+            <display/>
+        </field>
+        <field name="staffName" title="登记人">
+            <display/>
+        </field>
+        <field name="listOfWorkName" title="班次">
+            <display/>
+        </field>
+        <field name="listOfWorkTypeName" title="班次类型">
+            <display/>
+        </field>
+        <field name="checkingInStatusDesc" title="考勤状态">
+            <display/>
+        </field>
+        <field name="weekDay" title="星期">
+            <display description="周${weekDay}"/>
+        </field>
+        <field name="checkingInTypeDesc" title="考勤类型">
+            <display/>
+        </field>
+        <field name="minutes" title="迟到或早退分钟">
+            <display/>
+        </field>
+        <field name="cause" title="迟到/早退原因">
+            <display/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.checkingIn.deleteCheckingIn('${checkingInDate}','${staff}','${listOfWorkId}','${type}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--加班统计搜索条件-->
+    <form name="OvertimeStatisticsForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="department" title="部门" position="1">
+            <text />
+        </field>
+        <field name="staff" title="员工" position="2">
+            <text/>
+        </field>
+        <field name="overTimeDate1" title="统计时间" position="3">
+            <date-time type="dateFmt:'yyyy-MM-dd HH:mm:ss'"/>
+        </field>
+        <field name="overTimeType" title="加班类型" position="4">
+            <drop-down>
+                <option key="OVERTIME_TYPE_ONE" description="正常加班"/>
+                <option key="OVERTIME_TYPE_TWO" description="临时加班"/>
+            </drop-down>
+        </field>
+
+        <field name="deleteLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查找" event="onClick" action="$.checkingIn.searchCheckingIn()">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--加班搜索结果-->
+    <form name="OvertimeStatisticsList" type="list" list-name="overtimeStatisticsList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="q" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="staff" title="员工">
+            <display/>
+        </field>
+        <field name="department" title="部门">
+            <display/>
+        </field>
+        <field name="post" title="岗位">
+            <display/>
+        </field>
+        <field name="overTimeType" title="加班类型">
+            <display/>
+        </field>
+        <field name="overTimeTime" title="加班时间（小时）">
+            <display/>
+        </field>
+    </form>
+<!--新增考勤信息-->
+    <form name="AddCheckingInForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" >
+        <field name="staffId"><hidden value="${groovy:parameters.userLogin.partyId}"/></field>
+        <field name="staff" title="员工" position="1">
+            <!--<lookup target-form-name="LookupStaff" position="center"/>-->
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="checkingInDate" title="考勤日期：" position="2" widget-style="validate[required]">
+            <date-time type="dateFmt:'yyyy-MM-dd'" default-value="${groovy: org.ofbiz.base.util.UtilDateTime.nowDateString('yyyy-MM-dd')}"/>
+        </field>
+        <field name="checkingInTime" title="考勤时间：" position="1">
+            <date-time type="dateFmt:'HH:mm:ss'"/>
+        </field>
+        <field name="listOfWorkId" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}考勤班次：" position="2" widget-style="validate[required]">
+            <drop-down>
+                <list-options list-name="listOfWorkList" key-name="listOfWorkId" description="${listOfWorkName}(${toWorkTime}~${getOffWorkTime})"/>
+            </drop-down>
+        </field>
+        <field name="checkingInType" title="类型">
+            <radio>
+                <list-options list-name="checkingInType" key-name="enumId" description="${description}"/>
+            </radio>
+        </field>
+        <field name="cause" title="原因">
+            <textarea/>
+        </field>
+
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="$.checkingIn.saveCheckingIn()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--考勤统计考勤信息搜索-->
+    <form name="CheckingStatisticsForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" >
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="date" title="考勤开始日期">
+            <date-time type="date"/>
+        </field>
+        <field name="department" title="所属部门">
+            <drop-down >
+                <list-options list-name="departmentList" key-name="partyId" description="${groupName}"/>
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查找" event="onClick" action="$.checkingIn.searcheCheckingInStatistics()">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="查看" event="onClick" action="planScheduling()">
+            <hyperlink target="#nowhere" description="查看" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--考勤统计考勤信息搜索结果-->
+    <form name="CheckingStatisticsList" type="list" list-name="checkingStatisticsList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+
+        <field name="q" title="总计人数">
+            <display/>
+        </field>
+        <field name="w" title="考勤异常人数">
+
+        </field>
+        <field name="w" title="考勤异常人数"
+               event="onClick" action="showWorkerCheckingIn('${w}','b')">
+            <hyperlink target="#nowhere" description="${w}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="e" title="迟到人数" event="onClick" action="showWorkerCheckingIn('${e}','c')">
+            <hyperlink target="#nowhere" description="${e}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="r" title="早退人数" event="onClick" action="showWorkerCheckingIn('${r}','d')">
+            <hyperlink target="#nowhere" description="${r}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="t" title="旷工人数" event="onClick" action="showWorkerCheckingIn('${t}','a')">
+            <hyperlink target="#nowhere" description="${r}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="y" title="休息人数">
+            <display/>
+        </field>
+        <field name="u" title="正常上班人数">
+            <display/>
+        </field>
+    </form>
+
+    <form name="WorkerCheckingA" type="list" list-name="staffCheckingList"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="staffId" title="员工">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="post" title="职位">
+            <display-entity entity-name="RoleType" key-field-name="roleTypeId" description="${description}"/>
+        </field>
+        <field name="department" title="所属部门">
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="masterStaff" title="主管">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+    </form>
+
+    <form name="WorkerCheckingB" type="list" list-name="staffCheckingList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="staffId" title="员工">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="listOfWorkName" title="考勤班次">
+            <display/>
+        </field>
+        <field name="listOfWorkType" title="班次类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="cause" title="异常情况">
+            <display/>
+        </field>
+    </form>
+    <form name="WorkerCheckingC" type="list" list-name="staffCheckingList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="staffId" title="员工">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="listOfWorkName" title="考勤班次">
+            <display/>
+        </field>
+        <field name="listOfWorkType" title="班次类型">
+           <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="checkingInDate" title="考勤时间">
+            <display/>
+        </field>
+        <field name="minutes" title="迟到/早退时间（分钟）">
+            <display/>
+        </field>
+    </form>
+
+<!--假期搜索-->
+    <form name="HolidayInfoForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" >
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="holidayStartDate" title="假期开始时间" position="1">
+            <date-time/>
+        </field>
+
+        <field name="holidayEndDate" title="假期结束时间" position="2">
+            <date-time/>
+        </field>
+        <field name="staff" title="所属员工" position="3">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="department" title="所属部门" position="4">
+            <lookup target-form-name="LookupDepartment"/>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查找" event="onClick" action="$.checkingIn.searchHoliday()">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加" event="onClick" action="$.checkingIn.addHolidayInfo('')">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--假期搜索结果-->
+    <form name="HolidayInfoList" type="list" list-name="holidayInfoList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="num" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="startDate" title="开始时间">
+            <display/>
+        </field>
+        <field name="endDate" title="结束时间">
+            <display/>
+        </field>
+        <field name="type" title="所属类型">
+            <display />
+        </field>
+        <field name="fullName" title="所属员工">
+            <display/>
+        </field>
+        <field name="groupName" title="所属部门">
+            <display/>
+        </field>
+        <field name="editLink1" title-style="hide" widget-area-style="function-column" widget-style="icon-eye-open"
+               title="查看" event="onClick" action="$.checkingIn.lookHolidayInfo('${holidayId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.checkingIn.addHolidayInfo('${holidayId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}"
+               event="onClick" action="javascript:$.checkingIn.deleteHoliday('${holidayId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--新增假期信息-->
+    <form name="AddHolidayInfoForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="addHolidayInfoMap">
+        <field name="startDate" title="假期开始时间" position="1">
+            <date-time/>
+        </field>
+        <field name="endDate" title="假期结束时间" position="2">
+            <date-time/>
+        </field>
+        <field name="holidayType" title="假期所属" position="1">
+            <drop-down>
+                <option key="1" description="个人"/>
+                <option key="2" description="组织"/>
+            </drop-down>
+        </field>
+        <field name="staff" title="所属员工" position="2">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="description" title="描述">
+            <textarea/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" >
+            <hyperlink target="HolidaySet" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+<!--查看假期form-->
+    <form name="LookHolidayInfoForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="lookHolidayInfoMap">
+        <field name="startDate" title="假期开始时间" position="1">
+            <display/>
+        </field>
+        <field name="endDate" title="假期结束时间" position="2">
+            <display/>
+        </field>
+        <field name="type" title="假期所属" position="1">
+            <display/>
+        </field>
+        <field name="fullName" title="所属员工" position="2" use-when="${lookHolidayInfoMap.department == null}">
+            <display/>
+        </field>
+        <field name="groupName" title="所属部门" position="2" use-when="${lookHolidayInfoMap.staff == null}">
+            <display/>
+        </field>
+        <field name="description" title="描述">
+            <display/>
+        </field>
+    </form>
+
+<!--班次搜索-->
+    <form name="SearchListOfWorkForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="workName" title="班次名称" position="1">
+            <text/>
+        </field>
+        <field name="seacherLink" title-style="hide" widget-style="smallSubmit" position="1"
+               title="查找" event="onClick" action="$.checkingIn.searchListOfWork()">
+            <hyperlink target="#nowhere" description="查找" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加" event="onClick" action="$.checkingIn.updateWorkNum('')">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--班次查询结果-->
+    <form name="ListOfWorkList" type="list" list-name="listOfWorkList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" >
+        <field name="a" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="listOfWorkName" title="班次名称">
+            <display/>
+        </field>
+        <field name="listOfWorkType" title="班次类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="toWorkTime" title="上班时间">
+            <display/>
+        </field>
+        <field name="allowTimeToLateTime" title="迟到缓冲时间">
+            <display/>
+        </field>
+        <field name="getOffWorkTime" title="下班时间">
+            <display/>
+        </field>
+        <field name="tardyGetOffWorkTime" title="早退缓冲时间">
+            <display/>
+        </field>
+        <field name="editLink" widget-style="icon-edit"
+               title="修改" event="onClick" action="$.checkingIn.updateWorkNum('${listOfWorkId}')">
+            <hyperlink target="#nowhere" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" widget-style="icon-trash"
+               title="删除" event="onClick"
+               action="$.checkingIn.deleteListOfWork('${listOfWorkId}')">
+            <hyperlink target="#nowhere" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--新增班制时选择班次-->
+    <form name="WorkNumAjax" type="list" list-name="listOfWorkList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar" >
+        <field name="a" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="listOfWorkName" title="班次名称">
+            <display/>
+        </field>
+        <field name="listOfWorkType" title="班次类型">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="toWorkTime" title="上班时间">
+            <display/>
+        </field>
+        <field name="allowTimeToLateTime" title="迟到缓冲时间">
+            <display/>
+        </field>
+        <field name="getOffWorkTime" title="下班时间">
+            <display/>
+        </field>
+        <field name="tardyGetOffWorkTime" title="早退缓冲时间">
+            <display/>
+        </field>
+        <field name="editLink" title="确认选择" widget-style="smallSubmit">
+            <hyperlink also-hidden="false" target-type="plain" description="确认选择" target="javascript:setLookUpInfo${parameters.name}('${listOfWorkId}',true)"/>
+        </field>
+    </form>
+
+<!--增加班次-->
+    <form name="ListOfWorkAddForm" type="single" skip-end="true"
+          header-row-style="header-row" default-table-style="basic-table" default-map-name="listOfWork">
+        <field name="listOfWorkId" title="ID"><hidden value="${listOfWork.listOfWorkId}"/></field>
+        <field name="listOfWorkNumber" title="班次编号" position="1">
+            <display/>
+            <!--<text default-value="${listOfWorkNumber}"/>-->
+        </field>
+        <field name="listOfWorkName" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}班次名称" position="2" widget-style="validate[required,custom[onlyLetterChinese],maxSize[125]]">
+            <text/>
+        </field>
+        <field name="toWorkTime" title="上班时间" position="1">
+            <date-time type="dateFmt:'HH:mm:ss',maxDate:'#F{$dp.$D(\\'ListOfWorkAddForm_getOffWorkTime\\')}'"/>
+        </field>
+        <field name="getOffWorkTime" title="下班时间" position="2">
+           <date-time type="dateFmt:'HH:mm:ss',minDate:'#F{$dp.$D(\\'ListOfWorkAddForm_toWorkTime\\')}'"/>
+        </field>
+        <field name="workHowLongTime" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}应出勤时长(小时)" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]">
+            <text/>
+        </field>
+        <field name="workHowLongDay" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}应出勤折算天数(天)" position="2" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]">
+            <text/>
+        </field>
+        <field name="allowTimeToLateTime" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}迟到缓冲时间(分钟)" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]]">
+            <text/>
+        </field>
+        <field name="tardyGetOffWorkTime" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}早退缓冲时间(分钟)" position="2" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]]">
+            <text/>
+        </field>
+        <field name="swipingCardValidBefore" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}班前分钟数" position="1" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]]">
+            <text default-value="30"/>
+        </field>
+        <field name="swipingCardValidAfter" encode-output="false" title="${groovy: org.ofbiz.base.util.UtilXml.requiredStyle()}班后分钟数" position="2" widget-style="validate[required,custom[onlyNumberSp],maxSize[8]]]">
+            <text default-value="30"/>
+        </field>
+        <field name="listOfWorkType" title="班次类型">
+            <drop-down>
+                <list-options list-name="listOfWorkTypeMap" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="$.checkingIn.saveListOfWork()">
+            <hyperlink target="#" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <!--刷卡有效范围-->
+    <form name="SwipingCardValidList" type="list" list-name="swipingCardValidList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="swipingCardValidBefore" title="班前分钟数">
+            <text default-value="30"/>
+        </field>
+        <field name="swipingCardValidAfter" title="班后分钟数">
+            <text default-value="30"/>
+        </field>
+    </form>
+
+    <form name="WorkNumAddFormButton" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="$.checkingIn.saveListOfWork()">
+            <hyperlink target="#" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+
+
+    <!--班制搜索-->
+    <form name="searchLisOfWorkByWeekForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="listOfWorkByWeekName" title="班制名称" position="1">
+            <text/>
+        </field>
+        <field name="listOfWorkName" title="班次名称" position="2">
+            <text/>
+        </field>
+        <field name="搜索Link" title-style="hide" widget-style="smallSubmit" position="1"
+               title="搜索" event="onClick" action="$.checkingIn.searchListOfWorkByWeek()">
+            <hyperlink target="#nowhere" description="搜索" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加" event="onClick" action="$.checkingIn.updateListOfWorkByWeek()">
+            <hyperlink target="#nowhere" description="添加" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <form name="ListOfWorkByWeekList" type="list" list-name="listOfWorkByWeekList" separate-columns="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="a" title="序号">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="listOfWorkByWeekName" title="班制名称"
+               event="onClick" action="$.checkingIn.showWorkRegime('${listOfWorkByWeekId}')">
+            <hyperlink target="#nowhere" description="${listOfWorkByWeekName}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="defaultValue" title="是否缺省">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+        <field name="lowMonName" title="周一">
+            <display/>
+        </field>
+        <field name="lowTueName" title="周二">
+            <display/>
+        </field>
+        <field name="lowWedName" title="周三">
+            <display/>
+        </field>
+        <field name="lowThuName" title="周四">
+            <display/>
+        </field>
+        <field name="lowFriName" title="周五">
+            <display/>
+        </field>
+        <field name="lowSatName" title="周六">
+            <display/>
+        </field>
+        <field name="lowSunName" title="周日">
+            <display/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.checkingIn.updateListOfWorkByWeek('${listOfWorkByWeekId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.checkingIn.deleteListOfWorkByWeek('${listOfWorkByWeekId}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+
+    <!--班制添加-->
+    <form name="WorkRegimeAddForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="name" title="班制名称" position="1">
+            <text/>
+        </field>
+        <field name="defaultValue" title="是否缺省" position="2">
+            <radio>
+                <option key="1" description="是"/>
+                <option key="2" description="否"/>
+            </radio>
+        </field>
+    </form>
+
+    <form name="ListOfWorkSetForm"
+          type="multi" list-name="listOfWorkSet" target="" separate-columns="true"
+          odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="sun" title="周日">
+            <lookup target-form-name="WorkNumAjax" size="10" position="center"/>
+        </field>
+        <field name="mon" title="周一" >
+            <lookup target-form-name="WorkNumAjax" size="10" show-description="true"/>
+        </field>
+        <field name="tue" title="周二">
+            <lookup target-form-name="WorkNumAjax" size="10"/>
+        </field>
+        <field name="wed" title="周三" >
+            <lookup target-form-name="WorkNumAjax" size="10"/>
+        </field>
+        <field name="thu" title="周四"  >
+            <lookup target-form-name="WorkNumAjax" size="10"/>
+        </field>
+        <field name="fri" title="周五" >
+            <lookup target-form-name="WorkNumAjax" size="10"/>
+        </field>
+        <field name="sat" title="周六">
+            <lookup target-form-name="WorkNumAjax" size="10"/>
+        </field>
+    </form>
+
+    <form name="WorkRegimeFormShow" type="single" default-map-name="listOfWorkByWeek"
+          header-row-style="header-row" default-table-style="basic-table">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="listOfWorkByWeekName" title="班制名称" position="1">
+            <display/>
+        </field>
+        <field name="defaultValue" title="是否缺省" position="2">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+    </form>
+
+    <form name="WorkNumSetFormShow" type="list" list-name="listOfWorkByWeekList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="sun" title="周日" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="mon" title="周一" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="tue" title="周二" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="wed" title="周三" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="thu" title="周四" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="fri" title="周五" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+        <field name="sat" title="周六" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+    </form>
+
+    <!--排班管理 搜索条件-->
+    <form name="SearchScheduleOfWorkForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="type" title="排班选择" position="1">
+            <drop-down allow-empty="true">
+                <list-options list-name="workScheduleTypeList" key-name="enumId" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="workStartDate" title="排班开始日期" position="2">
+            <date-time/>
+        </field>
+        <field name="workEndDate" title="排班结束日期" position="3">
+            <date-time/>
+        </field>
+        <field name="workStaff" title="所属员工" position="4">
+            <lookup target-form-name="LookupStaff"/>
+        </field>
+        <field name="workDepartment" title="所属部门" position="1">
+            <lookup target-form-name="LookupDepartment"/>
+            <!--<drop-down>-->
+                <!--<option key="" description="&#45;&#45;请选择&#45;&#45;"/>-->
+                <!--<list-options list-name="departmentList" key-name="partyId" description="${groupName}"/>-->
+            <!--</drop-down>-->
+        </field>
+        <field name="搜索Link" title-style="hide" widget-style="smallSubmit" position="1"
+               title="搜索" event="onClick" action="$.checkingIn.searchScheduleOfWork()">
+            <hyperlink target="#nowhere" description="搜索" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit" position="2"
+               title="添加" event="onClick" action="$.checkingIn.editWorkSchedule()">
+            <hyperlink target="#nowhere" description="添加周期排班" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="autoLink" title-style="hide" widget-style="smallSubmit" position="3"
+               title="新增自动排班" event="onClick" action="$.checkingIn.autoScheduling()">
+            <hyperlink target="#nowhere" description="新增自动排班" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="bLink" title-style="hide" widget-style="smallSubmit" position="4"
+               title="个人排班" event="onClick" action="$.checkingIn.showPerson()">
+            <hyperlink target="#nowhere" description="个人排班" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+    <form name="AutoWorkScheduleList" type="list" list-name="workScheduleList" separate-columns="true" target="updateOsManager" paginate-target=""
+         paginate="ture" view-size="5" odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="a" title="序号" >
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="typeDesc" title="排班类型" >
+            <display />
+        </field>
+        <field name="startDate" title="开始日期" >
+            <display  />
+        </field>
+        <field name="endDate" title="结束日期" >
+            <display />
+        </field>
+        <field name="groupName" title="部门" >
+            <display />
+        </field>
+        <field name="listOfWorkName" title="班次" >
+            <display />
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.checkingIn.autoScheduling('${dataValue}','${department}','${listOfWork}','${startDate}','${endDate}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}"
+               event="onClick" action="$.checkingIn.deleteautoSchedule('${dataValue}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="WorkScheduleListSubOrgs" area-target="searchScheduleOfWork"/>
+    </form>
+    <form name="WorkCycleScheduleList" type="list" list-name="workScheduleList" separate-columns="true" target="updateOsManager" paginate-target=""
+         paginate="true" view-size="5" odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="a" title="序号" >
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="typeDesc" title="排班类型">
+            <display description="周期排班"/>
+        </field>
+        <field name="listOfWorkByWeekNames" title="班制">
+           <display/>
+        </field>
+        <field name="cycleSizeUnit" title="轮换周期">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${cycleSize}${description}轮换一次"/>
+        </field>
+        <field name="startDate" title="开始日期" >
+            <display  />
+        </field>
+        <field name="endDate" title="结束日期" >
+            <display />
+        </field>
+        <field name="staff" title="所属员工" >
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="department" title="所属部门" >
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.checkingIn.editWorkSchedule('${dataValue}','${type}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="${uiLabelMap.CommonDelete}" event="onClick" action="$.checkingIn.deleteWorkCycleSchedule('${dataValue}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="WorkScheduleListSubOrgs" area-target="searchScheduleOfWork"/>
+    </form>
+
+    <form name="PersonalWorkScheduleList" type="list" list-name="workScheduleList" separate-columns="true" target="updateOsManager" paginate-target=""
+         paginate="true" view-size="5" odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="a" title="序号" >
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="typeDesc" title="排班类型" >
+            <display default-value="个人排班"/>
+        </field>
+        <field name="startDate" title="日期" >
+            <display  />
+        </field>
+        <field name="staff" title="所属员工">
+            <display-entity entity-name="Person" key-field-name="partyId" description="${fullName}"/>
+        </field>
+        <field name="listOfWorkId" title="班次" >
+            <display-entity entity-name="TblListOfWork" key-field-name="listOfWorkId" description="${listOfWorkName}"/>
+        </field>
+
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="${uiLabelMap.CommonUpdate}" event="onClick" action="$.checkingIn.showCalendar('${staff}','${dataValue}','${startDate}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}"
+               event="onClick" action="$.checkingIn.deletePersonalWorkSchedule('${dataValue}')">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="WorkScheduleListSubOrgs" area-target="searchScheduleOfWork"/>
+    </form>
+
+
+    <form name="StaffList" type="list" list-name="staffList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="item" title="序号" >
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工工号" event="onClick" action="$.checkingIn.showCalendar('${partyId}')" widget-style="hyperLinkStyle">
+            <hyperlink target="#nowhere" description="${workerSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="fullName" title="员工姓名" >
+            <display  />
+        </field>
+        <field name="department" title="当前部门" >
+            <display-entity entity-name="PartyGroup" key-field-name="partyId" description="${groupName}"/>
+        </field>
+        <field name="post" title="当前岗位" >
+            <display-entity entity-name="RoleType" key-field-name="roleTypeId" description="${description}"/>
+        </field>
+        <field name="f" title="当前班组" >
+            <display />
+        </field>
+        <field name="laborType" title="当前状态" >
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description}"/>
+        </field>
+    </form>
+    <form name="StaffListTwo" type="list" list-name="staffList" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="item" title="序号" >
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="workerSn" title="员工工号" event="onClick" action="$.checkingIn.selectedStaffChange('${partyId}')">
+            <hyperlink target="#nowhere" description="${workerSn}" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="fullName" title="员工姓名" >
+            <display  />
+        </field>
+        <field name="department" title="当前部门" >
+            <display />
+        </field>
+        <field name="position" title="当前岗位" >
+            <display />
+        </field>
+        <field name="f" title="当前班组" >
+            <display />
+        </field>
+        <field name="laborType" title="当前状态" >
+            <display />
+        </field>
+    </form>
+
+
+    <form name="WorkScheduleAddForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <field name="listOfWorkByWeek" title="班制">
+            <text/>
+        </field>
+        <field name="startDate" title="开始日期" position="1">
+            <date-time/>
+        </field>
+        <field name="endDate" title="结束日期" position="2">
+            <date-time/>
+        </field>
+        <field name="belongTo" title="排班所属" position="1">
+            <drop-down>
+                <option key="1" description="个人"/>
+                <option key="2" description="组织"/>
+            </drop-down>
+        </field>
+        <field name="e" title="所属员工" position="2">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="addLink" title-style="hide" widget-style="smallSubmit"
+               title="保存" event="onClick" action="editWorkSchedule()">
+            <hyperlink target="#nowhere" description="保存" target-type="plain" url-mode="plain"/>
+        </field>
+
+    </form>
+
+    <!--日程安培所属员工-->
+    <form name="staffSearchForm" type="single"
+          header-row-style="header-row" default-table-style="basic-table">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="e" title="所属员工" position="2" use-when="type==null">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="e" title="所属员工" position="2" use-when="type!=null">
+            <display default-value="${type}"/>
+        </field>
+    </form>
+
+
+    <form name="TestList" type="list" list-name="testList" separate-columns="true" target="updateOsManager" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <!--<alt-target use-when="osManagementId == null" target="createOfficeSuppliesManagement"/>-->
+        <field name="a" title="序号" use-when="${a!=null}">
+            <display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/>
+        </field>
+        <field name="b" title="排班类型">
+            <display />
+        </field>
+        <field name="c" title="开始日期" >
+            <display  />
+        </field>
+        <field name="d" title="结束日期" >
+            <display />
+        </field>
+        <field name="e" title="部门" >
+            <display />
+        </field>
+        <field name="f" title="班次" >
+            <display />
+        </field>
+    </form>
+</forms>
+

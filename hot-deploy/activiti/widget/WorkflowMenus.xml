@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="MainAppBar" title="${uiLabelMap.WorkflowApplication}" default-menu-item-name="TaskList" id="app-navigation" default-selected-style="selected" menu-container-style="left-bar" selected-menuitem-context-field-name="headerItem">
+        <menu-item name="main" title="工作流程">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-tasks"/>
+            </link>
+            <menu-item name="ApplyList" title="我申请的流程">
+                <link target="javascript:showSubMenuAjax('ApplyProcessList')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="TaskList" title="我的流程任务">
+                <link target="javascript:showSubMenuAjax('MyTaskList')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="ParticipateProcess" title="我参与的流程">
+                <link target="javascript:showSubMenuAjax('ParticipateProcessList')" url-mode="plain" />
+            </menu-item>
+        </menu-item>
+
+        <menu-item name="processMgt" title="流程管理">
+            <link target="#" url-mode="plain" style="waves-effect waves-light">
+                <image style="glyphicon glyphicon-tasks"/>
+            </link>
+            <menu-item name="ProcessList" title="可用流程">
+                <link target="javascript:showSubMenuAjax('ProcessList')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="ModelList" title="流程模型">
+                <link target="javascript:showSubMenuAjax('ModelList')" url-mode="plain" />
+            </menu-item>
+            <menu-item name="ActFormList" title="流程表单">
+                <link target="javascript:showSubMenuAjax('ActFormList')" url-mode="plain" />
+            </menu-item>
+        </menu-item>
+    </menu>
+
+
+    <menu name="ModelListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.workflow.createModelDialog()" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+        <menu-item name="Category" title="" tooltip="分类管理">
+            <link target="javascript:$.workflow.manageCategory()" url-mode="plain" style="icosg-cabinet"/>
+        </menu-item>
+    </menu>
+    <menu name="ActFormListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.workflow.createActFormDialog()" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+        <menu-item name="Type" title="" tooltip="类型管理">
+            <link target="javascript:$.workflow.manageActFormType()" url-mode="plain" style="icosg-cabinet"/>
+        </menu-item>
+    </menu>
+    <menu name="ProcessListBar" extends-resource="component://common/widget/CommonMenus.xml"
+          default-menu-item-name="Add" type="simple" menu-container-style="button-bar tab-bar"
+          default-selected-style="" selected-menuitem-context-field-name="tabButtonItem">
+        <menu-item name="Add" title="" tooltip="添加">
+            <link target="javascript:$.workflow.uploadProcessForm()" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+</menus>

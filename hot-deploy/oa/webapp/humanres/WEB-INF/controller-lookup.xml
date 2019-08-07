@@ -1,0 +1,80 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+
+    <request-map uri="LookupOccupation">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookupOccupation"/>
+    </request-map>
+    <request-map uri="LookupOccupationTree">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/humanres/WEB-INF/actions/organization/LookupOccupations.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="LookupDepartment">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookupDepartment"/>
+    </request-map>
+    
+    <request-map uri="LookupDepartmentTree">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+    <request-map uri="LookupDataScope">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookupDataScope"/>
+    </request-map>
+    <request-map uri="LookupStaffSelect">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookupStaffSelect"/>
+    </request-map>
+    <request-map uri="LookupStaff">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LookupStaff"/>
+    </request-map>
+
+    <request-map uri="lookUpChooserInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="lookUpChooserInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
+    <request-map uri="searchLookupEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchLookupEmployee"/>
+        <response name="success" type="view" value="searchLookupEmployee"/>
+    </request-map>
+
+    <request-map uri="LookupEmployee">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchLookupEmployee"/>
+        <response name="success" type="view" value="LookupEmployee"/>
+    </request-map>
+
+    <!--库存管理列表-->
+    <request-map uri="InventoryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInventoryList"/>
+        <response name="success" type="view" value="FindInventory"/>
+    </request-map>
+
+    <request-map uri="InventoryListInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchInventoryList"/>
+        <response name="success" type="view" value="FindInventoryList"/>
+    </request-map>
+
+    <view-map name="FindInventory" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#FindInventory"/>
+    <view-map name="FindInventoryList" type="screen" page="component://oa/widget/osManager/OsManagerScreens.xml#ListInventory2"/>
+    <view-map name="LookupOccupation" type="screen" page="component://oa/widget/LookupScreens.xml#LookupOccupations"/>
+    <view-map name="LookupDepartment" type="screen" page="component://oa/widget/LookupScreens.xml#LookupDepartments"/>
+    <view-map name="LookupDataScope" type="screen" page="component://oa/widget/LookupScreens.xml#LookupDataScope"/>
+    <view-map name="LookupStaffSelect" type="screen" page="component://oa/widget/LookupScreens.xml#LookupStaffSelect"/>
+    <view-map name="LookupStaff" type="screen" page="component://oa/widget/LookupScreens.xml#LookupStaff"/>
+    <view-map name="LookupEmployee" type="screen" page="component://oa/widget/LookupScreens.xml#LookupEmployee"/>
+    <view-map name="searchLookupEmployee" type="screen" page="component://oa/widget/LookupScreens.xml#searchLookupEmployee"/>
+</site-conf>

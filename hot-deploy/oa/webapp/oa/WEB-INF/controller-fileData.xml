@@ -1,0 +1,112 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="FileData">
+        <description>档案资料管理</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFileData"/>
+        <response name="success" type="view" value="FileData"/>
+    </request-map>
+    <request-map uri="saveFileData">
+        <description>保存档案资料</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveFileData"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveFileType">
+        <description>保存文档类别</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveFileType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="CreateFileData">
+        <description>新建档案资料</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="CreateFileData"/>
+    </request-map>
+    <request-map uri="addFileType">
+        <description>增加文档类别</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="addFileType"/>
+    </request-map>
+    <request-map uri="searchFileData">
+        <description>搜索档案</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFileData"/>
+        <response name="success" type="view" value="searchFileData"/>
+    </request-map>
+    <request-map uri="modifyFileData">
+        <description>修改档案</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="modifyFileData"/>
+        <response name="success" type="view" value="CreateFileData"/>
+    </request-map>
+    <request-map uri="showFileDataVersion">
+        <description>查看历史版本</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showFileDataVersion"/>
+        <response name="success" type="view" value="fileDataVersion"/>
+    </request-map>
+    <request-map uri="showFileData">
+        <description>查看档案</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="modifyFileData"/>
+        <response name="success" type="view" value="showFileData"/>
+    </request-map>
+    <request-map uri="auditFileData">
+        <description>审核档案</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="modifyFileData"/>
+        <response name="success" type="view" value="auditFileData"/>
+    </request-map>
+    <request-map uri="saveAudit">
+        <description>保存审核</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAudit"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteFileData">
+        <description>删除档案</description>
+        <event type="service" invoke="deleteFileData"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteFileType">
+        <description>删除文档类别</description>
+        <event type="service" invoke="deleteFileType"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="modifyFileType">
+        <description>修改文档类别</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="modifyFileType"/>
+        <response name="success" type="view" value="addFileType"/>
+    </request-map>
+    <request-map uri="searchSonTypeName">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSonTypeName"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="getFileDataTypes">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getFileDataTypes"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="ListFileType">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ListFileType"/>
+    </request-map>
+    <request-map uri="GetFileData">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFileData"/>
+        <response name="success" type="view" value="searchFileData"/>
+    </request-map>
+    <view-map name="FileData" type="screen" page="component://oa/widget/FileDataScreens.xml#FileData"/>
+    <view-map name="fileDataVersion" type="screen" page="component://oa/widget/FileDataScreens.xml#fileDataVersion"/>
+    <view-map name="searchFileData" type="screen" page="component://oa/widget/FileDataScreens.xml#searchFileData"/>
+    <view-map name="GetFileData" type="screen" page="component://oa/widget/FileDataScreens.xml#GetFileData"/>
+    <view-map name="CreateFileData" type="screen" page="component://oa/widget/FileDataScreens.xml#CreateFileData"/>
+    <view-map name="showFileData" type="screen" page="component://oa/widget/FileDataScreens.xml#showFileData"/>
+    <view-map name="auditFileData" type="screen" page="component://oa/widget/FileDataScreens.xml#auditFileData"/>
+    <view-map name="ListFileType" type="screen" page="component://oa/widget/FileDataScreens.xml#ListFileType"/>
+    <view-map name="addFileType" type="screen" page="component://oa/widget/FileDataScreens.xml#addFileType"/>
+</site-conf>

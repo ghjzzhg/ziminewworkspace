@@ -1,0 +1,3 @@
+<embed wmode="transparent" src="/oa/static/clock.swf" quality="high" bgcolor="#ffffff" width="160" height="70" name="honehoneclock" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+<iframe style="display:block;" allowtransparency="true" frameborder="0" width="410" height="98" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=1&z=1&t=1&v=0&d=2&bd=0&k=&f=&q=1&e=1&a=1&c=54511&w=410&h=98&align=center"></iframe>
+<embed height="300" type="application/x-shockwave-flash" width="380" src="/oa/static/calendar.swf" wmode="transparent" quality="high" allowscriptaccess="never" allownetworking="internal">

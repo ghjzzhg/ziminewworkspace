@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--个人备忘录List-->
+    <request-map uri="MyWorkLog">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkLog"/>
+    </request-map>
+    <request-map uri="WorkLogForUnder">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="WorkLogForUnder"/>
+    </request-map>
+    <request-map uri="addSchedule">
+        <description>请求添加日程form</description>
+        <response name="success" type="view" value="addScheduleForm"/>
+    </request-map>
+    <request-map uri="saveWorkLogSchedule">
+        <description>保存日程</description>
+        <event type="service" invoke="saveSchedule"/>
+        <response name="success" type="view" value="ScheduleList"/>
+    </request-map>
+    <request-map uri="getMySelfSchedule">
+        <description>获得个人日程</description>
+        <event type="java" invoke="getMySelfSchedule" path="org.ofbiz.oa.WorkLogEvents"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="ShowWorkLogInfo">
+        <description>工作日程</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showWorkLog"/>
+    </request-map>
+    <request-map uri="saveWorkLog">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveWorkLog"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteSchedule">
+        <description>delete删除日程</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteSchedule"/>
+        <response name="success" type="view" value="ScheduleList"/>
+    </request-map>
+    <request-map uri="followUpWorkPlan">
+        <description>待跟进计划</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="followUpWorkPlan"/>
+    </request-map>
+  <!--  <request-map uri="showWorkLog">
+        <security https="false" auth="true"/>
+        &lt;!&ndash;  <event type="groovy" path="component://oa/webapp/oa/WEB-INF/actions/workLog/WorkLogServices.groovy" invoke="findWorkLog"/>&ndash;&gt;
+        <response name="success" type="view" value="showWorkLog"/>
+    </request-map>-->
+    <request-map uri="viewWorkLog">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="viewWorkLog"/>
+    </request-map>
+
+    <request-map uri="saveWorkPlan">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveWorkLog"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveLeadInstructions">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveLeadInstructions"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="underlingWorkLog">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="underlingWorkLog"/>
+    </request-map>
+
+    <request-map uri="underlingWorkLogByCalendar">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="underlingWorkLogByCalendar"/>
+    </request-map>
+    <request-map uri="subordinates">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="subordinates"/>
+    </request-map>
+    <!--日志参数设置-->
+    <request-map uri="LogSet">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="LogSet"/>
+    </request-map>
+    <request-map uri="saveAttentionSubordinate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAttentionSubordinate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--当日计划-->
+    <request-map uri="editWorkPlanForPersonal">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editWorkPlan"/>
+    </request-map>
+    <request-map uri="savePersonalTemplate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="savePersonalTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveTemplate">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="editDayLog">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editDayLog"/>
+    </request-map>
+    <request-map uri="saveLogSet">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveLogSet"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="underlingWorkLogForPage">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="underlingWorkLogForPage"/>
+    </request-map>
+    <request-map uri="viewWorkLogForCal">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="viewWorkLogForCal"/>
+    </request-map>
+    <request-map uri="TestChecking">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="checkingInStatistics"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <view-map name="WorkLog" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#WorkLog"/>
+    <view-map name="showWorkLog" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#showWorkLog"/>
+    <view-map name="viewWorkLog" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#viewWorkLog"/>
+    <view-map name="underlingWorkLog" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#underlingWorkLog"/>
+    <view-map name="underlingWorkLogByCalendar" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#underlingWorkLogByCalendar"/>
+    <view-map name="LogSet" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#LogSet"/>
+    <view-map name="editWorkPlan" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#editWorkPlan"/>
+    <view-map name="subordinates" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#subordinates"/>
+    <view-map name="WorkLogForUnder" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#WorkLogForUnder"/>
+    <view-map name="viewWorkLogForCal" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#viewWorkLogForCal"/>
+    <view-map name="underlingWorkLogForPage" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#underlingWorkLogForPage"/>
+    <view-map name="editDayLog" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#editDayLog"/>
+    <view-map name="followUpWorkPlan" type="screen"
+              page="component://oa/widget/osManager/WorkLogScreens.xml#followUpWorkPlan"/>
+    <view-map name="addScheduleForm" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#addScheduleForm"/>
+    <view-map name="ScheduleList" type="screen" page="component://oa/widget/osManager/WorkLogScreens.xml#ScheduleList"/>
+</site-conf>

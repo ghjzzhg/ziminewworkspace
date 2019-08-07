@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <!--<include location="component://oa/webapp/humanres/WEB-INF/controller.xml"/>-->
+    <include location="component://content/webapp/content/WEB-INF/controller.xml"/>
+    <description>CKFinder Module Site Configuration File</description>
+    
+    <!-- view handlers -->
+    <handler name="service-multi" type="request" class="org.ofbiz.webapp.event.ServiceMultiEventHandler"/>
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+
+    <!-- Request Mappings -->
+    <request-map uri="login">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
+        <response name="success" type="request" value="main"/>
+        <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
+        <response name="error" type="request-redirect" value="index"/>
+    </request-map>
+    <request-map uri="index">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="Index"/>
+    </request-map>
+
+    <request-map uri="main">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+    </request-map>
+
+    <request-map uri="action">
+        <security https="false" auth="true"/>
+        <response name="success" type="none"/>
+        <response name="error" type="none"/>
+    </request-map>
+    <request-map uri="showShareInfoList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showShareInfoList"/>
+        <response name="success" type="view" value="Share"/>
+    </request-map>
+    <request-map uri="showShareInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="showShareInfoList"/>
+        <response name="success" type="view" value="ShareInfo"/>
+    </request-map>
+
+    <request-map uri="delDataResourceRole">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.command.FileService" invoke="delDataResourceRole"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="addShare">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="addShare"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="setShareFile">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="setShareFile"/>
+    </request-map>
+
+    <request-map uri="setShareInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="setShareInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="testingFile">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="testingFile"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--显示文件历史页面-->
+    <request-map uri="showFileHistoryList">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="showFileHistoryList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--显示上传页面-->
+    <request-map uri="showUploadFilePage">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showUploadFilePage"/>
+    </request-map>
+
+    <!--检查是否存在重复文件-->
+    <request-map uri="checkFileStatus">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="checkFileStatus"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+
+    <request-map uri="OpenFileinputSelection">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="FileinputSelection"/>
+    </request-map>
+
+
+    <!--显示图片-->
+    <request-map uri="showPhoto">
+        <security https="false" auth="false"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="showPhoto"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--显示验证码-->
+    <request-map uri="getCaptcha">
+        <security https="false" auth="false"/>
+        <event type="java" path="org.ofbiz.common.CommonEvents" invoke="getCaptcha"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="openFileEdit">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="openFileEdit"/>
+    </request-map>
+
+    <request-map uri="editFileEdit">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="editFileEdit"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="testShare">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="shareUserFolder"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="testCreateFolder">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="addUserFolder"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="searchFileListByName">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchFileListByName"/>
+        <response name="success" type="view" value="fileList"/>
+    </request-map>
+
+    <request-map uri="addFilePath">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="addFilePath"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="showRename">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="editFileInfo"/>
+    </request-map>
+
+    <request-map uri="checkFolderName">
+        <security https="false" auth="true"/>
+        <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="checkFolderName"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="GetCaseCooperationRecordJson">
+        <description>查找case协作记录</description>
+        <security https="false" auth="true"/>
+        <!-- <event type="java" path="com.ckfinder.connector.handlers.commands.FileService" invoke="GetCaseCooperationRecordJson"/> -->
+        <event type="groovy" path="component://zxdoc/webapp/zxdoc/WEB-INF/actions/caseManage/GetCaseCooperationRecords.groovy"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="json">
+        <security direct-request="false"/>
+        <event type="java" path="org.ofbiz.common.CommonEvents" invoke="jsonResponseFromRequestAttributes"/>
+        <response name="success" type="none"/>
+    </request-map>
+    <request-map uri="GetFileList">
+        <description>获取文件列表</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="getFileListCase"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <view-map name="main" type="screen" page="component://ckfinder/widget/CommonScreens.xml#Main"/>
+    <view-map name="login" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Index"/>
+    <view-map name="Index" type="screen" page="component://zxdoc/widget/ZxdocScreens.xml#Index"/>
+    <view-map name="Share" type="screen" page="component://ckfinder/widget/CommonScreens.xml#Share"/>
+    <view-map name="ShareInfo" type="screen" page="component://ckfinder/widget/CommonScreens.xml#ShareInfo"/>
+    <view-map name="setShareFile" type="screen" page="component://ckfinder/widget/CommonScreens.xml#setShareFile"/>
+    <view-map name="showUploadFilePage" type="screen" page="component://ckfinder/widget/CommonScreens.xml#showUploadFilePage"/>
+    <view-map name="FileinputSelection" type="screen" page="component://ckfinder/widget/CommonScreens.xml#FileinputSelection"/>
+    <view-map name="openFileEdit" type="screen" page="component://ckfinder/widget/CommonScreens.xml#openFileEdit"/>
+    <view-map name="fileList" type="screen" page="component://ckfinder/widget/CommonScreens.xml#fileNameList"/>
+    <view-map name="editFileInfo" type="screen" page="component://ckfinder/widget/CommonScreens.xml#editFileInfo"/>
+</site-conf>

@@ -1,0 +1,183 @@
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+
+    <request-map uri="SalaryMain">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="SalaryPayOff"/>
+    </request-map>
+
+    <request-map uri="SalaryItems">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSalaryItems"/>
+        <response name="success" type="view" value="SalaryItems"/>
+    </request-map>
+
+    <request-map uri="SalaryNotice">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="SalaryNotice"/>
+    </request-map>
+    <request-map uri="SalaryNoticeInfo">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="salaryNoticeInfo"/>
+    </request-map>
+    <request-map uri="addTemplateManagement">
+        <description>增加工资条模板</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="addTemplateManagement"/>
+    </request-map>
+    <request-map uri="showTemplateManagement">
+        <description>工资条模板管理</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showTemplateManagement"/>
+    </request-map>
+    <request-map uri="deleteSalaryTemplate">
+        <description>删除工资条模板</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="deleteSalaryTemplate"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="changeTemplateState">
+        <description>修改模板状态</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeTemplateState"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SalaryPayOff">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSalaryPayOffList"/>
+        <response name="success" type="view" value="sendSalaryPay"/>
+    </request-map>
+    <request-map uri="searchSalaryPayOffList">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSalaryPayOffList"/>
+        <response name="success" type="view" value="sendSalaryList"/>
+    </request-map>
+    <request-map uri="PersonSalaryItems">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PersonSalaryItems"/>
+    </request-map>
+    <request-map uri="SubmitPersonSalary">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="submitPersonSalary"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SubmitPersonSalaryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="submitPersonSalary"/>
+        <response name="success" type="view" value="SubmitPersonSalary"/>
+    </request-map>
+    <request-map uri="ApprovePersonSalary">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ApprovePersonSalary"/>
+    </request-map>
+    <request-map uri="PayPersonSalary">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="PayPersonSalary"/>
+    </request-map>
+    <request-map uri="ViewPersonSalary">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ViewPersonSalary"/>
+    </request-map>
+    <request-map uri="addSubmitSalaryItem">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="addSubmitSalaryItem"/>
+    </request-map>
+
+    <request-map uri="saveSendDetail">
+        <security https="false" auth="true"/>
+        <!--<event type="java" path="org.ofbiz.oa.SalaryEvents" invoke="saveSendDetail"/>-->
+        <event type="service" invoke="saveSendDetail"/>
+        <response name="success" type="request" value="json"/>
+        <!--<response name="error" type="request" value="json"/>-->
+    </request-map>
+    <request-map uri="salarySuccess">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="salarySuccess"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveSalaryEntry">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveSalaryEntry"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveAttendance">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveAttendance"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="submitSendDetail">
+       <security https="false" auth="true"/>
+        <event type="java" path="org.ofbiz.oa.SalaryEvents" invoke="saveSendDetail"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="SalaryOnAttendance">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="SalaryOnAttendance"/>
+    </request-map>
+    <request-map uri="ifApproveSalary">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ifApproveSalary"/>
+    </request-map>
+    <request-map uri="saveSalaryBillMould">
+        <security https="false" auth="true"/>
+        <!--<event type="java" path="org.ofbiz.oa.SalaryEvents" invoke="saveSendDetail"/>-->
+        <event type="service" invoke="saveSalaryBillMould"/>
+        <response name="success" type="request" value="json"/>
+        <!--<response name="error" type="request" value="json"/>-->
+    </request-map>
+    <request-map uri="printSalaryBill">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="printSalaryBill"/>
+        <response name="success" type="view" value="printSalaryBill"/>
+    </request-map>
+    <request-map uri="excelLeadOut">
+        <security https="false" auth="true"/>
+        <event type="java" invoke="excelLeadOut" path="org.ofbiz.content.content.ExcelManipulate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="uploadExcel">
+        <security https="false" auth="true"/>
+        <event type="java" invoke="uploadExcel" path="org.ofbiz.content.content.ExcelManipulate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="editSalaryEntry">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveSalaryEntry"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="showMonthSalaryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSalaryPayOffList"/>
+        <response name="success" type="view" value="showMonthSalaryInfo"/>
+    </request-map>
+    <request-map uri="batchSetSalaryInfo">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="batchSetSalaryInfo"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <view-map name="editSalaryEntry" type="screen" page="component://oa/widget/SalaryScreens.xml#editSalaryEntry"/>
+    <view-map name="SalaryMain" type="screen" page="component://oa/widget/SalaryScreens.xml#SalaryMain"/>
+    <view-map name="SalaryItems" type="screen" page="component://oa/widget/SalaryScreens.xml#SalaryItems"/>
+    <view-map name="SalaryNotice" type="screen" page="component://oa/widget/SalaryScreens.xml#SalaryNotice"/>
+    <view-map name="salaryNoticeInfo" type="screen" page="component://oa/widget/SalaryScreens.xml#salaryNoticeInfo"/>
+    <view-map name="addTemplateManagement" type="screen" page="component://oa/widget/SalaryScreens.xml#addTemplateManagement"/>
+    <view-map name="showTemplateManagement" type="screen" page="component://oa/widget/SalaryScreens.xml#showTemplateManagement"/>
+    <view-map name="sendSalaryPay" type="screen" page="component://oa/widget/SalaryScreens.xml#sendSalaryPay"/>
+    <view-map name="sendSalaryList" type="screen" page="component://oa/widget/SalaryScreens.xml#sendSalaryList"/>
+    <view-map name="PersonSalaryItems" type="screen" page="component://oa/widget/SalaryScreens.xml#PersonSalaryItems"/>
+    <view-map name="SubmitPersonSalary" type="screen" page="component://oa/widget/SalaryScreens.xml#SubmitPersonSalary"/>
+    <view-map name="ApprovePersonSalary" type="screen" page="component://oa/widget/SalaryScreens.xml#ApprovePersonSalary"/>
+    <view-map name="ViewPersonSalary" type="screen" page="component://oa/widget/SalaryScreens.xml#ViewPersonSalary"/>
+    <view-map name="PayPersonSalary" type="screen" page="component://oa/widget/SalaryScreens.xml#PayPersonSalary"/>
+    <view-map name="addSubmitSalaryItem" type="screen" page="component://oa/widget/SalaryScreens.xml#addSubmitSalaryItem"/>
+    <view-map name="saveSendDetail" type="screen" page="component://oa/widget/SalaryScreens.xml#saveSendDetail"/>
+    <view-map name="ifApproveSalary" type="screen" page="component://oa/widget/SalaryScreens.xml#ifApproveSalary"/>
+    <view-map name="SalaryOnAttendance" type="screen" page="component://oa/widget/SalaryScreens.xml#SalaryOnAttendance"/>
+    <view-map name="saveSalaryBillMould" type="screen" page="component://oa/widget/SalaryScreens.xml#saveSalaryBillMould"/>
+    <view-map name="printSalaryBill" type="screen" page="component://oa/widget/SalaryScreens.xml#printSalaryBill"/>
+    <view-map name="showMonthSalaryInfo" type="screen" page="component://oa/widget/SalaryScreens.xml#showMonthSalaryInfo"/>
+</site-conf>

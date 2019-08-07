@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <!-- PortalPortlet Seed Data: system pages -->
+    <PortalPage portalPageId="OA" sequenceNum="0" portalPageName="办公台" description="OA办公台" ownerUserLoginId="_NA_"/>
+    <PortalPageColumn portalPageId="OA" columnSeqId="00001" columnWidthPercentage="40"/>
+    <PortalPageColumn portalPageId="OA" columnSeqId="00002" columnWidthPercentage="40"/><!-- no width in pixels or percent, use the rest of the space available -->
+    <PortalPageColumn portalPageId="OA" columnSeqId="00003" columnWidthPercentage="20"/><!-- no width in pixels or percent, use the rest of the space available -->
+
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_bumphNotice" portletSeqId="00001" columnSeqId="00001" sequenceNum="1"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_perfExam" portletSeqId="00001" columnSeqId="00001" sequenceNum="2"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_checkingin" portletSeqId="00001" columnSeqId="00002" sequenceNum="3"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_email" portletSeqId="00001" columnSeqId="00002" sequenceNum="4"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_workflow" portletSeqId="00001" columnSeqId="00002" sequenceNum="5"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_workplan" portletSeqId="00001" columnSeqId="00002" sequenceNum="6"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_meetingNotice" portletSeqId="00001" columnSeqId="00002" sequenceNum="7"/>
+    <PortalPagePortlet portalPageId="OA" portalPortletId="OA_commonRes" portletSeqId="00001" columnSeqId="00002" sequenceNum="8"/>
+
+
+    <EnumerationType description="工作计划-任务类别" enumTypeId="WORK_PLAN_Type" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="工作报告-报告类别" enumTypeId="WORK_REPORT_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作报告-总状态" enumTypeId="WORK_REPORT_STATUS" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作报告-进度" enumTypeId="WORK_REPORT_PLAN" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作报告反馈-查看人" enumTypeId="FEEDBACK_PARTY" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="反馈类型" enumTypeId="FEEDBACK_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作计划-可查看人员" enumTypeId="WORK_PLAN_CS_PERSON" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作计划进度" enumTypeId="WORK_PLAN_STATUS" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="工作计划-任务评分" enumTypeId="WORK_PLAN_GRADE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="个人工作进度" enumTypeId="PERSON_WORK_STATUS" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="公文发布-文档抬头单位" enumTypeId="NOTICE_HEAD" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="公文发布-类型" enumTypeId="NOTICE_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="公文发布-是否允许反馈" enumTypeId="NOTICE_HAS_FEEDBACK" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="周期排班所属" enumTypeId="WORK_SCHEDULE_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="排班类型" enumTypeId="SCHEDULE_OF_WORK_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="签到/签退" enumTypeId="CHECKING_IN_OUT" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="考勤状态" enumTypeId="CHECKING_IN_STATUS" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="周期排班轮换类型" enumTypeId="CYCLE_SCHEDULE_TYPE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="学位" enumTypeId="EDUCATION_DEGREE" hasTable="N" parentTypeId=""/>
+    <EnumerationType description="学历" enumTypeId="EDUCATION_DIPLOMA" hasTable="N" parentTypeId=""/>
+    <!-- 工作报告-报告类别 -->
+    <Enumeration description="单次报告（一次性）" enumCode="A" enumId="WORK_REPORT_TYPE_A" sequenceId="01" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="半年报告（一次性）" enumCode="B" enumId="WORK_REPORT_TYPE_B" sequenceId="02" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="年度报告（一次性）" enumCode="C" enumId="WORK_REPORT_TYPE_C" sequenceId="03" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="季度报告（重复性）" enumCode="D" enumId="WORK_REPORT_TYPE_D" sequenceId="04" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="每月报告（重复性）" enumCode="E" enumId="WORK_REPORT_TYPE_E" sequenceId="05" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="每周报告（重复性）" enumCode="F" enumId="WORK_REPORT_TYPE_F" sequenceId="06" enumTypeId="WORK_REPORT_TYPE"/>
+    <Enumeration description="每日报告（重复性）" enumCode="G" enumId="WORK_REPORT_TYPE_G" sequenceId="07" enumTypeId="WORK_REPORT_TYPE"/>
+    <!-- 工作报告-总状态 -->
+    <Enumeration description="运作中" enumCode="A" enumId="WORK_REPORT_STATUS_A" sequenceId="01" enumTypeId="WORK_REPORT_STATUS"/>
+    <Enumeration description="已结案" enumCode="B" enumId="WORK_REPORT_STATUS_B" sequenceId="02" enumTypeId="WORK_REPORT_STATUS"/>
+    <Enumeration description="已作废" enumCode="C" enumId="WORK_REPORT_STATUS_C" sequenceId="03" enumTypeId="WORK_REPORT_STATUS"/>
+    <!--工作报告-进度-->
+    <Enumeration description="未提交" enumCode="A" enumId="WORK_REPORT_PLAN_A" sequenceId="01" enumTypeId="WORK_REPORT_PLAN"/>
+    <Enumeration description="进行中" enumCode="B" enumId="WORK_REPORT_PLAN_B" sequenceId="02" enumTypeId="WORK_REPORT_PLAN"/>
+    <Enumeration description="已提交" enumCode="C" enumId="WORK_REPORT_PLAN_C" sequenceId="03" enumTypeId="WORK_REPORT_PLAN"/>
+    <!-- 工作反馈查看人 -->
+    <Enumeration description="项目主管" enumCode="A" enumId="FEEDBACK_PARTY_A" sequenceId="01" enumTypeId="FEEDBACK_PARTY"/>
+    <Enumeration description="安排人和项目主管" enumCode="B" enumId="FEEDBACK_PARTY_B" sequenceId="02" enumTypeId="FEEDBACK_PARTY"/>
+    <Enumeration description="项目中的所有人" enumCode="C" enumId="FEEDBACK_PARTY_C" sequenceId="03" enumTypeId="FEEDBACK_PARTY"/>
+    <!-- 反馈类型 -->
+    <Enumeration description="常规反馈" enumCode="A" enumId="FEEDBACK_TYPE_A" sequenceId="01" enumTypeId="FEEDBACK_TYPE"/>
+    <Enumeration description="报告进度" enumCode="B" enumId="FEEDBACK_TYPE_B" sequenceId="02" enumTypeId="FEEDBACK_TYPE"/>
+
+    <!-- 员工合同-状态 -->
+    <EnumerationType description="合同状态" enumTypeId="CONTRACT_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="未生效" enumCode="A" enumId="CONTRACT_STATUS_A" sequenceId="01" enumTypeId="CONTRACT_STATUS"/>
+    <Enumeration description="已生效" enumCode="B" enumId="CONTRACT_STATUS_B" sequenceId="02" enumTypeId="CONTRACT_STATUS"/>
+    <Enumeration description="已过期" enumCode="C" enumId="CONTRACT_STATUS_C" sequenceId="03" enumTypeId="CONTRACT_STATUS"/>
+    <Enumeration description="已作废" enumCode="D" enumId="CONTRACT_STATUS_D" sequenceId="04" enumTypeId="CONTRACT_STATUS"/>
+
+    <Enumeration description="全部员工" enumCode="ALL" enumId="WP_CS_ALL" sequenceId="01" enumTypeId="WORK_PLAN_CS_PERSON"/>
+    <Enumeration description="本部门员工" enumCode="DEPARTMENT" enumId="WP_CS_DEPARTMENT" sequenceId="02" enumTypeId="WORK_PLAN_CS_PERSON"/>
+    <Enumeration description="仅本任务中员工" enumCode="ONLY_PLAN" enumId="WP_CS_ONLY_PLAN" sequenceId="03" enumTypeId="WORK_PLAN_CS_PERSON"/>
+    <Enumeration description="1/8(进行中)" enumCode="STATUS1" enumId="PWS_STATUS1" sequenceId="01" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="2/8(进行中)" enumCode="STATUS2" enumId="PWS_STATUS2" sequenceId="02" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="3/8(进行中)" enumCode="STATUS3" enumId="PWS_STATUS3" sequenceId="03" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="4/8(进行中)" enumCode="STATUS4" enumId="PWS_STATUS4" sequenceId="04" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="5/8(进行中)" enumCode="STATUS5" enumId="PWS_STATUS5" sequenceId="05" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="6/8(进行中)" enumCode="STATUS6" enumId="PWS_STATUS6" sequenceId="06" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="7/8(进行中)" enumCode="STATUS7" enumId="PWS_STATUS7" sequenceId="07" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="完成" enumCode="STATUS8" enumId="PWS_STATUS8" sequenceId="08" enumTypeId="PERSON_WORK_STATUS"/>
+    <Enumeration description="个人" enumCode="PERSONAL" enumId="WST_PERSONAL" sequenceId="01" enumTypeId="WORK_SCHEDULE_TYPE"/>
+    <Enumeration description="组织" enumCode="DEPARTMENT" enumId="WST_DEPARTMENT" sequenceId="02" enumTypeId="WORK_SCHEDULE_TYPE"/>
+
+    <Enumeration description="待执行" enumCode="BETO" enumId="WP_STATUS_BETO" sequenceId="01" enumTypeId="WORK_PLAN_STATUS"/>
+    <Enumeration description="执行中" enumCode="DOING" enumId="WP_STATUS_DOING" sequenceId="02" enumTypeId="WORK_PLAN_STATUS"/>
+    <Enumeration description="已完成" enumCode="COMPLETE" enumId="WP_STATUS_COMPLETE" sequenceId="03" enumTypeId="WORK_PLAN_STATUS"/>
+    <Enumeration description="作废" enumCode="DISCARDED" enumId="WP_STATUS_DISCARDED" sequenceId="04" enumTypeId="WORK_PLAN_STATUS"/>
+    <Enumeration description="1" enumCode="10" enumId="WP_GRADE_ONE" sequenceId="01" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="2" enumCode="20" enumId="WP_GRADE_TWO" sequenceId="02" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="3" enumCode="30" enumId="WP_GRADE_THREE" sequenceId="03" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="4" enumCode="40" enumId="WP_GRADE_FOUR" sequenceId="04" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="5" enumCode="50" enumId="WP_GRADE_FIVE" sequenceId="05" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="6" enumCode="60" enumId="WP_GRADE_SIX" sequenceId="06" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="7" enumCode="70" enumId="WP_GRADE_SEVEN" sequenceId="07" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="8" enumCode="80" enumId="WP_GRADE_EIGHT" sequenceId="08" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="9" enumCode="90" enumId="WP_GRADE_NINE" sequenceId="09" enumTypeId="WORK_PLAN_GRADE"/>
+    <Enumeration description="10" enumCode="100" enumId="WP_GRADE_TEN" sequenceId="10" enumTypeId="WORK_PLAN_GRADE"/>
+
+    <EnumerationType description="班次类型" enumTypeId="LIST_OF_WORK_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="正常班次" enumCode="LIST_OF_WORK_TYPE_01" enumId="LIST_OF_WORK_TYPE_01" sequenceId="01" enumTypeId="LIST_OF_WORK_TYPE"/>
+    <Enumeration description="休息班次" enumCode="LIST_OF_WORK_TYPE_02" enumId="LIST_OF_WORK_TYPE_02" sequenceId="02" enumTypeId="LIST_OF_WORK_TYPE"/>
+    <Enumeration description="加班班次" enumCode="LIST_OF_WORK_TYPE_03" enumId="LIST_OF_WORK_TYPE_03" sequenceId="03" enumTypeId="LIST_OF_WORK_TYPE"/>
+    <Enumeration description="周期排班" enumCode="WEEK" enumId="WORK_SCHEDULE_WEEK" sequenceId="02" enumTypeId="SCHEDULE_OF_WORK_TYPE"/>
+    <Enumeration description="自动排班" enumCode="AUTO" enumId="WORK_SCHEDULE_AUTO" sequenceId="01" enumTypeId="SCHEDULE_OF_WORK_TYPE"/>
+    <Enumeration description="个人排班" enumCode="PERSONAL" enumId="WORK_SCHEDULE_PERSONAL" sequenceId="03" enumTypeId="SCHEDULE_OF_WORK_TYPE"/>
+    <Enumeration description="签到" enumCode="IN" enumId="CHECKING_IN" sequenceId="01" enumTypeId="CHECKING_IN_OUT"/>
+    <Enumeration description="签退" enumCode="OUT" enumId="CHECKING_OUT" sequenceId="02" enumTypeId="CHECKING_IN_OUT"/>
+    <Enumeration description="正常" enumCode="NORMAL" enumId="CHECKING_IN_STATUS_NORMAL" sequenceId="01" enumTypeId="CHECKING_IN_STATUS"/>
+    <Enumeration description="迟到" enumCode="LATE" enumId="CHECKING_IN_STATUS_LATE" sequenceId="02" enumTypeId="CHECKING_IN_STATUS"/>
+    <Enumeration description="早退" enumCode="EARLY" enumId="CHECKING_IN_STATUS_EARLY" sequenceId="03" enumTypeId="CHECKING_IN_STATUS"/>
+
+    <EnumerationType description="性别" enumTypeId="GENDER" hasTable="N" parentTypeId=""/>
+    <Enumeration description="男" enumCode="MALE" enumId="GENDER_MALE" sequenceId="01" enumTypeId="GENDER"/>
+    <Enumeration description="女" enumCode="FEMALE" enumId="GENDER_FEMALE" sequenceId="02" enumTypeId="GENDER"/>
+    <Enumeration description="未知" enumCode="OTHER" enumId="GENDER_OTHER" sequenceId="03" enumTypeId="GENDER"/>
+
+    <EnumerationType description="假期类型" enumTypeId="HOLIDAY_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="请假" enumCode="LEAVE" enumId="HOLIDAY_LEAVE" sequenceId="01" enumTypeId="HOLIDAY_TYPE"/>
+    <Enumeration description="法定节假日" enumCode="HOLIDAY" enumId="HOLIDAY_HOLIDAY" sequenceId="02" enumTypeId="HOLIDAY_TYPE"/>
+
+    <EnumerationType description="加班类型" enumTypeId="OVERTIME_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="正常加班" enumCode="NORMAL_OVERTIME" enumId="OVERTIME_NORMAL" sequenceId="01" enumTypeId="OVERTIME_TYPE"/>
+    <Enumeration description="临时加班" enumCode="TEMPORARY_OVERTIME" enumId="OVERTIME_TEMPORARY" sequenceId="02" enumTypeId="OVERTIME_TYPE"/>
+
+    <EnumerationType description="数据权限范围类型" enumTypeId="DATA_SCOPE_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="本部门" enumCode="DEPT_ONLY" enumId="SCOPE_DEPT_ONLY" sequenceId="01"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="及其下属" enumCode="DEPT_LIKE" enumId="SCOPE_DEPT_LIKE" sequenceId="02"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="本职级" enumCode="LEVEL_ONLY" enumId="SCOPE_LEVEL_ONLY" sequenceId="03"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="及更高职级" enumCode="LEVEL_LIKE" enumId="SCOPE_LEVEL_LIKE" sequenceId="04"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="本岗位" enumCode="POSITION_ONLY" enumId="SCOPE_POSITION_ONLY" sequenceId="05"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="及其下属" enumCode="POSITION_LIKE" enumId="SCOPE_POSITION_LIKE" sequenceId="06"
+                 enumTypeId="DATA_SCOPE_TYPE"/>
+    <Enumeration description="人员" enumCode="USER" enumId="SCOPE_USER" sequenceId="07" enumTypeId="DATA_SCOPE_TYPE"/>
+
+    <TblPerfExamItemType description="考评项目类型" typeId="1" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="工作计划-难度（重要）程度" enumTypeId="WORK_PLAN_DEGREE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="高" enumCode="Height" enumId="WP_DEGREE_HT" sequenceId="01" enumTypeId="WORK_PLAN_DEGREE"/>
+    <Enumeration description="中" enumCode="MIDDLE" enumId="WP_DEGREE_ME" sequenceId="02" enumTypeId="WORK_PLAN_DEGREE"/>
+    <Enumeration description="低" enumCode="LOW" enumId="WP_DEGREE_LW" sequenceId="03" enumTypeId="WORK_PLAN_DEGREE"/>
+
+    <EnumerationType description="工作计划-YES(NO)" enumTypeId="WORK_PLAN_Y_N" hasTable="N" parentTypeId=""/>
+    <Enumeration description="是" enumCode="Y" enumId="WP_Y" sequenceId="01" enumTypeId="WORK_PLAN_Y_N"/>
+    <Enumeration description="否" enumCode="N" enumId="WP_N" sequenceId="02" enumTypeId="WORK_PLAN_Y_N"/>
+    <EnumerationType description="YES(NO)" enumTypeId="COMMON_Y_N" hasTable="N" parentTypeId=""/>
+    <Enumeration description="是" enumCode="yes" enumId="COMMON_Y" sequenceId="01" enumTypeId="COMMON_Y_N"/>
+    <Enumeration description="否" enumCode="no" enumId="COMMON_N" sequenceId="02" enumTypeId="COMMON_Y_N"/>
+    <EnumerationType description="通知签收状态" enumTypeId="NOTICE_SIGNIN" hasTable="N" parentTypeId=""/>
+    <Enumeration description="准备签收" enumCode="N" enumId="NS_N" sequenceId="01" enumTypeId="NOTICE_SIGNIN"/>
+    <Enumeration description="已签收" enumCode="Y" enumId="NS_Y" sequenceId="02" enumTypeId="NOTICE_SIGNIN"/>
+    <EnumerationType description="通知-状态" enumTypeId="NOTICE_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="仍未浏览" enumCode="NOT_SEE" enumId="NS_NOT_SEE" sequenceId="01" enumTypeId="NOTICE_STATUS"/>
+    <Enumeration description="了解中" enumCode="toUnderstand" enumId="NS_TOUNDERSTAND" sequenceId="02"
+                 enumTypeId="NOTICE_STATUS"/>
+    <Enumeration description="已熟悉" enumCode="understand" enumId="NS_UNDERSTAND" sequenceId="03"
+                 enumTypeId="NOTICE_STATUS"/>
+
+    <EnumerationType description="反馈查看权限" enumTypeId="FEEDBACK_PERMISSION" hasTable="N" parentTypeId=""/>
+    <Enumeration description="不限制" enumCode="NULL" enumId="FP_NULL" sequenceId="01" enumTypeId="FEEDBACK_PERMISSION"/>
+    <Enumeration description="任务中员工" enumCode="EXECUTOR" enumId="FP_EXECUTOR" sequenceId="02"
+                 enumTypeId="FEEDBACK_PERMISSION"/>
+    <Enumeration description="任务安排人" enumCode="PLAN_PERSON" enumId="FP_PLAN_PERSON" sequenceId="03"
+                 enumTypeId="FEEDBACK_PERMISSION"/>
+    <Enumeration description="任务项目组长" enumCode="PROJECT_LEADER" enumId="FP_LEADER" sequenceId="04"
+                 enumTypeId="FEEDBACK_PERMISSION"/>
+    <Enumeration description="安排人和项目组长" enumCode="PERSON_LEADER" enumId="FP_PERSON_LEADER" sequenceId="05"
+                 enumTypeId="FEEDBACK_PERMISSION"/>
+
+    <Enumeration description="周" enumCode="WEEK" enumId="CST_WEEK" sequenceId="01" enumTypeId="CYCLE_SCHEDULE_TYPE"/>
+    <Enumeration description="月" enumCode="MONTH" enumId="CST_MONTH" sequenceId="02" enumTypeId="CYCLE_SCHEDULE_TYPE"/>
+
+
+    <EnumerationType description="职级" enumTypeId="POSITION_LEVEL" hasTable="N" parentTypeId=""/>
+    <Enumeration description="中心负责人" enumCode="01" enumId="POSITION_LEVEL_1" sequenceId="01" enumTypeId="POSITION_LEVEL"/>
+
+    <EnumerationType description="周期" enumTypeId="OA_PERIOD" hasTable="N" parentTypeId=""/>
+    <Enumeration description="按年" enumCode="YEAR" enumId="OA_PERIOD_YEAR" sequenceId="01" enumTypeId="OA_PERIOD"/>
+    <Enumeration description="按季" enumCode="SEASON" enumId="OA_PERIOD_SEASON" sequenceId="02" enumTypeId="OA_PERIOD"/>
+    <Enumeration description="按月" enumCode="MONTH" enumId="OA_PERIOD_MONTH" sequenceId="03" enumTypeId="OA_PERIOD"/>
+    <Enumeration description="按周" enumCode="WEEK" enumId="OA_PERIOD_WEEK" sequenceId="04" enumTypeId="OA_PERIOD"/>
+    <Enumeration description="单次" enumCode="ONCE" enumId="OA_PERIOD_ONCE" sequenceId="05" enumTypeId="OA_PERIOD"/>
+
+    <EnumerationType description="婚否" enumTypeId="IS_MARRIED" hasTable="N" parentTypeId=""/>
+    <Enumeration description="已婚" enumCode="MARRIED" enumId="MARRIED" sequenceId="01" enumTypeId="IS_MARRIED"/>
+    <Enumeration description="未婚" enumCode="UNMARRIED" enumId="UNMARRIED" sequenceId="02" enumTypeId="IS_MARRIED"/>
+
+    <EnumerationType description="政治面貌" enumTypeId="POLITICAL_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="党员" enumCode="PARTY_MEMBER" enumId="PARTY_MEMBER" sequenceId="01"
+                 enumTypeId="POLITICAL_STATUS"/>
+    <Enumeration description="预备党员" enumCode="PREPARE" enumId="PREPARE" sequenceId="02" enumTypeId="POLITICAL_STATUS"/>
+    <Enumeration description="团员" enumCode="MEMBERS" enumId="MEMBERS" sequenceId="03" enumTypeId="POLITICAL_STATUS"/>
+    <Enumeration description="群众" enumCode="PEOPLE" enumId="PEOPLE" sequenceId="04" enumTypeId="POLITICAL_STATUS"/>
+    <Enumeration description="其它" enumCode="OTHER" enumId="OTHER" sequenceId="05" enumTypeId="POLITICAL_STATUS"/>
+
+    <EnumerationType description="户籍类型" enumTypeId="DOMICILE_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="城市户口" enumCode="CITY" enumId="CITY_DOMICILE" sequenceId="01" enumTypeId="DOMICILE_TYPE"/>
+    <Enumeration description="农村户口" enumCode="RURAL" enumId="RURAL_DOMICILE" sequenceId="02" enumTypeId="DOMICILE_TYPE"/>
+
+    <EnumerationType description="用工类型" enumTypeId="LABOR_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="正式工" enumCode="OFFICIAL" enumId="OFFICIAL" sequenceId="01" enumTypeId="LABOR_TYPE"/>
+    <Enumeration description="临时工" enumCode="TEMPORARY" enumId="TEMPORARY" sequenceId="02" enumTypeId="LABOR_TYPE"/>
+
+    <EnumerationType description="调动类型" enumTypeId="TRANSFER" hasTable="N" parentTypeId=""/>
+    <Enumeration description="升迁" enumCode="PROMOTION" enumId="PROMOTION" sequenceId="01" enumTypeId="TRANSFER"/>
+    <Enumeration description="试用期转正" enumCode="POSITIVE" enumId="POSITIVE" sequenceId="02" enumTypeId="TRANSFER"/>
+    <Enumeration description="降职" enumCode="DEMOTION" enumId="DEMOTION" sequenceId="03" enumTypeId="TRANSFER"/>
+
+    <EnumerationType description="离职类型" enumTypeId="DEPARTURE_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="辞职" enumCode="RESIGNATION" enumId="RESIGNATION" sequenceId="01"
+                 enumTypeId="DEPARTURE_TYPE"/>
+    <Enumeration description="辞退" enumCode="DISMISS" enumId="DISMISS" sequenceId="02" enumTypeId="DEPARTURE_TYPE"/>
+
+    <EnumerationType description="合同类型" enumTypeId="CONTRACT_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="劳动合同" enumCode="LABOR" enumId="LABOR_CONTRACT" sequenceId="01"
+                 enumTypeId="CONTRACT_TYPE"/>
+    <Enumeration description="保密合同" enumCode="SECRECY" enumId="SECRECY_CONTRACT" sequenceId="02"
+                 enumTypeId="CONTRACT_TYPE"/>
+
+    <EnumerationType description="培训类型" enumTypeId="TRAIN_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="内部培训" enumCode="INTERNAL" enumId="INTERNAL_TRAIN" sequenceId="01"
+                 enumTypeId="TRAIN_TYPE"/>
+    <Enumeration description="国内培训" enumCode="DOMESTIC" enumId="DOMESTIC_TRAIN" sequenceId="02"
+                 enumTypeId="TRAIN_TYPE"/>
+    <Enumeration description="国外培训" enumCode="ABROAD" enumId="ABROAD_TRAIN" sequenceId="02" enumTypeId="TRAIN_TYPE"/>
+
+    <EnumerationType description="奖惩类型" enumTypeId="REWARD_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="警告" enumCode="WARNING" enumId="WARNING" sequenceId="01" enumTypeId="REWARD_TYPE"/>
+    <Enumeration description="小过" enumCode="YET" enumId="YET" sequenceId="02" enumTypeId="REWARD_TYPE"/>
+    <Enumeration description="大过" enumCode="MISTAKE" enumId="MISTAKE" sequenceId="03" enumTypeId="REWARD_TYPE"/>
+    <Enumeration description="通报表扬" enumCode="PRAISE" enumId="PRAISE" sequenceId="04" enumTypeId="REWARD_TYPE"/>
+    <Enumeration description="年度优秀员工" enumCode="GOOD_EMPLOYEE" enumId="GOOD_EMPLOYEE" sequenceId="05"
+                 enumTypeId="REWARD_TYPE"/>
+
+    <EnumerationType description="奖惩等级" enumTypeId="REWARD_LEVEL" hasTable="N" parentTypeId=""/>
+    <Enumeration description="公司级" enumCode="COMPANY" enumId="COMPANY" sequenceId="01" enumTypeId="REWARD_LEVEL"/>
+    <Enumeration description="部门级" enumCode="DEPARTMENT" enumId="DEPARTMENT" sequenceId="02" enumTypeId="REWARD_LEVEL"/>
+    <Enumeration description="班组级" enumCode="TEAM" enumId="TEAM" sequenceId="03" enumTypeId="REWARD_LEVEL"/>
+    <Enumeration description="条线级" enumCode="LINE" enumId="LINE" sequenceId="04" enumTypeId="REWARD_LEVEL"/>
+
+
+    <EnumerationType description="车辆类型" enumTypeId="VEHICLE_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="货车" enumCode="TRUCK" enumId="TRUCK" sequenceId="01" enumTypeId="VEHICLE_TYPE"/>
+    <Enumeration description="轿车" enumCode="CAR" enumId="CAR" sequenceId="02" enumTypeId="VEHICLE_TYPE"/>
+    <Enumeration description="客车" enumCode="BUS" enumId="BUS" sequenceId="03" enumTypeId="VEHICLE_TYPE"/>
+
+    <EnumerationType description="车辆可用状态" enumTypeId="VEHICLE_UP_STATE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="正常" enumCode="VEHICLE_NORMAL" enumId="VEHICLE_NORMAL" sequenceId="01"
+                 enumTypeId="VEHICLE_UP_STATE"/>
+    <Enumeration description="报废" enumCode="VEHICLE_SCRAP" enumId="VEHICLE_SCRAP" sequenceId="02"
+                 enumTypeId="VEHICLE_UP_STATE"/>
+    <Enumeration description="维修" enumCode="VEHICLE_REPAIR" enumId="VEHICLE_REPAIR" sequenceId="03"
+                 enumTypeId="VEHICLE_UP_STATE"/>
+
+    <EnumerationType description="车辆品牌" enumTypeId="VEHICLE_BRAND" hasTable="N" parentTypeId=""/>
+    <Enumeration description="大众" enumCode="DASAOUT" enumId="DASAOUT" sequenceId="01" enumTypeId="VEHICLE_BRAND"/>
+    <Enumeration description="雪佛兰" enumCode="CHEVROLET" enumId="CHEVROLET" sequenceId="02" enumTypeId="VEHICLE_BRAND"/>
+
+    <EnumerationType description="款项类型" enumTypeId="AMOUNT_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="应扣" enumCode="DISCOUNT" enumId="DISCOUNT" sequenceId="01" enumTypeId="AMOUNT_TYPE"/>
+    <Enumeration description="应发" enumCode="SEND" enumId="SEND" sequenceId="02" enumTypeId="AMOUNT_TYPE"/>
+    <Enumeration description="显示" enumCode="VIEW" enumId="VIEW" sequenceId="03" enumTypeId="AMOUNT_TYPE"/>
+
+    <EnumerationType description="费用类型" enumTypeId="COST_TYPE" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="使用状态" enumTypeId="USE_STATE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="使用中" enumCode="USING" enumId="USING" sequenceId="01" enumTypeId="USE_STATE"/>
+    <Enumeration description="停止使用" enumCode="USED" enumId="USED" sequenceId="02" enumTypeId="USE_STATE"/>
+
+
+    <EnumerationType description="考勤类型" enumTypeId="ATTENDANCE_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="迟到" enumCode="LATE" enumId="LATE" sequenceId="01" enumTypeId="ATTENDANCE_TYPE"/>
+    <Enumeration description="早退" enumCode="LEAVE_EARLY" enumId="LEAVE_EARLY" sequenceId="02"
+                 enumTypeId="ATTENDANCE_TYPE"/>
+    <Enumeration description="旷工" enumCode="ABSENTEEISM" enumId="ABSENTEEISM" sequenceId="03"
+                 enumTypeId="ATTENDANCE_TYPE"/>
+
+    <EnumerationType description="扣除类型" enumTypeId="DEDUCT_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="按照当前薪水的百分比计算" enumCode="PERCENT" enumId="PERCENT" sequenceId="01"
+                 enumTypeId="DEDUCT_TYPE"/>
+    <Enumeration description="按照具体的金额来计算" enumCode="MONEY" enumId="MONEY" sequenceId="02" enumTypeId="DEDUCT_TYPE"/>
+
+    <EnumerationType description="固定资产" enumTypeId="FIXED_ASSETS_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="办公类" enumCode="" enumId="FIXED_ASSETS_TYPE_1" sequenceId="01" enumTypeId="FIXED_ASSETS_TYPE"/>
+    <Enumeration description="电子类" enumCode="" enumId="FIXED_ASSETS_TYPE_2" sequenceId="02" enumTypeId="FIXED_ASSETS_TYPE"/>
+
+    <EnumerationType description="固定资产-状态" enumTypeId="FIXED_ASSETS_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="使用中" enumCode="" enumId="FIXED_ASSETS_STATUS_1" sequenceId="01" enumTypeId="FIXED_ASSETS_STATUS"/>
+    <Enumeration description="闲置" enumCode="" enumId="FIXED_ASSETS_STATUS_2" sequenceId="02" enumTypeId="FIXED_ASSETS_STATUS"/>
+    <Enumeration description="已坏" enumCode="" enumId="FIXED_ASSETS_STATUS_3" sequenceId="03" enumTypeId="FIXED_ASSETS_STATUS"/>
+    <Enumeration description="已报废" enumCode="" enumId="FIXED_ASSETS_STATUS_4" sequenceId="04" enumTypeId="FIXED_ASSETS_STATUS"/>
+
+    <EnumerationType description="固定资产-预约状态" enumTypeId="FIXED_ASSETS_RESERVE_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="可预约" enumCode="" enumId="FIXED_ASSETS_RESERVE_STATUS_1" sequenceId="01" enumTypeId="FIXED_ASSETS_RESERVE_STATUS"/>
+    <Enumeration description="不可预约" enumCode="" enumId="FIXED_ASSETS_RESERVE_STATUS_2" sequenceId="02" enumTypeId="FIXED_ASSETS_RESERVE_STATUS"/>
+
+    <EnumerationType description="固定资产-借用状态" enumTypeId="FIXED_ASSETS_LEND_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="在库可用" enumCode="" enumId="FIXED_ASSETS_LEND_STATUS_1" sequenceId="01" enumTypeId="FIXED_ASSETS_LEND_STATUS"/>
+    <Enumeration description="已预约待借用" enumCode="" enumId="FIXED_ASSETS_LEND_STATUS_2" sequenceId="02" enumTypeId="FIXED_ASSETS_LEND_STATUS"/>
+    <Enumeration description="已借用待归还" enumCode="" enumId="FIXED_ASSETS_LEND_STATUS_3" sequenceId="03" enumTypeId="FIXED_ASSETS_LEND_STATUS"/>
+    <EnumerationType description="固定资产-借出状态" enumTypeId="FIXED_ASSETS_LEND_OUT_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="完好" enumCode="" enumId="FIXED_ASSETS_LEND_OUT_STATUS_1" sequenceId="01" enumTypeId="FIXED_ASSETS_LEND_OUT_STATUS"/>
+    <Enumeration description="损坏" enumCode="" enumId="FIXED_ASSETS_LEND_OUT_STATUS_2" sequenceId="02" enumTypeId="FIXED_ASSETS_LEND_OUT_STATUS"/>
+    <Enumeration description="未借出" enumCode="" enumId="FIXED_ASSETS_LEND_OUT_STATUS_3" sequenceId="03" enumTypeId="FIXED_ASSETS_LEND_OUT_STATUS"/>
+    <EnumerationType description="固定资产-归还状态" enumTypeId="FIXED_ASSETS_RETURN_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="完好" enumCode="" enumId="FIXED_ASSETS_RETURN_STATUS_1" sequenceId="01" enumTypeId="FIXED_ASSETS_RETURN_STATUS"/>
+    <Enumeration description="损坏" enumCode="" enumId="FIXED_ASSETS_RETURN_STATUS_2" sequenceId="02" enumTypeId="FIXED_ASSETS_RETURN_STATUS"/>
+    <Enumeration description="丢失" enumCode="" enumId="FIXED_ASSETS_RETURN_STATUS_3" sequenceId="03" enumTypeId="FIXED_ASSETS_RETURN_STATUS"/>
+
+    <TblSalaryEntry entryId="10063" title="应发工资" type="VIEW" remarks="应发工资" allUseEntry="1"/>
+    <TblSalaryEntry entryId="10061" title="罚金" type="DISCOUNT" remarks="罚金" allUseEntry="2"/>
+    <TblSalaryEntry entryId="10060" title="奖金" type="SEND" remarks="奖金" allUseEntry="2"/>
+    <TblSalaryEntry entryId="10001" title="基本工资" type="SEND" remarks="个人基本工资" allUseEntry="1"/>
+
+    <StatusType description="考评状态" hasTable="N" parentTypeId="" statusTypeId="PERF_EXAM_STATUS"/>
+    <StatusItem description="未提交" sequenceId="01" statusCode="DRAFT" statusId="PERF_EXAM_DRAFT"
+                statusTypeId="PERF_EXAM_STATUS"/>
+    <StatusItem description="待初审" sequenceId="02" statusCode="PENDING_REVIEW" statusId="PERF_EXAM_PENDING_REVIEW"
+                statusTypeId="PERF_EXAM_STATUS"/>
+    <StatusItem description="待终审" sequenceId="03" statusCode="PENDING_APPROVE" statusId="PERF_EXAM_PENDING_APPROVE"
+                statusTypeId="PERF_EXAM_STATUS"/>
+    <StatusItem description="待归档" sequenceId="04" statusCode="PENDING_RECORD" statusId="PERF_EXAM_PENDING_RECORD"
+                statusTypeId="PERF_EXAM_STATUS"/>
+    <StatusItem description="已归档" sequenceId="05" statusCode="RECORD" statusId="PERF_EXAM_RECORD"
+                statusTypeId="PERF_EXAM_STATUS"/>
+
+    <StatusValidChange condition="" statusId="PERF_EXAM_DRAFT" statusIdTo="PERF_EXAM_PENDING_REVIEW"
+                       transitionName="Submit"/>
+    <StatusValidChange condition="" statusId="PERF_EXAM_PENDING_REVIEW" statusIdTo="PERF_EXAM_PENDING_APPROVE"
+                       transitionName="Review"/>
+    <StatusValidChange condition="" statusId="PERF_EXAM_PENDING_APPROVE" statusIdTo="PERF_EXAM_PENDING_RECORD"
+                       transitionName="Approve"/>
+    <StatusValidChange condition="" statusId="PERF_EXAM_PENDING_RECORD" statusIdTo="PERF_EXAM_RECORD"
+                       transitionName="Record"/>
+
+    <DataResourceType dataResourceTypeId="LOCAL_FOLDER" description="Local Folder" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="联络单状态" enumTypeId="LIAISON_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="审核中" enumCode="STATUS_ONE" enumId="LIAISON_STATUS_ONE" sequenceId="01"
+                 enumTypeId="LIAISON_STATUS"/>
+    <Enumeration description="已送达" enumCode="STATUS_TWO" enumId="LIAISON_STATUS_TWO" sequenceId="02"
+                 enumTypeId="LIAISON_STATUS"/>
+    <Enumeration description="进行中" enumCode="STATUS_THREE" enumId="LIAISON_STATUS_THREE" sequenceId="03"
+                 enumTypeId="LIAISON_STATUS"/>
+    <Enumeration description="已作废" enumCode="STATUS_FOUR" enumId="LIAISON_STATUS_FOUR" sequenceId="04"
+                 enumTypeId="LIAISON_STATUS"/>
+    <Enumeration description="已结案" enumCode="STATUS_FIVE" enumId="LIAISON_STATUS_FIVE" sequenceId="05"
+                 enumTypeId="LIAISON_STATUS"/>
+
+    <EnumerationType description="联络单审核人状态" enumTypeId="PERSON_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="未审核" enumCode="PERSON_ONE" enumId="PERSON_ONE" sequenceId="01"
+                 enumTypeId="PERSON_STATUS"/>
+    <Enumeration description="已审核" enumCode="PERSON_TWO" enumId="PERSON_TWO" sequenceId="02"
+                 enumTypeId="PERSON_STATUS"/>
+    <Enumeration description="已驳回" enumCode="PERSON_THREE" enumId="PERSON_THREE" sequenceId="03"
+                 enumTypeId="PERSON_STATUS"/>
+    <Enumeration description="已安排" enumCode="PERSON_FOUR" enumId="PERSON_FOUR" sequenceId="04"
+                 enumTypeId="PERSON_STATUS"/>
+
+    <EnumerationType description="联络单签收人状态" enumTypeId="SIGN_FOR_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="未签收" enumCode="SIGN_FOR_ONE" enumId="SIGN_FOR_NO" sequenceId="01"
+                 enumTypeId="SIGN_FOR_STATUS"/>
+    <Enumeration description="已签收" enumCode="SIGN_FOR_TWO" enumId="SIGN_FOR_YES" sequenceId="02"
+                 enumTypeId="SIGN_FOR_STATUS"/>
+
+    <EnumerationType description="薪资发放状态" enumTypeId="SEND_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="未发" enumCode="NOTSEND" enumId="SEND_TYPE_NOTSEND" sequenceId="01" enumTypeId="SEND_TYPE"/>
+    <Enumeration description="未审" enumCode="NOTEXAMINE" enumId="SEND_TYPE_NOTEXAMINE" sequenceId="02" enumTypeId="SEND_TYPE"/>
+    <Enumeration description="已审" enumCode="APPROVE" enumId="SEND_TYPE_APPROVE" sequenceId="03" enumTypeId="SEND_TYPE"/>
+    <Enumeration description="未通过" enumCode="DISAPPROVE" enumId="SEND_TYPE_DISAPPROVE" sequenceId="04" enumTypeId="SEND_TYPE"/>
+    <Enumeration description="已发" enumCode="SEND" enumId="SEND_TYPE_SEND" sequenceId="05" enumTypeId="SEND_TYPE"/>
+
+    <RoleType description="岗位" hasTable="N" roleTypeId="JOB_POSITION"/>
+    <RoleType description="总负责人" hasTable="N" roleTypeId="CHAIRMAN" parentTypeId="JOB_POSITION"/>
+    <RoleType description="负责人" hasTable="N" roleTypeId="GENERAL_MANAGER" parentTypeId="JOB_POSITION"/>
+
+    <PartyRelationshipType description="提供岗位" partyRelationshipName="提供岗位" hasTable="N"
+                           partyRelationshipTypeId="PROVIDE_POSITION"/>
+    <PartyRelationshipType description="岗位主管" partyRelationshipName="岗位主管" hasTable="N"
+                           partyRelationshipTypeId="MASTER_POSITION"/>
+    <PartyRelationshipType description="部门跨级关系" partyRelationshipName="部门跨级关系" hasTable="N"
+                           partyRelationshipTypeId="GROUP_LINK"/>
+
+
+    <Enumeration description="小学" enumCode="ELEMENTARY" enumId="DIPLOMA_EL" sequenceId="01"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="初中" enumCode="JUNIOR_HIGH" enumId="DIPLOMA_JH" sequenceId="02"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="高中" enumCode="SENIOR_HIGH" enumId="DIPLOMA_SH" sequenceId="03"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="中专" enumCode="TECHNICAL_SECONDARY" enumId="DIPLOMA_TS" sequenceId="04"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="大专" enumCode="JUNIOR_COLLEGE" enumId="DIPLOMA_JC" sequenceId="05"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="本科" enumCode="UNDERGRADUATE" enumId="DIPLOMA_UN" sequenceId="06"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="研究生" enumCode="POSTGRADUATE" enumId="DIPLOMA_PO" sequenceId="07"
+                 enumTypeId="EDUCATION_DIPLOMA"/>
+    <Enumeration description="其他" enumCode="OTHER" enumId="DIPLOMA_OT" sequenceId="08" enumTypeId="EDUCATION_DIPLOMA"/>
+
+    <Enumeration description="大专" enumCode="JUNIOR_COLLEGE" enumId="DEGREE_JC" sequenceId="01"
+                 enumTypeId="EDUCATION_DEGREE"/>
+    <Enumeration description="学士" enumCode="BACHELOR" enumId="DEGREE_BC" sequenceId="02" enumTypeId="EDUCATION_DEGREE"/>
+    <Enumeration description="硕士" enumCode="MASTER" enumId="DEGREE_MA" sequenceId="03" enumTypeId="EDUCATION_DEGREE"/>
+    <Enumeration description="博士" enumCode="DOCTOR" enumId="DEGREE_DO" sequenceId="04" enumTypeId="EDUCATION_DEGREE"/>
+    <Enumeration description="其他" enumCode="OTHER" enumId="DEGREE_OT" sequenceId="05" enumTypeId="EDUCATION_DEGREE"/>
+
+    <Enumeration description="路桥费" enumCode="HIGHWAY_BRIDGE" enumId="HIGHWAY_BRIDGE" sequenceId="01"
+                 enumTypeId="COST_TYPE"/>
+    <Enumeration description="加油费" enumCode="GAS" enumId="GAS" sequenceId="02" enumTypeId="COST_TYPE"/>
+    <Enumeration description="维修费" enumCode="REPAIR" enumId="REPAIR" sequenceId="03" enumTypeId="COST_TYPE"/>
+    <Enumeration description="保养费" enumCode="MAINTAIN" enumId="MAINTAIN" sequenceId="04" enumTypeId="COST_TYPE"/>
+    <Enumeration description="养路费" enumCode="ROAD" enumId="ROAD" sequenceId="05" enumTypeId="COST_TYPE"/>
+    <Enumeration description="年审费" enumCode="WITHHOLD" enumId="WITHHOLD" sequenceId="06" enumTypeId="COST_TYPE"/>
+    <Enumeration description="罚单费" enumCode="TICKET" enumId="TICKET" sequenceId="07" enumTypeId="COST_TYPE"/>
+    <Enumeration description="保险费" enumCode="INSURANCE" enumId="INSURANCE" sequenceId="08" enumTypeId="COST_TYPE"/>
+
+    <EnumerationType description="文档状态" enumTypeId="DOCUMENT_STATUS" hasTable="N" parentTypeId=""/>
+    <Enumeration description="已生效" enumCode="TAKE_EFFECT" enumId="DOCUMENT_STATUS_1" sequenceId="01" enumTypeId="DOCUMENT_STATUS"/>
+    <Enumeration description="已作废" enumCode="CANCEL" enumId="DOCUMENT_STATUS_2" sequenceId="02" enumTypeId="DOCUMENT_STATUS"/>
+    <Enumeration description="待处理" enumCode="PENDING_TREATMENT" enumId="DOCUMENT_STATUS_3" sequenceId="03" enumTypeId="DOCUMENT_STATUS"/>
+
+    <EnumerationType description="可否反馈" enumTypeId="WHETHER_FEEDBACK" hasTable="N" parentTypeId=""/>
+    <Enumeration description="允许反馈" enumCode="ALLOW_FEEDBACK" enumId="WHETHER_FEEDBACK_1" sequenceId="01" enumTypeId="WHETHER_FEEDBACK"/>
+    <Enumeration description="禁止反馈" enumCode="NO_FEEDBACK" enumId="WHETHER_FEEDBACK_2" sequenceId="02" enumTypeId="WHETHER_FEEDBACK"/>
+
+    <EnumerationType description="货品规格" enumTypeId="PRODUCT_STANDARD" hasTable="N" parentTypeId=""/>
+    
+    <EnumerationType description="货品单位" enumTypeId="PRODUCT_UNIT" hasTable="N" parentTypeId=""/>
+
+    <EnumerationType description="货品仓库" enumTypeId="PRODUCT_WAREHOUSE" hasTable="N" parentTypeId=""/>
+
+    <TblFileType fileTypeId="1000" typeName="文档类别" state="1" />
+
+    <EnumerationType description="考核周期" enumTypeId="PERF_EXAM_CYCLE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="月份考核" enumCode="A" enumId="PERF_EXAM_CYCLE_1" sequenceId="01" enumTypeId="PERF_EXAM_CYCLE"/>
+    <Enumeration description="季度考核" enumCode="B" enumId="PERF_EXAM_CYCLE_2" sequenceId="02" enumTypeId="PERF_EXAM_CYCLE"/>
+    <Enumeration description="半年考核" enumCode="C" enumId="PERF_EXAM_CYCLE_3" sequenceId="03" enumTypeId="PERF_EXAM_CYCLE"/>
+    <Enumeration description="年度考核" enumCode="D" enumId="PERF_EXAM_CYCLE_4" sequenceId="04" enumTypeId="PERF_EXAM_CYCLE"/>
+
+    <EnumerationType description="考核类别" enumTypeId="PERF_EXAM_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="考评" enumCode="A" enumId="PERF_EXAM_TYPE_1" sequenceId="01" enumTypeId="PERF_EXAM_TYPE"/>
+    <Enumeration description="初审" enumCode="B" enumId="PERF_EXAM_TYPE_2" sequenceId="02" enumTypeId="PERF_EXAM_TYPE"/>
+    <Enumeration description="终审" enumCode="C" enumId="PERF_EXAM_TYPE_3" sequenceId="03" enumTypeId="PERF_EXAM_TYPE"/>
+    <Enumeration description="归档" enumCode="D" enumId="PERF_EXAM_TYPE_4" sequenceId="04" enumTypeId="PERF_EXAM_TYPE"/>
+    <EnumerationType description="考核状态" enumTypeId="PERF_EXAM_STATE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="已考评" enumCode="A" enumId="PERF_EXAM_STATE_1" sequenceId="01" enumTypeId="PERF_EXAM_STATE"/>
+    <Enumeration description="初审通过" enumCode="B" enumId="PERF_EXAM_STATE_2" sequenceId="02" enumTypeId="PERF_EXAM_STATE"/>
+    <Enumeration description="初审驳回" enumCode="C" enumId="PERF_EXAM_STATE_3" sequenceId="03" enumTypeId="PERF_EXAM_STATE"/>
+    <Enumeration description="终审通过" enumCode="D" enumId="PERF_EXAM_STATE_4" sequenceId="04" enumTypeId="PERF_EXAM_STATE"/>
+    <Enumeration description="终审驳回" enumCode="E" enumId="PERF_EXAM_STATE_5" sequenceId="05" enumTypeId="PERF_EXAM_STATE"/>
+    <Enumeration description="已归档" enumCode="F" enumId="PERF_EXAM_STATE_6" sequenceId="06" enumTypeId="PERF_EXAM_STATE"/>
+
+    <EnumerationType description="在职状态" enumTypeId="JOB_STATE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="在职" enumCode="WORKING" enumId="WORKING" sequenceId="01" enumTypeId="JOB_STATE"/>
+    <Enumeration description="离职" enumCode="DEPARTURE" enumId="DEPARTURE" sequenceId="02" enumTypeId="JOB_STATE"/>
+
+    <EnumerationType description="客户类型" enumTypeId="CUSTOMER_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="上游客户" enumCode="UPSTREAM" enumId="UPSTREAM" sequenceId="01" enumTypeId="CUSTOMER_TYPE"/>
+    <Enumeration description="下游客户" enumCode="DOWNSTREAM" enumId="DOWNSTREAM" sequenceId="02" enumTypeId="CUSTOMER_TYPE"/>
+    <Enumeration description="混合客户" enumCode="HYBRID" enumId="HYBRID" sequenceId="03" enumTypeId="CUSTOMER_TYPE"/>
+
+    <EnumerationType description="出库类型" enumTypeId="OUTINVENTORY_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="领用出库" enumCode="RECEIVE_OUTINVENTORY" enumId="RECEIVE_OUTINVENTORY" sequenceId="01" enumTypeId="OUTINVENTORY_TYPE"/>
+    <Enumeration description="报废出库" enumCode="SCRAP_OUTINVENTORY" enumId="SCRAP_OUTINVENTORY" sequenceId="02" enumTypeId="OUTINVENTORY_TYPE"/>
+    <Enumeration description="调拨出库" enumCode="ALLOT_OUTINVENTORY" enumId="ALLOT_OUTINVENTORY" sequenceId="03" enumTypeId="OUTINVENTORY_TYPE"/>
+
+    <EnumerationType description="入库类型" enumTypeId="INPUTINVENTOEY_TYPE" hasTable="N" parentTypeId=""/>
+    <Enumeration description="采购入库" enumCode="PURCHASE_INPUT" enumId="PURCHASE_INPUT" sequenceId="01" enumTypeId="INPUTINVENTOEY_TYPE"/>
+    <Enumeration description="调拨入库" enumCode="ALLOT_INPUT" enumId="ALLOT_INPUT" sequenceId="02" enumTypeId="INPUTINVENTOEY_TYPE"/>
+
+    <EnumerationType description="审核结果" enumTypeId="RECEIVE_RESULT" hasTable="" parentTypeId=""/>
+    <Enumeration description="审核完成" enumCode="RECEIVE_RESULT_ONE" enumId="RECEIVE_RESULT_ONE" sequenceId="01" enumTypeId="RECEIVE_RESULT"/>
+    <Enumeration description="审核未通过" enumCode="RECEIVE_RESULT_TWO" enumId="RECEIVE_RESULT_TWO" sequenceId="02" enumTypeId="RECEIVE_RESULT"/>
+    <Enumeration description="无需审核" enumCode="RECEIVE_RESULT_THREE" enumId="RECEIVE_RESULT_THREE" sequenceId="03" enumTypeId="RECEIVE_RESULT"/>
+    <Enumeration description="待审核" enumCode="RECEIVE_RESULT_FOUR" enumId="RECEIVE_RESULT_FOUR" sequenceId="03" enumTypeId="RECEIVE_RESULT"/>
+
+    <EnumerationType description="单位合同类型" enumTypeId="UNIT_CONTRACT_TYPE" hasTable="" parentTypeId=""/>
+    <Enumeration description="销售合同" enumCode="SALE_CONTRACT" enumId="SALE_CONTRACT" sequenceId="01" enumTypeId="UNIT_CONTRACT_TYPE"/>
+    <Enumeration description="行政合同" enumCode="ADMIN_CONTRACT" enumId="ADMIN_CONTRACT" sequenceId="02" enumTypeId="UNIT_CONTRACT_TYPE"/>
+    <Enumeration description="仓储合同" enumCode="STORAGE_CONTRACT" enumId="STORAGE_CONTRACT" sequenceId="03" enumTypeId="UNIT_CONTRACT_TYPE"/>
+    <Enumeration description="维保合同" enumCode="MAINTENANCE" enumId="MAINTENANCE" sequenceId="04" enumTypeId="UNIT_CONTRACT_TYPE"/>
+    <Enumeration description="采购合同" enumCode="PURCHASE_CONTRACT" enumId="PURCHASE_CONTRACT" sequenceId="05" enumTypeId="UNIT_CONTRACT_TYPE"/>
+
+    <EnumerationType description="单位合同收/支类型" enumTypeId="PAYMENT_TYPE" hasTable="" parentTypeId=""/>
+    <Enumeration description="收款" enumCode="RECEIVE" enumId="RECEIVE" sequenceId="01" enumTypeId="PAYMENT_TYPE"/>
+    <Enumeration description="付款" enumCode="PAYMENT" enumId="PAYMENT" sequenceId="02" enumTypeId="PAYMENT_TYPE"/>
+    <Enumeration description="非收支" enumCode="NONPAYMENT" enumId="NONPAYMENT" sequenceId="03" enumTypeId="PAYMENT_TYPE"/>
+
+    <EnumerationType description="提案类别" enumTypeId="PROPOSAL_TYPE" hasTable="" parentTypeId=""/>
+    <Enumeration description="生产改善类" enumCode="PROPOSAL_TYPE_ONE" enumId="PROPOSAL_TYPE_ONE" sequenceId="01" enumTypeId="PROPOSAL_TYPE"/>
+    <Enumeration description="人事管理改善类" enumCode="PROPOSAL_TYPE_TWO" enumId="PROPOSAL_TYPE_TWO" sequenceId="01" enumTypeId="PROPOSAL_TYPE"/>
+
+
+    <TblSelectMaintenance selectId="1001" enumId="GENDER_MALE"/>
+    <TblSelectMaintenance selectId="1002" enumId="GENDER_FEMALE"/>
+    <TblSelectMaintenance selectId="1003" enumId="GENDER_OTHER"/>
+    <TblSelectMaintenance selectId="1004" enumId="MARRIED"/>
+    <TblSelectMaintenance selectId="1005" enumId="UNMARRIED"/>
+    <TblSelectMaintenance selectId="1006" enumId="PARTY_MEMBER"/>
+    <TblSelectMaintenance selectId="1007" enumId="PREPARE"/>
+    <TblSelectMaintenance selectId="1008" enumId="MEMBERS"/>
+    <TblSelectMaintenance selectId="1009" enumId="PEOPLE"/>
+    <TblSelectMaintenance selectId="1010" enumId="OTHER"/>
+    <TblSelectMaintenance selectId="1011" enumId="CITY_DOMICILE"/>
+    <TblSelectMaintenance selectId="1012" enumId="RURAL_DOMICILE"/>
+    <TblSelectMaintenance selectId="1013" enumId="POSITION_LEVEL_1"/>
+    <TblSelectMaintenance selectId="1014" enumId="OFFICIAL"/>
+    <TblSelectMaintenance selectId="1015" enumId="TEMPORARY"/>
+    <TblSelectMaintenance selectId="1016" enumId="DEGREE_JC"/>
+    <TblSelectMaintenance selectId="1017" enumId="DEGREE_BC"/>
+    <TblSelectMaintenance selectId="1018" enumId="DEGREE_MA"/>
+    <TblSelectMaintenance selectId="1018" enumId="DEGREE_DO"/>
+    <TblSelectMaintenance selectId="1020" enumId="DEGREE_OT"/>
+    <TblSelectMaintenance selectId="1021" enumId="DIPLOMA_EL"/>
+    <TblSelectMaintenance selectId="1022" enumId="DIPLOMA_JH"/>
+    <TblSelectMaintenance selectId="1023" enumId="DIPLOMA_SH"/>
+    <TblSelectMaintenance selectId="1024" enumId="DIPLOMA_TS"/>
+    <TblSelectMaintenance selectId="1025" enumId="DIPLOMA_JC"/>
+    <TblSelectMaintenance selectId="1026" enumId="DIPLOMA_UN"/>
+    <TblSelectMaintenance selectId="1027" enumId="DIPLOMA_PO"/>
+    <TblSelectMaintenance selectId="1028" enumId="DIPLOMA_OT"/>
+
+    <TblSelectRoleType selectId="1029" roleTypeId="CHAIRMAN"/>
+    <TblSelectRoleType selectId="1030" roleTypeId="GENERAL_MANAGER"/>
+
+    <TblSelectPartyGroup selectId="1031" partyId="accountant_group"/>
+    <TblSelectPartyGroup selectId="1032" partyId="ACCOUNTING"/>
+    <TblSelectPartyGroup selectId="1033" partyId="DemoLeadOwnersGroup"/>
+    <TblSelectPartyGroup selectId="1034" partyId="Company"/>
+    <TblSelectPartyGroup selectId="1035" partyId="DEV"/>
+    <TblSelectPartyGroup selectId="1036" partyId="DevTeam1"/>
+    <TblSelectPartyGroup selectId="1037" partyId="DevTeam2"/>
+    <TblSelectPartyGroup selectId="1038" partyId="DevTeam3"/>
+    <TblSelectPartyGroup selectId="1039" partyId="DevTeam4"/>
+    <TblSelectPartyGroup selectId="1040" partyId="MARKETING"/>
+    <TblSelectPartyGroup selectId="1041" partyId="SALES"/>
+    <TblSelectPartyGroup selectId="1042" partyId="TESTING"/>
+    <TblSelectPartyGroup selectId="1043" partyId="TestingTeam1"/>
+    <TblSelectPartyGroup selectId="1044" partyId="TestingTeam2"/>
+
+    <DataResource dataResourceId="1001" dataResourceTypeId="ATTACHMENT_FILE" dataResourceName="员工信息表.xls" objectInfo="runtime/data/"/>
+</entity-engine-xml>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entity-engine-xml>
+    <!--<Party partyId="DemoEmployee"/><PartyRole partyId="DemoEmployee" roleTypeId="EMPLOYEE"/>&lt;!&ndash; data completed by components loaded later &ndash;&gt;
+
+    <RateAmount rateTypeId="AVERAGE_PAY_RATE" rateCurrencyUomId="USD" periodTypeId="RATE_MONTH" workEffortId="_NA_" partyId="DemoEmployee" emplPositionTypeId="_NA_" fromDate="2000-01-30 17:58:56.038" rateAmount="2300"/>
+    <RateAmount rateTypeId="AVERAGE_PAY_RATE" rateCurrencyUomId="USD" periodTypeId="RATE_MONTH" workEffortId="_NA_" partyId="_NA_" emplPositionTypeId="PROGRAMMER" fromDate="2000-01-30 17:58:56.038" rateAmount="2000"/>
+    <EmplPosition emplPositionId="DEMO100" statusId="EMPL_POS_ACTIVE" partyId="Company" emplPositionTypeId="PROGRAMMER" salaryFlag="Y" exemptFlag="Y" fulltimeFlag="Y" temporaryFlag="Y"/>
+    <EmplPositionFulfillment emplPositionId="DEMO100" partyId="DemoEmployee" fromDate="2009-01-30 17:58:02.745"/>
+    <EmplPositionTypeRate emplPositionTypeId="PROGRAMMER" rateTypeId="AVERAGE_PAY_RATE" fromDate="2009-01-30 17:58:56.038"/>
+    <Employment roleTypeIdFrom="INTERNAL_ORGANIZATIO" roleTypeIdTo="EMPLOYEE" partyIdFrom="Company" partyIdTo="DemoEmployee" fromDate="2000-01-30 17:50:15.767"/>
+    
+    <Party partyId="DemoApprover" partyTypeId="PERSON"/>
+    <Person partyId="DemoApprover" firstName="Demo" lastName="Approver"/>
+    
+    <UserLogin userLoginId="demoapprover" currentPassword="{SHA}47b56994cbc2b6d10aa1be30f70165adb305a41a" requirePasswordChange="N" partyId="DemoApprover"/>
+    <UserLoginSecurityGroup groupId="HUMANRES_APPROVER" userLoginId="demoapprover" fromDate="2001-01-01 12:00:00.0"/>
+
+    <UserLogin userLoginId="demoemployee" currentPassword="{SHA}47b56994cbc2b6d10aa1be30f70165adb305a41a" requirePasswordChange="N" partyId="DemoEmployee"/>
+    <SecurityPermission description="Employee can check the status of his requests and trainings assigned to him with this permission." permissionId="EMPLOYEE_VIEW"/>
+    <SecurityGroupPermission groupId="HUMANRES_EMPLOYEE" permissionId="EMPLOYEE_VIEW"/>
+    <UserLoginSecurityGroup groupId="HUMANRES_EMPLOYEE" userLoginId="demoemployee" fromDate="2001-01-01 12:00:00.0"/>
+-->
+    <PartyRole partyId="Company" roleTypeId="CHAIRMAN"/>
+    <PartyRole partyId="Company" roleTypeId="GENERAL_MANAGER"/>
+    <PartyRole partyId="Company" roleTypeId="INTERNAL_ORGANIZATIO"/>
+
+    <Party partyId="demooa" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="demooa" firstName="用户" lastName="演示" fullName="用户"/>
+    <PartyRole partyId="demooa" roleTypeId="MANAGER"/>
+    <PartyRole partyId="demooa" roleTypeId="_NA_"/>
+    <PartyContactMech partyId="demooa" contactMechId="admin" fromDate="2003-01-01 00:00:00.0" allowSolicitation="Y"/>
+    <UserLogin userLoginId="demooa" partyId="demooa" currentPassword="$SHA$dJ4i83gBZJ$zVDLoB5FuDRoPyFutqES5jWGEv8" passwordHint="d e m o o a"/>
+
+    <UserLoginSecurityGroup groupId="OA_VIEW" userLoginId="demooa" fromDate="2001-01-01 12:00:48"/>
+    <UserLoginSecurityGroup groupId="OA_ADMIN" userLoginId="demooa" fromDate="2001-01-01 12:00:49"/>
+    <UserLoginSecurityGroup groupId="OA_HR_ADMIN" userLoginId="demooa" fromDate="2001-01-01 12:00:50"/>
+    <UserLoginSecurityGroup groupId="HUMANRES_ADMIN" userLoginId="demooa" fromDate="2001-01-01 12:00:51"/>
+
+    <Party partyId="oa" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="oa" firstName="用户" lastName="基本" fullName="基本用户"/>
+    <PartyRole partyId="oa" roleTypeId="EMPLOYEE"/>
+    <PartyRole partyId="oa" roleTypeId="_NA_"/>
+    <PartyContactMech partyId="oa" contactMechId="admin" fromDate="2003-01-01 00:00:00.0" allowSolicitation="Y"/>
+    <UserLogin userLoginId="oa" partyId="oa" currentPassword="$SHA$dJ4i83gBZJ$zVDLoB5FuDRoPyFutqES5jWGEv8" passwordHint="d e m o o a"/>
+
+    <UserLoginSecurityGroup groupId="OA_VIEW" userLoginId="oa" fromDate="2001-01-01 12:00:52"/>
+
+    <Party partyId="oaadmin" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="oaadmin" firstName="管理员" lastName="OA" fullName="OA管理员"/>
+    <PartyRole partyId="oaadmin" roleTypeId="EMPLOYEE"/>
+    <PartyRole partyId="oaadmin" roleTypeId="_NA_"/>
+    <PartyContactMech partyId="oaadmin" contactMechId="admin" fromDate="2003-01-01 00:00:00.0" allowSolicitation="Y"/>
+    <UserLogin userLoginId="oaadmin" partyId="oaadmin" currentPassword="$SHA$dJ4i83gBZJ$zVDLoB5FuDRoPyFutqES5jWGEv8" passwordHint="d e m o o a"/>
+
+    <UserLoginSecurityGroup groupId="OA_ADMIN" userLoginId="oaadmin" fromDate="2001-01-01 12:00:53"/>
+
+    <Party partyId="hr" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="hr" firstName="用户" lastName="HR基本" fullName="HR基本用户"/>
+    <PartyRole partyId="hr" roleTypeId="EMPLOYEE"/>
+    <PartyRole partyId="hr" roleTypeId="_NA_"/>
+    <PartyContactMech partyId="hr" contactMechId="admin" fromDate="2003-01-01 00:00:00.0" allowSolicitation="Y"/>
+    <UserLogin userLoginId="hr" partyId="hr" currentPassword="$SHA$dJ4i83gBZJ$zVDLoB5FuDRoPyFutqES5jWGEv8" passwordHint="d e m o o a"/>
+
+    <UserLoginSecurityGroup groupId="OA_HR_VIEW" userLoginId="hr" fromDate="2001-01-01 12:00:54"/>
+
+    <Party partyId="hradmin" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="hradmin" firstName="管理员" lastName="HR" fullName="HR管理员"/>
+    <PartyRole partyId="hradmin" roleTypeId="EMPLOYEE"/>
+    <PartyRole partyId="hradmin" roleTypeId="_NA_"/>
+    <PartyContactMech partyId="hradmin" contactMechId="admin" fromDate="2003-01-01 00:00:00.0" allowSolicitation="Y"/>
+    <UserLogin userLoginId="hradmin" partyId="hradmin" currentPassword="$SHA$dJ4i83gBZJ$zVDLoB5FuDRoPyFutqES5jWGEv8" passwordHint="d e m o o a"/>
+
+    <UserLoginSecurityGroup groupId="OA_HR_ADMIN" userLoginId="hradmin" fromDate="2001-01-01 12:00:55"/>
+
+    <Enumeration description="考勤" enumCode="A" enumId="WORK_PLAN_Type_A" sequenceId="01" enumTypeId="WORK_PLAN_Type"/>
+    <Enumeration description="oa开发" enumCode="B" enumId="WORK_PLAN_Type_B" sequenceId="02" enumTypeId="WORK_PLAN_Type"/>
+    <Enumeration description="oa页面处理" enumCode="C" enumId="WORK_PLAN_Type_C" sequenceId="03" enumTypeId="WORK_PLAN_Type"/>
+
+    <Enumeration description="瑞克斯信息有限公司" enumCode="REXTEC" enumId="NOTICE_HEAD_R" sequenceId="1" enumTypeId="NOTICE_HEAD"/>
+    <Enumeration description="瑞克斯信息有限公司开发部" enumCode="REXTEC_DEVELOPMENT" enumId="NOTICE_HEAD_REXTEC_DEVELOPMENT" sequenceId="2" enumTypeId="NOTICE_HEAD"/>
+    <Enumeration description="通知" enumCode="NOTICE" enumId="NOTICE_TYPE_NOTICE" sequenceId="1" enumTypeId="NOTICE_TYPE"/>
+    <Enumeration description="任免" enumCode="APPOINT" enumId="NOTICE_TYPE_APPOINT" sequenceId="2" enumTypeId="NOTICE_TYPE"/>
+    <Enumeration description="允许" enumCode="Y" enumId="NOTICE_HAS_FEEDBACK_Y" sequenceId="1" enumTypeId="NOTICE_HAS_FEEDBACK"/>
+    <Enumeration description="不允许" enumCode="N" enumId="NOTICE_HAS_FEEDBACK_N" sequenceId="2" enumTypeId="NOTICE_HAS_FEEDBACK"/>
+
+    <TblWorkScheduleType type="personal" rank = "1" tableName = "TblPersonalWorkSchedule"></TblWorkScheduleType>
+    <TblWorkScheduleType type="cycle_personal" rank = "2" tableName = "TblWorkCycleSchedule"></TblWorkScheduleType>
+    <TblWorkScheduleType type="cycle_department" rank = "3" tableName = "TblWorkCycleSchedule"></TblWorkScheduleType>
+    <TblWorkScheduleType type="auto" rank = "4" tableName = "TblAutoScheduleDepartment"></TblWorkScheduleType>
+
+
+    <TblPerfExamItemType typeId="10010" parentTypeId="1" description="一线员工绩效考核" orderStr="1:0;10000:1;10011:2;10012:3;10010:4;10013:5;10014:6;" lastUpdatedStamp="2015-06-23 12:51:48.0" lastUpdatedTxStamp="2015-06-23 12:51:48.0" createdStamp="2015-06-19 16:34:34.0" createdTxStamp="2015-06-19 16:34:34.0"/>
+    <TblPerfExamItemType typeId="10000" parentTypeId="1" description="班长绩效考核" orderStr="1:0;10000:1;10011:2;10012:3;10010:4;10013:5;10014:6;" lastUpdatedStamp="2015-06-23 12:51:42.0" lastUpdatedTxStamp="2015-06-23 12:51:42.0" createdStamp="2015-06-16 22:27:00.0" createdTxStamp="2015-06-16 22:27:00.0"/>
+    <TblPerfExamItemType typeId="10020" parentTypeId="10000" description="业务" orderStr="1:0;10000:1;10011:2;10012:3;:4;10010:5;10013:6;10014:7;" lastUpdatedStamp="2015-06-23 12:52:03.0" lastUpdatedTxStamp="2015-06-23 12:52:03.0" createdStamp="2015-06-23 12:52:03.0" createdTxStamp="2015-06-23 12:52:03.0"/>
+    <TblPerfExamItemType typeId="10014" parentTypeId="10010" description="业务" orderStr="1:0;10000:1;10011:2;10012:3;10010:4;10013:5;:6;" lastUpdatedStamp="2015-06-19 17:01:49.0" lastUpdatedTxStamp="2015-06-19 17:01:49.0" createdStamp="2015-06-19 17:01:49.0" createdTxStamp="2015-06-19 17:01:49.0"/>
+    <TblPerfExamItemType typeId="10013" parentTypeId="10010" description="个人行为" orderStr="1:0;10000:1;10011:2;10012:3;10010:4;:5;" lastUpdatedStamp="2015-06-19 17:01:42.0" lastUpdatedTxStamp="2015-06-19 17:01:42.0" createdStamp="2015-06-19 17:01:42.0" createdTxStamp="2015-06-19 17:01:42.0"/>
+    <TblPerfExamItemType typeId="10012" parentTypeId="10000" description="个人行为" orderStr="1:0;10000:1;10011:2;:3;10010:4;" lastUpdatedStamp="2015-06-19 17:01:25.0" lastUpdatedTxStamp="2015-06-19 17:01:25.0" createdStamp="2015-06-19 17:01:25.0" createdTxStamp="2015-06-19 17:01:25.0"/>
+    <TblPerfExamItemType typeId="10011" parentTypeId="10000" description="安全卫生" orderStr="1:0;10000:1;:2;10010:3;" lastUpdatedStamp="2015-06-19 17:01:18.0" lastUpdatedTxStamp="2015-06-19 17:01:18.0" createdStamp="2015-06-19 17:01:18.0" createdTxStamp="2015-06-19 17:01:18.0"/>
+
+    <TblPerfExamItem itemId="10024" typeId="10020" parentType="10000" state="1" title="出现质量问题服从检验人员安排，采取措施" score="1" sortOrder="2" score1="出现质量问题，主动配合检验人员安排，采取措施" score2="出现质量问题，能够配合检验人员安排，采取措施" score3="出现质量问题，出现1次不配合检验人员安排，采取措施的情况" score4="出现质量问题，出现2次或2次以上不配合检验人员安排，采取措施的情况" lastUpdatedStamp="2015-06-23 12:56:22.0" lastUpdatedTxStamp="2015-06-23 12:56:22.0" createdStamp="2015-06-23 12:56:22.0" createdTxStamp="2015-06-23 12:56:22.0"/>
+    <TblPerfExamItem itemId="10023" typeId="10020" parentType="10000" state="1" title="本岗位工作完成的数量" score="5" sortOrder="1" score1="工作任务全部完成。" score2="工作任务完成90%以上" score3="工作任务完成70%以上" score4="工作任务完成不足70%" lastUpdatedStamp="2015-06-23 12:55:47.0" lastUpdatedTxStamp="2015-06-23 12:55:47.0" createdStamp="2015-06-23 12:55:47.0" createdTxStamp="2015-06-23 12:55:47.0"/>
+    <TblPerfExamItem itemId="10022" typeId="10012" parentType="10000" state="1" title="能够接受上级意见，并改进工作" score="5" sortOrder="2" score1="主动请示上级意见，积极改进工作。" score2="虚心接受上级意见，积极改进工作。" score3="能接受上级意见，能改进工作。" score4="不接受上级意见改进工作。" lastUpdatedStamp="2015-06-23 12:55:02.0" lastUpdatedTxStamp="2015-06-23 12:55:02.0" createdStamp="2015-06-23 12:55:02.0" createdTxStamp="2015-06-23 12:55:02.0"/>
+    <TblPerfExamItem itemId="10021" typeId="10012" parentType="10000" state="1" title="改善提案参与度" score="5" sortOrder="1" score1="积极参与公司改善提案活动，超标准提出有改善价值的提案。" score2="积极参与公司改善提案活动，按标准提出有改善价值的提案。" score3="能够参与公司改善提案活动，能按标准提出提案，但改善价值小。" score4="未按按标准提交改善提案。" lastUpdatedStamp="2015-06-23 12:54:30.0" lastUpdatedTxStamp="2015-06-23 12:54:30.0" createdStamp="2015-06-23 12:54:30.0" createdTxStamp="2015-06-23 12:54:30.0"/>
+    <TblPerfExamItem itemId="10020" typeId="10011" parentType="10000" state="1" title="车间现场管理达到公司要求" score="1" sortOrder="2" score1="现场管理达到5S要求" score2="现场管理有2项以下达不到5S要求" score3="现场管理有3项以上达不到5S要求" score4="现场管理达不5S要求" lastUpdatedStamp="2015-06-23 12:53:43.0" lastUpdatedTxStamp="2015-06-23 12:53:43.0" createdStamp="2015-06-23 12:53:43.0" createdTxStamp="2015-06-23 12:53:43.0"/>
+    <TblPerfExamItem itemId="10010" typeId="10011" parentType="10000" state="1" title="自身及下属无安全事故" score="5" sortOrder="1" score1="自身及下属具有很强的安全意识，严格遵守岗位安全操作规范，未发生工伤事故和岗位安全责任事故，并能努力做到防患于未然。" score2="自身及下属具有较强的安全意识，严格遵守岗位安全操作规范，未发生工伤事故和岗位安全责任事故。" score3="自身及下属具有较强的安全意识，严格遵守岗位安全操作规范，偶有发生工伤事故和岗位安全责任事故，但未给人员及公司造成伤害和损失。" score4="自身及下属具有较强的安全意识，严格遵守岗位安全操作规范，偶有发生工伤事故和岗位安全责任事故，给人员及公司造成伤害和损失。" remark="备注" lastUpdatedStamp="2015-06-23 12:53:07.0" lastUpdatedTxStamp="2015-06-23 12:53:07.0" createdStamp="2015-06-21 16:36:49.0" createdTxStamp="2015-06-21 16:36:49.0"/>
+
+
+
+    <Party partyId="10142" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-24 10:15:15.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-24 10:15:15.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-24 10:15:15.0" lastUpdatedTxStamp="2015-06-24 10:15:15.0" createdStamp="2015-06-24 10:15:15.0" createdTxStamp="2015-06-24 10:15:15.0"/>
+    <Party partyId="10143" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-24 10:15:47.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-24 10:15:47.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-24 10:15:47.0" lastUpdatedTxStamp="2015-06-24 10:15:46.0" createdStamp="2015-06-24 10:15:47.0" createdTxStamp="2015-06-24 10:15:46.0"/>
+    <Party partyId="10163" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-25 10:18:08.0" createdByUserLogin="admin" lastModifiedDate="2015-06-25 10:18:08.0" lastModifiedByUserLogin="admin" lastUpdatedStamp="2015-06-25 10:18:08.0" lastUpdatedTxStamp="2015-06-25 10:18:08.0" createdStamp="2015-06-25 10:18:08.0" createdTxStamp="2015-06-25 10:18:08.0"/>
+    <Party partyId="10162" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-25 10:11:24.0" createdByUserLogin="admin" lastModifiedDate="2015-06-25 10:11:24.0" lastModifiedByUserLogin="admin" lastUpdatedStamp="2015-06-25 10:11:24.0" lastUpdatedTxStamp="2015-06-25 10:11:24.0" createdStamp="2015-06-25 10:11:24.0" createdTxStamp="2015-06-25 10:11:24.0"/>
+    <Party partyId="10161" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-25 10:09:31.0" createdByUserLogin="admin" lastModifiedDate="2015-06-25 10:09:31.0" lastModifiedByUserLogin="admin" lastUpdatedStamp="2015-06-25 10:09:31.0" lastUpdatedTxStamp="2015-06-25 10:09:31.0" createdStamp="2015-06-25 10:09:31.0" createdTxStamp="2015-06-25 10:09:31.0"/>
+    <Party partyId="10074" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-19 08:24:23.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-19 08:24:23.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-19 08:24:23.0" lastUpdatedTxStamp="2015-06-19 08:24:23.0" createdStamp="2015-06-19 08:24:23.0" createdTxStamp="2015-06-19 08:24:23.0"/>
+    <Party partyId="10073" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-19 08:23:15.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-19 08:23:15.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-19 08:23:15.0" lastUpdatedTxStamp="2015-06-19 08:23:15.0" createdStamp="2015-06-19 08:23:15.0" createdTxStamp="2015-06-19 08:23:15.0"/>
+    <Party partyId="10072" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-19 08:23:04.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-19 08:23:04.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-19 08:23:04.0" lastUpdatedTxStamp="2015-06-19 08:23:04.0" createdStamp="2015-06-19 08:23:04.0" createdTxStamp="2015-06-19 08:23:04.0"/>
+    <Party partyId="10141" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-24 10:14:26.0" createdByUserLogin="demooa" lastModifiedDate="2015-06-24 10:14:26.0" lastModifiedByUserLogin="demooa" lastUpdatedStamp="2015-06-24 10:14:26.0" lastUpdatedTxStamp="2015-06-24 10:14:26.0" createdStamp="2015-06-24 10:14:26.0" createdTxStamp="2015-06-24 10:14:26.0"/>
+    <Party partyId="10160" partyTypeId="PERSON" statusId="PARTY_ENABLED" createdDate="2015-06-25 10:06:26.0" createdByUserLogin="admin" lastModifiedDate="2015-06-25 10:06:26.0" lastModifiedByUserLogin="admin" lastUpdatedStamp="2015-06-25 10:06:26.0" lastUpdatedTxStamp="2015-06-25 10:06:26.0" createdStamp="2015-06-25 10:06:26.0" createdTxStamp="2015-06-25 10:06:26.0"/>
+
+
+
+    <Person partyId="10143" birthDate="2015-06-02" cardId="320151255411256963" lastUpdatedStamp="2015-06-25 10:12:33.0" lastUpdatedTxStamp="2015-06-25 10:12:33.0" createdStamp="2015-06-24 10:15:47.0" createdTxStamp="2015-06-24 10:15:46.0" fullName="刘学晓"/>
+    <Person partyId="10142" birthDate="2015-06-10" cardId="3201251154788458956" lastUpdatedStamp="2015-06-25 10:12:22.0" lastUpdatedTxStamp="2015-06-25 10:12:22.0" createdStamp="2015-06-24 10:15:15.0" createdTxStamp="2015-06-24 10:15:15.0" fullName="潘永霆"/>
+    <Person partyId="10163" birthDate="2015-06-08" cardId="325125199301256326" lastUpdatedStamp="2015-06-25 10:18:08.0" lastUpdatedTxStamp="2015-06-25 10:18:08.0" createdStamp="2015-06-25 10:18:08.0" createdTxStamp="2015-06-25 10:18:08.0" fullName="何维涛"/>
+    <Person partyId="10162" birthDate="2015-06-15" cardId="322514522699652365" lastUpdatedStamp="2015-06-25 10:11:24.0" lastUpdatedTxStamp="2015-06-25 10:11:24.0" createdStamp="2015-06-25 10:11:24.0" createdTxStamp="2015-06-25 10:11:24.0" fullName="李明"/>
+    <Person partyId="10161" birthDate="2015-06-09" cardId="320125166966562562" lastUpdatedStamp="2015-06-25 10:12:15.0" lastUpdatedTxStamp="2015-06-25 10:12:15.0" createdStamp="2015-06-25 10:09:31.0" createdTxStamp="2015-06-25 10:09:31.0" fullName="张纪林"/>
+    <Person partyId="oaadmin" birthDate="2016-01-10" cardId="32012516696656251" lastUpdatedStamp="2015-06-25 10:12:15.0" lastUpdatedTxStamp="2015-06-25 10:12:15.0" createdStamp="2015-06-25 10:09:31.0" createdTxStamp="2015-06-25 10:09:31.0" fullName="OA管理员"/>
+
+    <TblStaff partyId="10163" workerSn="001" gender="GENDER_MALE" degree="DEGREE_MA" diploma="DIPLOMA_PO" department="DEV" lastUpdatedStamp="2015-06-25 10:18:08.0" lastUpdatedTxStamp="2015-06-25 10:18:08.0" createdStamp="2015-06-25 10:18:08.0" createdTxStamp="2015-06-25 10:18:08.0" jobState="WORKING"/>
+    <TblStaff partyId="10162" workerSn="002" gender="GENDER_MALE" degree="DEGREE_JC" diploma="DIPLOMA_JC" department="TestingTeam1" lastUpdatedStamp="2015-06-25 10:11:24.0" lastUpdatedTxStamp="2015-06-25 10:11:24.0" createdStamp="2015-06-25 10:11:24.0" createdTxStamp="2015-06-25 10:11:24.0" jobState="WORKING"/>
+    <TblStaff partyId="10161" workerSn="003" gender="GENDER_MALE" degree="DEGREE_MA" diploma="DIPLOMA_PO" department="DemoLeadOwnersGroup" lastUpdatedStamp="2015-06-25 10:12:15.0" lastUpdatedTxStamp="2015-06-25 10:12:15.0" createdStamp="2015-06-25 10:09:31.0" createdTxStamp="2015-06-25 10:09:31.0" jobState="WORKING"/>
+    <TblStaff partyId="10143" workerSn="004" gender="GENDER_MALE" degree="DEGREE_BC" diploma="DIPLOMA_UN" department="DEV" lastUpdatedStamp="2015-06-25 10:12:33.0" lastUpdatedTxStamp="2015-06-25 10:12:33.0" createdStamp="2015-06-24 10:15:47.0" createdTxStamp="2015-06-24 10:15:46.0" jobState="WORKING"/>
+    <TblStaff partyId="10142" workerSn="005" gender="GENDER_MALE" degree="DEGREE_BC" diploma="DIPLOMA_UN" department="DEV" lastUpdatedStamp="2015-06-25 10:12:22.0" lastUpdatedTxStamp="2015-06-25 10:12:22.0" createdStamp="2015-06-24 10:15:15.0" createdTxStamp="2015-06-24 10:15:15.0" jobState="WORKING"/>
+    <TblStaff partyId="demooa" workerSn="006" gender="GENDER_MALE" degree="DEGREE_BC" diploma="DIPLOMA_UN" department="DEV" lastUpdatedStamp="2015-06-25 10:12:22.0" lastUpdatedTxStamp="2015-06-25 10:12:22.0" createdStamp="2015-06-24 10:15:15.0" createdTxStamp="2015-06-24 10:15:15.0" jobState="WORKING"/>
+    <TblStaff partyId="oaadmin" workerSn="007" gender="GENDER_MALE" degree="DEGREE_BC" diploma="DIPLOMA_UN" department="DEV" lastUpdatedStamp="2015-06-25 10:12:22.0" lastUpdatedTxStamp="2015-06-25 10:12:22.0" createdStamp="2015-06-24 10:15:15.0" createdTxStamp="2015-06-24 10:15:15.0" jobState="WORKING"/>
+
+    <RoleType roleTypeId="JOB_POSITION" hasTable="N" description="岗位" lastUpdatedStamp="2015-06-12 12:49:26.0" lastUpdatedTxStamp="2015-06-12 12:49:26.0" createdStamp="2015-06-12 12:49:26.0" createdTxStamp="2015-06-12 12:49:26.0"/>
+    <RoleType roleTypeId="10006" parentTypeId="JOB_POSITION" description="测试经理" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <RoleType roleTypeId="10005" parentTypeId="JOB_POSITION" description="测试员2" lastUpdatedStamp="2015-06-25 11:00:16.0" lastUpdatedTxStamp="2015-06-25 11:00:16.0" createdStamp="2015-06-25 10:58:19.0" createdTxStamp="2015-06-25 10:58:19.0"/>
+    <RoleType roleTypeId="10030" parentTypeId="JOB_POSITION" description="财务经理" lastUpdatedStamp="2015-06-25 11:08:32.0" lastUpdatedTxStamp="2015-06-25 11:08:32.0" createdStamp="2015-06-25 10:15:04.0" createdTxStamp="2015-06-25 10:15:04.0"/>
+    <RoleType roleTypeId="10025" parentTypeId="JOB_POSITION" description="其他人员" lastUpdatedStamp="2015-06-25 11:02:50.0" lastUpdatedTxStamp="2015-06-25 11:02:49.0" createdStamp="2015-06-19 09:06:55.0" createdTxStamp="2015-06-19 09:06:55.0"/>
+    <RoleType roleTypeId="10024" parentTypeId="JOB_POSITION" description="中心负责人" lastUpdatedStamp="2015-06-25 11:06:32.0" lastUpdatedTxStamp="2015-06-25 11:06:32.0" createdStamp="2015-06-19 09:04:48.0" createdTxStamp="2015-06-19 09:04:47.0"/>
+    <RoleType roleTypeId="10023" parentTypeId="JOB_POSITION" description="坐席人员" lastUpdatedStamp="2015-06-25 11:01:51.0" lastUpdatedTxStamp="2015-06-25 11:01:51.0" createdStamp="2015-06-19 08:26:28.0" createdTxStamp="2015-06-19 08:26:28.0"/>
+    <RoleType roleTypeId="10016" parentTypeId="JOB_POSITION" description="测试员1" lastUpdatedStamp="2015-06-25 11:01:25.0" lastUpdatedTxStamp="2015-06-25 11:01:25.0" createdStamp="2015-06-17 15:17:29.0" createdTxStamp="2015-06-17 15:17:28.0"/>
+    <RoleType roleTypeId="10015" parentTypeId="JOB_POSITION" description="会计" lastUpdatedStamp="2015-06-25 11:08:09.0" lastUpdatedTxStamp="2015-06-25 11:08:08.0" createdStamp="2015-06-17 15:17:02.0" createdTxStamp="2015-06-17 15:17:02.0"/>
+    <RoleType roleTypeId="10003" parentTypeId="JOB_POSITION" description="销售员" lastUpdatedStamp="2015-06-25 11:05:01.0" lastUpdatedTxStamp="2015-06-25 11:05:00.0" createdStamp="2015-06-12 12:54:16.0" createdTxStamp="2015-06-12 12:54:16.0"/>
+    <RoleType roleTypeId="10002" parentTypeId="JOB_POSITION" description="销售经理" lastUpdatedStamp="2015-06-25 11:06:56.0" lastUpdatedTxStamp="2015-06-25 11:06:56.0" createdStamp="2015-06-12 12:54:02.0" createdTxStamp="2015-06-12 12:54:02.0"/>
+    <RoleType roleTypeId="10001" parentTypeId="JOB_POSITION" description="值班长" lastUpdatedStamp="2015-06-25 11:03:52.0" lastUpdatedTxStamp="2015-06-25 11:03:52.0" createdStamp="2015-06-12 12:53:53.0" createdTxStamp="2015-06-12 12:53:52.0"/>
+    <RoleType roleTypeId="CHAIRMAN" parentTypeId="JOB_POSITION" hasTable="N" description="中心负责人" lastUpdatedStamp="2015-06-12 12:49:26.0" lastUpdatedTxStamp="2015-06-12 12:49:26.0" createdStamp="2015-06-12 12:49:26.0" createdTxStamp="2015-06-12 12:49:26.0"/>
+    <RoleType roleTypeId="GENERAL_MANAGER" parentTypeId="JOB_POSITION" hasTable="N" description="总经理" lastUpdatedStamp="2015-06-25 11:06:00.0" lastUpdatedTxStamp="2015-06-25 11:06:00.0" createdStamp="2015-06-12 12:49:26.0" createdTxStamp="2015-06-12 12:49:26.0"/>
+
+
+
+    <PartyRole partyId="Company" roleTypeId="10006" lastUpdatedStamp="2015-06-25 10:58:39.0" lastUpdatedTxStamp="2015-06-25 10:58:39.0" createdStamp="2015-06-25 10:58:39.0" createdTxStamp="2015-06-25 10:58:39.0"/>
+    <PartyRole partyId="Company" roleTypeId="10005" lastUpdatedStamp="2015-06-25 10:58:19.0" lastUpdatedTxStamp="2015-06-25 10:58:19.0" createdStamp="2015-06-25 10:58:19.0" createdTxStamp="2015-06-25 10:58:19.0"/>
+    <PartyRole partyId="Company" roleTypeId="10030" lastUpdatedStamp="2015-06-25 10:15:04.0" lastUpdatedTxStamp="2015-06-25 10:15:04.0" createdStamp="2015-06-25 10:15:04.0" createdTxStamp="2015-06-25 10:15:04.0"/>
+    <PartyRole partyId="10142" roleTypeId="10023" lastUpdatedStamp="2015-06-25 06:35:21.0" lastUpdatedTxStamp="2015-06-25 06:35:21.0" createdStamp="2015-06-25 06:35:21.0" createdTxStamp="2015-06-25 06:35:21.0"/>
+    <PartyRole partyId="10143" roleTypeId="10023" lastUpdatedStamp="2015-06-25 06:35:11.0" lastUpdatedTxStamp="2015-06-25 06:35:10.0" createdStamp="2015-06-25 06:35:11.0" createdTxStamp="2015-06-25 06:35:10.0"/>
+    <PartyRole partyId="10141" roleTypeId="10023" lastUpdatedStamp="2015-06-25 06:34:54.0" lastUpdatedTxStamp="2015-06-25 06:34:53.0" createdStamp="2015-06-25 06:34:54.0" createdTxStamp="2015-06-25 06:34:53.0"/>
+    <PartyRole partyId="demooa" roleTypeId="10024" lastUpdatedStamp="2015-06-19 12:00:12.0" lastUpdatedTxStamp="2015-06-19 12:00:11.0" createdStamp="2015-06-19 12:00:12.0" createdTxStamp="2015-06-19 12:00:11.0"/>
+    <PartyRole partyId="Company" roleTypeId="10025" lastUpdatedStamp="2015-06-19 09:06:55.0" lastUpdatedTxStamp="2015-06-19 09:06:55.0" createdStamp="2015-06-19 09:06:55.0" createdTxStamp="2015-06-19 09:06:55.0"/>
+    <PartyRole partyId="Company" roleTypeId="10024" lastUpdatedStamp="2015-06-19 09:04:48.0" lastUpdatedTxStamp="2015-06-19 09:04:47.0" createdStamp="2015-06-19 09:04:48.0" createdTxStamp="2015-06-19 09:04:47.0"/>
+    <PartyRole partyId="10073" roleTypeId="10023" lastUpdatedStamp="2015-06-19 08:54:21.0" lastUpdatedTxStamp="2015-06-19 08:54:21.0" createdStamp="2015-06-19 08:54:21.0" createdTxStamp="2015-06-19 08:54:21.0"/>
+    <PartyRole partyId="10074" roleTypeId="10023" lastUpdatedStamp="2015-06-19 08:53:25.0" lastUpdatedTxStamp="2015-06-19 08:53:25.0" createdStamp="2015-06-19 08:53:25.0" createdTxStamp="2015-06-19 08:53:25.0"/>
+    <PartyRole partyId="10072" roleTypeId="10023" lastUpdatedStamp="2015-06-19 08:52:58.0" lastUpdatedTxStamp="2015-06-19 08:52:58.0" createdStamp="2015-06-19 08:52:58.0" createdTxStamp="2015-06-19 08:52:58.0"/>
+    <PartyRole partyId="Company" roleTypeId="10023" lastUpdatedStamp="2015-06-19 08:26:28.0" lastUpdatedTxStamp="2015-06-19 08:26:28.0" createdStamp="2015-06-19 08:26:28.0" createdTxStamp="2015-06-19 08:26:28.0"/>
+    <PartyRole partyId="Company" roleTypeId="10016" lastUpdatedStamp="2015-06-17 15:17:29.0" lastUpdatedTxStamp="2015-06-17 15:17:28.0" createdStamp="2015-06-17 15:17:29.0" createdTxStamp="2015-06-17 15:17:28.0"/>
+    <PartyRole partyId="Company" roleTypeId="10015" lastUpdatedStamp="2015-06-17 15:17:02.0" lastUpdatedTxStamp="2015-06-17 15:17:02.0" createdStamp="2015-06-17 15:17:02.0" createdTxStamp="2015-06-17 15:17:02.0"/>
+    <PartyRole partyId="Company" roleTypeId="10003" lastUpdatedStamp="2015-06-12 12:54:16.0" lastUpdatedTxStamp="2015-06-12 12:54:16.0" createdStamp="2015-06-12 12:54:16.0" createdTxStamp="2015-06-12 12:54:16.0"/>
+    <PartyRole partyId="Company" roleTypeId="10002" lastUpdatedStamp="2015-06-12 12:54:02.0" lastUpdatedTxStamp="2015-06-12 12:54:02.0" createdStamp="2015-06-12 12:54:02.0" createdTxStamp="2015-06-12 12:54:02.0"/>
+    <PartyRole partyId="Company" roleTypeId="10001" lastUpdatedStamp="2015-06-12 12:53:53.0" lastUpdatedTxStamp="2015-06-12 12:53:52.0" createdStamp="2015-06-12 12:53:53.0" createdTxStamp="2015-06-12 12:53:52.0"/>
+    <PartyRole partyId="Company" roleTypeId="CHAIRMAN" lastUpdatedStamp="2015-06-16 06:53:11.0" lastUpdatedTxStamp="2015-06-16 06:53:10.0" createdStamp="2015-06-16 06:53:11.0" createdTxStamp="2015-06-16 06:53:10.0"/>
+    <PartyRole partyId="Company" roleTypeId="GENERAL_MANAGER" lastUpdatedStamp="2015-06-16 06:53:11.0" lastUpdatedTxStamp="2015-06-16 06:53:10.0" createdStamp="2015-06-16 06:53:11.0" createdTxStamp="2015-06-16 06:53:10.0"/>
+    <PartyRole partyId="10163" roleTypeId="_NA_" lastUpdatedStamp="2015-06-25 10:18:08.0" lastUpdatedTxStamp="2015-06-25 10:18:08.0" createdStamp="2015-06-25 10:18:08.0" createdTxStamp="2015-06-25 10:18:08.0"/>
+    <PartyRole partyId="10162" roleTypeId="_NA_" lastUpdatedStamp="2015-06-25 10:11:24.0" lastUpdatedTxStamp="2015-06-25 10:11:24.0" createdStamp="2015-06-25 10:11:24.0" createdTxStamp="2015-06-25 10:11:24.0"/>
+    <PartyRole partyId="10160" roleTypeId="_NA_" lastUpdatedStamp="2015-06-25 10:06:26.0" lastUpdatedTxStamp="2015-06-25 10:06:26.0" createdStamp="2015-06-25 10:06:26.0" createdTxStamp="2015-06-25 10:06:26.0"/>
+
+
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10024" roleTypeIdTo="10001" fromDate="2015-06-25 11:03:52.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:03:52.0" lastUpdatedTxStamp="2015-06-25 11:03:52.0" createdStamp="2015-06-25 11:03:52.0" createdTxStamp="2015-06-25 11:03:52.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="GENERAL_MANAGER" roleTypeIdTo="10002" fromDate="2015-06-25 11:06:56.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:06:56.0" lastUpdatedTxStamp="2015-06-25 11:06:56.0" createdStamp="2015-06-25 11:06:56.0" createdTxStamp="2015-06-25 11:06:56.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10002" roleTypeIdTo="10003" fromDate="2015-06-25 11:05:01.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:05:01.0" lastUpdatedTxStamp="2015-06-25 11:05:00.0" createdStamp="2015-06-25 11:05:01.0" createdTxStamp="2015-06-25 11:05:00.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10002" roleTypeIdTo="10003" fromDate="2015-06-25 11:05:01.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:05:01.0" lastUpdatedTxStamp="2015-06-25 11:05:00.0" createdStamp="2015-06-25 11:05:01.0" createdTxStamp="2015-06-25 11:05:00.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10006" roleTypeIdTo="10005" fromDate="2015-06-25 11:00:16.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:00:16.0" lastUpdatedTxStamp="2015-06-25 11:00:16.0" createdStamp="2015-06-25 11:00:16.0" createdTxStamp="2015-06-25 11:00:16.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="GENERAL_MANAGER" roleTypeIdTo="10006" fromDate="2015-06-25 11:07:32.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:07:32.0" lastUpdatedTxStamp="2015-06-25 11:07:31.0" createdStamp="2015-06-25 11:07:32.0" createdTxStamp="2015-06-25 11:07:31.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10006" roleTypeIdTo="10016" fromDate="2015-06-25 11:01:15.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:01:15.0" lastUpdatedTxStamp="2015-06-25 11:01:14.0" createdStamp="2015-06-25 11:01:15.0" createdTxStamp="2015-06-25 11:01:14.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10006" roleTypeIdTo="10005" fromDate="2015-06-25 11:00:16.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:00:16.0" lastUpdatedTxStamp="2015-06-25 11:00:16.0" createdStamp="2015-06-25 11:00:16.0" createdTxStamp="2015-06-25 11:00:16.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10030" roleTypeIdTo="10015" fromDate="2015-06-25 11:08:09.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:08:09.0" lastUpdatedTxStamp="2015-06-25 11:08:08.0" createdStamp="2015-06-25 11:08:09.0" createdTxStamp="2015-06-25 11:08:08.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10006" roleTypeIdTo="10016" fromDate="2015-06-25 11:01:15.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:01:15.0" lastUpdatedTxStamp="2015-06-25 11:01:14.0" createdStamp="2015-06-25 11:01:15.0" createdTxStamp="2015-06-25 11:01:14.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10142" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-25 06:35:21.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-25 06:35:21.0" lastUpdatedTxStamp="2015-06-25 06:35:21.0" createdStamp="2015-06-25 06:35:21.0" createdTxStamp="2015-06-25 06:35:21.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10143" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-25 06:35:11.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-25 06:35:11.0" lastUpdatedTxStamp="2015-06-25 06:35:10.0" createdStamp="2015-06-25 06:35:11.0" createdTxStamp="2015-06-25 06:35:10.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10141" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-25 06:34:54.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-25 06:34:54.0" lastUpdatedTxStamp="2015-06-25 06:34:53.0" createdStamp="2015-06-25 06:34:54.0" createdTxStamp="2015-06-25 06:34:53.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10073" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-19 08:54:21.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-19 08:54:21.0" lastUpdatedTxStamp="2015-06-19 08:54:21.0" createdStamp="2015-06-19 08:54:21.0" createdTxStamp="2015-06-19 08:54:21.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10074" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-19 08:53:25.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-19 08:53:25.0" lastUpdatedTxStamp="2015-06-19 08:53:25.0" createdStamp="2015-06-19 08:53:25.0" createdTxStamp="2015-06-19 08:53:25.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="10072" roleTypeIdFrom="10023" roleTypeIdTo="10023" fromDate="2015-06-19 08:52:58.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-19 08:52:58.0" lastUpdatedTxStamp="2015-06-19 08:52:58.0" createdStamp="2015-06-19 08:52:58.0" createdTxStamp="2015-06-19 08:52:58.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="GENERAL_MANAGER" roleTypeIdTo="10024" fromDate="2015-06-25 11:06:32.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:06:32.0" lastUpdatedTxStamp="2015-06-25 11:06:32.0" createdStamp="2015-06-25 11:06:32.0" createdTxStamp="2015-06-25 11:06:32.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10024" roleTypeIdTo="10001" fromDate="2015-06-25 11:03:52.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:03:52.0" lastUpdatedTxStamp="2015-06-25 11:03:52.0" createdStamp="2015-06-25 11:03:52.0" createdTxStamp="2015-06-25 11:03:52.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10024" roleTypeIdTo="10025" fromDate="2015-06-25 11:02:50.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:02:50.0" lastUpdatedTxStamp="2015-06-25 11:02:49.0" createdStamp="2015-06-25 11:02:50.0" createdTxStamp="2015-06-25 11:02:49.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10024" roleTypeIdTo="10023" fromDate="2015-06-19 12:09:08.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-19 12:09:08.0" lastUpdatedTxStamp="2015-06-19 12:08:54.0" createdStamp="2015-06-19 12:09:08.0" createdTxStamp="2015-06-19 12:08:54.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="demooa" roleTypeIdFrom="10024" roleTypeIdTo="10024" fromDate="2015-06-19 12:00:12.0" partyRelationshipTypeId="PROVIDE_POSITION" lastUpdatedStamp="2015-06-19 12:00:12.0" lastUpdatedTxStamp="2015-06-19 12:00:11.0" createdStamp="2015-06-19 12:00:12.0" createdTxStamp="2015-06-19 12:00:11.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="10024" roleTypeIdTo="10025" fromDate="2015-06-25 11:02:50.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:02:50.0" lastUpdatedTxStamp="2015-06-25 11:02:49.0" createdStamp="2015-06-25 11:02:50.0" createdTxStamp="2015-06-25 11:02:49.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="GENERAL_MANAGER" roleTypeIdTo="10030" fromDate="2015-06-25 11:08:33.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:08:33.0" lastUpdatedTxStamp="2015-06-25 11:08:32.0" createdStamp="2015-06-25 11:08:33.0" createdTxStamp="2015-06-25 11:08:32.0"/>
+    <PartyRelationship partyIdFrom="Company" partyIdTo="Company" roleTypeIdFrom="CHAIRMAN" roleTypeIdTo="GENERAL_MANAGER" fromDate="2015-06-25 11:06:00.0" partyRelationshipTypeId="MASTER_POSITION" lastUpdatedStamp="2015-06-25 11:06:00.0" lastUpdatedTxStamp="2015-06-25 11:06:00.0" createdStamp="2015-06-25 11:06:00.0" createdTxStamp="2015-06-25 11:06:00.0"/>
+</entity-engine-xml>

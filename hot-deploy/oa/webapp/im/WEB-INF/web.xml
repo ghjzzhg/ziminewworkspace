@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         metadata-complete="true"
+         version="3.0">
+    <display-name>Open For Business - IM</display-name>
+    <description>IM Module of the Open For Business Project</description>
+
+    <context-param>
+        <param-name>entityDelegatorName</param-name>
+        <param-value>default</param-value>
+        <description>The Name of the Entity Delegator to use, defined in entityengine.xml</description>
+    </context-param>
+    <context-param>
+        <param-name>localDispatcherName</param-name>
+        <param-value>Email</param-value>
+        <description>A unique name used to identify/recognize the local dispatcher for the Service Engine</description>
+    </context-param>
+    <context-param>
+        <param-name>mainDecoratorLocation</param-name>
+        <param-value>component://oa/widget/IMCommonScreens.xml</param-value>
+        <description>The location of the main-decorator screen to use for this webapp; referred to as a context variable in screen def XML files.</description>
+    </context-param>
+
+    <filter>
+        <filter-name>ContextFilter</filter-name>
+        <display-name>ContextFilter</display-name>
+        <filter-class>org.ofbiz.webapp.control.ContextFilter</filter-class>
+        <init-param>
+            <param-name>disableContextSecurity</param-name>
+            <param-value>N</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedPaths</param-name>
+            <param-value>/error:/control:/select:/index.html:/index.jsp:/default.html:/default.jsp:/images:/includes/maincss.css:/static:/atmosphere</param-value>
+        </init-param>
+        <init-param>
+            <param-name>errorCode</param-name>
+            <param-value>403</param-value>
+        </init-param>
+        <init-param>
+            <param-name>redirectPath</param-name>
+            <param-value>/control/main</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>ContextFilter</filter-name>
+            <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener><listener-class>org.ofbiz.webapp.control.ControlEventListener</listener-class></listener>
+    <listener><listener-class>org.ofbiz.webapp.control.LoginEventListener</listener-class></listener>
+    <listener><listener-class>org.atmosphere.cpr.SessionSupport</listener-class></listener>
+    <!-- NOTE: not all app servers support mounting implementations of the HttpSessionActivationListener interface -->
+    <!-- <listener><listener-class>org.ofbiz.webapp.control.ControlActivationEventListener</listener-class></listener> -->
+
+    <servlet>
+        <servlet-name>ControlServlet</servlet-name>
+        <display-name>ControlServlet</display-name>
+        <description>Main Control Servlet</description>
+        <servlet-class>org.ofbiz.webapp.control.ControlServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>message2client</servlet-name>
+        <display-name>message2client</display-name>
+        <description>Atmosphere Servlet</description>
+        <servlet-class>org.atmosphere.cpr.MeteorServlet</servlet-class>
+        <init-param>
+            <param-name>org.atmosphere.servlet</param-name>
+            <param-value>org.ofbiz.webapp.control.ControlServlet</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.packages</param-name>
+            <param-value>org.ofbiz.oa.im</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.AtmosphereFramework.analytics.analytics</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.interceptor.HeartbeatInterceptor.clientHeartbeatFrequencyInSeconds</param-name>
+            <param-value>30</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+            <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+            <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
+            <param-value>60000</param-value>
+        </init-param>
+        <init-param>
+            <param-name>async-supported</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.sessionSupport</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcaster.shareableThreadPool</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcaster.maxProcessingThreads</param-name>
+            <param-value>10</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads</param-name>
+            <param-value>10</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.resumeOnBroadcast</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useNative</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useWebSocket</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useStream</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useWebSocketAndServlet3</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ControlServlet</servlet-name>
+        <url-pattern>/control/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>message2client</servlet-name>
+        <url-pattern>/atmosphere/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout> <!-- in minutes -->
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+</web-app>

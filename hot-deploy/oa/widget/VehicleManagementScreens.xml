@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="listVehicleForList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicleForList.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ListVehicle"
+                                      location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="listVehicle">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator"
+                                          location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-options">
+                                <include-form name="FindFixedAssets"
+                                              location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="search-results">
+                                <include-screen name="listVehicleForList"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="VehicleOrderView">
+        <section>
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/ViewOrderVehicleDetail.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="VehicleOrderView"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="vehicleOccupy">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleOccupySituation.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="vehicleOccupySituationForOrder">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleOccupySituationForOrder.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="searchVehicleSituationForCostByDate">
+    <section>
+        <widgets>
+            <include-screen name="vehicleForCost"/>
+        </widgets>
+    </section>
+</screen>
+    <screen name="findVehicle">
+        <section>
+            <actions>
+                <set field="headerItem" value="Vehicle"/>
+                <set field="titleProperty" value="HumanResEmplVehicle"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container style="button-bar">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleManagementButton.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </container>
+                        <screenlet title="车辆占用图示">
+                            <include-screen name="vehicleOccupy"/>
+                        </screenlet>
+                        <screenlet title="待审核车辆">
+                            <include-form name="ListPendingAuditVehicle"
+                                          location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                        </screenlet>
+                        <screenlet title="待安排车辆">
+                            <include-form name="ListPendingArrangedVehicle"
+                                          location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                        </screenlet>
+                        <screenlet title="本日使用车辆列表">
+                            <include-form name="ListTodayUseVehicle"
+                                          location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                        </screenlet>
+                        <!--  <decorator-section name="pending-audit">
+                              <include-form name="ListPendingAuditVehicle"
+                                            location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                          </decorator-section>
+                          <decorator-section name="pending-arranged">
+                              <include-form name="ListPendingArrangedVehicle"
+                                            location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                          </decorator-section>
+                          <decorator-section name="today-useSituation">
+                              <include-form name="ListTodayUseVehicle"
+                                            location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                          </decorator-section>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="pendingAuditForVehicle">
+        <section>
+            <actions>
+                <set field="headerItem" value="Vehicle"/>
+                <set field="titleProperty" value="HumanResEmplVehicle"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="ListPendingAuditVehicle"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="pendingArrangeForVehicle">
+        <section>
+            <actions>
+                <set field="headerItem" value="Vehicle"/>
+                <set field="titleProperty" value="HumanResEmplVehicle"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="ListPendingArrangedVehicle"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="todayUseSituationForVehicle">
+        <section>
+            <actions>
+                <set field="headerItem" value="Vehicle"/>
+                <set field="titleProperty" value="HumanResEmplVehicle"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="ListTodayUseVehicle"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="findVechicless">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OAFindFixedAssets"/>
+                <set field="headerItem" value="PerfReview"/>
+                <set field="employeePartyId" from-field="parameters.partyId"/>
+                <property-to-field resource="widget" property="widget.form.defaultViewSize"
+                                   field="viewSizeDefaultValue"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/fixedAssets/FindFixedAssetsServices.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/category/FixedAssetsForCRUD.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </widgets>
+                </section>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator"
+                                          location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="menu-bar">
+                                <container style="button-bar">
+                                    <include-form name="CreateFixedAssetsButton"
+                                                  location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                                </container>
+                            </decorator-section>
+                            <decorator-section name="search-options">
+                                <include-form name="FindFixedAssets"
+                                              location="component://oa/widget/forms/FixedAssetsForms.xml"/>
+                            </decorator-section>
+                            <decorator-section name="search-results">
+                                <include-screen name="ListAssets"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="createVehicle">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicleForEdit.groovy"/>
+                <entity-and entity-name="Enumeration" list="vehicleTypeList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="vehicleBrandList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_BRAND"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="readyStateList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_UP_STATE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleForCreate.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="createVehicleForm" location="component://oa/widget/forms/VehicleManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderVehicle">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <section>
+                    <widgets>
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleManagementButtonForSearch.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <container id="vehicleOccupySituationForOrder">
+                            <include-screen name="vehicleOccupySituationForOrder"/>
+                        </container>
+                    </widgets>
+                </section>
+                <platform-specific>
+                    <html>
+                        <html-template
+                            location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleManagementButtonForOrder.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="orderVehicleForm"-->
+                              <!--location="component://oa/widget/forms/VehicleManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+    <screen name="vehicleOrderList">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <container id="vehicleOccupySituationForOrder">
+                    <include-screen name="vehicleOccupySituationForOrder"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editVehicle">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicleForEdit.groovy"/>
+                <entity-and entity-name="Enumeration" list="vehicleTypeList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="vehicleBrandList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_BRAND"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="readyStateList">
+                    <field-map field-name="enumTypeId" value="VEHICLE_UP_STATE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleForCreate.ftl"/>
+                    </html>
+                </platform-specific>
+                <!--<include-form name="editVehicleForm" location="component://oa/widget/forms/VehicleManagementForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="vehicleForCost">
+        <section>
+            <actions>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/VehicleForCost.groovy"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleManagementButtonForCost.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleForCost.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="createVehicleForCost"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ShowVehicle">
+        <section>
+            <actions>
+               <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/FindSearchList.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="查询类型">
+                                    <include-form name="searchShowVehicle"
+                                                  location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+                                </screenlet>
+                                <screenlet title="费用详情">
+                                    <container id="vehicleForDetailsScreens">
+                                        <include-screen name="vehicleForDetailsScreens"/>
+                                    </container>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="vehicleForDetailsScreens">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/ShowVehicle.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/oa/humanres/vehicleManagement/vehicleForDetailsScreens.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="AuditVehicleOrder">
+        <section>
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/ViewOrderVehicleDetail.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/auditVehicleKindEditor.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="AuditVehicleOrder"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ArrangeVehicleOrder">
+        <section>
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/vehicleManagement/ViewOrderVehicleDetail.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template
+                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template
+                                location="component://oa/webapp/oa/humanres/vehicleManagement/arrangeVehicleKindEditor.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-form name="ArrangeVehicleOrder"
+                              location="component://oa/widget/forms/VehicleManagementForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+</screens>

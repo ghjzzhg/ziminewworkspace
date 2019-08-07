@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="titleProperty" value="${uiLabelMap.CommonFind} ${uiLabelMap.HumanResEmployee}"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/bumphNotice.js" global="true"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="5"/>
+                <set field="headerItem" value="WorkPlan"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--浏览-->
+    <screen name="WorkPlan">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/workPlan/GetDepartment.groovy"/>
+                <entity-and entity-name="Enumeration" list="workPlanType">
+                    <field-map field-name="enumTypeId" value="WORK_PLAN_Type"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="workPlanStatus">
+                    <field-map field-name="enumTypeId" value="WORK_PLAN_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/workPlanList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--搜索返回页面-->
+    <screen name="WorkPlanTableList">
+        <section>
+            <actions>
+                <set field="startTime" value="${parameters.startTime}"></set>
+                <set field="endTime" value="${parameters.endTime}"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/workPlanTableList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--新增页面-->
+    <screen name="WorkPlanCreate">
+        <section>
+            <actions>
+                <set field="workPlanId" value="${parameters.workPlanId}"></set>
+                <entity-condition entity-name="Enumeration" list="workPlanType">
+                    <condition-expr field-name="enumTypeId" value="WORK_PLAN_Type"></condition-expr>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="workPlanDegree">
+                    <condition-expr field-name="enumTypeId" value="WORK_PLAN_DEGREE"></condition-expr>
+                    <order-by field-name="sequenceId"></order-by>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="workPlanRadio">
+                    <condition-expr field-name="enumTypeId" value="WORK_PLAN_Y_N"></condition-expr>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="canSeePersonList">
+                    <condition-expr field-name="enumTypeId" value="WORK_PLAN_CS_PERSON"></condition-expr>
+                </entity-condition>
+                <entity-one entity-name="WorkPlanInfo" value-field="workPlan">
+                    <field-map field-name="workPlanId" value="${parameters.workPlanId}"></field-map>
+                </entity-one>
+                <entity-and entity-name="ExecutorInfo" list="executorList">
+                    <field-map field-name="workPlanId" value="${parameters.workPlanId}"/>
+                </entity-and>
+                <entity-and entity-name="TblMilestone" list="milestoneList">
+                    <field-map field-name="workPlanId" value="${parameters.workPlanId}"/>
+                </entity-and>
+                <entity-and entity-name="TblPersonWork" list="personWorkList">
+                    <field-map field-name="workPlanId" value="${parameters.workPlanId}"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/workPlanCreate.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="copyWorkPlan">
+        <section>
+            <actions>
+                <set field="copyWorkPlan" value="copy"></set>
+            </actions>
+            <widgets>
+                <include-screen name="WorkPlanCreate"></include-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--添加子计划页面-->
+    <screen name="addChildWorkPlan">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/editChildworkPlan.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <!--反馈页面-->
+    <screen name="feedbackWorkPlan">
+        <section>
+            <actions>
+                <set field="workPlanForm" value="feedback"/>
+            </actions>
+            <widgets>
+                <include-screen name="feedbackWorkPlanCommon"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="feedbackWorkPlanCommon">
+        <section>
+            <actions>
+                <entity-and entity-name="Enumeration" list="feedbackpermission">
+                    <field-map field-name="enumTypeId" value="FEEDBACK_PERMISSION"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="personWorkStatus">
+                    <field-map field-name="enumTypeId" value="PERSON_WORK_STATUS"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/feedbackWorkPlan.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="GradeView">
+        <section>
+            <actions>
+                <set field="isGrade" value="true"/>
+                <set field="workPlanForm" value="workPlanGradeForm"/>
+                <entity-one entity-name="Person" value-field="LoginPerson">
+                    <field-map field-name="partyId" value="${userLogin.partyId}"/>
+                </entity-one>
+                <entity-and entity-name="Enumeration" list="workPlanStatus">
+                    <field-map field-name="enumTypeId" value="WORK_PLAN_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="workPlanGrade">
+                    <field-map field-name="enumTypeId" value="WORK_PLAN_GRADE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <include-screen name="feedbackWorkPlanCommon"/>
+            </widgets>
+        </section>
+    </screen>
+    <!--ajax查找反馈-->
+    <screen name="FeedbackList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/feedbackList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PerformanceList">
+        <section>
+            <actions>
+                <set field="workPlanId" value="${parameters.workPlanId}"/>
+                <entity-and entity-name="ExecutorPersonWork" list="workPerformanceList">
+                    <field-map field-name="workPlanId" value="${parameters.workPlanId}"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-form name="WorkPerformanceList"
+                                              location="component://oa/widget/osManager/WorkPlanForms.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="WorkReportManager">
+        <section>
+            <actions>
+                <entity-and entity-name="Enumeration" list="statusList">
+                    <field-map field-name="enumTypeId" value="WORK_REPORT_STATUS"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="typeList">
+                    <field-map field-name="enumTypeId" value="WORK_REPORT_TYPE"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <entity-and entity-name="Enumeration" list="processList">
+                    <field-map field-name="enumTypeId" value="WORK_REPORT_PLAN"/>
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="报告任务查询条件">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/workPlan/WorkReportForSearch.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="workReportSearchForm"-->
+                                                  <!--location="component://oa/widget/osManager/WorkPlanForms.xml"/>-->
+                                </screenlet>
+                                <container id="workReportList">
+                                    <include-screen name="workReportList"/>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="addJobs">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/addJobs.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="workReportList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="报告任务一览表">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/workPlan/reportList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+
+                <!--<include-form name="workReportList" location="component://oa/widget/osManager/WorkPlanForms.xml"/>-->
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="addWorkReport">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/workPlan/AddWorkReport.groovy"/>
+                <entity-condition entity-name="Enumeration" list="workReportType">
+                    <condition-expr field-name="enumTypeId" value="WORK_REPORT_TYPE"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="workReportStatus">
+                    <condition-expr field-name="enumTypeId" value="WORK_REPORT_STATUS"/>
+                </entity-condition>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/editWorkReport.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="WorkPerformance">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/oa/WEB-INF/actions/workPlan/FindWorkPerformance.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-form name="WorkPerformanceList"
+                                              location="component://oa/widget/osManager/WorkPlanForms.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="commitReport">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+                <entity-condition entity-name="Enumeration" list="workReportPlan">
+                    <condition-expr field-name="enumTypeId" value="WORK_REPORT_PLAN"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="feedbackParty">
+                    <condition-expr field-name="enumTypeId" value="FEEDBACK_PARTY"/>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/editReport.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <include-screen name="editReportFeedback"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="editReportFeedback">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="最新反馈" id="reportFeedList">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/workPlan/editReportFeedback.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="editworkFeedback">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="最新反馈" id="workFeedList">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/workPlan/editworkFeedback.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="showReportFeedback">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="报告历史进度" id="reportFeedBackList">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://oa/webapp/oa/humanres/workPlan/showReportFeedback.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="browseReport">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/browseReport.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <include-screen name="showReportFeedback"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="individualFeedback">
+        <section>
+            <actions>
+                <set field="workReportMap" value="${parameters.workReportMap}"></set>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <include-screen name="editReportFeedback"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="childWorkPlanList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/childWorkPlanList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="updateChildWorkPlanList">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/updateChildWorkPlanList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--<screen name="testCalendar">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://common/webcommon/includes/uiWidgets/fullcalendar.ftl"/>
+                                        <html-template
+                                                location="component://oa/webapp/oa/humanres/workPlan/test.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>-->
+
+</screens>
+
+

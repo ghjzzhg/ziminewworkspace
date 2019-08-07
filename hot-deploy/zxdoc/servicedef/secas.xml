@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<service-eca xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/service-eca.xsd">
+    <!--TODO 创建partygroup时创建openfire的group-->
+    <!--<eca service="passQualification" event="commit">-->
+        <!--<action service="createGroupInOF" mode="async"/>-->
+    <!--</eca>-->
+    <!--<eca service="removeMember" event="commit">
+        <action service="revokeCasePartyFolderPermission" mode="async"/>
+    </eca>-->
+    <eca service="saveCaseStep" event="commit">
+        <action service="caseCompleteMail" mode="async"/>
+    </eca>
+    <eca service="saveCaseStep" event="commit">
+        <action service="updateCaseProgressDueTime" mode="async"/>
+    </eca>
+    <eca service="saveCaseProgressFromTemplate" event="commit">
+        <action service="caseStartMail" mode="async"/>
+    </eca>
+    <eca service="saveCase" event="commit">
+        <action service="casesStartCompleteMail" mode="async"/>
+    </eca>
+    <eca service="createCaseFromSession" event="commit">
+        <action service="casesStartCompleteMail" mode="async"/>
+    </eca>
+    <eca service="saveCaseFolders" event="commit">
+        <condition field-name="caseId" operator="is-not-empty"/>
+        <action service="casesStartCompleteMail" mode="async"/>
+    </eca>
+    <!--用户登录成功获取积分-->
+    <!--用户每次登录成功都会调用，在积分规则实现的地方需要限定同一天登录只计分一次-->
+    <eca service="userLogin" event="commit">
+        <condition field-name="userLogin" operator="is-not-empty"/>
+        <set field-name="eventName" value="SCORE_RULE_1"/>
+        <set field-name="scoreTarget" env-name="${userLogin.partyId}"/>
+        <action service="sendScoreMessage2" mode="async"></action>
+    </eca>
+</service-eca>

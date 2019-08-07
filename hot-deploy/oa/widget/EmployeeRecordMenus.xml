@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="family">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createFamilySituation('${partyId}');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="editRecord">
+        <menu-item name="editRecord" title="修改">
+            <link target="javascript:$.recordManagement.editEmployees('${partyId}');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="education">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createEducationSituation('${partyId}');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="transaction">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createPostChange('${partyId}','TransactionRecordList');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="departure">
+        <menu-item name="employeeRecord" title="修改" >
+            <link target="javascript:$.recordManagement.editDeparture('${partyId}','true','2');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="contract">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.ContractRecordCreate('${partyId}','ContractRecordList','2');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="rewardsAndPunishment">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createReword('${partyId}','RewardsAndPunishmentRecordList');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="work">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createWorkExperience('${partyId}');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="train">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.recordManagement.createTrain('${partyId}','TrainManagementList');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="salary">
+        <menu-item name="employeeRecord" title="调整" >
+            <link target="javascript:$.recordManagement.SalaryManagementCreate('${parameters.partyId}','');" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="maintainType">
+        <menu-item name="employeeRecord" title="创建" >
+            <link target="javascript:$.FileData.createMaintainType();" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+    <menu name="secondMenu" title=" " extends="CommonAppBarMenu" extends-resource="component://oa/widget/CommonMenus.xml">
+        <menu-item name="ViewEmployeeInformation" title="部门员工" >
+            <link target="FindRecordManagement"/>
+        </menu-item>
+        <menu-item name="ViewEmployeeInformationByDepartment" title="员工信息管理" >
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('ViewEmployeeInformation');" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+        <menu-item name="TransferRecord" title="员工岗位调动管理">
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('TransferRecord');" url-mode="plain" style="icosg-plus1"/>
+
+        </menu-item>
+        <menu-item name="DepartureManagementForEmployee" title="员工离职管理">
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('DepartureManagementForEmployee');" url-mode="plain" style="icosg-plus1"/>
+
+        </menu-item>
+        <menu-item name="ContractForEmployee" title="员工合同管理">
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('ContractForEmployee');" url-mode="plain" style="icosg-plus1"/>
+
+        </menu-item>
+        <menu-item name="RewardAndPunishment" title="员工奖惩记录">
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('RewardAndPunishment');" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+        <menu-item name="TrainForEmployee" title="员工培训管理">
+            <link target="javascript:$.recordManagement.employeeRecordForMenu('TrainForEmployee');" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="HumanResAppBar" title=" " extends="CommonAppBarMenu" extends-resource="component://oa/widget/CommonMenus.xml">
+        <menu-item name="Employees" title="${uiLabelMap.HumanResEmployees}">
+            <condition>
+                <if-has-permission permission="Employees" action="_VIEW"/>
+            </condition>
+            <link target="findEmployees"/>
+        </menu-item>
+      <!--  <menu-item name="EmploymentApp" title="总览">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('Overview')" url-mode="plain" style="icosg-plus1"/>
+        </menu-item>-->
+        <menu-item name="employeeRecord" title="基本资料" >
+            <link target="javascript:$.recordManagement.employeeRecordSituation('EmployeeDetail','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="familySituation" title="家庭状况">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('FamilySituationList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="educationExperience" title="教育经历">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('EducationExperienceList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="workExperience" title="工作经历">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('WorkExperienceList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="transactionRecord" title="岗位调动">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('TransactionRecordList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="departureManagement" title="离职管理">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('DepartureManagement','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="Vehicle" title="档案合同">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('ContractRecordList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="Resources" title="奖惩记录">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('RewardsAndPunishmentRecordList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="TrainForEmployee" title="培训管理">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('TrainManagementList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+        <menu-item name="GlobalHRSettings" title="薪资" selected-style="selected">
+            <link target="javascript:$.recordManagement.employeeRecordSituation('SalaryManagementList','${partyId}')" url-mode="plain" style=""/>
+        </menu-item>
+    </menu>
+</menus>

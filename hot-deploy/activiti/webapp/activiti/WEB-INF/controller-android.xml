@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+    <description>工作流移动客户端请求接口</description>
+
+
+    <!--可以申请启动的流程列表-->
+    <request-map uri="ProcessList4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--登录人已申请的流程-->
+    <request-map uri="ApplyProcessList4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="applyList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <!--当前待登录人处理的流程任务-->
+    <request-map uri="MyTaskList4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="taskList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--流程任务处理界面数据-->
+    <request-map uri="TaskFormData4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processTaskData4Client"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--流程任务节点配置的表单页面-->
+    <request-map uri="TaskFormScreen4Client">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="ProcessTaskForm4Client"/>
+    </request-map>
+
+    <!--当登录人曾经参与处理的流程-->
+    <request-map uri="ParticipateList4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="participateList"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <!--流程的审批历史-->
+    <request-map uri="ProcessHistory4Client">
+        <security https="false" auth="true"/>
+        <event type="groovy" path="component://activiti/src/activiti/controller/ProcessController.groovy" invoke="processHistory"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <view-map name="ProcessTaskForm4Client" type="screen" page="component://activiti/widget/WorkflowScreens.xml#ProcessTaskForm4Client"/>
+
+</site-conf>

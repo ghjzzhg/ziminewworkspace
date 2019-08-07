@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="subordinatesList" type="list" title="" separate-columns="true" default-entity-name="" list-name="underlingList" paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="partyId"><hidden/></field>
+        <field name="limit" title="序号" sort-field="true"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <!--<field name="department" title="部门"><display/></field>-->
+        <field name="employeeName" title="姓名"><display/></field>
+        <field name="post" title="岗位"><display/></field>
+        <field name="attentionState" title="关注状态"><display/></field>
+        <field name="attentionButton" title-style="hide" widget-area-style="function-column" widget-style="smallSubmit"  title="" event="onClick" action="javascript:$.workLog.saveAttentionSubordinate('${partyId}','${ifAttentionButton}');">
+            <hyperlink target="#" description="${ifAttentionButton}" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+       </forms>

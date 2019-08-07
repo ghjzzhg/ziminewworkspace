@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="SalaryDecorator">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资"/>
+                <set field="headerItem" value="Salary"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="editSalaryEntry">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/EditSalaryItem.groovy"/>
+            </actions>
+        </section>
+    </screen>
+    <screen name="SalaryItems">
+        <section>
+            <actions>
+               <entity-and entity-name="Enumeration" list="typeList">
+                    <field-map field-name="enumTypeId" value="AMOUNT_TYPE" />
+                    <order-by field-name="sequenceId"/>
+                </entity-and>
+                <set field="titleProperty" value="薪资条目维护"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryItems"/>
+                <set field="parameters.sortField" from-field="parameters.sortField" default-value="-sn"/>
+                <set field="data" value="${parameters.data}"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryItems.groovy"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="薪资条目列表" id="SalaryItemsList">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/humanres/humanres/salary/SalaryItemsList.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                                <!--<screenlet title="新建条目">-->
+                                    <!--<include-form name="EditSalaryItem"-->
+                                                  <!--location="component://oa/widget/forms/SalaryForms.xml"/>-->
+                                <!--</screenlet>-->
+                                <screenlet title="新建条目">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template location="component://oa/webapp/humanres/humanres/salary/EditSalaryItem.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="sendSalaryPay1">
+        <section>
+            <actions>
+                <set field="titleProperty" value="薪资发放"/>
+                <set field="data" value="${parameters.data}"/>
+                <set field="year" value="${parameters.data.year}"/>
+                <set field="dateList" value="${parameters.data.dateList}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                    location="component://oa/webapp/humanres/humanres/salary/salaryPayOff.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                        <container>
+                                            <container style="col-xs-4">
+                                                <screenlet title="查询条件">
+                                                    <platform-specific>
+                                                        <html>
+                                                            <html-template
+                                                                    location="component://oa/webapp/humanres/humanres/salary/SalaryPayForSearch.ftl"/>
+                                                        </html>
+                                                    </platform-specific>
+                                                </screenlet>
+                                                <!--<include-form name="SalaryPayOffFindOptions"-->
+                                                          <!--location="component://oa/widget/forms/SalaryForms.xml"/>-->
+                                            </container>
+                                            <container style="col-xs-4">
+                                                <screenlet title="工资条">
+                                                    <include-form name="SalaryNoticeOperation"
+                                                                  location="component://oa/widget/forms/SalaryForms.xml"/>
+                                                </screenlet>
+                                            </container>
+                                            <container style="col-xs-4">
+                                                <container id="pieChart"/>
+                                            </container>
+                                        </container>
+                                        <container id="SalaryPayOffListDiv">
+                                            <include-screen name="salarySendList"/>
+                                            <!--<include-form name="SalaryPayOffList"-->
+                                                          <!--location="component://oa/widget/forms/SalaryForms.xml"/>-->
+                                        </container>
+                                        <screenlet title="说明">
+                                            <label text="添加员工信息记录后自动生成薪资发放条目。发放之前必须先维护薪资条目。"/>
+                                        </screenlet>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+
+
+    <screen name="sendSalaryPay">
+        <section>
+            <actions>
+                <set field="titleProperty" value="薪资发放"/>
+                <set field="data" value="${parameters.data}"/>
+                <set field="year" value="${parameters.data.year}"/>
+                <set field="month" value="${parameters.data.month}"/>
+                <set field="dateList" value="${parameters.data.dateList}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://oa/webapp/humanres/humanres/salary/salaryPayOff.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                        <container>
+                                            <container style="col-xs-4">
+                                                <screenlet title="查询条件">
+                                                <platform-specific>
+                                                    <html>
+                                                        <html-template
+                                                                location="component://oa/webapp/humanres/humanres/salary/SalaryPayForSearch.ftl"/>
+                                                    </html>
+                                                </platform-specific>
+                                                <!--<include-form name="SalaryPayOffFindOptions"-->
+                                                              <!--location="component://oa/widget/forms/SalaryForms.xml"/>-->
+                                                </screenlet>
+                                            </container>
+                                            <container style="col-xs-4">
+                                                <screenlet title="财务报表">
+                                                    <platform-specific>
+                                                        <html>
+                                                            <html-template
+                                                                    location="component://oa/webapp/humanres/humanres/salary/excelManipulate.ftl"/>
+                                                        </html>
+                                                    </platform-specific>
+                                                </screenlet>
+                                            </container>
+                                            <container style="col-xs-4">
+                                                <container id="pieChart"/>
+                                            </container>
+                                        </container>
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://oa/webapp/humanres/humanres/salary/sendSalaryInfo.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+
+
+
+
+
+    <screen name="sendSalaryList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="month" value="${parameters.data.month}"/>
+                <set field="year" value="${parameters.data.year}"/>
+                <set field="dateList" value="${parameters.data.dateList}"/>
+                <entity-and entity-name="Enumeration" list="salaryTypeList">
+                    <field-map field-name="enumTypeId" value="SEND_TYPE"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <screenlet id="sendSalaryLists">
+                    <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                        <decorator-section name="body">
+                            <platform-specific>
+                                <html>
+                                    <html-template
+                                            location="component://oa/webapp/humanres/humanres/salary/sendSalaryList.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </decorator-section>
+                    </decorator-screen>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+    <screen name="salarySendList">
+        <section>
+            <actions>
+                <set field="data" value="${parameters.data}"/>
+                <set field="month" value="${parameters.data.month}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                        location="component://oa/webapp/humanres/humanres/salary/salarySendList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="SalaryNotice">
+        <section>
+            <actions>
+                <set field="titleProperty" value="工资条维护"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryNotice"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryBillMould.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <screenlet title="工资条模板列表" id="salaryNoticeTemplateList" navigation-menu-name="createSalaryTemplate" name="myComms">
+                                            <include-menu name="createSalaryTemplate" location="component://oa/widget/SalaryMenus.xml"/>
+                                            <container id="showTemplateManagement">
+                                                <include-screen name="showTemplateManagement"/>
+                                            </container>
+                                        </screenlet>
+                                        <screenlet title="使用中模板" id="salaryNoticeTemplate">
+                                            <container id="salaryNoticeInfo">
+                                                <include-screen name="salaryNoticeInfo"/>
+                                            </container>
+                                        </screenlet>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="salaryNoticeInfo">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryBillMould.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                <html-template location="component://oa/webapp/humanres/humanres/salary/salaryNoticeTemplate.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="addTemplateManagement">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryBillMould.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                                        <html-template location="component://oa/webapp/humanres/humanres/salary/addSalaryTemplate.ftl"/>                                       </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="showTemplateManagement">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/FindSalaryBillMould.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template location="component://oa/webapp/humanres/humanres/salary/salaryTemplateList.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <!--<include-form name="ListSalaryTemplate" location="component://oa/widget/forms/SalaryForms.xml"/>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="SalaryOnAttendance">
+        <section>
+            <actions>
+                <set field="titleProperty" value="考勤规则维护"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryOnAttendance"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/AddAttendance.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <include-form name="AttendanceList"
+                                                      location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        <screenlet title="新建考勤规则">
+                                            <include-form name="AddAttendance"
+                                                          location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        </screenlet>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PersonSalaryItems">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资维护"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryPayOff"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <container style="abc">
+                                            <include-form name="PersonSalaryItems"
+                                                          location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        </container>
+                                        <screenlet title="调整历史记录">
+                                            <platform-specific>
+                                                <html>
+                                                    <html-template location="component://oa/webapp/humanres/humanres/salary/personSalaryItemsChangeHistory.ftl"/>
+                                                </html>
+                                            </platform-specific>
+                                        </screenlet>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SubmitPersonSalary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资发放"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryPayOff"/>
+                <set field="parameters.sortField"
+                     from-field="parameters.sortField" default-value="-sn"/>
+                <set field="data" value="${parameters.data}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <screenlet>
+                                            <platform-specific>
+                                                <html>
+                                                    <html-template location="component://oa/webapp/humanres/humanres/salary/submitpersonSalary.ftl"/>
+                                                </html>
+                                            </platform-specific>
+                                        </screenlet>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="addSubmitSalaryItem">
+    <section>
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/AddSubmitSalaryItem.groovy"/>
+        </actions>
+        <widgets>
+            <include-form name="SubmitPersonSalaryForm"
+                          location="component://oa/widget/forms/SalaryForms.xml"/>
+        </widgets>
+    </section>
+   </screen>
+    <screen name="saveSendDetail">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/SaveSendDetail.groovy"/>
+            </actions>
+        </section>
+    </screen>
+    <screen name="printSalaryBill">
+        <section>
+            <actions>
+                <set field="freeMarkerList" value="${parameters.freeMarkerList}"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://common/webcommon/includes/uiWidgets/kindeditor.ftl"/>
+                        <html-template location="component://oa/webapp/humanres/humanres/salary/printSalaryBill.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ifApproveSalary">
+    <section>
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/ifApproveSalary.groovy"/>
+        </actions>
+    </section>
+</screen>
+    <screen name="saveSalaryBillMould">
+    <section>
+        <actions>
+            <script location="component://oa/webapp/humanres/WEB-INF/actions/salary/SaveSalaryBillMould.groovy"/>
+        </actions>
+    </section>
+    </screen>
+    <screen name="ApprovePersonSalary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资审核"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryPayOff"/>
+                <set field="parameters.sortField"
+                     from-field="parameters.sortField" default-value="-sn"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/salary/SubmitPersonSalaryItems.groovy"></script>-->
+                <set field="sendId" value="${sendId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <container style="button-bar">
+                                            <link target="javascript:$.salary.ifApproveSalary(${sendId},'disapprove');" url-mode="plain" text="驳回" style="buttontext create"/>
+                                            <link target="javascript:$.salary.ifApproveSalary(${sendId},'approve');" url-mode="plain" text="通过" style="buttontext create"/>
+                                        </container>
+                                        <container style="abc">
+                                            <include-form name="ViewPersonSalary"
+                                                          location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        </container>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PayPersonSalary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资发放"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryPayOff"/>
+                <set field="parameters.sortField"
+                     from-field="parameters.sortField" default-value="-sn"/>
+                <!--<script location="component://oa/webapp/humanres/WEB-INF/actions/salary/SubmitPersonSalaryItems.groovy"></script>-->
+                <set field="sendId" value="${sendId}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <container style="button-bar">
+                                            <link target="javascript:$.salary.ifApproveSalary(${sendId},'confirmSent');" url-mode="plain" text="确认已发" style="buttontext create"/>
+                                            <link target="javascript:showInfo('打印')" url-mode="plain" text="打印" style="buttontext create"/>
+                                            <link target="javascript:$.salary.ifApproveSalary(${sendId},'approve');" url-mode="plain" text="发送邮件至员工邮箱" style="buttontext create"/>
+                                        </container>
+                                        <container style="abc">
+                                            <include-form name="ViewPersonSalary"
+                                                          location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        </container>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewPersonSalary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="员工薪资"/>
+                <set field="headerItem" value="Salary"/>
+                <set field="tabButtonItem" value="SalaryPayOff"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="SalaryDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <container style="button-bar">
+                                            <link target="javascript:showInfo('打印')" url-mode="plain" text="打印" style="buttontext create"/>
+                                            <link target="javascript:showInfo('邮件已发送...')" url-mode="plain" text="发送邮件至员工邮箱" style="buttontext create"/>
+                                        </container>
+                                        <container style="abc">
+                                            <include-form name="ViewPersonSalary"
+                                                          location="component://oa/widget/forms/SalaryForms.xml"/>
+                                        </container>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showMonthSalaryInfo">
+        <section>
+            <actions>
+                <set field="year" value="${parameters.year}"/>
+                <set field="monh" value="${parameters.month}"/>
+            </actions>
+            <widgets>
+                <container id="SalaryPayOffListDiv">
+                    <include-screen name="sendSalaryList"/>
+                </container>
+            </widgets>
+        </section>
+    </screen>
+</screens>

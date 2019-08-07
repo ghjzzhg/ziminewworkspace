@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <!-- PortalPortlet Seed Data: system pages -->
+    <PortalPage portalPageId="ZxdocCompany" sequenceNum="0" portalPageName="办公台" description="企业用户办公台" ownerUserLoginId="_NA_"/>
+    <PortalPage portalPageId="ZxdocProvider" sequenceNum="0" portalPageName="办公台" description="机构用户办公台" ownerUserLoginId="_NA_"/>
+
+    <PortalPageColumn portalPageId="ZxdocCompany" columnSeqId="00001" columnWidthPercentage="50"/>
+    <PortalPageColumn portalPageId="ZxdocCompany" columnSeqId="00002" columnWidthPercentage="50"/><!-- no width in pixels or percent, use the rest of the space available -->
+    <!--<PortalPageColumn portalPageId="ZxdocCompany" columnSeqId="00003" columnWidthPercentage="20"/>&lt;!&ndash; no width in pixels or percent, use the rest of the space available &ndash;&gt;-->
+
+    <PortalPageColumn portalPageId="ZxdocProvider" columnSeqId="00001" columnWidthPercentage="50"/>
+    <PortalPageColumn portalPageId="ZxdocProvider" columnSeqId="00002" columnWidthPercentage="50"/><!-- no width in pixels or percent, use the rest of the space available -->
+    <!--<PortalPageColumn portalPageId="ZxdocProvider" columnSeqId="00003" columnWidthPercentage="20"/>&lt;!&ndash; no width in pixels or percent, use the rest of the space available &ndash;&gt;-->
+
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_latestTicket" portletSeqId="00001" columnSeqId="00001" sequenceNum="1"/>
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_myCase" portletSeqId="00001" columnSeqId="00002" sequenceNum="2"/>
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_myProvider" portletSeqId="00001" columnSeqId="00001" sequenceNum="3"/>
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_calendar" portletSeqId="00001" columnSeqId="00002" sequenceNum="4"/>
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_eventNotice" portletSeqId="00001" columnSeqId="00001" sequenceNum="5"/>
+    <PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_wenda" portletSeqId="00001" columnSeqId="00002" sequenceNum="6"/>
+    <!--<PortalPagePortlet portalPageId="ZxdocCompany" portalPortletId="Zxdoc_commonRes" portletSeqId="00001" columnSeqId="00001" sequenceNum="7"/>-->
+
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_myCase" portletSeqId="00001" columnSeqId="00001" sequenceNum="1"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_confirmTicket" portletSeqId="00001" columnSeqId="00002" sequenceNum="2"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_wenda" portletSeqId="00001" columnSeqId="00001" sequenceNum="3"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_myCustomer" portletSeqId="00001" columnSeqId="00001" sequenceNum="4"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_calendar" portletSeqId="00001" columnSeqId="00002" sequenceNum="5"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_eventNotice" portletSeqId="00001" columnSeqId="00001" sequenceNum="6"/>
+    <PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_latestTicket" portletSeqId="00001" columnSeqId="00002" sequenceNum="7"/>
+    <!--<PortalPagePortlet portalPageId="ZxdocProvider" portalPortletId="Zxdoc_commonRes" portletSeqId="00001" columnSeqId="00001" sequenceNum="8"/>-->
+
+</entity-engine-xml>

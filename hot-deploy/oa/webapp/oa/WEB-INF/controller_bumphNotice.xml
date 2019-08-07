@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!--增加事务-->
+    <request-map uri="BumphNoticeBrowse">
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchNotice"/>
+        <response name="success" type="view" value="BumphNoticeBrowseList"/>
+    </request-map>
+    <request-map uri="AddBumphNoticeAjax">
+        <description>添加公文通知</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="BumphNoticeBrowseAddForm"/>
+    </request-map>
+    <request-map uri="saveNotice">
+        <description>保存公文通知</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveNotice"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="UseTemplateManagement">
+        <description>增加公文模板</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="UseTemplateManagement"/>
+    </request-map>
+    <request-map uri="showTemplateInfo">
+        <description>查看公文模板</description>
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showTemplateInfo"/>
+    </request-map>
+    <request-map uri="changeNoticeTemplate">
+        <description>模板联动</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="changeNoticeTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveNoticeTemplate">
+        <description>保存公文模板</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="saveNoticeTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteNoticeTemplate">
+        <description>删除公文模板</description>
+        <event type="service" invoke="deleteNoticeTemplate"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="searchNotice">
+        <description>搜索公文</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchNotice"/>
+        <response name="success" type="view" value="BumphNoticeList"/>
+    </request-map>
+    <request-map uri="updateSignInPerson">
+        <description>更新通知状态</description>
+        <event type="service" invoke="updateSignInPerson"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="deleteNotice">
+        <description>删除通知</description>
+        <event type="service" invoke="deleteNotice"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    <request-map uri="saveNoticeFeedback">
+        <description>保存反馈</description>
+        <event type="service" invoke="saveNoticeFeedback"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <request-map uri="checkPerson">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="checkPerson"/>
+    </request-map>
+
+    <request-map uri="BumphNoticeSignIn">
+        <description>签收记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSignInRecord"/>
+        <response name="success" type="view" value="BumphNoticeSignIn"/>
+    </request-map>
+    <request-map uri="searchSignInRecord">
+        <description>查询签收记录</description>
+        <security https="false" auth="true"/>
+        <event type="service" invoke="searchSignInRecord"/>
+        <response name="success" type="view" value="BumphNoticeSignInList"/>
+    </request-map>
+    <!--查看签收记录详情并签收-->
+    <request-map uri="showBumphNotice">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showBumphNotice"/>
+    </request-map>
+    <!--查看公文/通知内容-->
+    <request-map uri="showBumphNoticeInfo">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="showBumphNoticeInfo"/>
+    </request-map>
+
+
+    <request-map uri="BumphNoticeTest">
+        <security https="false" auth="true"/>
+        <response name="success" type="view" value="BumphNoticeTest"/>
+    </request-map>
+
+    <request-map uri="findEnums">
+        <description>搜索字典</description>
+        <event type="service" invoke="findEnums"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+
+    <view-map name="BumphNoticeBrowseList" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeBrowseList"/>
+    <view-map name="BumphNoticeBrowseAddForm" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeBrowseAddForm"/>
+    <view-map name="checkPerson" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#checkPerson"/>
+    <view-map name="BumphNoticeSignIn" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeSignIn"/>
+    <view-map name="showBumphNotice" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#showBumphNotice"/>
+    <view-map name="UseTemplateManagement" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#UseTemplateManagement"/>
+    <view-map name="showTemplateInfo" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#showTemplateInfo"/>
+    <view-map name="changeNoticeTemplate" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeBrowseAddForm"/>
+    <view-map name="saveNoticeTemplate" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#saveNoticeTemplate"/>
+    <view-map name="showBumphNoticeInfo" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#showBumphNoticeInfo"/>
+    <view-map name="BumphNoticeList" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeList"/>
+    <view-map name="BumphNoticeSignInList" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeSignInList"/>
+    <view-map name="BumphNoticeTest" type="screen" page="component://oa/widget/osManager/BumphNoticeScreens.xml#BumphNoticeTest"/>
+</site-conf>

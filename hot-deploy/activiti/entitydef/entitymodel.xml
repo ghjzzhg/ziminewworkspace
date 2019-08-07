@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of Workflow Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+    <entity entity-name="ActExtForm" package-name="org.ofbiz.activiti" title="流程扩展表-表单">
+        <field name="formId" type="id-ne"></field>
+        <field name="formName" type="name" not-null="true">
+        </field>
+        <field name="formKey" type="name" not-null="true">
+            <description>表单标识，用于对应的服务的约定</description>
+        </field>
+        <field name="servicePrefix" type="name">
+            <description>对应服务的前缀，默认为key</description>
+        </field>
+        <field name="category" type="name"></field>
+        <field name="formType" type="name" not-null="true"></field>
+        <field name="formUrl" type="long-varchar"></field>
+        <field name="description" type="long-varchar"></field>
+        <prim-key field="formId"/>
+    </entity>
+    <entity entity-name="ActExtFormContent" package-name="org.ofbiz.activiti" title="自定义表单内容">
+        <field name="formId" type="id-ne"></field>
+        <field name="content" type="very-long"></field>
+        <prim-key field="formId"/>
+        <relation type="one" fk-name="content_form" rel-entity-name="ActExtForm">
+            <key-map field-name="formId"/>
+        </relation>
+    </entity>
+
+    <!-- 自定义表单中的控件信息 -->
+    <entity entity-name="TblActExtFormChooserInfo" package-name="org.ofbiz.activiti" title="自定义表单中的控件信息">
+        <field name="id" type="id-ne"/>
+        <field name="name" type="very-long"/>
+        <field name="type" type="very-long"/>
+        <field name="formId" type="very-long"/>
+        <prim-key field="id"/>
+    </entity>
+
+    <!-- 自定义表单中的控件信息 -->
+    <entity entity-name="TblActChooserInfoValue" package-name="org.ofbiz.activiti" title="自定义表单中的控件信息">
+        <field name="id" type="id-ne"/>
+        <field name="formId" type="id-ne"/>
+        <field name="chooserId" type="id-ne"/>
+        <field name="chooserKey" type="very-long"/>
+        <field name="chooserValue" type="very-long"/>
+        <prim-key field="id"/>
+    </entity>
+
+    <!-- 自定义表单中的控件判断的值 -->
+    <entity entity-name="TblActExtFormChooserValue" package-name="org.ofbiz.activiti" title="自定义表单中的控件判断的值">
+        <field name="id" type="id-ne"/>
+        <field name="chooserId" type="id-ne"/>
+        <field name="sourceId" type="id-ne"/>
+        <field name="fromId" type="id-ne"/>
+        <field name="toId" type="id-ne"/>
+        <field name="operatorType" type="very-long"/>
+        <field name="processDefinitionId" type="very-long"/>
+        <field name="value" type="very-long"/>
+        <prim-key field="id"/>
+        <relation type="one" fk-name="chooser_form" rel-entity-name="TblActExtFormChooserInfo">
+            <key-map field-name="chooserId" rel-field-name="id"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="searchFormChooserValue" package-name="org.ofbiz.activiti" title="自定义表单判断">
+        <member-entity entity-alias="TV" entity-name="TblActExtFormChooserValue"/>
+        <member-entity entity-alias="TI" entity-name="TblActExtFormChooserInfo"/>
+        <alias name="chooserId" field="chooserId" entity-alias="TV"/>
+        <alias name="fromId" field="fromId" entity-alias="TV"/>
+        <alias name="toId" field="toId" entity-alias="TV"/>
+        <alias name="operatorType" field="operatorType" entity-alias="TV"/>
+        <alias name="value" field="value" entity-alias="TV"/>
+        <alias name="processDefinitionId" field="processDefinitionId" entity-alias="TV"/>
+        <alias name="id" field="id" entity-alias="TI"/>
+        <alias name="formId" field="formId" entity-alias="TI"/>
+        <alias name="name" field="name" entity-alias="TI"/>
+        <alias name="type" field="type" entity-alias="TI"/>
+        <view-link entity-alias="TV" rel-entity-alias="TI" rel-optional="true">
+            <key-map field-name="chooserId" rel-field-name="id"/>
+        </view-link>
+    </view-entity>
+
+    <entity entity-name="ActTaskExtForm" package-name="org.ofbiz.activiti" title="任务扩展表-表单">
+        <field name="taskId" type="long-varchar"/>
+        <field name="procDefId" type="long-varchar"/>
+        <field name="formId" type="id"/>
+
+        <prim-key field="procDefId"/>
+        <prim-key field="taskId"/>
+        <relation type="one" fk-name="ActTaskExtForm_Form" rel-entity-name="ActExtForm">
+            <key-map field-name="formId" rel-field-name="formId"/>
+        </relation>
+    </entity>
+    <entity entity-name="ActTaskExtUser" package-name="org.ofbiz.activiti" title="任务扩展表-执行人">
+        <field name="userId" type="long-varchar"></field>
+        <field name="procDefId" type="long-varchar"></field>
+        <field name="taskId" type="long-varchar"></field>
+        <field name="userType" type="id"></field>
+        <field name="userValue" type="very-long"></field>
+        <field name="setSeq" type="common-int">
+            <description>执行人规则可以多个批次组合</description>
+        </field>
+        <prim-key field="userId"/>
+        <relation type="many" rel-entity-name="ActTaskExtUserCondition">
+            <key-map field-name="userId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="tblActTaskAllotUser" package-name="org.ofbiz.activiti" title="执行人任务转办表">
+        <field name="id" type="id-ne"><description>id</description></field>
+        <field name="userId" type="long-varchar"><description>审核人</description></field>
+        <field name="taskId" type="long-varchar"><description>taskId</description></field>
+        <field name="allotUserId" type="id-ne"><description>转办的执行人</description></field>
+        <field name="allotTime" type="date-time">发起转办时间</field>
+        <prim-key field="id"/>
+        <relation type="one" fk-name="PK_USERID_PARTYID" rel-entity-name="Person">
+            <key-map field-name="userId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one" fk-name="PK_ALLOTID_PARTYID" rel-entity-name="Person">
+            <key-map field-name="allotUserId" rel-field-name="partyId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="ActTaskExtUserCondition" package-name="org.ofbiz.activiti" title="任务扩展表-执行人限制规则">
+        <field name="userId" type="id"/>
+        <field name="conditionId" type="id"/>
+        <field name="groupNo" type="name"/>
+        <field name="sequenceId" type="common-int"/>
+        <field name="conditionType" type="name"/>
+        <field name="conditionValue" type="long-varchar"/>
+
+        <prim-key field="conditionId"/>
+        <relation type="one" fk-name="ActTaskExtUserCondition_user" rel-entity-name="ActTaskExtUser">
+            <key-map field-name="userId"/>
+        </relation>
+    </entity>
+
+    <!-- ================= Activiti Database ================= -->
+    <!-- <entity entity-name="ActEvtLog" package-name="org.ofbiz.activiti" title="" table-name="ACT_EVT_LOG" no-auto-stamp="true">
+        <field name="lockOwner" col-name="LOCK_OWNER_" type="long-varchar"></field>
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="isProcessed" col-name="IS_PROCESSED_" type="numeric"></field>
+        <field name="data" col-name="DATA_" type="byte-array"></field>
+        <field name="lockTime" col-name="LOCK_TIME_" type="date-time"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="logNr" col-name="LOG_NR_" type="long-varchar" ></field>
+        <field name="timeStamp" col-name="TIME_STAMP_" type="date-time"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="logNr"/>
+    </entity> -->
+    
+    <!--<entity entity-name="ActGeBytearray" package-name="org.ofbiz.activiti" title="" table-name="ACT_GE_BYTEARRAY" no-auto-stamp="true">
+        <field name="deploymentId" col-name="DEPLOYMENT_ID_" type="long-varchar"></field>
+        <field name="generated" col-name="GENERATED_" type="long-varchar"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="bytes" col-name="BYTES_" type="byte-array"></field>
+        <prim-key field="id"/>
+        <relation type="many" fk-name="ACT_FK_BYTEA_DEPL" rel-entity-name="ActReDeployment">
+            <key-map field-name="deploymentId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_BYTEA_DEPL">
+            <index-field name="deploymentId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActGeProperty" package-name="org.ofbiz.activiti" title="" table-name="ACT_GE_PROPERTY" no-auto-stamp="true">
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="value" col-name="VALUE_" type="very-long"></field>
+        <prim-key field="name"/>
+    </entity>
+    
+    <entity entity-name="ActHiActinst" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_ACTINST" no-auto-stamp="true">
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="actId" col-name="ACT_ID_" type="long-varchar"></field>
+        <field name="name" col-name="ACT_NAME_" type="long-varchar"></field>
+        <field name="assignee" col-name="ASSIGNEE_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="duration" col-name="DURATION_" type="numeric"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="callProcInstId" col-name="CALL_PROC_INST_ID_" type="long-varchar"></field>
+        <field name="endTime" col-name="END_TIME_" type="date-time"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="actType" col-name="ACT_TYPE_" type="long-varchar"></field>
+        <field name="startTime" col-name="START_TIME_" type="date-time"></field>
+        <prim-key field="id"/>
+        <index name="ACT_IDX_HI_INST_ST">
+            <index-field name="startTime"/>
+        </index>
+        <index name="ACT_IDX_HI_INST_EN">
+            <index-field name="endTime"/>
+        </index>
+        <index name="ACT_IDX_HI_INST_PR">
+            <index-field name="procInstId"/>
+            <index-field name="actId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActHiAttachment" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_ATTACHMENT" no-auto-stamp="true">
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="url" col-name="URL_" type="very-long"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="description" col-name="DESCRIPTION_" type="very-long"></field>
+        <field name="contentId" col-name="CONTENT_ID_" type="long-varchar"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActHiComment" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_COMMENT" no-auto-stamp="true">
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="action" col-name="ACTION_" type="long-varchar"></field>
+        <field name="message" col-name="MESSAGE_" type="very-long"></field>
+        <field name="fullMsg" col-name="FULL_MSG_" type="byte-array"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="time" col-name="TIME_" type="date-time"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActHiDetail" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_DETAIL" no-auto-stamp="true">
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="actInstId" col-name="ACT_INST_ID_" type="long-varchar"></field>
+        <field name="bytearrayId" col-name="BYTEARRAY_ID_" type="long-varchar"></field>
+        <field name="long" col-name="LONG_" type="numeric"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="time" col-name="TIME_" type="date-time"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="double" col-name="DOUBLE_" type="floating-point"></field>
+        <field name="varType" col-name="VAR_TYPE_" type="long-varchar"></field>
+        <field name="text" col-name="TEXT_" type="very-long"></field>
+        <field name="text2" col-name="TEXT2_" type="very-long"></field>
+        <prim-key field="id"/>
+        <index name="ACT_IDX_HI_DE_PR_I">
+            <index-field name="procInstId"/>
+        </index>
+        <index name="ACT_IDX_HI_DE_AC_I">
+            <index-field name="actInstId"/>
+        </index>
+        <index name="ACT_IDX_HI_DE_TIME">
+            <index-field name="time"/>
+        </index>
+        <index name="ACT_IDX_HI_DE_NAM">
+            <index-field name="name"/>
+        </index>
+        <index name="ACT_IDX_HI_DE_T_ID">
+            <index-field name="taskId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActHiIdentitylink" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_IDENTITYLINK" no-auto-stamp="true">
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="groupId" col-name="GROUP_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <index name="ACT_IDX_HI_ID_LK_U">
+            <index-field name="userId"/>
+        </index>
+        <index name="ACT_IDX_HI_ID_LK_T">
+            <index-field name="taskId"/>
+        </index>
+        <index name="ACT_IDX_HI_ID_LK_P">
+            <index-field name="procInstId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActHiProcinst" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_PROCINST" no-auto-stamp="true">
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="startActId" col-name="START_ACT_ID_" type="long-varchar"></field>
+        <field name="superProcessInstId" col-name="SUPER_PROCESS_INSTANCE_ID_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="duration" col-name="DURATION_" type="numeric"></field>
+        <field name="endActId" col-name="END_ACT_ID_" type="long-varchar"></field>
+        <field name="endTime" col-name="END_TIME_" type="date-time"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="startTime" col-name="START_TIME_" type="date-time"></field>
+        <field name="deleteReason" col-name="DELETE_REASON_" type="very-long"></field>
+        <field name="businessKey" col-name="BUSINESS_KEY_" type="long-varchar"></field>
+        <field name="startUserId" col-name="START_USER_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <index name="ACT_IDX_HI_PR_I_EN">
+            <index-field name="endTime"/>
+        </index>
+        <index name="ACT_IDX_HI_PR_I_BU">
+            <index-field name="businessKey"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActHiTaskinst" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_TASKINST" no-auto-stamp="true">
+        <field name="owner" col-name="OWNER_" type="long-varchar"></field>
+        <field name="formKey" col-name="FORM_KEY_" type="long-varchar"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="claimTime" col-name="CLAIM_TIME_" type="date-time"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="assignee" col-name="ASSIGNEE_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="duration" col-name="DURATION_" type="numeric"></field>
+        <field name="priority" col-name="PRIORITY_" type="numeric"></field>
+        <field name="category" col-name="CATEGORY_" type="long-varchar"></field>
+        <field name="endTime" col-name="END_TIME_" type="date-time"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="dueDate" col-name="DUE_DATE_" type="date-time"></field>
+        <field name="parentTaskId" col-name="PARENT_TASK_ID_" type="long-varchar"></field>
+        <field name="startTime" col-name="START_TIME_" type="date-time"></field>
+        <field name="deleteReason" col-name="DELETE_REASON_" type="very-long"></field>
+        <field name="taskDefKey" col-name="TASK_DEF_KEY_" type="long-varchar"></field>
+        <field name="description" col-name="DESCRIPTION_" type="very-long"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActHiVarinst" package-name="org.ofbiz.activiti" title="" table-name="ACT_HI_VARINST" no-auto-stamp="true">
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="bytearrayId" col-name="BYTEARRAY_ID_" type="long-varchar"></field>
+        <field name="long" col-name="LONG_" type="numeric"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="createTime" col-name="CREATE_TIME_" type="date-time"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="double" col-name="DOUBLE_" type="floating-point"></field>
+        <field name="varType" col-name="VAR_TYPE_" type="long-varchar"></field>
+        <field name="text" col-name="TEXT_" type="very-long"></field>
+        <field name="lastUpdatedTime" col-name="LAST_UPDATED_TIME_" type="date-time"></field>
+        <field name="text2" col-name="TEXT2_" type="very-long"></field>
+        <prim-key field="id"/>
+        <index name="ACT_IDX_HI_PR_P_IN">
+            <index-field name="procInstId"/>
+        </index>
+        <index name="ACT_IDX_HI_PR_N_TY">
+            <index-field name="name"/>
+            <index-field name="varType"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActIdGroup" package-name="org.ofbiz.activiti" title="" table-name="ACT_ID_GROUP" no-auto-stamp="true">
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActIdInfo" package-name="org.ofbiz.activiti" title="" table-name="ACT_ID_INFO" no-auto-stamp="true">
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="value" col-name="VALUE_" type="long-varchar"></field>
+        <field name="parentId" col-name="PARENT_ID_" type="long-varchar"></field>
+        <field name="key" col-name="KEY_" type="long-varchar"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="password" col-name="PASSWORD_" type="byte-array"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActIdMembership" package-name="org.ofbiz.activiti" title="" table-name="ACT_ID_MEMBERSHIP" no-auto-stamp="true">
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="groupId" col-name="GROUP_ID_" type="long-varchar"></field>
+        <prim-key field="userId"/>
+        <prim-key field="groupId"/>
+        <relation rel-entity-name="ActIdGroup" fk-name="ACT_FK_MEMB_GROUP" type="one">
+            <key-map field-name="groupId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActIdUser" fk-name="ACT_FK_MEMB_USER" type="one">
+            <key-map field-name="userId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_MEMB_GROUP">
+            <index-field name="groupId"/>
+        </index>
+        <index name="ACT_IDX_MEMB_USER">
+            <index-field name="userId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActIdUser" package-name="org.ofbiz.activiti" title="" table-name="ACT_ID_USER" no-auto-stamp="true">
+        <field name="email" col-name="EMAIL_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="pictureId" col-name="PICTURE_ID_" type="long-varchar"></field>
+        <field name="last" col-name="LAST_" type="long-varchar"></field>
+        <field name="first" col-name="FIRST_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="pwd" col-name="PWD_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActReDeployment" package-name="org.ofbiz.activiti" title="" table-name="ACT_RE_DEPLOYMENT" no-auto-stamp="true">
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="deployTime" col-name="DEPLOY_TIME_" type="date-time"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="category" col-name="CATEGORY_" type="long-varchar"></field>
+        <prim-key field="id"/>
+    </entity>
+    
+    <entity entity-name="ActReModel" package-name="org.ofbiz.activiti" title="" table-name="ACT_RE_MODEL" no-auto-stamp="true">
+        <field name="editorSourceValueId" col-name="EDITOR_SOURCE_VALUE_ID_" type="long-varchar"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="version" col-name="VERSION_" type="numeric"></field>
+        <field name="metaInfo" col-name="META_INFO_" type="very-long"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="createTime" col-name="CREATE_TIME_" type="date-time"></field>
+        <field name="category" col-name="CATEGORY_" type="long-varchar"></field>
+        <field name="deploymentId" col-name="DEPLOYMENT_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="key" col-name="KEY_" type="long-varchar"></field>
+        <field name="editorSourceExtId" col-name="EDITOR_SOURCE_EXTRA_VALUE_ID_" type="long-varchar"></field>
+        <field name="lastUpdateTime" col-name="LAST_UPDATE_TIME_" type="date-time"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActGeBytearray" fk-name="ACT_FK_MODL_SOURCE" type="many">
+            <key-map field-name="editorSourceValueId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActGeBytearray" fk-name="ACT_FK_MODL_SRC_EX" type="many">
+            <key-map field-name="editorSourceExtId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActReDeployment" fk-name="ACT_FK_MODL_DEPLOY" type="one">
+            <key-map field-name="deploymentId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_MODL_SRC">
+            <index-field name="editorSourceValueId"/>
+        </index>
+        <index name="ACT_IDX_MODL_SR_EX">
+            <index-field name="editorSourceExtId"/>
+        </index>
+        <index name="ACT_IDX_MODL_DEPLO">
+            <index-field name="deploymentId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActReProcdef" package-name="org.ofbiz.activiti" title="" table-name="ACT_RE_PROCDEF" no-auto-stamp="true">
+        <field name="suspensionState" col-name="SUSPENSION_STATE_" type="numeric"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="version" col-name="VERSION_" type="numeric"></field>
+        <field name="hasStartFormKey" col-name="HAS_START_FORM_KEY_" type="long-varchar"></field>
+        <field name="dgrmResourceName" col-name="DGRM_RESOURCE_NAME_" type="very-long"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="category" col-name="CATEGORY_" type="long-varchar"></field>
+        <field name="deploymentId" col-name="DEPLOYMENT_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="resourceName" col-name="RESOURCE_NAME_" type="very-long"></field>
+        <field name="description" col-name="DESCRIPTION_" type="very-long"></field>
+        <field name="key" col-name="KEY_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <index name="ACT_UNIQ_PROCDEF" unique="true">
+            <index-field name="key"/>
+            <index-field name="version"/>
+            <index-field name="actTenantId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuEventSubscr" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_EVENT_SUBSCR" no-auto-stamp="true">
+        <field name="configuration" col-name="CONFIGURATION_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="eventName" col-name="EVENT_NAME_" type="long-varchar"></field>
+        <field name="activityId" col-name="ACTIVITY_ID_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="eventType" col-name="EVENT_TYPE_" type="long-varchar"></field>
+        <field name="created" col-name="CREATED_" type="date-time"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_EVENT_EXEC" type="many">
+            <key-map field-name="executionId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_ENT_SB_CNF">
+            <index-field name="configuration"/>
+        </index>
+        <index name="ACT_IDX_ENT_SUBSCR">
+            <index-field name="executionId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuExecution" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_EXECUTION" no-auto-stamp="true">
+        <field name="isEventScope" col-name="IS_EVENT_SCOPE_" type="long-varchar"></field>
+        <field name="cachedEntState" col-name="CACHED_ENT_STATE_" type="numeric"></field>
+        <field name="suspensionState" col-name="SUSPENSION_STATE_" type="numeric"></field>
+        <field name="isActive" col-name="IS_ACTIVE_" type="long-varchar"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="actId" col-name="ACT_ID_" type="long-varchar"></field>
+        <field name="isConcurrent" col-name="IS_CONCURRENT_" type="long-varchar"></field>
+        <field name="parentId" col-name="PARENT_ID_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="superExec" col-name="SUPER_EXEC_" type="long-varchar"></field>
+        <field name="isScope" col-name="IS_SCOPE_" type="long-varchar"></field>
+        <field name="businessKey" col-name="BUSINESS_KEY_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_EXE_PROCINS" type="many">
+            <key-map field-name="procInstId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_EXE_PARENT" type="many">
+            <key-map field-name="parentId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_EXE_SUPER" type="many">
+            <key-map field-name="superExec" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_EXE_PROCDEF" type="many">
+            <key-map field-name="procDefId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_EXE_BUSKEY" >
+            <index-field name="businessKey"/>
+        </index>
+        <index name="ACT_IDX_EXE_PROCIN" >
+            <index-field name="procInstId"/>
+        </index>
+        <index name="ACT_IDX_EXE_PARENT" >
+            <index-field name="parentId"/>
+        </index>
+        <index name="ACT_IDX_EXE_SUPER" >
+            <index-field name="superExec"/>
+        </index>
+        <index name="ACT_IDX_EXE_PROCDE" >
+            <index-field name="procDefId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuIdentitylink" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_IDENTITYLINK" no-auto-stamp="true">
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="userId" col-name="USER_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="groupId" col-name="GROUP_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActRuTask" fk-name="ACT_FK_TSKASS_TASK" type="one">
+            <key-map field-name="taskId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActReProcdef" fk-name="ACT_FK_ATHRZ_PROCE" type="one">
+            <key-map field-name="procDefId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_IDL_PROCINS" type="many">
+            <key-map field-name="procInstId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_ID_LNK_USR">
+            <index-field name="userId"/>
+        </index>
+        <index name="ACT_IDX_ID_LNK_GRO">
+            <index-field name="groupId"/>
+        </index>
+        <index name="ACT_IDX_TSKAS_TASK">
+            <index-field name="taskId"/>
+        </index>
+        <index name="ACT_IDX_ATHRZ_PROC">
+            <index-field name="procDefId"/>
+        </index>
+        <index name="ACT_IDX_IDL_PROCIN">
+            <index-field name="procInstId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuJob" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_JOB" no-auto-stamp="true">
+        <field name="duedate" col-name="DUEDATE_" type="date-time"></field>
+        <field name="lockOwner" col-name="LOCK_OWNER_" type="long-varchar"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="processInstanceId" col-name="PROCESS_INSTANCE_ID_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="exceptionStackId" col-name="EXCEPTION_STACK_ID_" type="long-varchar"></field>
+        <field name="handlerCfg" col-name="HANDLER_CFG_" type="very-long"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="lockExpTime" col-name="LOCK_EXP_TIME_" type="date-time"></field>
+        <field name="repeat" col-name="REPEAT_" type="long-varchar"></field>
+        <field name="retries" col-name="RETRIES_" type="numeric"></field>
+        <field name="exceptionMsg" col-name="EXCEPTION_MSG_" type="very-long"></field>
+        <field name="exclusive" col-name="EXCLUSIVE_" type="long-varchar"></field>
+        <field name="handlerType" col-name="HANDLER_TYPE_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActGeBytearray" fk-name="ACT_FK_JOB_EXCEPTI" type="one">
+            <key-map field-name="exceptionStackId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_JOB_EXCEPT">
+            <index-field name="exceptionStackId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuTask" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_TASK" no-auto-stamp="true">
+        <field name="owner" col-name="OWNER_" type="long-varchar"></field>
+        <field name="formKey" col-name="FORM_KEY_" type="long-varchar"></field>
+        <field name="suspensionState" col-name="SUSPENSION_STATE_" type="numeric"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="procDefId" col-name="PROC_DEF_ID_" type="long-varchar"></field>
+        <field name="assignee" col-name="ASSIGNEE_" type="long-varchar"></field>
+        <field name="delegation" col-name="DELEGATION_" type="long-varchar"></field>
+        <field name="actTenantId" col-name="TENANT_ID_" type="long-varchar"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="createTime" col-name="CREATE_TIME_" type="date-time"></field>
+        <field name="priority" col-name="PRIORITY_" type="numeric"></field>
+        <field name="category" col-name="CATEGORY_" type="long-varchar"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <field name="dueDate" col-name="DUE_DATE_" type="date-time"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="parentTaskId" col-name="PARENT_TASK_ID_" type="long-varchar"></field>
+        <field name="description" col-name="DESCRIPTION_" type="very-long"></field>
+        <field name="taskDefKey" col-name="TASK_DEF_KEY_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_TASK_EXE" type="many">
+            <key-map field-name="executionId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" fk-name="ACT_FK_TASK_PROCIN" type="many">
+            <key-map field-name="procInstId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActReProcdef" fk-name="ACT_FK_TASK_PROCDE" type="one">
+            <key-map field-name="procDefId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_TSK_CREATE">
+            <index-field name="createTime"/>
+        </index>
+        <index name="ACT_IDX_TASK_EXEC">
+            <index-field name="executionId"/>
+        </index>
+        <index name="ACT_IDX_TASK_PROCI">
+            <index-field name="procInstId"/>
+        </index>
+        <index name="ACT_IDX_TASK_PROCD">
+            <index-field name="procDefId"/>
+        </index>
+    </entity>
+    
+    <entity entity-name="ActRuVariable" package-name="org.ofbiz.activiti" title="" table-name="ACT_RU_VARIABLE" no-auto-stamp="true">
+        <field name="taskId" col-name="TASK_ID_" type="long-varchar"></field>
+        <field name="name" col-name="NAME_" type="long-varchar"></field>
+        <field name="rev" col-name="REV_" type="numeric"></field>
+        <field name="double" col-name="DOUBLE_" type="floating-point"></field>
+        <field name="text" col-name="TEXT_" type="very-long"></field>
+        <field name="bytearrayId" col-name="BYTEARRAY_ID_" type="long-varchar"></field>
+        <field name="long" col-name="LONG_" type="numeric"></field>
+        <field name="id" col-name="ID_" type="long-varchar"></field>
+        <field name="text2" col-name="TEXT2_" type="very-long"></field>
+        <field name="type" col-name="TYPE_" type="long-varchar"></field>
+        <field name="executionId" col-name="EXECUTION_ID_" type="long-varchar"></field>
+        <field name="procInstId" col-name="PROC_INST_ID_" type="long-varchar"></field>
+        <prim-key field="id"/>
+        <relation rel-entity-name="ActRuExecution" type="many" fk-name="ACT_FK_VAR_EXE">
+            <key-map field-name="executionId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActRuExecution" type="many" fk-name="ACT_FK_VAR_PROCINS">
+            <key-map field-name="procInstId" rel-field-name="id"/>
+        </relation>
+        <relation rel-entity-name="ActGeBytearray" type="one" fk-name="ACT_FK_VAR_BYTEA">
+            <key-map field-name="bytearrayId" rel-field-name="id"/>
+        </relation>
+        <index name="ACT_IDX_VAR_TSK_ID">
+            <index-field name="taskId"/>
+        </index>
+        <index name="ACT_IDX_VAR_EXE">
+            <index-field name="executionId"/>
+        </index>
+        <index name="ACT_IDX_VAR_PROCIN">
+            <index-field name="procInstId"/>
+        </index>
+        <index name="ACT_IDX_VAR_BYTEA">
+            <index-field name="bytearrayId"/>
+        </index>
+    </entity>-->
+    
+</entitymodel>

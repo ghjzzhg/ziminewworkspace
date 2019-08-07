@@ -1,0 +1,69 @@
+.ztree li {
+    line-height: 20px!important;
+}
+.ztree li span.button{
+    top: 1px!important;
+    font-family: 'Glyphicons Halflings'!important;
+    font-style: normal!important;
+    font-weight: 400!important;
+    line-height: 1em!important;
+    -webkit-font-smoothing:antialiased!important;
+    -moz-osx-font-smoothing:grayscale!important;
+    background-image: none!important;
+}
+
+.ztree li span.button.pIcon00_ico_open:before{
+    content: "\e012";
+}
+.ztree li span.button.pIcon00_ico_close:before{
+    content: "\e012";
+}
+.ztree li span.button.pIcon01_ico_open:before{
+    content: "\e021";
+}
+.ztree li span.button.pIcon01_ico_close:before{
+    content: "\e021";
+}
+.ztree li span.button.pIcon01_ico_open, .ztree li span.button.pIcon00_ico_open{
+    color: #0a6ebd;
+}
+.ztree li span.button.pIcon01_ico_close, .ztree li span.button.pIcon00_ico_close{
+    color: darkgray;
+}
+
+.ztree li span.button.ico_open:before{
+    content: "\e008";
+}
+.ztree li span.button.ico_close:before{
+    content: "\e008";
+}
+.ztree li span.button.ico_open{
+    color: #0a6ebd;
+    vertical-align: middle;
+}
+.ztree li span.button.ico_close{
+    color: darkgray;
+    vertical-align: middle;
+}
+.ztree li span.button.icon01_ico_docu:before {
+    content: "\e008";
+}
+.ztree li span.button.icon01_ico_docu {
+    color: #0a6ebd;
+}
+
+.ztree li span.button.switch.root_open,.ztree li span.button.switch.center_open,.ztree li span.button.switch.bottom_open{
+    color: #0a6ebd;
+}
+
+.ztree li span.button.switch.root_open:before,.ztree li span.button.switch.center_open:before,.ztree li span.button.switch.bottom_open:before{
+    content: "\2212";
+}
+
+.ztree li span.button.switch.root_close,.ztree li span.button.switch.center_close,.ztree li span.button.switch.bottom_close{
+    color: darkgray;
+}
+
+.ztree li span.button.switch.root_close:before,.ztree li span.button.switch.center_close:before,.ztree li span.button.switch.bottom_close:before{
+    content: "\2b";
+}

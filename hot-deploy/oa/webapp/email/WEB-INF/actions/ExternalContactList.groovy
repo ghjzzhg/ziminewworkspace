@@ -1,0 +1,4 @@
+context.contactList = [[name: '张三', group: '技术支持', company: '苹果中国', position: '工程师', level: '员工', telephone: '0519-12341234-011', cellphone: '13112341234', email: 'zhangsan@rextec.com.cn'],
+                       [name: '李四', group: '技术支持', company: '微软', position: '工程师', level: '员工', telephone: '0519-12341234-011', cellphone: '13112341234', email: 'lisi@rextec.com.cn'],
+                       [name: '李四', group: '客户', company: '百度', position: '工程师', level: '员工', telephone: '0519-12341234-011', cellphone: '13112341234', email: 'lisi@rextec.com.cn'],
+                       [name: '李四', group: '客户', company: '淘常州', position: '工程师', level: '员工', telephone: '0519-12341234-011', cellphone: '13112341234', email: 'lisi@rextec.com.cn']];

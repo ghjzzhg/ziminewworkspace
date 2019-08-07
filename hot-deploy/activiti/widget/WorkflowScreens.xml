@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="ProcessList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet collapsible="true" id="processListScreenlet" title="${uiLabelMap.WorkflowApplication}" navigation-menu-name="ProcessListBar">
+                            <include-menu name="ProcessListBar" location="component://activiti/widget/WorkflowMenus.xml"/>
+                            <container id="ProcessList">
+                                <include-screen name="ProcessListOnly"/>
+                            </container>
+                        </screenlet>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/processList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ProcessListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ProcessList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ApplyProcessList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.ApplyProcess}">
+                            <!--<include-menu name="ProcessListBar" location="component://activiti/widget/WorkflowMenus.xml"/>-->
+                            <container id="ProcessList">
+                                <include-screen name="ApplyProcessListOnly"/>
+                            </container>
+                        </screenlet>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/applyProcessList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ApplyProcessListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ApplyProcessList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ParticipateProcessList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.ParticipateProcess}">
+                            <!--<include-menu name="ProcessListBar" location="component://activiti/widget/WorkflowMenus.xml"/>-->
+                            <container id="ProcessList">
+                                <include-screen name="ParticipateProcessListOnly"/>
+                            </container>
+                        </screenlet>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/applyProcessList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ParticipateProcessListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="processList" from-field="parameters.processList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ApplyProcessList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="MyTaskList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="taskList" from-field="parameters.taskList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.MyProcessTask}">
+                            <!--<include-menu name="ProcessListBar" location="component://activiti/widget/WorkflowMenus.xml"/>-->
+                            <container id="MyTaskList">
+                                <include-screen name="MyTaskListOnly"/>
+                            </container>
+                        </screenlet>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/applyProcessList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="MyTaskListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="taskList" from-field="parameters.taskList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="MyTaskList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ModelList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="modelList" from-field="parameters.modelList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet id="modelListLet" title="${uiLabelMap.WorkflowModel}" collapsible="true" navigation-menu-name="ModelListBar">
+                            <include-menu name="ModelListBar" location="component://activiti/widget/WorkflowMenus.xml"/>
+                            <container id="ModelList">
+                                <include-screen name="ModelListOnly"/>
+                            </container>
+                        </screenlet>
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/modelList.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ModelListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="modelList" from-field="parameters.modelList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ModelList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="CreateModel">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ModelForm" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="UploadProcess">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="UploadProcessForm" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ModelDefinition">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://activiti/webapp/activiti/activiti/editor.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ActFormList">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="formList" from-field="parameters.formList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.WorkflowForm}" navigation-menu-name="ActFormListBar">
+                            <include-menu name="ActFormListBar" location="component://activiti/widget/WorkflowMenus.xml"/>
+                            <container id="ActFormList">
+                                <include-screen name="ActFormListOnly"/>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ActFormListOnly">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="formList" from-field="parameters.formList"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <include-form name="ActFormList" location="component://activiti/widget/forms/WorkflowForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="CreateActForm">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="form" from-field="parameters.form"/>
+                <entity-condition entity-name="Enumeration" list="formTypeList">
+                    <condition-expr field-name="enumTypeId" value="ACT_TASK_FORM_TYPE"/>
+                </entity-condition>
+                <entity-condition entity-name="Enumeration" list="categoryList">
+                    <condition-expr field-name="enumTypeId" value="WORKFLOW_CATEGORY"/>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                    location="component://common/webcommon/includes/uiWidgets/ueditor.ftl"/>
+                                <html-template location="component://activiti/webapp/activiti/activiti/createActExtForm.ftl"/>
+                            </html>
+                        </platform-specific>
+                        <!--<include-form name="ActForm" location="component://activiti/widget/forms/WorkflowForms.xml"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="ProcessHistory">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="processList" from-field="parameters.processHistory"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template location="component://activiti/webapp/activiti/activiti/processHistory.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SetTaskUser">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <!--<script location="component://activiti/webapp/activiti/WEB-INF/actions/ModelList.groovy"></script>-->
+                <set field="userList" from-field="parameters.userList"/>
+                <set field="userId" default-value="abc"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="WorkflowCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.TaskUserCondition}" navigation-menu-name="ActFormListBar">
+                            <include-menu name="ActFormListBar" location="component://activiti/widget/WorkflowMenus.xml"/>
+                            <container id="conditions">
+                                <platform-specific><html>
+                                    <html-template
+                                        location="component://activiti/webapp/activiti/activiti/taskUserCondition.ftl"/>
+                                </html></platform-specific>
+                            </container>
+                        </screenlet>
+                        <screenlet title="${uiLabelMap.TaskUser}" navigation-menu-name="ActFormListBar">
+                            <include-menu name="ActFormListBar" location="component://activiti/widget/WorkflowMenus.xml"/>
+                            <container id="users">
+                                <platform-specific><html>
+                                    <html-template
+                                        location="component://activiti/webapp/activiti/activiti/taskUser.ftl"/>
+                                </html></platform-specific>
+                            </container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="CreateActTaskExtForm">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="procDefId" from-field="parameters.procDefId"/>
+                <set field="userId" from-field="parameters.userId"/>
+                <set field="taskId" from-field="parameters.taskId"/>
+                <set field="taskForm" from-field="parameters.taskForm"/>
+                <set field="forms" from-field="parameters.forms"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                location="component://activiti/webapp/activiti/activiti/createActTaskExtForm.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ProcessTaskForm">
+        <section>
+            <condition>
+                <or>
+                    <if-compare field="parameters.viewType" operator="equals" value="OFBIZ_SCREEN"/>
+                    <if-empty field="parameters.viewType"/>
+                </or>
+                <!--<if-empty field="parameters.view"/>&lt;!&ndash;如果不为空，表明任务表单是最终用户通过kindeditor自定义的表单，否则为开发人员定义的ofbiz页面&ndash;&gt;-->
+            </condition>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="embed-mode" from-field="embed-mode" default-value="false"/><!--是否是嵌入在业务表单中-->
+                <set field="taskId" from-field="parameters.taskId"/>
+                <set field="location" from-field="parameters.location"/>
+                <set field="screenName" from-field="parameters.screenName"/>
+                <set field="formId" from-field="parameters.formId"/><!--任务表单对应的html form的id-->
+                <script location="component://activiti/webapp/activiti/WEB-INF/actions/PrepareTaskProcess.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container id="processTaskFormWrapper">
+                            <platform-specific><html>
+                                <html-template
+                                    location="component://activiti/webapp/activiti/activiti/processTaskHeader.ftl"/>
+                            </html></platform-specific>
+                            <container style="taskFormContainer">
+                            <include-screen name="${screenName}" location="${location}"/>
+                            </container>
+                            <platform-specific><html>
+                                <html-template
+                                    location="component://activiti/webapp/activiti/activiti/processTaskFooter.ftl"/>
+                            </html></platform-specific>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+            <fail-widgets>
+                <section>
+                    <actions>
+                        <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                        <set field="embed-mode" from-field="embed-mode" default-value="false"/><!--是否是嵌入在业务表单中-->
+                        <set field="taskId" from-field="parameters.taskId"/>
+                        <set field="location" from-field="parameters.location"/>
+                        <set field="screenName" from-field="parameters.screenName"/>
+                        <set field="formId" from-field="parameters.formId"/><!--任务表单对应的html form的id-->
+                        <script location="component://activiti/webapp/activiti/WEB-INF/actions/PrepareTaskProcess.groovy"/>
+                    </actions>
+                    <widgets>
+                        <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                            <decorator-section name="body">
+                                <platform-specific><html>
+                                    <html-template
+                                            location="component://activiti/webapp/activiti/activiti/processTaskHeader.ftl"/>
+                                </html></platform-specific>
+                                <container style="taskFormContainer">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                    location="component://activiti/webapp/activiti/activiti/processTaskForm.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                </container>
+                                <platform-specific><html>
+                                    <html-template
+                                            location="component://activiti/webapp/activiti/activiti/processTaskFooter.ftl"/>
+                                </html></platform-specific>
+                            </decorator-section>
+                        </decorator-screen>
+                    </widgets>
+                </section>
+            </fail-widgets>
+        </section>
+    </screen>
+    <screen name="ProcessTaskForm4Biz"><!--在业务表单中嵌入的工作流表单-->
+        <section>
+            <condition>
+                <and><!--必须传入流程主键及业务数据主键-->
+                    <not>
+                        <if-empty field="parameters.bizKey"/><!--业务数据id-->
+                    </not>
+                    <not>
+                        <if-empty field="parameters.processKey"/><!--流程key-->
+                    </not>
+                </and>
+            </condition>
+            <actions>
+                <set field="headerItem" value="main"/>
+                <set field="embed-mode" value="true"/>
+                <set field="bizKey" from-field="parameters.bizKey"/>
+                <set field="processKey" from-field="parameters.processKey"/>
+                <script location="component://activiti/webapp/activiti/WEB-INF/actions/PrepareTaskProcess4Biz.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <not>
+                            <if-empty field="taskId"/><!--流程已启动-->
+                        </not>
+                    </condition>
+                    <widgets>
+                        <include-screen name="ProcessTaskForm"/><!--流程启动后直接显示流程任务处理界面-->
+                    </widgets>
+                    <fail-widgets>
+                    <!--如果流程尚未启动，在业务逻辑中通过调用startProcess服务来启动流程-->
+                    </fail-widgets>
+                </section>
+            </widgets>
+            <fail-widgets>
+            </fail-widgets>
+        </section>
+    </screen>
+    <screen name="ProcessTaskForm4Client">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <set field="taskId" from-field="parameters.taskId"/>
+                <set field="location" from-field="parameters.location"/>
+                <set field="screenName" from-field="parameters.screenName"/>
+                <set field="formId" from-field="parameters.formId"/><!--任务表单对应的html form的id-->
+                <script location="component://activiti/webapp/activiti/WEB-INF/actions/PrepareTaskProcess.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <container style="taskFormContainer">
+                        <include-screen name="${screenName}" location="${location}"/>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="setControlInfo">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/setControlInfo.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="showControlPage">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/showControlPage.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="setText">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/text.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="setCheckboxs">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/checkboxs.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="setRadios">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/radios.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="setSelect">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/select.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="setTextarea">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/textarea.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showContent">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/showContent.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="activitiChooser">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/activitiChooser.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="showContentPage">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/showContentPage.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="setOtherConstant">
+        <section>
+            <actions>
+                <entity-and entity-name="EnumerationType" list="typeList">
+                    <field-map field-name="hasTable" value="N"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/setOtherConstant.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="allot">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/allot.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CreateLineActTaskExtForm">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific><html>
+                            <html-template
+                                    location="component://activiti/webapp/activiti/activiti/createLineActTaskExtForm.ftl"/>
+                        </html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

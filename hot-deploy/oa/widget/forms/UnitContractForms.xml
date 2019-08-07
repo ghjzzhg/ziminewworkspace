@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="FindUnitContract" type="single" header-row-style="header-row" default-table-style="basic-table"
+          default-map-name="">
+        <field name="contractType" title="合同类型" position="1">
+        <drop-down>
+            <option key="" description="请选择"/>
+            <option key="" description="销售合同"/>
+            <option key="" description="行政合同"/>
+            <option key="" description="仓储合同"/>
+            <option key="" description="维保合同"/>
+            <option key="" description="采购合同"/>
+        </drop-down>
+    </field>
+        <field name="contractNumber" title="合同编号" position="2">
+           <text/>
+        </field>
+       <field name="contractName" title="合同名称" position="3">
+           <text/>
+       </field>
+        <field name="department" title="所属部门" position="4">
+            <lookup target-form-name="LookupPartyGroup" position="center" width="750"/>
+        </field>
+        <field name="customerName" title="所属客户名称" position="1">
+            <text/>
+        </field>
+        <field name="balanceOfPaymentsType" title="收/支类型" position="2">
+            <drop-down>
+                <option key="" description="请选择"/>
+                <option key="" description="收款"/>
+                <option key="" description="付款"/>
+                <option key="" description="非收支"/>
+            </drop-down>
+        </field>
+        <field name="contractMoney" title="合同总金额" position="3">
+            <text/>
+        </field>
+        <field name="contractStartDate" title="合同开始日期" position="4">
+            <date-time type="date"/>
+        </field>
+        <field name="contractEndDate" title="合同结束日期" position="1">
+            <date-time type="date"/>
+        </field>
+        <field name="totalMoney" title="累积收/支金额" position="2">
+            <text/>
+        </field>
+        <field name="expiredReminder" title="过期提醒" position="3">
+            <drop-down>
+                <option key="" description="请选择"/>
+                <option key="" description="是"/>
+                <option key="" description="否"/>
+            </drop-down>
+        </field>
+        <field name="contractState" title="合同状态" position="4">
+            <drop-down>
+                <option key="" description="请选择"/>
+                <option key="" description="生效中"/>
+                <option key="" description="已失效"/>
+            </drop-down>
+        </field>
+        <field name="signDate" title="签约日期" position="1">
+            <drop-down>
+                <option key="" description="请选择"/>
+                <option key="" description="生效中"/>
+                <option key="" description="已失效"/>
+            </drop-down>
+        </field>
+        <field name="mineSignRepresentative1" title="我方签约代表" position="2">
+            <lookup target-form-name="LookupPartyName" position="center" width="750"/>
+        </field>
+        <field name="theirSignRepresentative" title="对方签约代表" position="3">
+            <text/>
+        </field>
+        <field name="totalPage" title="总页数" position="4">
+            <text/>
+    </field>
+        <field name="findButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.UnitContract.searchContract();" position="1">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="createButton" title="操作" widget-style="smallSubmit" event="onClick"
+               action="javascript:$.UnitContract.createContract();" position="2">
+            <hyperlink target="#nowhere" description="新建单位合同" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="unitContractList" type="list" title="" separate-columns="true" default-entity-name="" list-name="unitContractList"
+          paginate-target="" paginate="true"
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="resourceId">
+            <hidden/>
+        </field>
+        <field name="contractNumber" title="合同编号">
+            <display/>
+        </field>
+        <field name="contractName" title="合同名称">
+            <display/>
+        </field>
+        <field name="department" title="所属部门">
+            <display/>
+        </field>
+        <field name="customerName" title="所属客户名称">
+            <display/>
+        </field>
+        <field name="balanceOfPaymentsType" title="收/支类型">
+            <display/>
+        </field>
+        <field name="contractMoney" title="合同总金额" >
+            <display/>
+        </field>
+        <field name="contractStartDate" title="合同开始日期">
+            <display/>
+        </field>
+        <field name="contractEndDate" title="合同结束日期">
+            <display/>
+        </field>
+        <field name="expiredReminder" title="过期提醒">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"
+               title="更新" event="onClick" action="javascript:$.recordManagement.CreateEmployee();">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"
+               title="删除" event="onClick" action="javascript:$.recordManagement.RemoveEmployee();">
+            <hyperlink target="#nowhere" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <!--  <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="icon-edit"  title="${uiLabelMap.CommonUpdate}" event="onClick" action="javascript:$.resourceManagement.editResource(${resourceId});">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>
+          <field name="deleteLink" title-style="hide" widget-area-style="function-column" widget-style="icon-trash"  title="${uiLabelMap.CommonDelete}" event="onClick" action="">
+              <hyperlink target="#" description=" " target-type="plain" url-mode="plain"/>
+          </field>-->
+    </form>
+</forms>

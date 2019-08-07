@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="WorkflowDefs" type="list" list-name="workflowDefs" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="key" title="流程编号" widget-style="linktext">
+            <hyperlink description="${key}" target-type="plain" url-mode="plain" target="javascript:$.workflow.apply('${key}');">
+            </hyperlink>
+        </field>
+        <field name="name" title="流程名称" widget-style="linktext">
+            <hyperlink description="${name}" target-type="plain" url-mode="plain" target="javascript:$.workflow.apply('${key}');">
+            </hyperlink>
+        </field>
+        <field name="type" title="流程类型">
+            <display/>
+        </field>
+        <field name="description" title="流程说明">
+            <display/>
+        </field>
+        <field name="editLink" title-style="hide" widget-area-style="function-column" widget-style="glyphicon glyphicon-screenshot"  title="申请" event="onClick" action="javascript:$.workflow.apply('${key}');">
+            <hyperlink target="#nowhere" title="申请" description=" " target-type="plain" url-mode="plain"/>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="PerfExamList" area-target="PerfExamMain"/>
+        <on-event-update-area event-type="sort-column" area-id="PerfExamList" area-target="PerfExamMain"/>
+    </form>
+    <form name="WorkflowApply" type="single" target="SalaryMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="approver" title="审批人" position="1">
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <field name="searchLink" position="2" title-style="hide" widget-style="smallSubmit" title="提交" event="onClick" action="javascript:closeCurrentTab();">
+            <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="InProgressFindOptions" type="single" target="SalaryMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="key" title="流程编号" position="1"><text size="10"/></field>
+        <field name="name" title="流程名称" position="2">
+            <text size="10"/>
+        </field>
+        <field name="applyer" title="申请人" position="3">
+            <lookup target-form-name="LookupStaff" position="center" width="700"/>
+        </field>
+        <field name="status" title="流程状态" position="1">
+            <drop-down current="selected">
+                <option key="0" description="全部"/>
+                <option key="1" description="草稿"/>
+                <option key="2" description="审核中"/>
+                <option key="3" description="已归档"/>
+                <option key="4" description="已驳回"/>
+            </drop-down>
+        </field>
+        <field name="scope" title="查询范围" position="2">
+            <drop-down current="selected">
+                <option key="0" description="全部"/>
+                <option key="1" description="仅本人参与的"/>
+                <option key="2" description="待本人审核的"/>
+                <option key="3" description="本人及下属参与的"/>
+            </drop-down>
+        </field>
+        <field name="type" title="流程分类" position="3">
+            <drop-down current="selected">
+                <option key="0" description="全部"/>
+                <option key="1" description="财务"/>
+                <option key="2" description="人事"/>
+                <option key="3" description="报销"/>
+            </drop-down>
+        </field>
+        <field name="searchLink" title-style="hide" widget-style="smallSubmit" title="操作" event="onClick" action="javascript:showInfo('查询中...')">
+            <hyperlink target="#nowhere" description="查询" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+    <form name="WorkflowApproveHistory" type="list" list-name="histories" paginate="false" separate-columns="true" target="" paginate-target=""
+          odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <field name="sn" title="序号" widget-area-style="sn-column"><display description="${groovy: ((viewIndex * viewSize) + (itemIndex + 1))}"/></field>
+        <field name="approver" title="审批人">
+            <display/>
+        </field>
+        <field name="department" title="审批部门">
+            <display/>
+        </field>
+        <field name="approveTime" title="审批时间">
+            <display/>
+        </field>
+        <field name="action" title="审批动作">
+            <display/>
+        </field>
+        <field name="result" title="审批结果">
+            <display/>
+        </field>
+        <field name="advice" title="审批意见">
+            <display/>
+        </field>
+    </form>
+    <form name="WorkflowApproveForm" type="single" target="SalaryMain"
+          header-row-style="header-row" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="advice" title="审批意见">
+            <textarea/>
+        </field>
+        <field name="action" title="审批动作">
+            <radio>
+                <option key="pass" description="通过"/>
+                <option key="reject" description="驳回"/>
+            </radio>
+        </field>
+        <field name="searchLink" position="2" title-style="hide" widget-style="smallSubmit" title="提交" event="onClick" action="javascript:closeCurrentTab();">
+            <hyperlink target="#nowhere" description="提交" target-type="plain" url-mode="plain"/>
+        </field>
+    </form>
+</forms>
+

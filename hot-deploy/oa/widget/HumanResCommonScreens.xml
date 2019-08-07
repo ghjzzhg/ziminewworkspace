@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main-decorator">
+        <section>
+            <condition>
+                <if-compare field="parameters.ajax" operator="equals" value="false"/>
+            </condition>
+            <actions>
+                <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="AccountingUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="WorkEffortUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="layoutSettings.companyName" from-field="uiLabelMap.HumanResCompanyName" global="true"/>
+                <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.HumanResCompanySubtitle" global="true"/>
+                <!-- layoutSettings.headerImageUrl can be used to specify an application specific logo; if not set,
+                     then the global layoutSettings.commonHeaderImageUrl (specified in GlobalDecorator) will be used. -->
+                <!--<set field="layoutSettings.headerImageUrl" value="/images/ofbiz_logo.gif" global="true"/>-->
+                <set field="activeApp" value="humanres" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/partymgr/static/partymgr.js" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/partymgr/static/partymgr.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/images/humanres/humanres.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/images/z-tree/css/zTreeStyle/zTreeStyle.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/hr/static/orgTree.css" global="true"/>
+                <set field="layoutSettings.styleSheets[]" value="/im/static/css/im.css" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/jquery/ui/js/jquery.cookie-1.4.0.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/jsTree/jquery.jstree.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/z-tree/3.5/jquery.ztree.all-3.5.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/z-tree/3.5/jquery.ztree.exhide-3.5.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/jsTree/jquery.jstree.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/hr/static/hr.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/hr/static/checkingIn.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/lib/yui/yui-min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/lib/moment.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/lib/amplify/amplify.core.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/lib/amplify/amplify.store.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/images/lib/easytabs/jquery.easytabs.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/im/static/im.js" global="true"/>
+                <set field="layoutSettings.javaScripts[]" value="/im/static/atmosphere.js" global="true"/>
+                <set field="applicationMenuName" value="HumanResAppBar" global="true"/>
+                <set field="applicationMenuLocation" value="component://oa/widget/HumanresMenus.xml" global="true"/>
+                <set field="applicationTitle" value="${uiLabelMap.HumanResManagerApplication}" global="true"/>
+            </actions>
+            <widgets>
+                <include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/>
+                <platform-specific>
+                    <html>
+                        <html-template
+                            location="component://common/webcommon/includes/uiWidgets/highcharts.ftl"/>
+                    </html>
+                </platform-specific>
+                <include-screen name="Embed" location="component://oa/widget/IMCommonScreens.xml"/>
+            </widgets>
+            <fail-widgets>
+                <section>
+                    <actions>
+                        <property-map resource="OAUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="AccountingUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true"/>
+                        <property-map resource="WorkEffortUiLabels" map-name="uiLabelMap" global="true"/>
+                        <set field="layoutSettings.companyName" from-field="uiLabelMap.HumanResCompanyName" global="true"/>
+                        <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.HumanResCompanySubtitle" global="true"/>
+                        <!-- layoutSettings.headerImageUrl can be used to specify an application specific logo; if not set,
+                             then the global layoutSettings.commonHeaderImageUrl (specified in GlobalDecorator) will be used. -->
+                        <!--<set field="layoutSettings.headerImageUrl" value="/images/ofbiz_logo.gif" global="true"/>-->
+                        <set field="activeApp" value="humanres" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/partymgr/static/partymgr.js" global="true"/>
+                        <set field="layoutSettings.styleSheets[]" value="/partymgr/static/partymgr.css" global="true"/>
+                        <set field="layoutSettings.styleSheets[]" value="/images/humanres/humanres.css" global="true"/>
+                        <set field="layoutSettings.styleSheets[]" value="/images/z-tree/css/zTreeStyle/zTreeStyle.css" global="true"/>
+                        <set field="layoutSettings.styleSheets[]" value="/hr/static/orgTree.css" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/jquery/ui/js/jquery.cookie-1.4.0.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/jsTree/jquery.jstree.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/z-tree/3.5/jquery.ztree.all-3.5.min.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/z-tree/3.5/jquery.ztree.exhide-3.5.min.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/jsTree/jquery.jstree.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/oa/static/oa.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/hr/static/hr.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/hr/static/checkingIn.js" global="true"/>
+                        <set field="layoutSettings.javaScripts[]" value="/images/lib/yui/yui-min.js" global="true"/>
+                        <set field="applicationMenuName" value="HumanResAppBar" global="true"/>
+                        <set field="applicationMenuLocation" value="component://oa/widget/HumanresMenus.xml" global="true"/>
+                        <set field="applicationTitle" value="${uiLabelMap.HumanResManagerApplication}" global="true"/>
+                    </actions>
+                    <widgets>
+                        <decorator-section-include name="body"/>
+                    </widgets>
+                </section>
+            </fail-widgets>
+        </section>
+    </screen>
+    <screen name="ajax-decorator">
+        <section>
+            <actions>
+                <set field="parameters.ajax" value="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Main">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <!--<container style="col-xs-12 button-bar">
+                                    <link target="javascript:$.organization.editTitles()" url-mode="plain" text="职级管理" style="buttontext create"/>
+                                </container>-->
+                                <container style="col-xs-3">
+                                    <include-screen name="OrgTree"/>
+                                </container>
+                                <container style="col-xs-9">
+                                    <container style="right-content">
+
+                                    </container>
+                                    <container style="col-xs-12">
+                                        <screenlet title="组织岗位统计">
+                                            <container id="occupations"></container>
+                                        </screenlet>
+                                    </container>
+                                    <container id="occupationInfo">
+
+                                    </container>
+                                </container>
+                                <!--<container style="pull-left">
+                                    <container style="col-xs-4">
+                                        <screenlet title="组织岗位">
+                                            <container id="occupations"></container>
+                                        </screenlet>
+                                    </container>
+                                    <container style="col-xs-8" id="occupationInfo">
+
+                                    </container>
+                                </container>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Occupations">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindOccupations.groovy"></script>
+                <entity-and entity-name="RoleType" list="generalOccupationList">
+                    <field-map field-name="parentTypeId" value="JOB_POSITION"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                            location="component://oa/webapp/humanres/humanres/category/occupations.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <!--<container style="col-xs-12">
+                                    <screenlet title="新增岗位">
+                                        <platform-specific>
+                                            <html>
+                                                <html-template
+                                                        location="component://oa/webapp/humanres/humanres/category/AddOccupation.ftl"/>
+                                            </html>
+                                        </platform-specific>
+                                        &lt;!&ndash;&lt;!&ndash;<include-form name="AddOccupation" location="component://oa/widget/forms/OrganizationForms.xml"/>&ndash;&gt;&ndash;&gt;
+                                    </screenlet>
+                                </container>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="AddOccupation">
+        <section>
+            <widgets>
+                <decorator-screen name="ajax-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <set field="partyId" from-field="parameters.partyId"/>
+                            </actions>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                            location="component://oa/webapp/humanres/humanres/category/AddOccupation.ftl"/>
+                                    </html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OccupationDetail">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/FindOccupations.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="col-xs-6">
+                                    <screenlet title="组织岗位列表" navigation-menu-name="OccupationsListBar">
+                                        <include-menu name="OccupationsListBar"
+                                                      location="component://oa/widget/HumanresMenus.xml"/>
+                                        <include-form name="ListOccupations" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                                    </screenlet>
+                                </container>
+                                <container style="col-xs-6" id="lowerOccupationsContainer">
+                                </container>
+                                <container id="occupationMembersContainer" style="col-xs-12">
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="LowerOccupations">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="下属岗位">
+                                    <include-form name="ListLowerOccupations" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OccupationMembers">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <actions>
+                                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/GetOccupationDetail.groovy"></script>
+                            </actions>
+                            <widgets>
+                                <screenlet title="岗位成员" navigation-menu-name="OccupationMemeberListBar">
+                                    <include-menu name="OccupationMemeberListBar"
+                                                  location="component://oa/widget/HumanresMenus.xml"/>
+                                    <include-form name="OccupationMemberList" location="component://oa/widget/forms/OrganizationForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                        <section>
+                            <actions>
+                                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/GetLowerOccupationMembers.groovy"></script>
+                            </actions>
+                            <widgets>
+                                <screenlet title="下属成员">
+                                    <include-form name="ListRecord" location="component://oa/widget/forms/RecordManagementForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditOccupation">
+        <section>
+            <actions>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/organization/EditOccupation.groovy"></script>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html>
+                                        <html-template
+                                                location="component://oa/webapp/humanres/humanres/category/EditOccupation.ftl"/>
+                                    </html>
+                                </platform-specific>
+                                <!--<include-form name="EditOccupation" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="AddOccupationMember">
+        <section>
+            <actions>
+                <set field="positionId" from-field="parameters.positionId" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="col-xs-12">
+                                    <platform-specific>
+                                        <html>
+                                            <html-template
+                                                location="component://oa/webapp/humanres/humanres/category/AddOccupationMember.ftl"/>
+                                        </html>
+                                    </platform-specific>
+                                    <!--<include-form name="AddOccupationMember" location="component://oa/widget/forms/OrganizationForms.xml"/>-->
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="OrgTree">
+        <section>
+            <actions>
+                <set field="partyId" from-field="defaultOrganizationPartyId"/>
+                <script location="component://oa/webapp/humanres/WEB-INF/actions/category/CategoryTree.groovy"></script>
+            </actions>
+            <widgets>
+                <screenlet title="${uiLabelMap.OrgStructure}" navigation-menu-name="EditTitlesBar">
+                    <include-menu name="EditTitlesBar" location="component://oa/widget/HumanresMenus.xml"/>
+                    <section>
+                        <widgets>
+                            <platform-specific>
+                                <html>
+                                    <html-template location="component://oa/webapp/humanres/humanres/category/CategoryTree.ftl"/>
+                                </html>
+                            </platform-specific>
+                        </widgets>
+                    </section>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PartyGroupTreeLine">
+        <section>
+            <widgets>
+                <label text="${partyAndGroup.groupName}"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="PartyPersonTreeLine">
+        <section>
+            <widgets>
+                <label text="${partyAndPerson.firstName} ${partyAndPerson.lastName}"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="CommonEmplPositionDecorator">
+        <section>
+            <actions>
+                <set field="headerItem" value="EmplPosition"/>
+                <set field="emplPositionId" from-field="parameters.emplPositionId"/>
+                <entity-one entity-name="EmplPosition" value-field="emplPosition"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <section>
+                            <condition>
+                                <and>
+                                    <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                                    <not><if-empty field="emplPosition"/></not>
+                                </and>
+                            </condition>
+                            <widgets>
+                                <include-menu name="EmplPostionBar" location="component://oa/widget/HumanresMenus.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <section>
+                            <!-- do check for EmplPosition, _VIEW permission -->
+                            <condition>
+                                <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.HumanResViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonEmploymentDecorator">
+        <section>
+            <actions>
+                <set field="roleTypeIdFrom" from-field="parameters.roleTypeIdFrom"/>
+                <set field="roleTypeIdTo" from-field="parameters.roleTypeIdTo"/>
+                <set field="partyIdFrom" from-field="parameters.partyIdFrom"/>
+                <set field="partyIdTo" from-field="parameters.partyIdTo"/>
+                <set field="fromDate" from-field="parameters.fromDate" type="Timestamp"/>
+                <entity-one entity-name="Employment" value-field="employment"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <!-- do check for Employment, _VIEW permission -->
+                            <condition>
+                                <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <section>
+                                    <condition>
+                                        <not><if-empty field="parameters.partyIdFrom"/></not>
+                                    </condition>
+                                    <actions>
+                                        <entity-one entity-name="PartyNameView" value-field="emplName">
+                                            <field-map field-name="partyId" from-field="parameters.partyIdTo"/>
+                                        </entity-one>
+                                        <entity-one entity-name="PartyNameView" value-field="orgName">
+                                            <field-map field-name="partyId" from-field="parameters.partyIdFrom"/>
+                                        </entity-one>
+                                    </actions>
+                                    <widgets>
+                                        <section>
+                                            <condition>
+                                                <not><if-empty field="parameters.fromDate"/></not>
+                                            </condition>
+                                            <widgets>
+                                                <include-menu name="EmploymentBar" location="component://oa/widget/HumanresMenus.xml"/>
+                                                <container style="button-bar">
+                                                    <link target="EditEmployment" text="${uiLabelMap.HumanResNewEmployment}" style="buttontext"/>
+                                                </container>
+                                                <label style="h1" text="${emplName.lastName},${emplName.firstName} ${emplName.middleName} [${emplName.partyId}] ${uiLabelMap.CommonFor}"></label>
+                                                <label style="h1" text="${orgName.groupName} [${orgName.partyId}]"></label>
+                                            </widgets>
+                                        </section>
+                                    </widgets>
+                                </section>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.HumanResViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonPerfReviewDecorator">
+        <section>
+            <actions>
+                <set field="perfReviewId" from-field="parameters.perfReviewId"/>
+                <entity-one entity-name="PerfReview" value-field="perfReview"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <section>
+                                    <condition>
+                                        <not><if-empty field="perfReview"/></not>
+                                    </condition>
+                                    <actions>
+                                        <entity-one value-field="partyNameView" entity-name="PartyNameView">
+                                            <field-map field-name="partyId" from-field="perfReview.employeePartyId"/>
+                                        </entity-one>
+                                    </actions>
+                                    <widgets>
+                                        <include-menu name="PerfReviewBar" location="component://oa/widget/HumanresMenus.xml"/>
+                                        <label style="h1" text="${uiLabelMap.HumanResPerfReview} [${perfReview.perfReviewId}] ${partyNameView.lastName} ${partyNameView.firstName} ${partyNameView.middleName}"></label>
+                                    </widgets>
+                                </section>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.HumanResViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EmployeeDecorator">
+    <!-- Decorator for Employee edit/view screen set. partyId in this context is a Party in Employee Role and in Employment relationship with internal organization  -->
+        <section>
+            <actions>
+                <set field="headerItem" value="Employees"/>
+                <set field="partyId" from-field="parameters.partyId"/>
+                <entity-one entity-name="Party" value-field="party"/>
+                <entity-one entity-name="Person" value-field="lookupPerson"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <section>
+                            <condition>
+                                <and>
+                                    <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                                    <not><if-empty field="partyId"/></not>
+                                </and>
+                            </condition>
+                            <widgets>
+                                <include-menu name="EmployeeProfileTabBar" location="component://oa/widget/HumanresMenus.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                    <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <section>
+                                    <condition><not><if-empty field="partyId"/></not></condition>
+                                    <widgets>
+                                        <container style="h1">
+                                            <section>
+                                                <condition><not><if-empty field="lookupPerson"/></not></condition>
+                                                <widgets>
+                                                    <label text="${uiLabelMap.PartyTheProfileOf} ${lookupPerson.personalTitle} ${lookupPerson.firstName} ${lookupPerson.middleName} ${lookupPerson.lastName} ${lookupPerson.suffix} [${partyId}]"/>
+                                                </widgets>
+                                                <fail-widgets>
+                                                    <label style="h1" text="${uiLabelMap.HumanResNewEmployee}"/>
+                                                </fail-widgets>
+                                            </section>
+                                        </container>
+                                    </widgets>
+                                </section>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.PartyMgrViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonPartyDecorator">
+        <section>
+            <actions>
+                <set field="partyId" from-field="parameters.partyId"/>
+                <entity-one entity-name="Party" value-field="party"/>
+                <entity-one entity-name="Person" value-field="lookupPerson"/>
+                <entity-one entity-name="PartyGroup" value-field="lookupGroup"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <section>
+                            <condition>
+                                <and>
+                                    <if-has-permission permission="HUMANRES" action="_VIEW"/>
+                                    <not><if-empty field="partyId"/></not>
+                                </and>
+                            </condition>
+                            <widgets>
+                                <include-menu name="EmployeeProfileTabBar" location="component://oa/widget/HumanresMenus.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                    <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+                            </condition>
+                            <!-- do check for PARTYMGR, _VIEW permission -->
+                            <widgets>
+                                <section>
+                                    <condition><not><if-empty field="partyId"/></not></condition>
+                                    <widgets>
+                                        <container style="h1">
+                                            <section>
+                                                <condition>
+                                                    <or>
+                                                        <not><if-empty field="lookupPerson"/></not>
+                                                        <not><if-empty field="lookupGroup"/></not>
+                                                    </or>
+                                                </condition>
+                                                <widgets>
+                                                    <label text="${uiLabelMap.PartyTheProfileOf} ${lookupPerson.personalTitle} ${lookupPerson.firstName} ${lookupPerson.middleName} ${lookupPerson.lastName} ${lookupPerson.suffix} ${lookupGroup.groupName} [${partyId}]"/>
+                                                </widgets>
+                                                <fail-widgets>
+                                                    <label style="h1" text="${uiLabelMap.PartyNewUser}"/>
+                                                </fail-widgets>
+                                            </section>
+                                        </container>
+                                    </widgets>
+                                </section>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.PartyMgrViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="GlobalHRSettingsDecorator">
+        <section>
+            <actions>
+                <set field="headerItem" value="GlobalHRSettings"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <include-menu name="GlobalHRSettingMenus" location="component://oa/widget/HumanresMenus.xml"/>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonRecruitmentDecorator">
+        <section>
+            <actions>
+                <set field="headerItem" value="Recruitment"/>
+                <property-map resource="ContentUiLabels" map-name="uiLabelMap" global="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <include-menu name="RecruitmentTypeMenu" location="component://oa/widget/HumanresMenus.xml"/>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonTrainingDecorator">
+        <section>
+            <actions>
+                <property-map resource="HumanResUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="headerItem" value="Training"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <include-menu name="TrainingTypeMenu" location="component://oa/widget/HumanresMenus.xml"/>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <decorator-section-include name="body"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="CommonMyCommunicationEventDecorator">
+        <section>
+            <actions>
+                <script location="component://party/webapp/partymgr/WEB-INF/actions/communication/GetMyCommunicationEventRole.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <include-menu name="EmployeeProfileTabBar" location="component://oa/widget/HumanresMenus.xml"/>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <if-has-permission action="_VIEW" permission="HUMANRES"/>
+                            </condition>
+                            <widgets>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.PartyMgrViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ResourceManagementDecorator">
+        <section>
+            <widgets>
+                <section>
+                    <condition>
+                        <if-empty field="titleProperty"/>
+                    </condition>
+                    <widgets>
+                        <container style="page-title"><label text="${title}"></label></container>
+                    </widgets>
+                    <fail-widgets>
+                        <container style="page-title"><label text="${uiLabelMap[titleProperty]}"></label></container>
+                    </fail-widgets>
+                </section>
+                <decorator-section-include name="menu-bar"/>
+                <container style="clear"/>
+                <screenlet id="resourceOccupySituation" name="resourceScreenlet" collapsible="true" title="${uiLabelMap.resourceOccupySituation}">
+                    <container id="resourceOccupy-situation">
+                        <decorator-section-include name="resourceOccupy-situation" />
+                    </container>
+                </screenlet>
+                <screenlet id="pendingAudit" name="resourceScreenlet" collapsible="true" title="${uiLabelMap.resourcePendingAudit}">
+                    <container id="pending-audit">
+                        <decorator-section-include name="pending-audit" />
+                    </container>
+                </screenlet>
+                <screenlet id="pendingArranged" name="resourceScreenlet" collapsible="true" title="${uiLabelMap.resourcePendingArranged}">
+                    <container id="pending-arranged">
+                        <decorator-section-include name="pending-arranged" />
+                    </container>
+                </screenlet>
+                <screenlet id="todayUseSituation" name="resourceScreenlet" collapsible="true" title="${uiLabelMap.resourceTodayUseSituation}">
+                    <container id="today-useSituation">
+                        <decorator-section-include name="today-useSituation" />
+                    </container>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="VehicleManagementDecorator">
+        <section>
+            <widgets>
+                <section>
+                    <condition>
+                        <if-empty field="titleProperty"/>
+                    </condition>
+                    <widgets>
+                        <container style="page-title"><label text="${title}"></label></container>
+                    </widgets>
+                    <fail-widgets>
+                        <container style="page-title"><label text="${uiLabelMap[titleProperty]}"></label></container>
+                    </fail-widgets>
+                </section>
+                <decorator-section-include name="menu-bar"/>
+                <container style="clear"/>
+                <screenlet id="vehicleOccupySituation" name="vehicleScreenlet" collapsible="true" title="${uiLabelMap.vehicleOccupySituation}">
+                    <container id="vehicleOccupy-situation">
+                        <decorator-section-include name="vehicleOccupy-situation" />
+                    </container>
+                </screenlet>
+                <screenlet id="pendingAudit" name="vehicleScreenlet" collapsible="true" title="${uiLabelMap.pendingAudit}">
+                    <container id="pending-audit">
+                        <decorator-section-include name="pending-audit" />
+                    </container>
+                </screenlet>
+                <screenlet id="pendingArranged" name="vehicleScreenlet" collapsible="true" title="${uiLabelMap.pendingArranged}">
+                    <container id="pending-arranged">
+                        <decorator-section-include name="pending-arranged" />
+                    </container>
+                </screenlet>
+                <screenlet id="todayUseSituation" name="vehicleScreenlet" collapsible="true" title="${uiLabelMap.todayUseSituation}">
+                    <container id="today-useSituation">
+                        <decorator-section-include name="today-useSituation" />
+                    </container>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+</screens>
